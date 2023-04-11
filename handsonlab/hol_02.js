@@ -51,13 +51,41 @@ class TicketManager{
     getEventById(idEvent){
         return this.events.find(event => event.id === idEvent)?? [] //Si no encuentra el evento, devuelve un array vacío.
     }
+
+    addParticipant(idEvent, idUser){
+        
+        let event = this.getEventById(idEvent)
+        
+        // verifico que exista el evento
+        if(event!== []) {
+            // verifico la capacidad que no esté lleno
+            if(event.participants.length < event.capacity){
+                //verifico que no exista el participante
+                if (event.participants.findIndex(participant => participant === parseInt(idUser))===-1){
+                    event.participants.push(idUser)
+                    console.log(event.participants)
+                } 
+                else
+                {
+                    console.log("El participante ya está en el evento")
+                }
+
+            }
+            else{
+                console.log("El evento está lleno")
+            }
+        }
+        else{
+            console.log("No se encontró el evento")
+        }
+    }
 }
 
 let ticket= new TicketManager()
 ticket.getEvents()
 ticket.addEvent({name: 'Kirosawa', place: 'Japan', price: 50, capacity: null, date: undefined })
 ticket.addEvent({name: 'Byung', place: 'Korea', price: 25, capacity: 500, date: new Date('06/09/2023') })
-ticket.addEvent({name: 'Lola', place: 'USA', price: 20, capacity: 300, date: new Date('04/08/2023') })
+ticket.addEvent({name: 'Lola', place: 'USA', price: 20, capacity: 3, date: new Date('04/08/2023') })
 
 let evento2 = ticket.getEventById(2)
 
@@ -65,3 +93,9 @@ console.log(evento2)
 
 let evento4 = ticket.getEventById(4)
 console.log(evento4)
+
+ticket.addParticipant(3,4)
+ticket.addParticipant(3,4)
+ticket.addParticipant(3,6)
+ticket.addParticipant(3,5)
+ticket.addParticipant(3,7)
