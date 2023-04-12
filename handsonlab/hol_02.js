@@ -67,7 +67,7 @@ class TicketManager{
     }
 
     getEventById(idEvent){
-        return this.events.find(event => event.id === idEvent)?? [] //Si no encuentra el evento, devuelve un array vacío.
+        return this.events.find(event => event.id === parseint(idEvent))?? [] //Si no encuentra el evento, devuelve un array vacío.
     }
 
     addParticipant(idEvent, idUser){
@@ -128,29 +128,8 @@ class TicketManager{
     editEvent(idEvent, objEventProps){
         let event = this.getEventById(idEvent);
         
-        {
-
-        }
-    }
-
-    deleteEvent(idEvent) {
-        const index = this.events.findIndex(event => event.id === parseInt(idEvent));
-        
-        //en el if pregunto si lo encontró, es decir si findIndex no devolvió -1
-        if (index !== -1) {
-            //borro el evento con splice
-            this.events.splice(index, 1);
-            console.log(`Evento con id ${idEvent} eliminado`);
-        } else {
-            console.error("No se encontró el evento");
-        }
-    }
-
-    editEvent(idEvent, objEventProps){
-        let event = this.getEventById(idEvent);
-        
         // Verificar que el evento existe
-        if(event !== []) {
+        if(event !== [] && event ) {
             // Recorro las propiedades del objeto que se le pasa como parámetro
             //key es la propiedad y value el valor que va a tomar en el evento modificado
             Object.entries(objEventProps).forEach(([key, value]) => {
@@ -170,6 +149,18 @@ class TicketManager{
             
         }
     
+    deleteEvent(idEvent) {
+        const index = this.events.findIndex(event => event.id === parseInt(idEvent));
+        
+        //en el if pregunto si lo encontró, es decir si findIndex no devolvió -1
+        if (index !== -1) {
+            //borro el evento con splice
+            this.events.splice(index, 1);
+            console.log(`Evento con id ${idEvent} eliminado`);
+        } else {
+            console.error("No se encontró el evento");
+        }
+    }
 }
 
 let ticket = new TicketManager()
