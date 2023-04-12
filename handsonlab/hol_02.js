@@ -129,7 +129,7 @@ class TicketManager{
         let event = this.getEventById(idEvent);
         
         // Verificar que el evento existe
-        if(event !== [] && event ) {
+        if(event !== [] && event.length > 0 ) {
             // Recorro las propiedades del objeto que se le pasa como parámetro
             //key es la propiedad y value el valor que va a tomar en el evento modificado
             Object.entries(objEventProps).forEach(([key, value]) => {
