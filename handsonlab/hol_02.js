@@ -67,7 +67,7 @@ class TicketManager{
     }
 
     getEventById(idEvent){
-        return this.events.find(event => event.id === parseint(idEvent))?? [] //Si no encuentra el evento, devuelve un array vacío.
+        return this.events.find(event => event.id === parseInt(idEvent))?? [] //Si no encuentra el evento, devuelve un array vacío.
     }
 
     addParticipant(idEvent, idUser){
