@@ -196,8 +196,8 @@ ticket.deleteEvent(4)
 
 ticket.getEvents()
 
-ticket.editEvent(2,{name: 'Padel WPT', place: 'San Luis', price: 123, capacity: 500, date: new Date('08/07/2023') })
+ticket.editEvent(2,{id: 2, name: 'Padel WPT', place: 'San Luis', price: 123, capacity: 500, date: new Date('08/07/2023') })
 console.log(ticket.getEventById(2))
 
-ticket.getEvents()
+
 
