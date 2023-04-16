@@ -43,6 +43,7 @@ class ProductManager {
         if (!product) {
             throw new Error(`Producto con ID: ${id} no encontrado`);
         }
+        //en caso de que no se modifiquen todas las propiedades, se deja el valor que tenían.
         product.title = title ?? product.title;
         product.description = description ?? product.description;
         product.price = price ?? product.price;
