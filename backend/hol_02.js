@@ -134,6 +134,8 @@ try {
     console.error(error.message);
 }
 
+console.log("\n -------------------");
+
 /*  Eliminar un producto */
 
 // Eliminar un producto existente
@@ -141,7 +143,8 @@ const idProductoAEliminar = 1; // ID del producto agregado anteriormente
 
 try {
     prodAdmin.deleteProduct(idProductoAEliminar);
-
+    console.log("Resultado de: deleteProduct(idProductoAEliminar);")
+    console.log(prodAdmin.getProducts())
 } catch (error) {
     console.error(error.message);
 }
