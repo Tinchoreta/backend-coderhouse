@@ -60,10 +60,11 @@ class ProductManager {
 
     getProductById(idProduct) {
         const found = this.Products.find(Product => Product.id === parseInt(idProduct))
-        console.log(found + " byID")
+        // console.log(JSON.stringify(found) + " search by ID")
 
         if (found === undefined) {
-            return "Not found"; //Devuelve Not Found para que el método que lo llame lo muestre por consola.
+            console.log("Not found");
+            return "Not found"; 
         } else {
             return found;
         }
@@ -75,29 +76,29 @@ class ProductManager {
             console.log(`El Producto con ID ${idProduct} no pudo modificarse porque no se encontró`);
             return;
         }
-    
+
         // Verifico si los parámetros de entrada son válidos
         const validProps = ["title", "description", "price", "thumbnail", "stock"];
         const invalidProps = Object.keys(objProductProps).filter(prop => !validProps.includes(prop));
         if (invalidProps.length > 0) {
             console.log(`Los siguientes parámetros no son válidos: ${invalidProps.join(", ")}`);
-            
+
         }
-        console.log(objProductProps)
+        // console.log(objProductProps)
         // Actualizo el objeto del producto
         Object.assign(modProduct, objProductProps);
-    
+
         // Actualizo el producto en el arreglo this.Products
         const index = this.Products.findIndex((e) => e.id === idProduct);
         this.Products[index] = modProduct;
-    
-        console.log(`El Producto con ID ${idProduct} ha sido modificado: ${JSON.stringify(modProduct)}`);
+
+        console.log(`El Producto con ID ${idProduct} ha sido modificado`);
 
     }
 
     deleteProduct(idProduct) {
         const index = this.Products.findIndex(Product => Product.id === parseInt(idProduct));
-        console.log(index)
+        
         //en el if pregunto si lo encontró, es decir si findIndex no devolvió -1
         if (index !== -1) {
             //borro el Producto con splice
@@ -109,20 +110,90 @@ class ProductManager {
     }
 }
 
-let ticket = new ProductManager()
+let productAdmin = new ProductManager()
+try {
+    console.log("Prueba de getProducts(), debería retornar []");
+    console.log(productAdmin.getProducts())
+} catch (error) {
+    console.error(error.message);
+}
 
-ticket.addProduct({ title: 'El libro de los unicornios', description: 'Libro de niños para colorear', price: 500, thumbnail: "img/Sally.webp", stock: 200 })
-ticket.addProduct({ title: 'Sally la niña poderosa', description: 'Libro infantil - Cuento corto', price: 2500, thumbnail: "img/Sally.webp", stock: 500 })
-ticket.addProduct({ title: 'Teatro visceral', description: 'Novela', price: 3500, thumbnail: "img/teatroVisceral.webp", stock: 35 })
+console.log("\n -------------------");
 
-console.log(ticket.getProducts())
-
-ticket.deleteProduct(3)
-
-console.log(ticket.getProducts())
-
-ticket.editProduct(2, { id: 2, title: 'El libro de los abrazos', description: 'Literatura', price: 2600, thumbnail: "img/librodelosabrazos.webp", stock: 100 })
-console.log(ticket.getProductById(2))
-
+/* 
+    Agrega un producto utilizando el método addProduct
+*/
 
 
+const newProduct = {
+    title: "producto prueba",
+    description: "Este es un producto prueba",
+    price: 200,
+    thumbnail: "Sin imagen",
+    stock: 25
+};
+
+
+const prodAdmin = new ProductManager();
+try {
+    prodAdmin.addProduct(newProduct);
+    console.log(`Producto agregado con id: ${prodAdmin.getLastId()}`);
+} catch (error) {
+    console.error(error.message);
+}
+
+console.log("\n -------------------");
+
+/*
+    Obtiene los productos actualizados con el método getProducts
+*/
+const products = prodAdmin.getProducts();
+
+console.log(products); // [{...}]
+
+
+/* Evaluar el método getProductById para obtener un producto por su id */
+
+const productId = 1; // ID del producto a buscar y mostrar
+
+
+try {
+    const product = prodAdmin.getProductById(productId);
+    console.log("Resultado de: getProductById(1):")
+    console.log(product); // { id: 1, ...}
+    
+} catch (error) {
+    console.error(error.message);
+}
+
+console.log("\n -------------------");
+
+/* Editar un producto */
+
+// Editar un producto existente 
+
+const idProducto = 1; // ID del producto agregado anteriormente
+const newProductProps = {
+    price: 25.99,
+    description: "Esta es la nueva descripción del producto",
+};
+
+try {
+    prodAdmin.editProduct(idProducto, newProductProps);
+    console.log("Resultado de editProduct(idProducto, newProductProps);")
+    console.log(prodAdmin.getProductById(idProducto))
+} catch (error) {
+    console.error(error.message);
+}
+
+/*  Eliminar un producto */
+
+// Eliminar un producto existente
+const idProductoAEliminar = 1; // ID del producto agregado anteriormente
+
+try {
+    prodAdmin.deleteProduct(idProductoAEliminar);
+    
+} catch (error) {
+    console.error(error.message);
+}
