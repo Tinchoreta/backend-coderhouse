@@ -11,11 +11,27 @@ class ProductManager {
         this.products = [];
     }
 
-    getProducts = () => {
+    getProducts() {
         return this.products;
     };
 
-    addProduct = ({ title, description, price, thumbnail, stock }) => {
+    addProduct ({ title, description, price, thumbnail, stock }) {
+        if (!title || title.length === 0) {
+            throw new Error('El campo título es obligatorio');
+        }
+        if (!description || description.length === 0) {
+            throw new Error('El campo descripción es obligatorio');
+        }
+        if (!price || price <= 0) {
+            throw new Error('El campo precio es obligatorio y debe ser mayor que cero');
+        }
+        if (!thumbnail || thumbnail.length === 0) {
+            throw new Error('El campo imagen es obligatorio');
+        }
+        if (!stock || stock < 0) {
+            throw new Error('El campo stock es obligatorio y no puede ser menor que cero');
+        }
+    
         const newId = this.getLastId() + 1;
         const newProduct = { id: newId, title, description, price, thumbnail, stock };
         this.products.push(newProduct);
@@ -24,13 +40,10 @@ class ProductManager {
 
     getLastId = () => {
         const lastIndex = this.products.length - 1;
-        if (lastIndex < 0) {
-            return 0;
-        }
-        return this.products[lastIndex].id;
+        return lastIndex < 0 ? 0 : this.products[lastIndex].id;
     };
 
-    getProductById = (idProduct) => {
+    getProductById (idProduct) {
         const found = this.products.find((product) => product.id === parseInt(idProduct));
         if (!found) {
             throw new Error("Producto no encontrado");
@@ -51,7 +64,7 @@ class ProductManager {
         product.stock = stock ?? product.stock;
         return product;
     }
-    deleteProduct = (idProduct) => {
+    deleteProduct (idProduct) {
         const productIndex = this.products.findIndex((product) => product.id === parseInt(idProduct));
         if (productIndex === -1) {
             throw new Error(`Producto con ID: ${idProduct} no encontrado`);
@@ -78,7 +91,7 @@ console.log("\n -------------------");
 const newProduct = {
     title: "producto prueba",
     description: "Este es un producto prueba",
-    price: 200,
+    price: 250,
     thumbnail: "Sin imagen",
     stock: 25
 };
@@ -109,7 +122,6 @@ try {
     const product = prodAdmin.getProductById(productId);
     console.log("Resultado de: getProductById(1):")
     console.log(product); // { id: 1, ...}
-
 } catch (error) {
     console.error(error.message);
 }
