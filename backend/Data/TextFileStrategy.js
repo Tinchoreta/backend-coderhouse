@@ -22,7 +22,8 @@ class TextFileStrategy {
 
     async load() {
         return new Promise((resolve, reject) => {
-            fs.readFile(this.filePath, (error, data) => {
+            let coding = 'utf-8'
+            fs.readFile(this.filePath, coding, (error, data) => {
                 if (error) {
                     if (error.code === 'ENOENT') {
                         // Archivo no encontrado
