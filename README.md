@@ -11,7 +11,7 @@ Se verán aspectos de ECMAScript y ECMAScript avanzado.
 
 1. Clonar el repositorio: `git clone https://github.com/Tinchoreta/backend-coderhouse.git`
 2. Instalar las dependencias: `npm install`
-3. Ejecutar el servidor: `node hol_02.`
+3. Ejecutar el servidor: `node backend/ProductManager`
 
 ## Funciones ECMAScript
 
