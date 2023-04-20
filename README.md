@@ -20,7 +20,6 @@ El proyecto utiliza las siguientes funciones ECMAScript:
 - `findIndex`: Busca en un array el índice del primer elemento que cumple una condición especificada.
 - `find`: Busca en un array el primer elemento que cumple una condición especificada.
 - `splice`: Cambia el contenido de un array eliminando elementos existentes y/o agregando nuevos elementos.
-- `trim`: Elimina los espacios en blanco al inicio y final de una cadena.
 - `??`: Operador de fusión de nulos. Devuelve el operando de la izquierda si no es nulo, de lo contrario devuelve el operando de la derecha.
 
 ## Clase ProductManager
