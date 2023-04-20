@@ -1,3 +1,8 @@
+/*
+Para la clase TextFileStrategy, forma parte del patrón Strategy para permitir la utilización de diferentes estrategias de almacenamiento de datos (por ejemplo, archivos de texto plano, bases de datos, etc.).
+En este caso la estrategia de persistencia es a través de archivos de Texto.
+*/
+const fs = require('fs');
 class TextFileStrategy {
     constructor(filePath) {
         this.filePath = filePath;

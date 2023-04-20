@@ -20,7 +20,11 @@ const prodAdmin = new ProductManager();
 const newProduct = new Product(prodAdmin.getLastId()+1,"Producto prueba", "Este es un producto prueba",
     250,"Sin imagen",25);
 
-
+const productoUno = new Product(prodAdmin.getLastId()+1, "Gel refrescante", "Gel para el cuidado de la piel", 150, "https://imagen.com/gelrefrescante", 15);
+const productoDos = new Product(prodAdmin.getLastId()+1, "Aceite esencial", "Aceite para aromaterapia", 200, "https://imagen.com/aceiteesencial", 20);
+const productoTres = new Product(prodAdmin.getLastId()+1, "Crema hidratante", "Crema para el cuidado de la piel seca", 300, "https://imagen.com/cremahidratante", 30);
+const productoCuatro = new Product(prodAdmin.getLastId()+1, "Mascarilla facial", "Mascarilla para el cuidado de la piel", 100, "https://imagen.com/mascarillafacial", 10);
+const productoCinco = new Product(prodAdmin.getLastId()+1, "Serum revitalizante", "Serum para el cuidado de la piel cansada", 400, "https://imagen.com/serumrevitalizante", 40);
 
 try {
     prodAdmin.addProduct(newProduct);
@@ -28,6 +32,41 @@ try {
 } catch (error) {
     console.error(error.message);
 }
+
+try {
+    prodAdmin.addProduct(productoUno);
+    console.log(`Producto agregado con id: ${prodAdmin.getLastId()}`);
+    } catch (error) {
+    console.error(error.message);
+    }
+    
+    try {
+    prodAdmin.addProduct(productoDos);
+    console.log(`Producto agregado con id: ${prodAdmin.getLastId()}`);
+    } catch (error) {
+    console.error(error.message);
+    }
+    
+    try {
+    prodAdmin.addProduct(productoTres);
+    console.log(`Producto agregado con id: ${prodAdmin.getLastId()}`);
+    } catch (error) {
+    console.error(error.message);
+    }
+    
+    try {
+    prodAdmin.addProduct(productoCuatro);
+    console.log(`Producto agregado con id: ${prodAdmin.getLastId()}`);
+    } catch (error) {
+    console.error(error.message);
+    }
+    
+    try {
+    prodAdmin.addProduct(productoCinco);
+    console.log(`Producto agregado con id: ${prodAdmin.getLastId()}`);
+    } catch (error) {
+    console.error(error.message);
+    }
 
 /*
     Obtiene los productos actualizados con el método getProducts
