@@ -1,0 +1,24 @@
+{
+  "name": "clase-2---hands-on-lab",
+  "version": "1.0.0",
+  "description": "Curso Backend Coderhouse",
+  "main": "index.js",
+  
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tinchoreta/backend-coderhouse.git"
+  },
+  "keywords": [
+    "Backend",
+    "Coderhouse"
+  ],
+  "author": "Martín Reta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tinchoreta/backend-coderhouse/issues"
+  },
+  "homepage": "https://github.com/Tinchoreta/backend-coderhouse#readme"
+}

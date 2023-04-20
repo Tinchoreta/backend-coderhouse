@@ -68,3 +68,5 @@ class Product {
         this._stock = value;
     }
 }
+
+module.exports = Product;
