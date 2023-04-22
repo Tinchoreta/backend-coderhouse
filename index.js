@@ -1,6 +1,6 @@
 
-const Product = require('./Product');
-const ProductManager =  require('./ProductManager');
+const Product = require('./backend/Business/Product');
+const ProductManager =  require('./backend/Business/ProductManager');
 
 let productAdmin = new ProductManager()
 try {
