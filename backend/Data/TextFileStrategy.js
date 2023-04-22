@@ -37,4 +37,16 @@ class TextFileStrategy {
             });
         });
     }
+
+    async delete() {
+        return new Promise((resolve, reject) => {
+            fs.unlimk(this.filePath, (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
 }
