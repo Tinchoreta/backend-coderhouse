@@ -30,9 +30,13 @@ class ProductManager {
         if (!thumbnail || thumbnail.length === 0) {
             throw new Error('El campo imagen es obligatorio');
         }
-        if (!stock || stock < 0) {
-            throw new Error('El campo stock es obligatorio y no puede ser menor que cero');
+        if (stock < 0) {
+            throw new Error('El campo stock no puede ser menor que cero');
         }
+        
+        //si el stock no se especifica, por defecto será cero.
+
+        stock = stock ?? 0;
     
         const newId = this.getLastId() + 1;
         const newProduct = new Product(newId, title, description, price, thumbnail, stock);

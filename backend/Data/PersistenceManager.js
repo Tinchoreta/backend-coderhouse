@@ -1,6 +1,7 @@
 /*
-Para la clase PersistenceManager, se aplica el patrón Adapter para adaptar la funcionalidad de lectura y escritura de archivos a la interfaz necesaria para interactuar con los objetos Product. 
-Se aplica también el patrón Strategy para permitir la utilización de diferentes estrategias de almacenamiento de datos (por ejemplo, archivos de texto plano, bases de datos, etc.).
+Para la clase PersistenceManager se aplica también el patrón Strategy 
+para permitir la utilización de diferentes estrategias de almacenamiento de datos 
+(por ejemplo, archivos de texto plano, bases de datos, etc.).
 */
 
 const fs = require('fs');
