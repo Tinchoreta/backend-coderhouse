@@ -1,26 +1,31 @@
 
 const Product = require('./backend/Business/Product');
-const ProductManager =  require('./backend/Business/ProductManager');
+const ProductManager = require('./backend/Business/ProductManager');
 const ProductAdapter = require('./backend/Business/ProductAdapter');
 
-// const prodAdmin = new ProductManager()
+
+const productAdapter = ProductAdapter.getInstance("data/data.json");
+
+async function testGetProducts() {
+    try {
+        console.log("Prueba de getProducts(), debería retornar []");
+        const products = await productAdapter.getProducts();
+        console.log(products);
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+testGetProducts();
+
+
+const prodAdmin = new ProductManager()
 // try {
 //     console.log("Prueba de getProducts(), debería retornar []");
 //     console.log(prodAdmin.getProducts())
 // } catch (error) {
 //     console.error(error.message);
 // }
-
-const productAdapter = ProductAdapter.getInstance("data/data.json");
-
-try {
-    console.log("Prueba de getProducts(), debería retornar []");
-    console.log(productAdapter.getProducts())
-} catch (error) {
-    console.error(error.message);
-}
-
-
 
 console.log("\n -------------------");
 

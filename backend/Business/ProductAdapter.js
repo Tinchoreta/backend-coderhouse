@@ -3,12 +3,12 @@ class ProductAdapter {
     // Define una propiedad privada estática para almacenar 
     // la única instancia de la clase Patrón Singleton. Se usa static para
     // dejar en claro que es una propiedad de la clase y no de instancias de la misma.
-    
-    static #instance;
+
+    static instance;
 
     // Constructor privado para evitar la creación de nuevas instancias 
     //fuera de la clase
-    
+
     constructor(filePath) {
 
         if (ProductAdapter.instance) {
@@ -19,15 +19,15 @@ class ProductAdapter {
         ProductAdapter.instance = this;
     }
 
-     // Método estático para obtener la instancia única de la clase ProductAdapter
+    // Método estático para obtener la instancia única de la clase ProductAdapter
     static getInstance(filePath) {
-        if (!ProductAdapter.#instance) {
-            ProductAdapter.#instance = new ProductAdapter(filePath);
+        if (!ProductAdapter.instance) {
+            ProductAdapter.instance = new ProductAdapter(filePath);
         }
-        return ProductAdapter.#instance;
+        return ProductAdapter.instance;
     }
 
-   // Métodos de la clase ProductAdapter
+    // Métodos de la clase ProductAdapter
     // que van a ser 
 
     async getProducts() {
@@ -54,7 +54,7 @@ class ProductAdapter {
         }
     }
 
-    
+
     async updateProduct(id, productData) {
         try {
             const products = await this.PersistenceManager.load();
@@ -95,3 +95,5 @@ class ProductAdapter {
         }
     }
 }
+
+module.exports = ProductAdapter;
