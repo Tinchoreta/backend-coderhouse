@@ -49,7 +49,7 @@ async function testAddProducts() {
     try {
         console.log("Prueba de AddProducts(), debería retornar el id");
         const products = await productAdapter.addProduct(newProduct);
-        console.log(products);
+        products? console.log(`Se agregó el producto con ID:  ${products}`): console.log(`No se pudo agregar: ${newProduct}`);
     } catch (error) {
         console.error(error.message);
     }

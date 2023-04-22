@@ -10,7 +10,8 @@ class TextFileStrategy {
 
     async save(data) {
         return new Promise((resolve, reject) => {
-            fs.writeFile(this.filePath, JSON.stringify(data), (error) => {
+            let encoding = 'utf-8'
+            fs.writeFile(this.filePath, encoding, JSON.stringify(data), (error) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -22,8 +23,8 @@ class TextFileStrategy {
 
     async load() {
         return new Promise((resolve, reject) => {
-            let coding = 'utf-8'
-            fs.readFile(this.filePath, coding, (error, data) => {
+            let encoding = 'utf-8'
+            fs.readFile(this.filePath, encoding, (error, data) => {
                 if (error) {
                     if (error.code === 'ENOENT') {
                         // Archivo no encontrado
@@ -40,7 +41,7 @@ class TextFileStrategy {
 
     async delete() {
         return new Promise((resolve, reject) => {
-            fs.unlimk(this.filePath, (error) => {
+            fs.unlink(this.filePath, (error) => {
                 if (error) {
                     reject(error);
                 } else {
