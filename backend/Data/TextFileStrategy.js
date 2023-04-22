@@ -2,6 +2,9 @@
 Para la clase TextFileStrategy, forma parte del patrón Strategy para permitir la utilización de diferentes estrategias de almacenamiento de datos (por ejemplo, archivos de texto plano, bases de datos, etc.).
 En este caso la estrategia de persistencia es a través de archivos de Texto.
 */
+
+const ENCODING = "utf-8"
+
 const fs = require('fs');
 class TextFileStrategy {
     constructor(filePath) {
@@ -10,8 +13,8 @@ class TextFileStrategy {
 
     async save(data) {
         return new Promise((resolve, reject) => {
-            let encoding = 'utf-8'
-            fs.writeFile(this.filePath, encoding, JSON.stringify(data), (error) => {
+            
+            fs.writeFile(this.filePath, JSON.stringify(data, null,2), ENCODING, (error) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -23,8 +26,8 @@ class TextFileStrategy {
 
     async load() {
         return new Promise((resolve, reject) => {
-            let encoding = 'utf-8'
-            fs.readFile(this.filePath, encoding, (error, data) => {
+            
+            fs.readFile(this.filePath, ENCODING, (error, data) => {
                 if (error) {
                     if (error.code === 'ENOENT') {
                         // Archivo no encontrado
