@@ -32,3 +32,4 @@ class PersistenceManager {
     }
 }
 
+module.exports = PersistenceManager;
