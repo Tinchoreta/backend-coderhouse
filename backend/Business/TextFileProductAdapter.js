@@ -28,7 +28,7 @@ class TextFileProductAdapter {
     }
 
     // Métodos de la clase TextFileProductAdapter
-    // que van a ser 
+    // que van a ser guardados en data.json
 
     async getProducts() {
         try {
@@ -59,9 +59,10 @@ class TextFileProductAdapter {
         }
     };
 
-    async addProduct(addedProduct) {
+    async addProduct(productToAdd) {
         try {
-            const { title, description, price, thumbnail, stock } = addedProduct;
+            //Hago un destructuring de las propiedades del product a agregar
+            const { title, description, price, thumbnail, stock } = productToAdd;
             const products = await this.PersistenceManager.load();
             const newProduct = { id: products.length + 1, title, description, price, thumbnail, stock };
             products.push(newProduct);
@@ -73,38 +74,55 @@ class TextFileProductAdapter {
     }
 
 
-    async updateProduct(id, productData) {
-        try {
-            const products = await this.PersistenceManager.load();
-            const productIndex = products.findIndex((product) => product.id === id);
-            if (productIndex === -1) {
-                throw new Error(`Producto con ID: ${id} no encontrado`);
-            }
-            const { title, description, price, thumbnail, stock } = productData;
-            //en caso de que no se modifiquen todas las propiedades, 
-            //se deja el valor que tenían.
-            title = title ?? title;
-            description = description ?? description;
-            price = price ?? price;
-            thumbnail = thumbnail ?? thumbnail;
-            stock = stock ?? stock;
-            const editedProduct = { id, title, description, price, thumbnail, stock };
-            products[productIndex] = editedProduct;
-            await this.PersistenceManager.save(products);
-            return editedProduct;
-        } catch (error) {
-            throw new Error(`updateProduct: ${error.message}`);
+    async updateProduct(productId, productData) {
+        const products = await this.persistenceManager.load();
+        const productToUpdate = products.find((product) => product.id === productId);
+        if (!productToUpdate) {
+            throw new Error(`Product with id ${productId} not found`);
         }
+        //Se actualizan los datos del producto con ID: productId, con las propiedades
+        //enviadas por parámetro en productData
+        //se utiliza ?? para asegurar la integridad de los datos a modificar
+        //si vienen con null o undefined, simplemente no se modifican
+        //y queda el valor original que traía desde el archivo.
+        const updatedProduct = {
+            id: productToUpdate.id,
+            title: productData.title ?? productToUpdate.title,
+            description: productData.description ?? productToUpdate.description,
+            price: parseFloat(productData.price) ?? productToUpdate.price,
+            thumbnail: productData.thumbnail ?? productToUpdate.thumbnail,
+            stock: parseInt(productData.stock) ?? productToUpdate.stock,
+        };
+
+        // Se crea una nueva lista de productos con el producto actualizado. 
+        //Esto se hace para asegurarse de que se mantenga la integridad de los datos.
+
+        const updatedProducts = products.map((product) => {
+            if (product.id === productId) {
+                return updatedProduct;
+            }
+            return product;
+        });
+        //Se almacena todo el array de productos con el producto actualizado en data.json
+
+        await this.persistenceManager.save(updatedProducts);
+        return updatedProduct;
     }
 
     async deleteProduct(id) {
         try {
+            //Se cargan los datos de los productos desde data.json
             const products = await this.PersistenceManager.load();
             const productIndex = products.findIndex((product) => product.id === id);
+            //Si no se encuentra el producto en el archivo data.json 
+            //findIndex devolverá -1
             if (productIndex === -1) {
                 throw new Error(`Producto con ID: ${id} no encontrado`);
             }
+            //Con splice se quita el producto con ID: productIndex
+            
             products.splice(productIndex, 1);
+            //Y se vuelve a guardar en data.json los restantes productos.
             await this.PersistenceManager.save(products);
         } catch (error) {
             throw new Error(`deleteProduct: ${error.message}`);
