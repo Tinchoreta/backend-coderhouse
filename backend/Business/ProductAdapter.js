@@ -44,8 +44,9 @@ class ProductAdapter {
         }
     }
 
-    async addProduct({ title, description, price, thumbnail, stock }) {
+    async addProduct(addedProduct) {
         try {
+            const { title, description, price, thumbnail, stock } = addedProduct;
             const products = await this.PersistenceManager.load();
             const newProduct = { id: products.length + 1, title, description, price, thumbnail, stock };
             products.push(newProduct);
