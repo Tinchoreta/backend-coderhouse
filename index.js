@@ -1,16 +1,16 @@
 
 const Product = require('./backend/Business/Product');
 const ProductManager = require('./backend/Business/ProductManager');
-const ProductAdapter = require('./backend/Business/ProductAdapter');
+const TextFileProductAdapter = require('./backend/Business/TextFileProductAdapter');
 
 
 
-const productAdapter = ProductAdapter.getInstance("./data/data.json");
+const TextFileProductAdapter = TextFileProductAdapter.getInstance("./data/data.json");
 
 async function testGetProducts() {
     try {
         console.log("Prueba de getProducts()");
-        const products = await productAdapter.getProducts();
+        const products = await TextFileProductAdapter.getProducts();
         console.log(products);
     } catch (error) {
         console.error(error.message);
@@ -46,19 +46,19 @@ const productoCinco = new Product(prodAdmin.getLastId()+1, "Serum revitalizante"
 async function testAddProducts() {
     try {
         console.log("Prueba de AddProducts(), debería retornar el id");
-        const productoUnoId = await productAdapter.addProduct(productoUno);
+        const productoUnoId = await TextFileProductAdapter.addProduct(productoUno);
         productoUnoId? console.log(`Se agregó el producto con ID:  ${productoUnoId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
-        const productoDosId = await productAdapter.addProduct(productoDos);
+        const productoDosId = await TextFileProductAdapter.addProduct(productoDos);
         productoDosId? console.log(`Se agregó el producto con ID:  ${productoDosId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
-        const productoTresId = await productAdapter.addProduct(productoTres);
+        const productoTresId = await TextFileProductAdapter.addProduct(productoTres);
         productoTresId? console.log(`Se agregó el producto con ID:  ${productoTresId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
-        const productoCuatroId = await productAdapter.addProduct(productoCuatro);
+        const productoCuatroId = await TextFileProductAdapter.addProduct(productoCuatro);
         productoCuatroId? console.log(`Se agregó el producto con ID:  ${productoCuatroId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
-        const productoCincoId = await productAdapter.addProduct(productoCinco);
+        const productoCincoId = await TextFileProductAdapter.addProduct(productoCinco);
         productoCincoId? console.log(`Se agregó el producto con ID:  ${productoCincoId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
         
@@ -123,11 +123,11 @@ async function testAddProducts() {
 
  /* Evaluar el método getProductById para obtener un producto por su id */
 
- const productId = 1; // ID del producto a buscar y mostrar
+ const productId = 10; // ID del producto a buscar y mostrar
 
 async function testGetById() {
     try {
-        const product = await productAdapter.getProductById(productId);
+        const product = await TextFileProductAdapter.getProductById(productId);
         console.log("Resultado de: getProductById(1):")
         console.log(product); // { id: 1, ...}
     } catch (error) {
@@ -137,37 +137,47 @@ async function testGetById() {
 
 testGetById();
 
-// console.log("\n -------------------");
+console.log("\n -------------------");
 
-// /* Editar un producto */
+/* Editar un producto */
 
-// // Editar un producto existente 
+// Editar un producto existente 
 
-// const idProducto = 1; // ID del producto agregado anteriormente
-// const newProductProps = {
-//     price: 25.99,
-//     description: "Esta es la nueva descripción del producto",
-// };
+const idProducto = 1; // ID del producto agregado anteriormente
+const newProductProps = {
+    price: 25.99,
+    description: "Esta es la nueva descripción del producto",
+};
+
+async function testUpdateProduct(){
+    try {
+        const editedProduct = await prodAdapter.updateProduct(idProducto,newProductProps) 
+        console.log("Resultado de: updateProduct(idProducto, newProductProps)")
+        console.log(editedProduct);
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 // try {
-//     const editedProduct = prodAdmin.editProduct(idProducto, newProductProps);
-//     console.log("Resultado de: editProduct(idProducto, newProductProps)")
+//     const editedProduct = prodAdmin.updateProduct(idProducto, newProductProps);
+//     console.log("Resultado de: updateProduct(idProducto, newProductProps)")
 //     console.log(editedProduct);
 // } catch (error) {
 //     console.error(error.message);
 // }
 
-// console.log("\n -------------------");
+console.log("\n -------------------");
 
-// /*  Eliminar un producto */
+/*  Eliminar un producto */
 
-// // Eliminar un producto existente
-// const idProductoAEliminar = 1; // ID del producto agregado anteriormente
+// Eliminar un producto existente
+const idProductoAEliminar = 1; // ID del producto agregado anteriormente
 
-// try {
-//     prodAdmin.deleteProduct(idProductoAEliminar);
-//     console.log("Resultado de: deleteProduct(idProductoAEliminar);")
-//     console.log(prodAdmin.getProducts())
-// } catch (error) {
-//     console.error(error.message);
-// }
+try {
+    prodAdmin.deleteProduct(idProductoAEliminar);
+    console.log("Resultado de: deleteProduct(idProductoAEliminar);")
+    console.log(prodAdmin.getProducts())
+} catch (error) {
+    console.error(error.message);
+}

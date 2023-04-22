@@ -1,6 +1,6 @@
 const PersistenceManager = require('../Data/PersistenceManager');
 const TextFileStrategy = require('../Data/TextFileStrategy');
-class ProductAdapter {
+class TextFileProductAdapter {
 
     // Define una propiedad privada estática para almacenar 
     // la única instancia de la clase Patrón Singleton. Se usa static para
@@ -12,22 +12,22 @@ class ProductAdapter {
     //fuera de la clase
 
     constructor(filePath) {
-        if (ProductAdapter.instance) {
+        if (TextFileProductAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
         this.PersistenceManager = new PersistenceManager(new TextFileStrategy(filePath));
-        ProductAdapter.instance = this;
+        TextFileProductAdapter.instance = this;
     }
 
-    // Método estático para obtener la instancia única de la clase ProductAdapter
+    // Método estático para obtener la instancia única de la clase TextFileProductAdapter
     static getInstance(filePath) {
-        if (!ProductAdapter.instance) {
-            ProductAdapter.instance = new ProductAdapter(filePath);
+        if (!TextFileProductAdapter.instance) {
+            TextFileProductAdapter.instance = new TextFileProductAdapter(filePath);
         }
-        return ProductAdapter.instance;
+        return TextFileProductAdapter.instance;
     }
 
-    // Métodos de la clase ProductAdapter
+    // Métodos de la clase TextFileProductAdapter
     // que van a ser 
 
     async getProducts() {
@@ -112,4 +112,4 @@ class ProductAdapter {
     }
 }
 
-module.exports = ProductAdapter;
+module.exports = TextFileProductAdapter;
