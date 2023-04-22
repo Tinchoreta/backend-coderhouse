@@ -1,5 +1,3 @@
-
-
 class ProductAdapter {
 
     // Define una propiedad privada estática para almacenar 
@@ -10,12 +8,11 @@ class ProductAdapter {
 
     // Constructor privado para evitar la creación de nuevas instancias 
     //fuera de la clase
-
-    static instance = null;
-
+    
     constructor(filePath) {
-        if (ProductAdapter.instance !== null) {
-            return ProductAdapter.instance;
+        
+        if (ProductAdapter.instance) {
+            throw new Error("Ya existe una instancia de esta clase");
         }
 
         this.PersistenceManager = new PersistenceManager(new TextFileStrategy(filePath));
@@ -41,7 +38,7 @@ class ProductAdapter {
             }
             return products;
         } catch (error) {
-            throw new Error('getProducts: error');
+            throw new Error(`getProducts: ${error.message}`);
         }
     }
 
@@ -57,33 +54,7 @@ class ProductAdapter {
         }
     }
 
-    addProduct ({ title, description, price, thumbnail, stock }) {
-        if (!title || title.length === 0) {
-            throw new Error('El campo título es obligatorio');
-        }
-        if (!description || description.length === 0) {
-            throw new Error('El campo descripción es obligatorio');
-        }
-        if (!price || price <= 0) {
-            throw new Error('El campo precio es obligatorio y debe ser mayor que cero');
-        }
-        if (!thumbnail || thumbnail.length === 0) {
-            throw new Error('El campo imagen es obligatorio');
-        }
-        if (stock < 0) {
-            throw new Error('El campo stock no puede ser menor que cero');
-        }
-        
-        //si el stock no se especifica, por defecto será cero.
-
-        stock = stock ?? 0;
-
-        const newId = this.getLastId() + 1;
-        const newProduct = new Product(newId, title, description, price, thumbnail, stock);
-        this.products.push(newProduct);
-        return newId;
-    };
-
+    
     async editProduct(id, productData) {
         try {
             const products = await this.PersistenceManager.load();
