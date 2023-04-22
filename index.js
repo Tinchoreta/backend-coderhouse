@@ -1,21 +1,33 @@
 
 const Product = require('./backend/Business/Product');
 const ProductManager =  require('./backend/Business/ProductManager');
+const ProductAdapter = require('./backend/Business/ProductAdapter');
 
-let productAdmin = new ProductManager()
+// const prodAdmin = new ProductManager()
+// try {
+//     console.log("Prueba de getProducts(), debería retornar []");
+//     console.log(prodAdmin.getProducts())
+// } catch (error) {
+//     console.error(error.message);
+// }
+
+const productAdapter = ProductAdapter.getInstance("data/data.json");
+
 try {
     console.log("Prueba de getProducts(), debería retornar []");
-    console.log(productAdmin.getProducts())
+    console.log(productAdapter.getProducts())
 } catch (error) {
     console.error(error.message);
 }
+
+
 
 console.log("\n -------------------");
 
 /* 
     Agrega un producto utilizando el método addProduct
 */
-const prodAdmin = new ProductManager();
+
 //id, title, description, price, thumbnail, stock
 const newProduct = new Product(prodAdmin.getLastId()+1,"Producto prueba", "Este es un producto prueba",
     250,"Sin imagen",25);

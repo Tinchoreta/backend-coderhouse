@@ -57,11 +57,12 @@ class ProductManager {
         return found;
     };
 
-    editProduct(id, { title, description, price, thumbnail, stock }) {
+    updateProduct(id, data) {
         const product = this.getProductById(id);
         if (!product) {
             throw new Error(`Producto con ID: ${id} no encontrado`);
         }
+        const { title, description, price, thumbnail, stock } = data;
         //en caso de que no se modifiquen todas las propiedades, se deja el valor que tenían.
         product.title = title ?? product.title;
         product.description = description ?? product.description;
