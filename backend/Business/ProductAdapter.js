@@ -12,11 +12,9 @@ class ProductAdapter {
     //fuera de la clase
 
     constructor(filePath) {
-
         if (ProductAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-
         this.PersistenceManager = new PersistenceManager(new TextFileStrategy(filePath));
         ProductAdapter.instance = this;
     }
@@ -44,6 +42,23 @@ class ProductAdapter {
         }
     }
 
+
+    async getProductById(idProduct) {
+        try {
+            const products = await this.PersistenceManager.load();
+            if (products.length === 0 || products ==='null' || products === 'undefined') {
+                throw new Error('Not found');
+            }
+            const found = products.find((product) => product.id === parseInt(idProduct));
+            if (!found) {
+                throw new Error("Not found");
+            }
+            return found;
+        } catch (error) {
+            throw new Error(`getProducts: ${error.message}`);
+        }
+    };
+
     async addProduct(addedProduct) {
         try {
             const { title, description, price, thumbnail, stock } = addedProduct;
@@ -65,7 +80,6 @@ class ProductAdapter {
             if (productIndex === -1) {
                 throw new Error(`Producto con ID: ${id} no encontrado`);
             }
-
             const { title, description, price, thumbnail, stock } = productData;
             //en caso de que no se modifiquen todas las propiedades, 
             //se deja el valor que tenían.
@@ -74,7 +88,6 @@ class ProductAdapter {
             price = price ?? price;
             thumbnail = thumbnail ?? thumbnail;
             stock = stock ?? stock;
-
             const editedProduct = { id, title, description, price, thumbnail, stock };
             products[productIndex] = editedProduct;
             await this.PersistenceManager.save(products);

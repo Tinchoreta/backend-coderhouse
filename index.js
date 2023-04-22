@@ -17,7 +17,7 @@ async function testGetProducts() {
     }
 }
 
-testGetProducts();
+//testGetProducts();
 
 
 const prodAdmin = new ProductManager()
@@ -35,8 +35,6 @@ console.log("\n -------------------");
 */
 
 //id, title, description, price, thumbnail, stock
-const newProduct = new Product(prodAdmin.getLastId()+1,"Producto prueba", "Este es un producto prueba",
-    250,"Sin imagen",25);
 
 const productoUno = new Product(prodAdmin.getLastId()+1, "Gel refrescante", "Gel para el cuidado de la piel", 150, "https://imagen.com/gelrefrescante", 15);
 const productoDos = new Product(prodAdmin.getLastId()+1, "Aceite esencial", "Aceite para aromaterapia", 200, "https://imagen.com/aceiteesencial", 20);
@@ -48,15 +46,30 @@ const productoCinco = new Product(prodAdmin.getLastId()+1, "Serum revitalizante"
 async function testAddProducts() {
     try {
         console.log("Prueba de AddProducts(), debería retornar el id");
-        const products = await productAdapter.addProduct(newProduct);
-        products? console.log(`Se agregó el producto con ID:  ${products}`): console.log(`No se pudo agregar: ${newProduct}`);
+        const productoUnoId = await productAdapter.addProduct(productoUno);
+        productoUnoId? console.log(`Se agregó el producto con ID:  ${productoUnoId}`): console.log(`No se pudo agregar: ${newProduct}`);
+
+        const productoDosId = await productAdapter.addProduct(productoDos);
+        productoDosId? console.log(`Se agregó el producto con ID:  ${productoDosId}`): console.log(`No se pudo agregar: ${newProduct}`);
+
+        const productoTresId = await productAdapter.addProduct(productoTres);
+        productoTresId? console.log(`Se agregó el producto con ID:  ${productoTresId}`): console.log(`No se pudo agregar: ${newProduct}`);
+
+        const productoCuatroId = await productAdapter.addProduct(productoCuatro);
+        productoCuatroId? console.log(`Se agregó el producto con ID:  ${productoCuatroId}`): console.log(`No se pudo agregar: ${newProduct}`);
+
+        const productoCincoId = await productAdapter.addProduct(productoCinco);
+        productoCincoId? console.log(`Se agregó el producto con ID:  ${productoCincoId}`): console.log(`No se pudo agregar: ${newProduct}`);
+
+        
+        testGetProducts();
+
     } catch (error) {
         console.error(error.message);
     }
 }
 
-testAddProducts();
-
+//testAddProducts();
 
 // try {
 //     prodAdmin.addProduct(newProduct);
@@ -66,7 +79,7 @@ testAddProducts();
 // }
 
 // try {
-//     prodAdmin.addProduct(productoUno);
+//     prodAdmin.addProduct(productoCinco);
 //     console.log(`Producto agregado con id: ${prodAdmin.getLastId()}`);
 //     } catch (error) {
 //     console.error(error.message);
@@ -108,18 +121,21 @@ testAddProducts();
 // console.log(products); // [{...}]
 
 
-// /* Evaluar el método getProductById para obtener un producto por su id */
+ /* Evaluar el método getProductById para obtener un producto por su id */
 
-// const productId = 1; // ID del producto a buscar y mostrar
+ const productId = 1; // ID del producto a buscar y mostrar
 
+async function testGetById() {
+    try {
+        const product = await productAdapter.getProductById(productId);
+        console.log("Resultado de: getProductById(1):")
+        console.log(product); // { id: 1, ...}
+    } catch (error) {
+        console.error(error.message);
+    }
+}
 
-// try {
-//     const product = prodAdmin.getProductById(productId);
-//     console.log("Resultado de: getProductById(1):")
-//     console.log(product); // { id: 1, ...}
-// } catch (error) {
-//     console.error(error.message);
-// }
+testGetById();
 
 // console.log("\n -------------------");
 

@@ -70,7 +70,8 @@ class ProductManager {
         product.thumbnail = thumbnail ?? product.thumbnail;
         product.stock = stock ?? product.stock;
         return product;
-    }
+    };
+
     deleteProduct (idProduct) {
         const productIndex = this.products.findIndex((product) => product.id === parseInt(idProduct));
         if (productIndex === -1) {
