@@ -50,3 +50,5 @@ class TextFileStrategy {
         });
     }
 }
+
+module.exports = TextFileStrategy;

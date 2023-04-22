@@ -4,6 +4,7 @@ const ProductManager = require('./backend/Business/ProductManager');
 const ProductAdapter = require('./backend/Business/ProductAdapter');
 
 
+
 const productAdapter = ProductAdapter.getInstance("data/data.json");
 
 async function testGetProducts() {
