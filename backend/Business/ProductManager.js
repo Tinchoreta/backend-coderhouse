@@ -66,9 +66,9 @@ class ProductManager {
         //en caso de que no se modifiquen todas las propiedades, se deja el valor que tenían.
         product.title = title ?? product.title;
         product.description = description ?? product.description;
-        product.price = price ?? product.price;
+        product.price = parseFloat(price) ?? product.price;
         product.thumbnail = thumbnail ?? product.thumbnail;
-        product.stock = stock ?? product.stock;
+        product.stock = parseInt(stock) ?? product.stock;
         return product;
     };
 

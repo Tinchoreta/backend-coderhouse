@@ -55,7 +55,7 @@ class TextFileProductAdapter {
             }
             return found;
         } catch (error) {
-            throw new Error(`getProducts: ${error.message}`);
+            throw new Error(`getProductById: ${error.message}`);
         }
     };
 
@@ -78,7 +78,7 @@ class TextFileProductAdapter {
         const products = await this.persistenceManager.load();
         const productToUpdate = products.find((product) => product.id === productId);
         if (!productToUpdate) {
-            throw new Error(`Product with id ${productId} not found`);
+            throw new Error(`Producto con ID: ${productId} no encontrado`);
         }
         //Se actualizan los datos del producto con ID: productId, con las propiedades
         //enviadas por parámetro en productData

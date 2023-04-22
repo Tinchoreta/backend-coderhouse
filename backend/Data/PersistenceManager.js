@@ -30,6 +30,15 @@ class PersistenceManager {
             throw new Error('Error al cargar los datos');
         }
     }
+
+    async delete() {
+        try {
+            return await this.strategy.delete();
+        } catch (error) {
+            throw new Error('Error al eliminar los datos');
+        }
+    }
+
 }
 
 module.exports = PersistenceManager;
