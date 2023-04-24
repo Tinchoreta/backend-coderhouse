@@ -11,7 +11,6 @@ const textFileAdapter = TextFileProductAdapter.getInstance("./data/data.json");
 
 async function testGetProducts() {
     try {
-        console.log("Prueba de getProducts()");
         const products = await textFileAdapter.getProducts();
         console.log(products);
     } catch (error) {
@@ -23,8 +22,6 @@ async function testGetProducts() {
 
 
 console.log("\n -------------------");
-console.log("2 Agregar 10 productos al archivo");
-
 
 // 2 Agregar 10 productos al archivo
 console.log("2 Agregar 10 productos al archivo")
@@ -86,7 +83,7 @@ const newProductProps = {
 
 async function testUpdateProduct(){
     try {
-        const editedProduct = await prodAdapter.updateProduct(idProducto,newProductProps) 
+        const editedProduct = await textFileAdapter.updateProduct(idProducto,newProductProps) 
         console.log("Resultado de: updateProduct(idProducto, newProductProps)")
         console.log(editedProduct);
     } catch (error) {
@@ -104,10 +101,10 @@ console.log("5 Eliminar el producto con ID 10:");
 const idProductoAEliminar = 10; // ID del producto agregado anteriormente
 async function testDeleteProduct(){
     try {
-        prodAdmin.deleteProduct(idProductoAEliminar);
+        textFileAdapter.deleteProduct(idProductoAEliminar);
         console.log("Resultado de: deleteProduct(idProductoAEliminar);")
         //Debería traer los productos con ID del 1 al 9.
-        console.log(prodAdmin.getProducts())
+        testGetProducts();
     } catch (error) {
         console.error(error.message);
     }
