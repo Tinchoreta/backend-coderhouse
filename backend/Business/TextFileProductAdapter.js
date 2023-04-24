@@ -109,19 +109,21 @@ class TextFileProductAdapter {
         return updatedProduct;
     }
 
-    async deleteProduct(id) {
+    async deleteProduct(idToDelete) {
         try {
             //Se cargan los datos de los productos desde data.json
             const products = await this.PersistenceManager.load();
-            const productIndex = products.findIndex((product) => product.id === id);
+            const productIndex = products.findIndex((product) => product.id === idToDelete);
             //Si no se encuentra el producto en el archivo data.json 
             //findIndex devolverá -1
             if (productIndex === -1) {
-                throw new Error(`Producto con ID: ${id} no encontrado`);
+                throw new Error(`Producto con ID: ${idToDelete} no encontrado`);
             }
             //Con splice se quita el producto con ID: productIndex
             
             products.splice(productIndex, 1);
+            console.log(JSON.stringify (products) + " productos después de eliminar id: " + productIndex);
+
             //Y se vuelve a guardar en data.json los restantes productos.
             await this.PersistenceManager.save(products);
         } catch (error) {
