@@ -1,23 +1,24 @@
 
-const Product = require('./backend/Business/Product');
-const ProductManager = require('./backend/Business/ProductManager');
-let TextFileProductAdapter = require('./backend/Business/TextFileProductAdapter');
+const Product = require('./backend/business/Product');
+const ProductManager = require('./backend/business/ProductManager');
+const TextFileProductAdapter = require('./backend/business/TextFileProductAdapter')
 
 
+// 1 Crear una instancia de TextFileProductAdapter:
 
-TextFileProductAdapter = TextFileProductAdapter.getInstance("./data/data.json");
+const textFileAdapter = TextFileProductAdapter.getInstance("./data/data.json");
 
 async function testGetProducts() {
     try {
         console.log("Prueba de getProducts()");
-        const products = await TextFileProductAdapter.getProducts();
+        const products = await textFileAdapter.getProducts();
         console.log(products);
     } catch (error) {
         console.error(error.message);
     }
 }
 
-//testGetProducts();
+testGetProducts();
 
 
 const prodAdmin = new ProductManager()
@@ -46,30 +47,30 @@ const productoCinco = new Product(prodAdmin.getLastId()+1, "Serum revitalizante"
 async function testAddProducts() {
     try {
         console.log("Prueba de AddProducts(), debería retornar el id");
-        const productoUnoId = await TextFileProductAdapter.addProduct(productoUno);
+        const productoUnoId = await textFileAdapter.addProduct(productoUno);
         productoUnoId? console.log(`Se agregó el producto con ID:  ${productoUnoId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
-        const productoDosId = await TextFileProductAdapter.addProduct(productoDos);
+        const productoDosId = await textFileAdapter.addProduct(productoDos);
         productoDosId? console.log(`Se agregó el producto con ID:  ${productoDosId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
-        const productoTresId = await TextFileProductAdapter.addProduct(productoTres);
+        const productoTresId = await textFileAdapter.addProduct(productoTres);
         productoTresId? console.log(`Se agregó el producto con ID:  ${productoTresId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
-        const productoCuatroId = await TextFileProductAdapter.addProduct(productoCuatro);
+        const productoCuatroId = await textFileAdapter.addProduct(productoCuatro);
         productoCuatroId? console.log(`Se agregó el producto con ID:  ${productoCuatroId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
-        const productoCincoId = await TextFileProductAdapter.addProduct(productoCinco);
+        const productoCincoId = await textFileAdapter.addProduct(productoCinco);
         productoCincoId? console.log(`Se agregó el producto con ID:  ${productoCincoId}`): console.log(`No se pudo agregar: ${newProduct}`);
 
         
-        testGetProducts();
+     //   testGetProducts();
 
     } catch (error) {
         console.error(error.message);
     }
 }
 
-//testAddProducts();
+testAddProducts();
 
 // try {
 //     prodAdmin.addProduct(newProduct);
@@ -127,8 +128,8 @@ async function testAddProducts() {
 
 async function testGetById() {
     try {
-        const product = await TextFileProductAdapter.getProductById(productId);
-        console.log("Resultado de: getProductById(1):")
+        const product = await textFileAdapter.getProductById(productId);
+        console.log("Resultado de: getProductById(10):")
         console.log(product); // { id: 1, ...}
     } catch (error) {
         console.error(error.message);

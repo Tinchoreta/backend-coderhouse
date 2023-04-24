@@ -31,6 +31,7 @@ class TextFileStrategy {
                 if (error) {
                     if (error.code === 'ENOENT') {
                         // Archivo no encontrado
+                        console.log(error.code)
                         resolve([]);
                     } else {
                         reject(error);

@@ -2,6 +2,8 @@
 Para la clase PersistenceManager se aplica también el patrón Strategy 
 para permitir la utilización de diferentes estrategias de almacenamiento de datos 
 (por ejemplo, archivos de texto plano, bases de datos, etc.).
+Entonces esta clase administra la persistencia, sea de dónde sea que venga.
+Solo hay que implementar una clase Adapter para cada estrategia de persistencia.
 */
 
 const fs = require('fs');
