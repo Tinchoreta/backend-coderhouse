@@ -11,18 +11,18 @@ class TextFileProductAdapter {
     // Constructor privado para evitar la creación de nuevas instancias 
     //fuera de la clase
 
-    constructor(filePath) {
+    constructor(pathToFile) {
         if (TextFileProductAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-        this.PersistenceManager = new PersistenceManager(new TextFileStrategy(filePath));
+        this.PersistenceManager = new PersistenceManager(new TextFileStrategy(pathToFile));
         TextFileProductAdapter.instance = this;
     }
 
     // Método estático para obtener la instancia única de la clase TextFileProductAdapter
-    static getInstance(filePath) {
+    static getInstance(pathToFile) {
         if (!TextFileProductAdapter.instance) {
-            TextFileProductAdapter.instance = new TextFileProductAdapter(filePath);
+            TextFileProductAdapter.instance = new TextFileProductAdapter(pathToFile);
         }
         return TextFileProductAdapter.instance;
     }
@@ -46,7 +46,7 @@ class TextFileProductAdapter {
     async getProductById(idProduct) {
         try {
             const products = await this.PersistenceManager.load();
-            if (products.length === 0 || products ==='null' || products === 'undefined') {
+            if (products.length === 0) {
                 throw new Error('Not found');
             }
             const found = products.find((product) => product.id === parseInt(idProduct));
@@ -75,7 +75,7 @@ class TextFileProductAdapter {
 
 
     async updateProduct(productId, productData) {
-        const products = await this.persistenceManager.load();
+        const products = await this.PersistenceManager.load();
         const productToUpdate = products.find((product) => product.id === productId);
         if (!productToUpdate) {
             throw new Error(`Producto con ID: ${productId} no encontrado`);
@@ -105,7 +105,7 @@ class TextFileProductAdapter {
         });
         //Se almacena todo el array de productos con el producto actualizado en data.json
 
-        await this.persistenceManager.save(updatedProducts);
+        await this.PersistenceManager.save(updatedProducts);
         return updatedProduct;
     }
 

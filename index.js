@@ -1,11 +1,11 @@
 
 const Product = require('./backend/Business/Product');
 const ProductManager = require('./backend/Business/ProductManager');
-const TextFileProductAdapter = require('./backend/Business/TextFileProductAdapter');
+let TextFileProductAdapter = require('./backend/Business/TextFileProductAdapter');
 
 
 
-const TextFileProductAdapter = TextFileProductAdapter.getInstance("./data/data.json");
+TextFileProductAdapter = TextFileProductAdapter.getInstance("./data/data.json");
 
 async function testGetProducts() {
     try {
