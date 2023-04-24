@@ -263,29 +263,29 @@ const textFileProductAdapter = new TextFileProductAdapter();
 - 2 Agregar 10 productos al archivo:
 
 ```js
-for (let i = 1; i <= 10; i++) {
-  const product = {
-    "id": i,
-    "name": `Producto ${i}`,
-    "price": 10.0 * i,
-    "description": `Descripción del producto ${i}`
-    "thumbnail": `https://ejemplo.com/imagen-producto-${i}.jpg`
-    "stock":  Math.floor(Math.random() * (500 - 50 + 1)) + 50
-  };
 
-  textFileProductAdapter.addProduct(product);
-}
+        for (let i = 1; i <= 10; i++) {
+            const product = {
+                "title": `Producto ${i}`,
+                "description": `Descripción del producto ${i}`,
+                "price": Math.floor(Math.random() * (1000 - 100 + 1)) + 100,
+                "thumbnail": `https://ejemplo.com/imagen-producto-${i}.jpg`,
+                "stock": Math.floor(Math.random() * (500 - 50 + 1)) + 50
+            };
+            const addedProductId = await textFileAdapter.addProduct(product);
+            console.log(addedProductId);
+        }
 ```
 
-Como se puede ver, se ha agregado la propiedad thumbnail con la URL de la imagen del producto, y la propiedad stock con un número aleatorio entre 50 y 500 utilizando la función Math.random() y un rango de valores de 50 a 500. De esta forma, cada producto tendrá un stock diferente y más realista.
+Como se puede ver, se ha agregado la propiedad thumbnail con la URL de la imagen del producto, y la propiedad stock con un número aleatorio entre 50 y 500 utilizando la función Math.random() y un rango de valores de 50 a 500 y la propiedad precio con un número aleatorio entre 100 y 1000 utilizando la función Math.random() y un rango de valores de 50 a 500. 
+De esta forma, cada producto tendrá un stock y precio diferente y más "realista".
 
 - 3 Ver el producto con ID 9:
-
 
 ```js
 const product = textFileProductAdapter.getProductById(9);
 console.log(product);
-// Output: {"id": 9, "name": "Producto 9", "price": 90.0, "description": "Descripción del producto 9"}
+// Output: {"id": 9, "title": "Producto 9","description": "Descripción del producto 9", "price": 90.0,"stock": 100}
 ```
 
 - 4 Modificar el nombre del producto con ID 9:
