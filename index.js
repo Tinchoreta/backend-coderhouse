@@ -15,7 +15,6 @@ console.log("Instancia creada ✓");
 console.log("\n -------------------");
 
 
-
 async function integralTest() {
     try {
         const promises = [];
@@ -67,6 +66,9 @@ async function integralTest() {
 
         const idProdToDelete = 10;
         await testDeleteProduct(idProdToDelete);
+
+        // 6 Lista de productos luego de eliminar el producto de ID: 10
+
         console.log("\n -------------------");
         console.log(`6 Lista de productos luego de eliminar el producto de ID: ${idProdToDelete}`);
         await testGetProducts();
@@ -75,8 +77,6 @@ async function integralTest() {
         console.error(error.message);
     }
 }
-
-integralTest();
 
 async function testGetProducts() {
     try {
@@ -118,5 +118,13 @@ async function testDeleteProduct(idProductoAEliminar) {
     }
 }
 
+/*Prueba integral de 6 pasos
+    // 1 Crear una instancia de TextFileProductAdapter
+    // 2 Agregar 10 productos al archivo
+    // 3 Ver el producto con ID 9
+    // 4 Modificar el nombre del producto con ID 9
+    // 5 Eliminar el producto con ID 10
+    // 6 Lista de productos luego de eliminar el producto de ID: 10
+*/
 
-
+integralTest();
