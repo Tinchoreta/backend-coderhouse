@@ -118,7 +118,6 @@ async function testUpdateProduct(idProductToUpdate, newProductProps) {
 async function testDeleteProduct(idProductoAEliminar) {
     try {
         await textFileAdapter.deleteProduct(idProductoAEliminar);
-        console.log("Resultado de: deleteProduct(idProductoAEliminar);")
     } catch (error) {
         console.error(error.message);
     }

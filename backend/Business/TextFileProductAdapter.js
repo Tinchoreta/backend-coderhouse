@@ -125,10 +125,8 @@ class TextFileProductAdapter {
                 throw new Error(`Producto con ID: ${idToDelete} no encontrado`);
             }
             //Con splice se quita el producto con ID: productIndex
-            
             products.splice(productIndex, 1);
-            console.log(JSON.stringify (products) + " productos después de eliminar id: " + idToDelete);
-
+            
             //Y se vuelve a guardar en data.json los restantes productos.
             await this.PersistenceManager.save(products);
         } catch (error) {
