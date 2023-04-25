@@ -34,7 +34,7 @@ class TextFileProductAdapter {
         try {
             const products = await this.PersistenceManager.load();
             if (products.length === 0) {
-                throw new Error('Not found');
+                return [];
             }
             return products;
         } catch (error) {
@@ -85,13 +85,18 @@ class TextFileProductAdapter {
         //se utiliza ?? para asegurar la integridad de los datos a modificar
         //si vienen con null o undefined, simplemente no se modifican
         //y queda el valor original que traía desde el archivo.
+        const stock = typeof productData.stock === 'number' ? productData.stock : productToUpdate.stock;
         const updatedProduct = {
             id: productToUpdate.id,
             title: productData.title ?? productToUpdate.title,
             description: productData.description ?? productToUpdate.description,
-            price: parseFloat(productData.price) ?? productToUpdate.price,
+            price: !isNaN(parseFloat(productData.price)) && isFinite(productData.price) 
+            ? parseFloat(productData.price)
+            : productToUpdate.price,
             thumbnail: productData.thumbnail ?? productToUpdate.thumbnail,
-            stock: parseInt(productData.stock) ?? productToUpdate.stock,
+            stock: !isNaN(parseInt(productData.stock)) && isFinite(productData.stock) 
+            ? parseInt(productData.stock)
+            : productToUpdate.stock
         };
 
         // Se crea una nueva lista de productos con el producto actualizado. 

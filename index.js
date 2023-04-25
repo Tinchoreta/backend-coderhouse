@@ -18,25 +18,31 @@ console.log("\n -------------------");
 async function integralTest() {
     try {
         const promises = [];
-        // 2 Agregar 10 productos al archivo
-        console.log("2 Agregar 10 productos al archivo")
+        const productsFromFile = await textFileAdapter.getProducts();
         
-        for (let i = 1; i <= 10; i++) {
-            const product = {
-                "title": `Producto ${i}`,
-                "description": `Descripción del producto ${i}`,
-                "price": Math.floor(Math.random() * (1000 - 100 + 1)) + 100,
-                "thumbnail": `https://ejemplo.com/imagen-producto-${i}.jpg`,
-                "stock": Math.floor(Math.random() * (500 - 50 + 1)) + 50
-            };
-            const addedProductPromise = textFileAdapter.addProduct(product);
-            const addedProductId = await addedProductPromise;
-            console.log(`Producto agregado con ID ${addedProductId}`);
-            promises.push(addedProductPromise);
+        if (productsFromFile.length === 0 ) {
+            // 2 Agregar 10 productos al archivo solo si no existen productos en el archivo data.json
+            console.log("2 Agregar 10 productos al archivo")
+            for (let i = 1; i <= 10; i++) {
+                const product = {
+                    "title": `Producto ${i}`,
+                    "description": `Descripción del producto ${i}`,
+                    "price": Math.floor(Math.random() * (1000 - 100 + 1)) + 100,
+                    "thumbnail": `https://ejemplo.com/imagen-producto-${i}.jpg`,
+                    "stock": Math.floor(Math.random() * (500 - 50 + 1)) + 50
+                };
+                const addedProductPromise = textFileAdapter.addProduct(product);
+                const addedProductId = await addedProductPromise;
+                console.log(`Producto agregado con ID ${addedProductId}`);
+                promises.push(addedProductPromise);
+            }
+            //Espero a que se guarden todos los productos
+            await Promise.all(promises);
+            console.log("Todos los productos agregados correctamente");
         }
-        //Espero a que se guarden todos los productos
-        await Promise.all(promises);
-        console.log("Todos los productos agregados correctamente");
+        else{
+            console.log("Ya hay productos en el archivo data.json")
+        }
         await testGetProducts();
 
         // 3 Ver el producto con ID 9:
@@ -54,11 +60,11 @@ async function integralTest() {
         const idProductToUpdate = 9;
         const newProductProps = {
             price: 25.99,
-            description: "Esta es la nueva descripción del producto",
+            description: "Esta es la nueva descripción del producto"
         };
 
-        await testUpdateProduct(idProductToUpdate,newProductProps);
-        
+        await testUpdateProduct(idProductToUpdate, newProductProps);
+
         // 5 Eliminar el producto con ID 10:
 
         console.log("\n -------------------");
