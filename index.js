@@ -12,27 +12,16 @@ const textFileAdapter = TextFileProductAdapter.getInstance("./data/data.json");
 console.log("Instancia creada ✓");
 
 
-async function testGetProducts() {
-    try {
-        const products = await textFileAdapter.getProducts();
-        console.log(products);
-    } catch (error) {
-        console.error(error.message);
-    }
-}
-
-// testGetProducts();
-
-
 console.log("\n -------------------");
 
-// 2 Agregar 10 productos al archivo
-console.log("2 Agregar 10 productos al archivo")
+
 
 async function integralTest() {
     try {
         const promises = [];
-        //Agrego 10 productos
+        // 2 Agregar 10 productos al archivo
+        console.log("2 Agregar 10 productos al archivo")
+        
         for (let i = 1; i <= 10; i++) {
             const product = {
                 "title": `Producto ${i}`,
@@ -46,6 +35,7 @@ async function integralTest() {
             console.log(`Producto agregado con ID ${addedProductId}`);
             promises.push(addedProductPromise);
         }
+        //Espero a que se guarden todos los productos
         await Promise.all(promises);
         console.log("Todos los productos agregados correctamente");
         await testGetProducts();
@@ -55,7 +45,7 @@ async function integralTest() {
         console.log("\n -------------------");
         console.log("3 Ver el producto con ID 9:")
         const idToTest = 9; // ID del producto a buscar y mostrar
-        testGetProductById(idToTest);
+        await testGetProductById(idToTest);
 
         // 4 Modificar el nombre del producto con ID 9:
 
@@ -68,12 +58,18 @@ async function integralTest() {
             description: "Esta es la nueva descripción del producto",
         };
 
-        testUpdateProduct(idProductToUpdate,newProductProps);
-        testDeleteProduct();
+        await testUpdateProduct(idProductToUpdate,newProductProps);
+        
         // 5 Eliminar el producto con ID 10:
 
         console.log("\n -------------------");
         console.log("5 Eliminar el producto con ID 10:");
+
+        const idProdToDelete = 10;
+        await testDeleteProduct(idProdToDelete);
+        console.log("\n -------------------");
+        console.log(`6 Lista de productos luego de eliminar el producto de ID: ${idProdToDelete}`);
+        await testGetProducts();
 
     } catch (error) {
         console.error(error.message);
@@ -81,6 +77,15 @@ async function integralTest() {
 }
 
 integralTest();
+
+async function testGetProducts() {
+    try {
+        const products = await textFileAdapter.getProducts();
+        console.log(products);
+    } catch (error) {
+        console.error(error.message);
+    }
+}
 
 
 async function testGetProductById(productId) {
@@ -104,13 +109,10 @@ async function testUpdateProduct(idProductToUpdate, newProductProps) {
 }
 
 
-const idProductoAEliminar = 10; // ID del producto agregado anteriormente
-async function testDeleteProduct() {
+async function testDeleteProduct(idProductoAEliminar) {
     try {
         await textFileAdapter.deleteProduct(idProductoAEliminar);
         console.log("Resultado de: deleteProduct(idProductoAEliminar);")
-        //Debería traer los productos con ID del 1 al 9.
-        await testGetProducts();
     } catch (error) {
         console.error(error.message);
     }
