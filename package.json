@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-    
   },
   "repository": {
     "type": "git",
@@ -22,6 +21,8 @@
   },
   "homepage": "https://github.com/Tinchoreta/backend-coderhouse#readme",
   "dependencies": {
-    "moment": "^2.29.4"
+    "express": "^4.18.2",
+    "moment": "^2.29.4",
+    "nodemon": "^2.0.22"
   }
 }
