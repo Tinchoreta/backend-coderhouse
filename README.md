@@ -336,7 +336,7 @@ console.log(products);
 // Output: [  {"id": 1, "name": "Producto 1", "price": 10.0, "description": "Descripción del producto 1", "stock": 287},  {"id": 2, "name": "Producto 2", "price": 20.0, "description": "Descripción del producto 2", "stock": 198},  {"id": 3, "name": "Producto 3", "price": 30.0, "description": "Descripción del producto 3", "stock": 406},  {"id": 4, "name": "Producto 4", "price": 40.0, "description": "Descripción del producto 4", "stock": 51},  {"id": 5, "name": "Producto 5", "price": 50.0, "description": "Descripción del producto 5", "stock": 431},  {"id": 6, "name": "Producto 6", "price": 60.0, "description": "Descripción del producto 6", "stock": 237},  {"id": 7, "name": "Producto 7", "price": 70.0, "description": "Descripción del producto 7", "stock": 264},  {"id": 8, "name": "Producto 8", "price": 80.0, "description": "Descripción del producto 8", "stock": 358},  {"id": 9, "name": "Nuevo nombre del Producto 9", "price": 90.0, "description": "Descripción actualizada del producto 9", "stock": 78}]
 
 ```
-
+Para las pruebas, se sugiere vaciar el archivo `./data/data.json` ya que sino algunas pruebas como borrar el producto con ID 10 no tendrán el efecto deseado al no encontrar el producto que ya fue borrado del archivo.
 Con estos pasos se puede probar el funcionamiento de la clase TextFileProductAdapter y los métodos para agregar, obtener, actualizar y eliminar productos (CRUD)
 
 ## Autor
