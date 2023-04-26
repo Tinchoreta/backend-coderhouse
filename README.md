@@ -20,7 +20,6 @@ El proyecto utiliza las siguientes funciones ECMAScript:
 - `findIndex`: Busca en un array el índice del primer elemento que cumple una condición especificada.
 - `find`: Busca en un array el primer elemento que cumple una condición especificada.
 - `splice`: Cambia el contenido de un array eliminando elementos existentes y/o agregando nuevos elementos.
-- `trim`: Elimina los espacios en blanco al inicio y final de una cadena.
 - `??`: Operador de fusión de nulos. Devuelve el operando de la izquierda si no es nulo, de lo contrario devuelve el operando de la derecha.
 
 ## Clase ProductManager
@@ -38,7 +37,7 @@ En la clase ProductManager se implementan métodos para manejar una lista de pro
 -`getProducts()`: Devuelve un arreglo con todos los productos.
 -`addProduct(producto)`: Agrega un nuevo producto al arreglo de productos. Si el producto ya existe, lanza un error.
 -`getProductById(idProducto)`: Devuelve el producto con el id especificado. Si no existe, lanza un error.
--`editProduct(idProducto, objProductProps)`: Edita las propiedades del producto con el id especificado.
+-`updateProduct(idProducto, objProductProps)`: Edita las propiedades del producto con el id especificado.
 -`deleteProduct(idProducto)`: Elimina el producto con el id especificado.
 
 ## Caso de prueba
@@ -143,6 +142,20 @@ try {
 Clase implementada con el patrón de diseño **Adapter** y el patrón **Singleton**. Implementados con la lectura del libro: [Dive into design Patterns (Alexander Shvets) - 2019] (https://refactoring.guru/design-patterns/book). Básicamente posee la misma interfaz que **ProductManager**, pero la gran diferencia es que gestiona la persistencia de los Productos en un archivo de texto `data.json`.
 
 La clase **TextFileProductAdapter** es una adaptador que permite manejar productos utilizando una estrategia de almacenamiento en un archivo de texto. Utiliza la clase ***PersistenceManager*** y la estrategia de almacenamiento ***TextFileStrategy*** para cargar, guardar, agregar, actualizar y eliminar productos en el archivo de texto.
+
+Esta clase se encuentra en la carpeta de business e interactúa con las clases:
+- **PersistenceManager**
+- **TextFileStrategy**
+
+### Clase PersistenceManager
+
+PersistenceManager en JavaScript es una clase que gestiona la persistencia de datos aplicando el patrón "Strategy". Cada estrategia de almacenamiento de datos requiere la implementación de un adaptador correspondiente (en este caso existe la clase **TextFileProductAdapter** que es la estrategia de almacenamiento en archivo de texto plano). Los métodos disponibles son: `constructor()`, `setStrategy()`, `save()`, `load()`, y `delete()`. Cada estrategia de persistencia específica debe implementar un adaptador que defina estos métodos con la lógica necesaria para interactuar con el sistema de almacenamiento de datos correspondiente.
+
+### Clase TextFileStrategy
+
+La clase TextFileStrategy es parte del patrón Strategy y se utiliza para permitir la estrategias de almacenamiento de datos en un archivo de texto plano. 
+Tiene 3 métodos: `save()` guarda los datos proporcionados en el archivo, `load()` carga los datos del archivo y `delete()` elimina el archivo.
+Para utilizarla, importe la clase, cree una instancia proporcionando la ruta del archivo y use los métodos.
 
 ## Propiedades
 
