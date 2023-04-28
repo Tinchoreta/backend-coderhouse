@@ -1,5 +1,5 @@
-import express from 'express'
-import TextFileCartManagerAdapter from './backend/Business/TextFileCartManagerAdapter'
+import express from 'express';
+import TextFileCartManagerAdapter from './backend/Business/TextFileCartManagerAdapter.js';
 
 const server = express()
 
@@ -12,7 +12,7 @@ server.listen(PORT, ready)
 server.use(express.urlencoded({extended:true}))
 
 
-textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/data.json")
+const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/data.json");
 
 const products_route =  '/products'
 const products_function = (req, res)=> res.send({
@@ -21,14 +21,17 @@ products: []
 })
 server.get(products_route, products_function)
 
+function root(){
+    let index_route = '/'
+    let index_function = async (req,res)=> {
+        let cartList = await textFileCartAdapter.getCarts() ?? [];
+        console.log(cartList.length)
+        return res.send({cartList})
+    }
+    server.get(index_route,index_function)
+}
 
-// let index_route = '/'
-// let index_function = (req,res)=> {
-//     let quantity = manager.read_users().length
-//     console.log(quantity)
-//     return res.send(`there are ${quantity} users`)
-// }
-// server.get(index_route,index_function)
+root()
 
 // let one_route = '/users/:id'
 // let one_function = (request,response)=> {

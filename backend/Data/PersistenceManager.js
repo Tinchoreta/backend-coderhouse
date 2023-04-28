@@ -6,8 +6,7 @@ Entonces esta clase administra la persistencia, sea de dónde sea que venga.
 Solo hay que implementar una clase Adapter para cada estrategia de persistencia.
 */
 
-const fs = require('fs');
-
+import fs from 'fs';
 class PersistenceManager {
     constructor(strategy) {
         this.strategy = strategy;
@@ -43,4 +42,4 @@ class PersistenceManager {
 
 }
 
-module.exports = PersistenceManager;
+export default PersistenceManager;

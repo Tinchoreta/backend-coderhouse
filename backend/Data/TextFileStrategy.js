@@ -5,7 +5,7 @@ En este caso la estrategia de persistencia es a través de archivos de Texto.
 
 const ENCODING = "utf-8"
 
-const fs = require('fs');
+import fs from 'fs';
 class TextFileStrategy {
     constructor(filePath) {
         this.filePath = filePath;
@@ -37,7 +37,6 @@ class TextFileStrategy {
                     }
                 } else {
                     if (data){
-
                         resolve(JSON.parse(data));
                     }
                     else{
@@ -61,4 +60,4 @@ class TextFileStrategy {
     }
 }
 
-module.exports = TextFileStrategy;
+export default TextFileStrategy;

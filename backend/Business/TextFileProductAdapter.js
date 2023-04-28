@@ -1,5 +1,5 @@
-import PersistenceManager from '../Data/PersistenceManager';
-import TextFileStrategy from '../Data/TextFileStrategy';
+import PersistenceManager from '../Data/PersistenceManager.js';
+import TextFileStrategy from '../Data/TextFileStrategy.js';
 class TextFileProductAdapter {
 
     // Define una propiedad privada estática para almacenar 
