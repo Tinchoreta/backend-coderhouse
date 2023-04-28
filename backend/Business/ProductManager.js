@@ -6,7 +6,7 @@ la cuál tendrá un arreglo de Productos que iniciará vacíos.
 
 */
 
-const Product = require('./Product');
+import Product from './Product';
 
 class ProductManager {
     constructor() {
@@ -81,4 +81,4 @@ class ProductManager {
     };
 }
 
-module.exports = ProductManager;
+export default ProductManager;

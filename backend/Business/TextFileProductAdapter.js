@@ -1,5 +1,5 @@
-const PersistenceManager = require('../Data/PersistenceManager');
-const TextFileStrategy = require('../Data/TextFileStrategy');
+import PersistenceManager from '../Data/PersistenceManager';
+import TextFileStrategy from '../Data/TextFileStrategy';
 class TextFileProductAdapter {
 
     // Define una propiedad privada estática para almacenar 
@@ -135,4 +135,4 @@ class TextFileProductAdapter {
     }
 }
 
-module.exports = TextFileProductAdapter;
+export default TextFileProductAdapter;

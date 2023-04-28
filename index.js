@@ -1,6 +1,6 @@
 
-const Product = require('./backend/Business/Product');
-const ProductManager = require('./backend/Business/ProductManager');
+const Product = require('./backend/Business/Product').default;
+const ProductManager = require('./backend/Business/ProductManager').default;
 const TextFileProductAdapter = require('./backend/Business/TextFileProductAdapter')
 
 

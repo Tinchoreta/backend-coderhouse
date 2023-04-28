@@ -1,5 +1,5 @@
-const PersistenceManager = require('../Data/PersistenceManager');
-const TextFileStrategy = require('../Data/TextFileStrategy');
+import PersistenceManager from '../Data/PersistenceManager';
+import TextFileStrategy  from '../Data/TextFileStrategy';
 
 class TextFileCartManagerAdapter {
 
