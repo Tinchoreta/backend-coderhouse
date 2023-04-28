@@ -1,5 +1,5 @@
-const PersistenceManager = require('../data/PersistenceManager');
-const TextFileStrategy = require('../data/TextFileStrategy');
+const PersistenceManager = require('../Data/PersistenceManager');
+const TextFileStrategy = require('../Data/TextFileStrategy');
 class TextFileProductAdapter {
 
     // Define una propiedad privada estática para almacenar 
