@@ -1,6 +1,11 @@
 import express from 'express';
 import TextFileCartManagerAdapter from './backend/Business/TextFileCartManagerAdapter.js';
 import TextFileProductAdapter from './backend/Business/TextFileProductAdapter.js';
+import CartManagerController from './backend/Business/CartManagerController.js';
+import ProductManagerController from './backend/Business/ProductManagerController.js';
+
+// import CartManager from './backend/Business/CartManager.js';
+
 const server = express()
 
 const PORT = 8080
@@ -13,75 +18,28 @@ server.use(express.urlencoded({extended:true}))
 
 
 const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/cartData.json");
-const textProductdapter = TextFileProductAdapter.getInstance("./data/data.json");
+const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/data.json");
+const cartManagerController =  new CartManagerController(textFileCartAdapter);
+const productManagerController =  new ProductManagerController(textFileProductAdapter);
 
-const products_route =  '/api/products'
-
-const products_function = async (req, res)=> {
-    const productos = await textProductdapter.getProducts()?? [];
-    res.send({
-        success: true, 
-        products: productos
-    })
-
-}
-server.get(products_route, products_function)
-
-
-    let index_route = '/api/carts'
-    let index_function = async (req,res)=> {
-        let cartList = await textFileCartAdapter.getCarts() ?? [];
+try {
+    const PRODUCTS_ROUTE =  '/api/products'
         
-        return res.send({
-
-            success: true,
-            response: cartList
-        })
-    }
-    server.get(index_route,index_function)
-
-
-let one_route = '/api/products/:id'
-let one_function = async (request,response)=> {
-    let parametros = request.params
-    let productIdToFind = Number(parametros.id)
-    //console.log(id)
-    //console.log(typeof id)
-    let one = await textProductdapter.getProductById(productIdToFind);
-    console.log(one)
-    if (one) {
-        return response.send({
-            success: true,
-            user: one
-        })
-    } else {
-        return response.send({
-            success: false,
-            user: 'not found'
-        })
-    }
+    server.get(PRODUCTS_ROUTE, (request, response) => {
+        productManagerController.getProducts(request, response);});
     
+    let CART_ROUTE = '/api/carts'
+    server.get(CART_ROUTE,(request, response) => {
+        cartManagerController.getCarts(request, response);});
+    
+    const PRODUCT_ID_ROUTE = '/api/products/:id'
+    server.get(PRODUCT_ID_ROUTE, (request, response) => {
+        productManagerController.getProductById(request, response);});
+
+    let CART_ID_ROUTE = '/api/carts/:id'
+    server.get(CART_ID_ROUTE, (request, response) => {
+        cartManagerController.getCartById(request, response);});
+
+} catch (error) {
+    console.log(error.message);
 }
-server.get(one_route,one_function)
-
-// let query_route = '/users'
-// let query_function = (req,res)=> {
-//     console.log(req.query)
-//     let quantity = req.query.quantity ?? 5
-// /*     if (req.query.quantity) {
-
-//     } */
-//     let users = .slice(0,quantity) //array de usuarios que tengo que REBANAR para que se pagine según la query que envía el cliente
-//     if (users.length>0) {
-//         return res.send({
-//             success: true,
-//             users
-//         })
-//     } else {
-//         return res.send({
-//             success: false,
-//             users: 'not found'
-//         })
-//     }    
-// }
-// server.get(query_route,query_function)

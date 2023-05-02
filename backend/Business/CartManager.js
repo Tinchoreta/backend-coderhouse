@@ -4,7 +4,7 @@ class CartManager {
         this.cartList = [];
     }
 
-    getCart() {
+    getCarts() {
         return this.cartList;
     };
 
@@ -20,8 +20,8 @@ class CartManager {
         return lastIndex < 0 ? 0 : this.cartList[lastIndex].id;
     };
 
-    getCartById(cartToGet) {
-        const found = this.cartList.find((cart) => cart.id === parseInt(cartToGet));
+    getCartById(cartIdToget) {
+        const found = this.cartList.find((cart) => cart.id === parseInt(cartIdToget));
         if (!found) {
             throw new Error("Cart not found");
         }
