@@ -67,7 +67,7 @@ class TextFileProductAdapter {
             const newProduct = { id: products.length + 1, title, description, price, thumbnail, stock };
             products.push(newProduct);
             await this.PersistenceManager.save(products);
-            return newProduct.id;
+            return newProduct;
         } catch (error) {
             throw new Error(`addProduct: ${error.message}`);
         }

@@ -16,8 +16,27 @@ class ProductManagerController {
 
     async addProduct(request, response) {
         const productToAdd = request.body;
-        const addedProduct = await this.productManagerAdapter.addProduct(productToAdd);
-        response.status(201).json(addedProduct);
+        if (!productToAdd || Object.keys(productToAdd).length === 0) {
+            return response.status(400).json({
+                success: false,
+                error: 'Bad Request: No product data provided'
+            });
+        }
+        console.log(JSON.stringify(productToAdd));
+
+        try {
+            const addedProduct = await this.productManagerAdapter.addProduct(productToAdd);
+            response.status(201).json(addedProduct);
+
+        } catch (error) {
+
+            console.error('Error adding product:', error);
+            response.status(500).json({
+                success: false,
+                error: 'Internal Server Error'
+            });
+        }
+
     }
 
     async getProducts(request, response) {

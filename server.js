@@ -16,34 +16,34 @@ const ready = ()=> console.log(`server ready on port: ${PORT}`)
 
 server.listen(PORT, ready)
 
+server.use(express.json())
+
 server.use(express.urlencoded({extended:true}))
 
 server.use(express.static(__dirname + '/public'));
 
-const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/carts.json");
-const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/products.json");
-const cartManagerController =  new CartManagerController(textFileCartAdapter);
-const productManagerController =  new ProductManagerController(textFileProductAdapter);
+// const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/carts.json");
+// const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/products.json");
+// const cartManagerController =  new CartManagerController(textFileCartAdapter);
+// const productManagerController =  new ProductManagerController(textFileProductAdapter);
 
 try {
     const PRODUCTS_ROUTE =  '/api/products'
-        
-    // server.get(PRODUCTS_ROUTE, (request, response) => {
-    //     productManagerController.getProducts(request, response);});
+    const CARTS_ROUTE = '/api/carts'
     
-    server.use('/api/products', productsRouter);
+    server.use(PRODUCTS_ROUTE, productsRouter);
 
-    const CART_ROUTE = '/api/carts'
-    server.get(CART_ROUTE,(request, response) => {
-        cartManagerController.getCarts(request, response);});
+    // const CARTS_ROUTE = '/api/carts'
+    // server.get(CARTS_ROUTE,(request, response) => {
+    //     cartManagerController.getCarts(request, response);});
     
-    const PRODUCT_ID_ROUTE = '/api/products/:id'
-    server.get(PRODUCT_ID_ROUTE, (request, response) => {
-        productManagerController.getProductById(request, response);});
+    // const PRODUCT_ID_ROUTE = '/api/products/:id'
+    // server.get(PRODUCT_ID_ROUTE, (request, response) => {
+    //     productManagerController.getProductById(request, response);});
 
-    const CART_ID_ROUTE = '/api/carts/:id'
-    server.get(CART_ID_ROUTE, (request, response) => {
-        cartManagerController.getCartById(request, response);});
+    // const CART_ID_ROUTE = '/api/carts/:id'
+    // server.get(CART_ID_ROUTE, (request, response) => {
+    //     cartManagerController.getCartById(request, response);});
 
 } catch (error) {
     console.log(error.message);
