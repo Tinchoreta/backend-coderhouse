@@ -3,6 +3,8 @@ import TextFileCartManagerAdapter from './backend/Business/TextFileCartManagerAd
 import TextFileProductAdapter from './backend/Business/TextFileProductAdapter.js';
 import CartManagerController from './backend/Business/CartManagerController.js';
 import ProductManagerController from './backend/Business/ProductManagerController.js';
+import __dirname from './utils.js'
+import productsRouter from './routes/products.router.js'
 
 // import CartManager from './backend/Business/CartManager.js';
 
@@ -16,6 +18,7 @@ server.listen(PORT, ready)
 
 server.use(express.urlencoded({extended:true}))
 
+server.use(express.static(__dirname + '/public'));
 
 const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/carts.json");
 const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/products.json");
@@ -25,9 +28,11 @@ const productManagerController =  new ProductManagerController(textFileProductAd
 try {
     const PRODUCTS_ROUTE =  '/api/products'
         
-    server.get(PRODUCTS_ROUTE, (request, response) => {
-        productManagerController.getProducts(request, response);});
+    // server.get(PRODUCTS_ROUTE, (request, response) => {
+    //     productManagerController.getProducts(request, response);});
     
+    server.use('/api/products', productsRouter);
+
     const CART_ROUTE = '/api/carts'
     server.get(CART_ROUTE,(request, response) => {
         cartManagerController.getCarts(request, response);});
