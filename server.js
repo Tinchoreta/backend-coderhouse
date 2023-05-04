@@ -17,8 +17,8 @@ server.listen(PORT, ready)
 server.use(express.urlencoded({extended:true}))
 
 
-const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/cartData.json");
-const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/data.json");
+const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/carts.json");
+const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/products.json");
 const cartManagerController =  new CartManagerController(textFileCartAdapter);
 const productManagerController =  new ProductManagerController(textFileProductAdapter);
 
@@ -28,7 +28,7 @@ try {
     server.get(PRODUCTS_ROUTE, (request, response) => {
         productManagerController.getProducts(request, response);});
     
-    let CART_ROUTE = '/api/carts'
+    const CART_ROUTE = '/api/carts'
     server.get(CART_ROUTE,(request, response) => {
         cartManagerController.getCarts(request, response);});
     
@@ -36,7 +36,7 @@ try {
     server.get(PRODUCT_ID_ROUTE, (request, response) => {
         productManagerController.getProductById(request, response);});
 
-    let CART_ID_ROUTE = '/api/carts/:id'
+    const CART_ID_ROUTE = '/api/carts/:id'
     server.get(CART_ID_ROUTE, (request, response) => {
         cartManagerController.getCartById(request, response);});
 
