@@ -17,7 +17,7 @@ server.use(express.json())
 server.use(express.urlencoded({extended:true}))
 
 server.use(express.static(__dirname + '/public'));
-
+console.log(__dirname)
 try {
     
     //console.log(indexRoutes.stack);
