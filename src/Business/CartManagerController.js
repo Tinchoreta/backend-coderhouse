@@ -46,7 +46,6 @@ class CartManagerController {
         }
     }
 
-
     async getCartById(request, response) {
         try {
             const cartId = request.params.id;
@@ -74,13 +73,13 @@ class CartManagerController {
     async updateCartItem(request, response) {
         const productId = request.params.id;
         const updatedProduct = request.body;
-        const updatedItem = await this.cartManagerAdapter.updateProduct(productId, updatedProduct);
+        const updatedItem = await this.cartManagerAdapter.updateCart(productId, updatedProduct);
         response.status(200).json(updatedItem);
     }
 
     async removeCartItem(request, response) {
         const productId = request.params.id;
-        await this.cartManagerAdapter.removeProduct(productId);
+        await this.cartManagerAdapter.deleteCart(productId);
         response.status(204).send();
     }
 }

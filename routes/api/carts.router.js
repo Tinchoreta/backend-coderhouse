@@ -5,7 +5,7 @@ import TextFileCartManagerAdapter from '../../src/Business/TextFileCartManagerAd
 
 const router = Router();
 
-const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("../../../data/products.json");
+const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/carts.json");
 
 const cartController = new CartManagerController(textFileCartAdapter);
 

@@ -72,6 +72,68 @@ class TextFileCartManagerAdapter {
             throw new Error(`addCart: ${error.message}`);
         }
     }
+
+    async updateCart(cartIdToModify, productData) {
+        try {
+            const products = await this.PersistenceManager.load();
+            const cartId = Number(cartIdToModify);
+
+            if (isNaN(cartId)) {
+                throw new Error(`Invalid product ID: ${cartIdToModify}`);
+            }
+
+            const cartToModify = products.find((product) => product.id === cartId);
+
+            if (!cartToModify) {
+                throw new Error(`Cart with ID ${cartId} not found`);
+            }
+            
+            const updatedCart = {
+                id: cartToModify.id,
+
+            };
+
+            const updatedCarts = products.map((cart) => {
+                if (cart.id === cartId) {
+                    return updatedCart;
+                }
+                return cart;
+            });
+
+            await this.PersistenceManager.save(updatedCarts);
+
+            return updatedCart;
+        } catch (error) {
+            throw new Error(`updateCart: ${error.message}`);
+        }
+    }
+
+    async deleteCart(idToDelete) {
+        try {
+            //Se convierte el idToDelete a número y si no es un número tira un error
+            const id = Number(idToDelete);
+            if (isNaN(id)) {
+                throw new Error(`Cart ID "${idToDelete}" is not a valid number`);
+            }
+            //Se cargan los datos de los productos desde data.json
+            const cartsLoaded = await this.PersistenceManager.load();
+            console.log(cartsLoaded)
+            const cartIndex = cartsLoaded.findIndex((product) => product.id === id);
+            console.log(cartIndex)
+            //Si no se encuentra el producto en el archivo data.json 
+            //findIndex devolverá -1
+            if (cartIndex === -1) {
+                throw new Error(`Cart with ID: ${idToDelete} not found`);
+            }
+            //Con splice se quita el producto con ID: cartIndex
+            cartsLoaded.splice(cartIndex, 1);
+            //Y se vuelve a guardar en data.json los restantes productos.
+            await this.PersistenceManager.save(cartsLoaded);
+        } catch (error) {
+            throw new Error(`deleteCart: ${error.message}`);
+        }
+    }
+
 }
 
 export default TextFileCartManagerAdapter;
