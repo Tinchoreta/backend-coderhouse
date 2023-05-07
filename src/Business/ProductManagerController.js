@@ -92,15 +92,45 @@ class ProductManagerController {
     async updateProductItem(request, response) {
         const productId = request.params.id;
         const updatedProduct = request.body;
-        const updatedItem = await this.productManagerAdapter.updateProduct(productId, updatedProduct);
-        response.status(200).json(updatedItem);
+
+        // Validate that the product ID is valid
+        if (!productId || typeof productId !== 'string') {
+            return response.status(400).send({ message: 'Invalid product ID' });
+        }
+
+        // Validate that the update data is valid
+        if (!updatedProduct || typeof updatedProduct !== 'object') {
+            return response.status(400).send({ message: 'Invalid update data' });
+        }
+
+        try {
+            // Update the product
+            const updatedItem = await this.productManagerAdapter.updateProduct(productId, updatedProduct);
+            response.status(200).json(updatedItem);
+        } catch (error) {
+            console.error(`Error updating product with ID ${productId}: ${error.message}`);
+            response.status(500).send({ message: 'Unable to update the product' });
+        }
     }
 
     async removeProductItem(request, response) {
         const productId = request.params.id;
-        await this.productManagerAdapter.removeProduct(productId);
-        response.status(204).send();
+
+        // Validate that the product ID is valid
+        if (!productId || typeof productId !== 'string') {
+            return response.status(400).send({ message: 'Invalid product ID' });
+        }
+
+        try {
+            // Attempt to remove the product
+            await this.productManagerAdapter.deleteProduct(productId);
+            response.status(204).send();
+        } catch (error) {
+            console.error(`Error removing product with ID ${productId}: ${error.message}`);
+            response.status(500).send({ message: 'Unable to remove the product' });
+        }
     }
+
 }
 
 export default ProductManagerController;

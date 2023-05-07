@@ -73,9 +73,9 @@
     },
     {
         "id": 10,
-        "title": "Producto 10",
-        "description": "Esta es la nueva descripción del producto",
-        "price": 95.99,
+        "title": "Producto 10 - updated 2",
+        "description": "Esta es la nueva descripción del producto 10",
+        "price": 92.99,
         "thumbnail": "https://ejemplo.com/imagen-producto-10.jpg",
         "stock": 672
     }

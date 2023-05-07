@@ -74,59 +74,71 @@ class TextFileProductAdapter {
     }
 
 
-    async updateProduct(productId, productData) {
-        const products = await this.PersistenceManager.load();
-        const productToUpdate = products.find((product) => product.id === productId);
-        if (!productToUpdate) {
-            throw new Error(`Producto con ID: ${productId} no encontrado`);
-        }
-        //Se actualizan los datos del producto con ID: productId, con las propiedades
-        //enviadas por parámetro en productData
-        //se utiliza ?? para asegurar la integridad de los datos a modificar
-        //si vienen con null o undefined, simplemente no se modifican
-        //y queda el valor original que traía desde el archivo.
-        const stock = typeof productData.stock === 'number' ? productData.stock : productToUpdate.stock;
-        const updatedProduct = {
-            id: productToUpdate.id,
-            title: productData.title ?? productToUpdate.title,
-            description: productData.description ?? productToUpdate.description,
-            price: !isNaN(parseFloat(productData.price)) && isFinite(productData.price) 
-            ? parseFloat(productData.price)
-            : productToUpdate.price,
-            thumbnail: productData.thumbnail ?? productToUpdate.thumbnail,
-            stock: !isNaN(parseInt(productData.stock)) && isFinite(productData.stock) 
-            ? parseInt(productData.stock)
-            : productToUpdate.stock
-        };
+    async updateProduct(productIdToModify, productData) {
+        try {
+            const products = await this.PersistenceManager.load();
+            const productId = Number(productIdToModify);
 
-        // Se crea una nueva lista de productos con el producto actualizado. 
-        //Esto se hace para asegurarse de que se mantenga la integridad de los datos.
-
-        const updatedProducts = products.map((product) => {
-            if (product.id === productId) {
-                return updatedProduct;
+            if (isNaN(productId)) {
+                throw new Error(`Invalid product ID: ${productIdToModify}`);
             }
-            return product;
-        });
-        //Se almacena todo el array de productos con el producto actualizado en data.json
 
-        await this.PersistenceManager.save(updatedProducts);
-        return updatedProduct;
+            const productToUpdate = products.find((product) => product.id === productId);
+
+            if (!productToUpdate) {
+                throw new Error(`Product with ID ${productId} not found`);
+            }
+
+            const stock = typeof productData.stock === 'number' ? productData.stock : productToUpdate.stock;
+            const updatedProduct = {
+                id: productToUpdate.id,
+                title: productData.title ?? productToUpdate.title,
+                description: productData.description ?? productToUpdate.description,
+                price: !isNaN(parseFloat(productData.price)) && isFinite(productData.price)
+                    ? parseFloat(productData.price)
+                    : productToUpdate.price,
+                thumbnail: productData.thumbnail ?? productToUpdate.thumbnail,
+                stock: !isNaN(parseInt(productData.stock)) && isFinite(productData.stock)
+                    ? parseInt(productData.stock)
+                    : productToUpdate.stock
+            };
+
+            const updatedProducts = products.map((product) => {
+                if (product.id === productId) {
+                    return updatedProduct;
+                }
+                return product;
+            });
+
+            await this.PersistenceManager.save(updatedProducts);
+
+            return updatedProduct;
+        } catch (error) {
+            throw new Error(`updateProduct: ${error.message}`);
+        }
     }
+
 
     async deleteProduct(idToDelete) {
         try {
+            //Se convierte el idToDelete a número y si no es un número tira un error
+            const id = Number(idToDelete);
+            if (isNaN(id)) {
+                throw new Error(`Product ID "${idToDelete}" is not a valid number`);
+            }
             //Se cargan los datos de los productos desde data.json
             const products = await this.PersistenceManager.load();
-            const productIndex = products.findIndex((product) => product.id === idToDelete);
+            console.log(products)
+            const productIndex = products.findIndex((product) => product.id === id);
+            console.log(productIndex)
             //Si no se encuentra el producto en el archivo data.json 
             //findIndex devolverá -1
             if (productIndex === -1) {
-                throw new Error(`Producto con ID: ${idToDelete} no encontrado`);
+                throw new Error(`Product with ID: ${idToDelete} not found`);
             }
             //Con splice se quita el producto con ID: productIndex
             products.splice(productIndex, 1);
-            
+
             //Y se vuelve a guardar en data.json los restantes productos.
             await this.PersistenceManager.save(products);
         } catch (error) {
