@@ -1,12 +1,12 @@
 import express from 'express';
-import TextFileCartManagerAdapter from './backend/Business/TextFileCartManagerAdapter.js';
-import TextFileProductAdapter from './backend/Business/TextFileProductAdapter.js';
-import CartManagerController from './backend/Business/CartManagerController.js';
-import ProductManagerController from './backend/Business/ProductManagerController.js';
+import TextFileCartManagerAdapter from './src/Business/TextFileCartManagerAdapter.js';
+import TextFileProductAdapter from './src/Business/TextFileProductAdapter.js';
+import CartManagerController from './src/Business/CartManagerController.js';
+import ProductManagerController from './src/Business/ProductManagerController.js';
 import __dirname from './utils.js'
-import productsRouter from './routes/products.router.js'
+import indexRoutes from './routes/index.js'
 
-// import CartManager from './backend/Business/CartManager.js';
+// import CartManager from './src/Business/CartManager.js';
 
 const server = express()
 
@@ -20,7 +20,7 @@ server.use(express.json())
 
 server.use(express.urlencoded({extended:true}))
 
-server.use(express.static(__dirname + '/public'));
+// server.use(express.static(__dirname + '/public'));
 
 // const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/carts.json");
 // const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/products.json");
@@ -31,7 +31,9 @@ try {
     const PRODUCTS_ROUTE =  '/api/products'
     const CARTS_ROUTE = '/api/carts'
     
-    server.use(PRODUCTS_ROUTE, productsRouter);
+    //console.log(indexRoutes.stack);
+    server.use('/', indexRoutes);
+
 
     // const CARTS_ROUTE = '/api/carts'
     // server.get(CARTS_ROUTE,(request, response) => {

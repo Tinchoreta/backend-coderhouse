@@ -13,8 +13,8 @@ class TextFileStrategy {
 
     async save(data) {
         return new Promise((resolve, reject) => {
-            
-            fs.writeFile(this.filePath, JSON.stringify(data, null,2), ENCODING, (error) => {
+
+            fs.writeFile(this.filePath, JSON.stringify(data, null, 2), ENCODING, (error) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -26,7 +26,7 @@ class TextFileStrategy {
 
     async load() {
         return new Promise((resolve, reject) => {
-            
+
             fs.readFile(this.filePath, ENCODING, (error, data) => {
                 if (error) {
                     if (error.code === 'ENOENT') {
@@ -36,10 +36,10 @@ class TextFileStrategy {
                         reject(error);
                     }
                 } else {
-                    if (data){
+                    if (data) {
                         resolve(JSON.parse(data));
                     }
-                    else{
+                    else {
                         resolve([]);
                     }
                 }

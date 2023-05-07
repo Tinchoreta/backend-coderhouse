@@ -1,7 +1,7 @@
 
-// const Product = require('./backend/Business/Product').default;
-// const ProductManager = require('./backend/Business/ProductManager').default;
-import TextFileProductAdapter from './backend/Business/TextFileProductAdapter.js'
+// const Product = require('./src/Business/Product').default;
+// const ProductManager = require('./src/Business/ProductManager').default;
+import TextFileProductAdapter from './src/Business/TextFileProductAdapter.js'
 
 
 // 1 Crear una instancia de TextFileProductAdapter:
