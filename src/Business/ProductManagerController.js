@@ -105,7 +105,15 @@ class ProductManagerController {
 
         try {
             // Update the product
-            const updatedItem = await this.productManagerAdapter.updateProduct(productId, updatedProduct);
+            const product = {
+                id: productId,
+                title: updatedProduct.title,
+                description: updatedProduct.description,
+                price: updatedProduct.price,
+                thumbnail: updatedProduct.thumbnail,
+                stock: updatedProduct.stock
+            };
+            const updatedItem = await this.productManagerAdapter.updateProduct(product);
             response.status(200).json(updatedItem);
         } catch (error) {
             console.error(`Error updating product with ID ${productId}: ${error.message}`);

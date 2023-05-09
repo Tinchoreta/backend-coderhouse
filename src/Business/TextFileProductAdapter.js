@@ -84,13 +84,13 @@ class TextFileProductAdapter {
                 throw new Error(`Invalid product ID: ${productIdToModify}`);
             }
 
-            const productToUpdate = products.find((product) => product.id === productId);
+            const productToUpdateRetrieved = products.find((product) => product.id === productId);
 
             if (!productToUpdate) {
                 throw new Error(`Product with ID ${productId} not found`);
             }
 
-            const stock = typeof productToUpdate.stock === 'number' ? productToUpdate.stock : productToUpdate.stock;
+            // const stock = typeof productToUpdate.stock === 'number' ? productToUpdate.stock : productToUpdateRetrieved.stock;
             const updatedProduct = {
                 id: productToUpdate.id,
                 title: productToUpdate.title ?? productToUpdate.title,
@@ -101,7 +101,7 @@ class TextFileProductAdapter {
                 thumbnail: productToUpdate.thumbnail ?? productToUpdate.thumbnail,
                 stock: !isNaN(parseInt(productToUpdate.stock)) && isFinite(productToUpdate.stock)
                     ? parseInt(productToUpdate.stock)
-                    : productToUpdate.stock
+                    : productToUpdateRetrieved.stock
             };
 
             const updatedProducts = products.map((product) => {
