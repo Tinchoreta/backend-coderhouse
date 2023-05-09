@@ -63,7 +63,7 @@ class TextFileCartManagerAdapter {
     async createCart() {
         try {
             const cart = await this.PersistenceManager.load();
-            const newCart = { id: cart.length + 1, products: []};
+            const newCart = { id: cart.length + 1, products: [] };
             cart.push(newCart);
             await this.PersistenceManager.save(cart);
             return newCart.id;
@@ -90,15 +90,26 @@ class TextFileCartManagerAdapter {
             if (!cartToModify) {
                 throw new Error(`Cart with ID ${cartId} not found`);
             }
-            
-            const updatedCart = {
-                id: cartToModify.id,
-                products: cartToModify.products.map((product) => {
-                    if (product.id === productIdToModify) {
-                        product.quantity = productQuantity;
-                    }
-                })
-            };
+
+            let updatedCart;
+
+            //si la cantidad del producto es 0 hay que borrar el producto del carrito
+            if (productQuantity === 0) {
+                updatedCart = {
+                    id: cartToModify.id,
+                    products: cartToModify.products.filter((product) => product.id !== products.productId)
+                };
+            } else {
+                updatedCart = {
+                    id: cartToModify.id,
+                    products: cartToModify.products.map((product) => {
+                        if (product.productId === products.productId) {
+                            product.quantity = products.quantity;
+                        }
+                        return product;
+                    })
+                };
+            }
 
             const updatedCarts = carts.map((cart) => {
                 if (cart.id === cartId) {
@@ -112,6 +123,37 @@ class TextFileCartManagerAdapter {
             return updatedCart;
         } catch (error) {
             throw new Error(`updateCart: ${error.message}`);
+        }
+    }
+
+    async removeProductFromCart(cartId, productId) {
+        try {
+            if (isNaN(cartId) || isNaN(productId)) {
+                throw new Error('Invalid parameters');
+            }
+
+            const carts = await this.cartManagerAdapter.getCarts();
+            const cart = carts.find((cart) => cart.id === parseInt(cartId));
+            if (!cart) {
+                throw new Error(`Cart with ID: ${cartId} not found`);
+            }
+
+            const product = cart.products.find((product) => product.productId === parseInt(productId));
+            if (!product) {
+                throw new Error(`Product with ID: ${productId} not found in cart with ID: ${cartId}`);
+            }
+
+            cart.products = cart.products.filter((product) => product.productId !== parseInt(productId));
+            await this.cartManagerAdapter.updateCart({
+                cartIdToModify: cartId,
+                productIdToModify: productId,
+                productQuantity: 0
+            });
+
+            return cart;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error removing product from cart.");
         }
     }
 

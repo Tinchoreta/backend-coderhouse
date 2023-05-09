@@ -202,11 +202,13 @@ class CartManagerController {
         // Agregamos las unidades al stock del producto
         product.stock += unitsToRemove;
 
+        this.productAdapter.updateProduct(product);
+
         const updatedCart = await this.cartManagerAdapter.removeProductFromCart({
-            id: cartId,
+            cartId: cartId,
             products: {
-                productId,
-                quantity: unitsToRemove
+                productId: productId,
+                quantity: 0
             }
         });
 
