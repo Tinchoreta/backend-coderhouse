@@ -60,11 +60,10 @@ class TextFileCartManagerAdapter {
         }
     };
 
-    async createCart(cartToAdd=[]) {
+    async createCart() {
         try {
-            const { products } = cartToAdd;
             const cart = await this.PersistenceManager.load();
-            const newCart = { id: cart.length + 1, products };
+            const newCart = { id: cart.length + 1, products: []};
             cart.push(newCart);
             await this.PersistenceManager.save(cart);
             return newCart.id;
@@ -73,10 +72,14 @@ class TextFileCartManagerAdapter {
         }
     }
 
-    async updateCart(cartIdToModify, productIdToModify, productQuantity) {
+    async updateCart(cartToUpdate) {
         try {
+            const { cartId, products } = cartToUpdate;
+
             const carts = await this.PersistenceManager.load();
-            const cartId = Number(cartIdToModify);
+            if (carts.length === 0) {
+                throw new Error('Cart with ID ${cartId} not found');
+            }
 
             if (isNaN(cartId)) {
                 throw new Error(`Invalid cart ID: ${cartIdToModify}`);

@@ -77,7 +77,7 @@ class TextFileProductAdapter {
     async updateProduct(productIdToModify, productData) {
         try {
             const products = await this.PersistenceManager.load();
-            const productId = Number(productIdToModify);
+            const productId = parseInt(productIdToModify);
 
             if (isNaN(productId)) {
                 throw new Error(`Invalid product ID: ${productIdToModify}`);

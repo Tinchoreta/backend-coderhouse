@@ -5,19 +5,19 @@ import ProductManagerController from '../../src/Business/ProductManagerControlle
 import TextFileProductAdapter from '../../src/Business/TextFileProductAdapter.js';
 
 const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/products.json");
-const productController = new ProductManagerController(textFileProductAdapter);
+
 const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/carts.json");
-const cartController = new CartManagerController(textFileCartAdapter,productController);
+const cartController = new CartManagerController(textFileCartAdapter,textFileProductAdapter);
 
 const router = Router();
 
 router.get('/', (req, res) => cartController.getCarts(req, res)
 );
 router.get('/:id', (req, res) => cartController.getCartById(req, res));
-router.post('/', (req, res) => cartController.addCart(req, res)
+router.post('/', (req, res) => cartController.createCart(req, res)
 );
-router.put('/:cid/product/:pid/:units', (req, res) => cartController.addProductToCart(req, res, productController));
-router.delete('/:cid/product/:pid/:units', (req, res) => cartController.removeProductFromCart(req, res, productController));
+router.put('/:cid/product/:pid/:units', (req, res) => cartController.addProductToCart(req, res));
+router.delete('/:cid/product/:pid/:units', (req, res) => cartController.removeProductFromCart(req, res));
 
 
 export default router;
