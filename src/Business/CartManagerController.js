@@ -17,24 +17,34 @@ class CartManagerController {
 
     //Método privado, utilizado solo internamente y no puede accederse a él desde fuera de la clase
 
-    #_validateCartExists(res, cid) {
-        const cart = this.cartManagerAdapter.getCartById(cid);
-        if (!cart) {
-            res.status(404).send('Cart not found');
+    #_validateCartExists = async (res, cid) => {
+        try {
+            const cart = await this.cartManagerAdapter.getCartById(cid);
+            if (!cart) {
+                res.status(404).send('Cart not found');
+                return false;
+            }
+            return cart;
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal server error');
             return false;
         }
-        return cart;
     }
 
-    //Método privado, utilizado solo internamente y no puede accederse a él desde fuera de la clase
-
-    #_validateProductExists(res, pid) {
-        const product = this.productAdapter.getProductById(pid);
-        if (!product) {
-            res.status(404).send('Product not found');
+    #_validateProductExists = async (res, pid) => {
+        try {
+            const product = await this.productAdapter.getProductById(pid);
+            if (!product) {
+                res.status(404).send('Product not found');
+                return false;
+            }
+            return product;
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal server error');
             return false;
         }
-        return product;
     }
 
     #hasEnoughStock(product, unitsToAdd) {
@@ -173,49 +183,57 @@ class CartManagerController {
 
 
     async removeProductUnitsFromCart(req, res) {
-        const cartId = parseInt(req.params.cid);
-        const productId = parseInt(req.params.pid);
-        let unitsToRemove = Number(req.params.units);
+        try {
+            const cartId = parseInt(req.params.cid);
+            const productId = parseInt(req.params.pid);
+            let unitsToRemove = Number(req.params.units);
 
-        if (isNaN(cartId) || isNaN(productId) || isNaN(unitsToRemove) || unitsToRemove <= 0) {
-            return this.sendError(res, 400, 'Invalid parameters');
-        }
-
-        const cart = this._validateCartExists(res, cartId);
-        if (!cart) {
-            return this.sendError(res, 404, 'Cart not found');
-        }
-
-        const product = this._validateProductExists(res, productId);
-        if (!product) {
-            return this.sendError(res, 404, 'Product not found');
-        }
-
-        // Validamos que la cantidad de unidades a quitar no sea mayor a la cantidad de unidades en el carrito
-        const itemInCart = cart.products.find((item) => item.productId === productId);
-        if (itemInCart) {
-            if (unitsToRemove > itemInCart.quantity) {
-                unitsToRemove = itemInCart.quantity;
+            if (isNaN(cartId) || isNaN(productId) || isNaN(unitsToRemove) || unitsToRemove <= 0) {
+                return this.#sendError(res, 400, 'Invalid parameters');
             }
+
+            const cart = await this.#_validateCartExists(res, cartId);
+            console.log(cart)
+            if (!cart || typeof (cart) === 'undefined') {
+                return this.#sendError(res, 404, 'Cart not found');
+            }
+
+            const product = await this.#_validateProductExists(res, productId);
+            console.log(product)
+            if (!product || typeof(product) === 'undefined') {
+                return this.#sendError(res, 404, 'Product not found');
+            }
+
+            // Validamos que la cantidad de unidades a quitar no sea mayor a la cantidad de unidades en el carrito
+            const itemInCart = cart.products.find((item) => item.productId === productId);
+            if (itemInCart) {
+                if (unitsToRemove > itemInCart.quantity) {
+                    unitsToRemove = itemInCart.quantity;
+                }
+            }
+
+            // Se agregan las unidades al stock del producto
+            product.stock += unitsToRemove;
+
+            //Se actualiza la cantidad de stock en persistencia
+
+            this.productAdapter.updateProduct(product);
+
+            // Se actualiza la cantidad del producto en el carrito
+            const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
+            if (cartItemIndex !== -1) {
+                cart.products[cartItemIndex].quantity -= unitsToRemove;
+            }
+
+            const updatedCart = await this.cartManagerAdapter.updateCart(cart);
+
+            return res.status(200).json(updatedCart);
+        } catch (error) {
+            console.error(error);
+            return this.#sendError(res, 500, 'Internal server error');
         }
-
-        // Se agregan las unidades al stock del producto
-        product.stock += unitsToRemove;
-        
-        //Se actualiza la cantidad de stock en persistencia
-
-        this.productAdapter.updateProduct(product);
-
-        // Se actualiza la cantidad del producto en el carrito
-        const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
-        if (cartItemIndex !== -1) {
-            cart.products[cartItemIndex].quantity -= unitsToRemove;
-        }
-
-        const updatedCart = await this.cartManagerAdapter.updateCart(cart);
-
-        return res.status(200).json(updatedCart);
     }
+
 
 
     async deleteCart(request, response) {

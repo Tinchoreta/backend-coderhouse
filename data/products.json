@@ -1,82 +1,82 @@
 [
-    {
-        "id": 1,
-        "title": "Producto 1",
-        "description": "Descripción del producto 1",
-        "price": 578,
-        "thumbnail": "https://ejemplo.com/imagen-producto-1.jpg",
-        "stock": 115
-    },
-    {
-        "id": 2,
-        "title": "Producto 2",
-        "description": "Descripción del producto 2",
-        "price": 438,
-        "thumbnail": "https://ejemplo.com/imagen-producto-2.jpg",
-        "stock": 204
-    },
-    {
-        "id": 3,
-        "title": "Producto 3",
-        "description": "Descripción del producto 3",
-        "price": 734,
-        "thumbnail": "https://ejemplo.com/imagen-producto-3.jpg",
-        "stock": 465
-    },
-    {
-        "id": 4,
-        "title": "Producto 4",
-        "description": "Descripción del producto 4",
-        "price": 809,
-        "thumbnail": "https://ejemplo.com/imagen-producto-4.jpg",
-        "stock": 303
-    },
-    {
-        "id": 5,
-        "title": "Producto 5",
-        "description": "Descripción del producto 5",
-        "price": 870,
-        "thumbnail": "https://ejemplo.com/imagen-producto-5.jpg",
-        "stock": 106
-    },
-    {
-        "id": 6,
-        "title": "Producto 6",
-        "description": "Descripción del producto 6",
-        "price": 631,
-        "thumbnail": "https://ejemplo.com/imagen-producto-6.jpg",
-        "stock": 137
-    },
-    {
-        "id": 7,
-        "title": "Producto 7",
-        "description": "Descripción del producto 7",
-        "price": 617,
-        "thumbnail": "https://ejemplo.com/imagen-producto-7.jpg",
-        "stock": 479
-    },
-    {
-        "id": 8,
-        "title": "Producto 8",
-        "description": "Descripción del producto 8",
-        "price": 296,
-        "thumbnail": "https://ejemplo.com/imagen-producto-8.jpg",
-        "stock": 273
-    },
-    {
-        "id": 9,
-        "title": "Producto 9",
-        "description": "Esta es la nueva descripción del producto",
-        "price": 25.99,
-        "thumbnail": "https://ejemplo.com/imagen-producto-9.jpg",
-        "stock": 471
-    },
-    {
-        "id": 10,
-        "title": "Producto 10 - updated 2",
-        "description": "Esta es la nueva descripción del producto 10",
-        "price": 92.99,
-        "thumbnail": "https://ejemplo.com/imagen-producto-10.jpg",
-        "stock": 672
-    }
+  {
+    "id": 1,
+    "title": "Producto 1",
+    "description": "Descripción del producto 1",
+    "price": 578,
+    "thumbnail": "https://ejemplo.com/imagen-producto-1.jpg",
+    "stock": 115
+  },
+  {
+    "id": 2,
+    "title": "Producto 2",
+    "description": "Descripción del producto 2",
+    "price": 438,
+    "thumbnail": "https://ejemplo.com/imagen-producto-2.jpg",
+    "stock": 204
+  },
+  {
+    "id": 3,
+    "title": "Producto 3",
+    "description": "Descripción del producto 3",
+    "price": 734,
+    "thumbnail": "https://ejemplo.com/imagen-producto-3.jpg",
+    "stock": 465
+  },
+  {
+    "id": 4,
+    "title": "Producto 4",
+    "description": "Descripción del producto 4",
+    "price": 809,
+    "thumbnail": "https://ejemplo.com/imagen-producto-4.jpg",
+    "stock": 303
+  },
+  {
+    "id": 5,
+    "title": "Producto 5",
+    "description": "Descripción del producto 5",
+    "price": 870,
+    "thumbnail": "https://ejemplo.com/imagen-producto-5.jpg",
+    "stock": 106
+  },
+  {
+    "id": 6,
+    "title": "Producto 6",
+    "description": "Descripción del producto 6",
+    "price": 631,
+    "thumbnail": "https://ejemplo.com/imagen-producto-6.jpg",
+    "stock": 137
+  },
+  {
+    "id": 7,
+    "title": "Producto 7",
+    "description": "Descripción del producto 7",
+    "price": 617,
+    "thumbnail": "https://ejemplo.com/imagen-producto-7.jpg",
+    "stock": 479
+  },
+  {
+    "id": 8,
+    "title": "Producto 8",
+    "description": "Descripción del producto 8",
+    "price": 296,
+    "thumbnail": "https://ejemplo.com/imagen-producto-8.jpg",
+    "stock": 273
+  },
+  {
+    "id": 9,
+    "title": "Producto 9",
+    "description": "Esta es la nueva descripción del producto",
+    "price": 25.99,
+    "thumbnail": "https://ejemplo.com/imagen-producto-9.jpg",
+    "stock": 472
+  },
+  {
+    "id": 10,
+    "title": "Producto 10 - updated 2",
+    "description": "Esta es la nueva descripción del producto 10",
+    "price": 92.99,
+    "thumbnail": "https://ejemplo.com/imagen-producto-10.jpg",
+    "stock": 672
+  }
 ]

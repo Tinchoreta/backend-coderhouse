@@ -78,11 +78,11 @@ class TextFileCartManagerAdapter {
 
             const cartsFromPersistence = await this.PersistenceManager.load();
             if (cartsFromPersistence.length === 0) {
-                throw new Error('Cart with ID ${cartId} not found');
+                throw new Error(`Cart with ID ${cartId} not found`);
             }
 
             if (isNaN(cartId)) {
-                throw new Error(`Invalid cart ID: ${cartIdToModify}`);
+                throw new Error(`Invalid cart ID: ${cartId}`);
             }
 
             const cartToModify = cartsFromPersistence.find((cart) => cart.id === cartId);
