@@ -93,12 +93,12 @@ class TextFileProductAdapter {
             // const stock = typeof productToUpdate.stock === 'number' ? productToUpdate.stock : productToUpdateRetrieved.stock;
             const updatedProduct = {
                 id: productToUpdate.id,
-                title: productToUpdate.title ?? productToUpdate.title,
-                description: productToUpdate.description ?? productToUpdate.description,
+                title: productToUpdate.title ?? productToUpdateRetrieved.title,
+                description: productToUpdate.description ?? productToUpdateRetrieved.description,
                 price: !isNaN(parseFloat(productToUpdate.price)) && isFinite(productToUpdate.price)
                     ? parseFloat(productToUpdate.price)
-                    : productToUpdate.price,
-                thumbnail: productToUpdate.thumbnail ?? productToUpdate.thumbnail,
+                    : productToUpdateRetrieved.price,
+                thumbnail: productToUpdate.thumbnail ?? productToUpdateRetrieved.thumbnail,
                 stock: !isNaN(parseInt(productToUpdate.stock)) && isFinite(productToUpdate.stock)
                     ? parseInt(productToUpdate.stock)
                     : productToUpdateRetrieved.stock
