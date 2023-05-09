@@ -89,13 +89,9 @@ class TextFileCartManagerAdapter {
 
             const updatedCarts = cartsFromPersistence.map((cart) => {
                 if (cart.id === cartId) {
-                    const updatedProducts = cart.products.map((product) => {
+                    const updatedProducts = cart.products.filter((product) => {
                         const productToUpdate = products.find((p) => p.productId === product.productId);
-                        if (productToUpdate) {
-                            return { productId: product.productId, quantity: productToUpdate.quantity };
-                        } else {
-                            return product;
-                        }
+                        return productToUpdate ? productToUpdate : null;
                     });
 
                     return {

@@ -69,7 +69,7 @@
     "description": "Esta es la nueva descripción del producto",
     "price": 25.99,
     "thumbnail": "https://ejemplo.com/imagen-producto-9.jpg",
-    "stock": 5
+    "stock": 15
   },
   {
     "id": 10,

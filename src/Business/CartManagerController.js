@@ -200,30 +200,36 @@ class CartManagerController {
 
             const product = await this.#_validateProductExists(res, productId);
             // console.log(product)
-            if (!product || typeof(product) === 'undefined') {
+            if (!product || typeof (product) === 'undefined') {
                 return this.#sendError(res, 404, 'Product not found');
             }
 
             // Validamos que la cantidad de unidades a quitar no sea mayor a la cantidad de unidades en el carrito
             const itemInCart = cart.products.find((item) => item.productId === productId);
             if (itemInCart) {
-                if (unitsToRemove > itemInCart.quantity) {
+                if (unitsToRemove >= itemInCart.quantity) {
                     unitsToRemove = itemInCart.quantity;
+                    // console.log(unitsToRemove + " units to remove")
                 }
             }
 
             // Se agregan las unidades al stock del producto
             product.stock += unitsToRemove;
 
-           // console.log(product.stock)
+            // console.log(product.stock)
             //Se actualiza la cantidad de stock en persistencia
 
             this.productAdapter.updateProduct(product);
-           // console.log(product)
+            // console.log(product)
             // Se actualiza la cantidad del producto en el carrito
             const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
             if (cartItemIndex !== -1) {
                 cart.products[cartItemIndex].quantity -= unitsToRemove;
+                if (cart.products[cartItemIndex].quantity === 0) {
+                    //Se borra directamente el producto del carrito
+                    cart.products.splice(cartItemIndex, 1);
+                    // console.log(cart)
+                }
             }
             // console.log(cart)
             const updatedCart = await this.cartManagerAdapter.updateCart(cart);
