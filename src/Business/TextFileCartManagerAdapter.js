@@ -91,7 +91,8 @@ class TextFileCartManagerAdapter {
                     return product;
                 }
     
-                return null;
+                return null; // para descartar los productos que no estén en el carrito actualizado
+                
                 // se utiliza para filtrar los elementos de un array y eliminar los valores que son considerados falsy (valores que son falsos cuando son convertidos a booleanos) del array resultante.
             }).filter(Boolean);
 
