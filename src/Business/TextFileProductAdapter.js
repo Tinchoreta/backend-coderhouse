@@ -74,10 +74,11 @@ class TextFileProductAdapter {
     }
 
 
-    async updateProduct(productIdToModify, productData) {
+    async updateProduct(productToUpdate) {
         try {
             const products = await this.PersistenceManager.load();
-            const productId = parseInt(productIdToModify);
+            const {id} = productToUpdate;
+            const productId = id; 
 
             if (isNaN(productId)) {
                 throw new Error(`Invalid product ID: ${productIdToModify}`);
@@ -89,17 +90,17 @@ class TextFileProductAdapter {
                 throw new Error(`Product with ID ${productId} not found`);
             }
 
-            const stock = typeof productData.stock === 'number' ? productData.stock : productToUpdate.stock;
+            const stock = typeof productToUpdate.stock === 'number' ? productToUpdate.stock : productToUpdate.stock;
             const updatedProduct = {
                 id: productToUpdate.id,
-                title: productData.title ?? productToUpdate.title,
-                description: productData.description ?? productToUpdate.description,
-                price: !isNaN(parseFloat(productData.price)) && isFinite(productData.price)
-                    ? parseFloat(productData.price)
+                title: productToUpdate.title ?? productToUpdate.title,
+                description: productToUpdate.description ?? productToUpdate.description,
+                price: !isNaN(parseFloat(productToUpdate.price)) && isFinite(productToUpdate.price)
+                    ? parseFloat(productToUpdate.price)
                     : productToUpdate.price,
-                thumbnail: productData.thumbnail ?? productToUpdate.thumbnail,
-                stock: !isNaN(parseInt(productData.stock)) && isFinite(productData.stock)
-                    ? parseInt(productData.stock)
+                thumbnail: productToUpdate.thumbnail ?? productToUpdate.thumbnail,
+                stock: !isNaN(parseInt(productToUpdate.stock)) && isFinite(productToUpdate.stock)
+                    ? parseInt(productToUpdate.stock)
                     : productToUpdate.stock
             };
 

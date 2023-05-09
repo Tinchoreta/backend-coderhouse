@@ -18,7 +18,7 @@ class CartManagerController {
     //Método privado, utilizado solo internamente y no puede accederse a él desde fuera de la clase
 
     #_validateCartExists(res, cid) {
-        const cart = this.cartManager.getCartById(cid);
+        const cart = this.cartManagerAdapter.getCartById(cid);
         if (!cart) {
             res.status(404).send('Cart not found');
             return false;
@@ -29,12 +29,20 @@ class CartManagerController {
     //Método privado, utilizado solo internamente y no puede accederse a él desde fuera de la clase
 
     #_validateProductExists(res, pid) {
-        const product = this.productController.getProductById(pid);
+        const product = this.productAdapter.getProductById(pid);
         if (!product) {
             res.status(404).send('Product not found');
             return false;
         }
         return product;
+    }
+
+    #hasEnoughStock(product, unitsToAdd) {
+        return product.stock >= unitsToAdd;
+    }
+
+    #sendError(res, code, message) {
+        res.status(code).json({ error: message });
     }
 
     async createCart(request, response) {
@@ -163,13 +171,6 @@ class CartManagerController {
         res.send(cart);
     }
 
-    #hasEnoughStock(product, unitsToAdd) {
-        return product.stock >= unitsToAdd;
-    }
-
-    #sendError(res, code, message) {
-        res.status(code).json({ error: message });
-    }
 
     async removeProductFromCart(req, res) {
         const cartId = parseInt(req.params.cid);
