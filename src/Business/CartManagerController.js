@@ -225,13 +225,14 @@ class CartManagerController {
             const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
             if (cartItemIndex !== -1) {
                 cart.products[cartItemIndex].quantity -= unitsToRemove;
+               // console.log(cart.products[cartItemIndex].quantity)
                 if (cart.products[cartItemIndex].quantity === 0) {
                     //Se borra directamente el producto del carrito
                     cart.products.splice(cartItemIndex, 1);
                     // console.log(cart)
                 }
             }
-            // console.log(cart)
+             console.log(cart)
             const updatedCart = await this.cartManagerAdapter.updateCart(cart);
 
             return res.status(200).json(updatedCart);

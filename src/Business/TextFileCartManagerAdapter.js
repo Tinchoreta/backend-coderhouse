@@ -71,49 +71,39 @@ class TextFileCartManagerAdapter {
             throw new Error(`addCart: ${error.message}`);
         }
     }
-
     async updateCart(cartToUpdate) {
         try {
             const { id, products } = cartToUpdate;
             const cartId = parseInt(id);
-
+    
             const cartsFromPersistence = await this.PersistenceManager.load();
-            if (cartsFromPersistence.length === 0) {
+            const cartToUpdateIndex = cartsFromPersistence.findIndex((cart) => cart.id === cartId);
+    
+            if (cartToUpdateIndex < 0) {
                 throw new Error(`Cart with ID ${cartId} not found`);
             }
-
-            if (isNaN(cartId)) {
-                throw new Error(`Invalid cart ID: ${cartId}`);
-            }
-
-
-            const updatedCarts = cartsFromPersistence.map((cart) => {
-                if (cart.id === cartId) {
-                    const updatedProducts = cart.products.filter((product) => {
-                        const productToUpdate = products.find((p) => p.productId === product.productId);
-                        return productToUpdate ? productToUpdate : null;
-                    });
-
-                    return {
-                        id: cartId,
-                        products: updatedProducts
-                    };
-                } else {
-                    return cart;
+    
+            cartsFromPersistence[cartToUpdateIndex].products = products.map((productToUpdate) => {
+                const product = cartsFromPersistence[cartToUpdateIndex].products.find((p) => p.productId === productToUpdate.productId);
+    
+                if (product) {
+                    product.quantity = productToUpdate.quantity;
+                    return product;
                 }
-            });
-            const updatedCart = updatedCarts.find((cart) => cart.id === cartId);
-            if (!updatedCart) {
-                throw new Error(`Cart with ID ${cartId} not found`);
-            }
+    
+                return null;
+                // se utiliza para filtrar los elementos de un array y eliminar los valores que son considerados falsy (valores que son falsos cuando son convertidos a booleanos) del array resultante.
+            }).filter(Boolean);
 
-            await this.PersistenceManager.save(updatedCarts);
-
-            return updatedCart;
+    
+            await this.PersistenceManager.save(cartsFromPersistence);
+    
+            return cartsFromPersistence[cartToUpdateIndex];
         } catch (error) {
             throw new Error(`updateCart: ${error.message}`);
         }
     }
+    
 
 
     async removeProductFromCart(cartId, productId) {
