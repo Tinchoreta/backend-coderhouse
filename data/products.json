@@ -5,7 +5,7 @@
     "description": "Descripción del producto 1",
     "price": 578,
     "thumbnail": "https://ejemplo.com/imagen-producto-1.jpg",
-    "stock": 115
+    "stock": 5
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "description": "Descripción del producto 2",
     "price": 438,
     "thumbnail": "https://ejemplo.com/imagen-producto-2.jpg",
-    "stock": 204
+    "stock": 5
   },
   {
     "id": 3,
@@ -21,7 +21,7 @@
     "description": "Descripción del producto 3",
     "price": 734,
     "thumbnail": "https://ejemplo.com/imagen-producto-3.jpg",
-    "stock": 465
+    "stock": 5
   },
   {
     "id": 4,
@@ -29,7 +29,7 @@
     "description": "Descripción del producto 4",
     "price": 809,
     "thumbnail": "https://ejemplo.com/imagen-producto-4.jpg",
-    "stock": 303
+    "stock": 5
   },
   {
     "id": 5,
@@ -37,7 +37,7 @@
     "description": "Descripción del producto 5",
     "price": 870,
     "thumbnail": "https://ejemplo.com/imagen-producto-5.jpg",
-    "stock": 106
+    "stock": 5
   },
   {
     "id": 6,
@@ -45,7 +45,7 @@
     "description": "Descripción del producto 6",
     "price": 631,
     "thumbnail": "https://ejemplo.com/imagen-producto-6.jpg",
-    "stock": 137
+    "stock": 5
   },
   {
     "id": 7,
@@ -53,7 +53,7 @@
     "description": "Descripción del producto 7",
     "price": 617,
     "thumbnail": "https://ejemplo.com/imagen-producto-7.jpg",
-    "stock": 479
+    "stock": 5
   },
   {
     "id": 8,
@@ -61,7 +61,7 @@
     "description": "Descripción del producto 8",
     "price": 296,
     "thumbnail": "https://ejemplo.com/imagen-producto-8.jpg",
-    "stock": 273
+    "stock": 5
   },
   {
     "id": 9,
@@ -69,7 +69,7 @@
     "description": "Esta es la nueva descripción del producto",
     "price": 25.99,
     "thumbnail": "https://ejemplo.com/imagen-producto-9.jpg",
-    "stock": 472
+    "stock": 6
   },
   {
     "id": 10,
@@ -77,6 +77,6 @@
     "description": "Esta es la nueva descripción del producto 10",
     "price": 92.99,
     "thumbnail": "https://ejemplo.com/imagen-producto-10.jpg",
-    "stock": 672
+    "stock": 5
   }
 ]

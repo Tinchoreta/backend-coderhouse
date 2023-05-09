@@ -74,7 +74,8 @@ class TextFileCartManagerAdapter {
 
     async updateCart(cartToUpdate) {
         try {
-            const { cartId, products } = cartToUpdate;
+            const { id, products } = cartToUpdate;
+            const cartId = parseInt(id);
 
             const cartsFromPersistence = await this.PersistenceManager.load();
             if (cartsFromPersistence.length === 0) {
@@ -85,39 +86,30 @@ class TextFileCartManagerAdapter {
                 throw new Error(`Invalid cart ID: ${cartId}`);
             }
 
-            const cartToModify = cartsFromPersistence.find((cart) => cart.id === cartId);
-
-            if (!cartToModify) {
-                throw new Error(`Cart with ID ${cartId} not found`);
-            }
-
-            let updatedCart;
-
-            //si la cantidad del producto es 0 hay que borrar el producto del carrito
-            if (productQuantity === 0) {
-                updatedCart = {
-                    id: cartToModify.id,
-                    products: cartToModify.products.filter((product) => product.id !== products.productId)
-                };
-                //Sino simplemente actualizo el quantity
-            } else {
-                updatedCart = {
-                    id: cartToModify.id,
-                    products: cartToModify.products.map((product) => {
-                        if (product.productId === products.productId) {
-                            product.quantity = products.quantity;
-                        }
-                        return product;
-                    })
-                };
-            }
 
             const updatedCarts = cartsFromPersistence.map((cart) => {
                 if (cart.id === cartId) {
-                    return updatedCart;
+                    const updatedProducts = cart.products.map((product) => {
+                        const productToUpdate = products.find((p) => p.productId === product.productId);
+                        if (productToUpdate) {
+                            return { productId: product.productId, quantity: productToUpdate.quantity };
+                        } else {
+                            return product;
+                        }
+                    });
+
+                    return {
+                        id: cartId,
+                        products: updatedProducts,
+                    };
+                } else {
+                    return cart;
                 }
-                return cart;
             });
+            const updatedCart = updatedCarts.find((cart) => cart.id === cartId);
+            if (!updatedCart) {
+                throw new Error(`Cart with ID ${cartId} not found`);
+            }
 
             await this.PersistenceManager.save(updatedCarts);
 
@@ -126,6 +118,7 @@ class TextFileCartManagerAdapter {
             throw new Error(`updateCart: ${error.message}`);
         }
     }
+
 
     async removeProductFromCart(cartId, productId) {
         try {

@@ -193,13 +193,13 @@ class CartManagerController {
             }
 
             const cart = await this.#_validateCartExists(res, cartId);
-            console.log(cart)
+            // console.log(cart)
             if (!cart || typeof (cart) === 'undefined') {
                 return this.#sendError(res, 404, 'Cart not found');
             }
 
             const product = await this.#_validateProductExists(res, productId);
-            console.log(product)
+            // console.log(product)
             if (!product || typeof(product) === 'undefined') {
                 return this.#sendError(res, 404, 'Product not found');
             }
@@ -215,16 +215,17 @@ class CartManagerController {
             // Se agregan las unidades al stock del producto
             product.stock += unitsToRemove;
 
+           // console.log(product.stock)
             //Se actualiza la cantidad de stock en persistencia
 
             this.productAdapter.updateProduct(product);
-
+           // console.log(product)
             // Se actualiza la cantidad del producto en el carrito
             const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
             if (cartItemIndex !== -1) {
                 cart.products[cartItemIndex].quantity -= unitsToRemove;
             }
-
+            // console.log(cart)
             const updatedCart = await this.cartManagerAdapter.updateCart(cart);
 
             return res.status(200).json(updatedCart);
