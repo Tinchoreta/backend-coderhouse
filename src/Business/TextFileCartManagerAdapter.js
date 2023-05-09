@@ -76,8 +76,8 @@ class TextFileCartManagerAdapter {
         try {
             const { cartId, products } = cartToUpdate;
 
-            const carts = await this.PersistenceManager.load();
-            if (carts.length === 0) {
+            const cartsFromPersistence = await this.PersistenceManager.load();
+            if (cartsFromPersistence.length === 0) {
                 throw new Error('Cart with ID ${cartId} not found');
             }
 
@@ -85,7 +85,7 @@ class TextFileCartManagerAdapter {
                 throw new Error(`Invalid cart ID: ${cartIdToModify}`);
             }
 
-            const cartToModify = carts.find((cart) => cart.id === cartId);
+            const cartToModify = cartsFromPersistence.find((cart) => cart.id === cartId);
 
             if (!cartToModify) {
                 throw new Error(`Cart with ID ${cartId} not found`);
@@ -99,6 +99,7 @@ class TextFileCartManagerAdapter {
                     id: cartToModify.id,
                     products: cartToModify.products.filter((product) => product.id !== products.productId)
                 };
+                //Sino simplemente actualizo el quantity
             } else {
                 updatedCart = {
                     id: cartToModify.id,
@@ -111,7 +112,7 @@ class TextFileCartManagerAdapter {
                 };
             }
 
-            const updatedCarts = carts.map((cart) => {
+            const updatedCarts = cartsFromPersistence.map((cart) => {
                 if (cart.id === cartId) {
                     return updatedCart;
                 }
@@ -132,22 +133,21 @@ class TextFileCartManagerAdapter {
                 throw new Error('Invalid parameters');
             }
 
-            const carts = await this.cartManagerAdapter.getCarts();
-            const cart = carts.find((cart) => cart.id === parseInt(cartId));
+            const cartsFromPersistence = await this.cartManagerAdapter.getCarts();
+            const cartFound = cartsFromPersistence.find((cart) => cart.id === parseInt(cartId));
             if (!cart) {
                 throw new Error(`Cart with ID: ${cartId} not found`);
             }
 
-            const product = cart.products.find((product) => product.productId === parseInt(productId));
+            const product = cartFound.products.find((product) => product.productId === parseInt(productId));
             if (!product) {
                 throw new Error(`Product with ID: ${productId} not found in cart with ID: ${cartId}`);
             }
 
-            cart.products = cart.products.filter((product) => product.productId !== parseInt(productId));
+            cartFound.products = cartFound.products.filter((product) => product.productId !== parseInt(productId));
             await this.cartManagerAdapter.updateCart({
-                cartIdToModify: cartId,
-                productIdToModify: productId,
-                productQuantity: 0
+                id: cartId,
+                products: cartFound.products
             });
 
             return cart;

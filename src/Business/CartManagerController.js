@@ -172,7 +172,7 @@ class CartManagerController {
     }
 
 
-    async removeProductFromCart(req, res) {
+    async removeProductUnitsFromCart(req, res) {
         const cartId = parseInt(req.params.cid);
         const productId = parseInt(req.params.pid);
         let unitsToRemove = Number(req.params.units);
@@ -199,18 +199,20 @@ class CartManagerController {
             }
         }
 
-        // Agregamos las unidades al stock del producto
+        // Se agregan las unidades al stock del producto
         product.stock += unitsToRemove;
+        
+        //Se actualiza la cantidad de stock en persistencia
 
         this.productAdapter.updateProduct(product);
 
-        const updatedCart = await this.cartManagerAdapter.removeProductFromCart({
-            cartId: cartId,
-            products: {
-                productId: productId,
-                quantity: 0
-            }
-        });
+        // Se actualiza la cantidad del producto en el carrito
+        const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
+        if (cartItemIndex !== -1) {
+            cart.products[cartItemIndex].quantity -= unitsToRemove;
+        }
+
+        const updatedCart = await this.cartManagerAdapter.updateCart(cart);
 
         return res.status(200).json(updatedCart);
     }
