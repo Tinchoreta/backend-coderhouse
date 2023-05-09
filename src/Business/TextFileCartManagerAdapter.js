@@ -100,7 +100,7 @@ class TextFileCartManagerAdapter {
 
                     return {
                         id: cartId,
-                        products: updatedProducts,
+                        products: updatedProducts
                     };
                 } else {
                     return cart;
@@ -128,7 +128,7 @@ class TextFileCartManagerAdapter {
 
             const cartsFromPersistence = await this.cartManagerAdapter.getCarts();
             const cartFound = cartsFromPersistence.find((cart) => cart.id === parseInt(cartId));
-            if (!cart) {
+            if (!cartFound) {
                 throw new Error(`Cart with ID: ${cartId} not found`);
             }
 
@@ -143,7 +143,7 @@ class TextFileCartManagerAdapter {
                 products: cartFound.products
             });
 
-            return cart;
+            return cartFound;
         } catch (error) {
             console.error(error);
             throw new Error("Error removing product from cart.");
