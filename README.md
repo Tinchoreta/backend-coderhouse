@@ -358,6 +358,62 @@ A continuación, se detalla el uso de los métodos de esta clase:
 
 `removeProductItem`: recibe una solicitud HTTP para eliminar un producto específico según su ID, utiliza el adaptador para eliminar el producto de la base de datos y responde con un código de estado HTTP 204 en caso de éxito, o un código de estado HTTP 500 en caso de error.
 
+# **Primera entrega proyecto Final - Sprint-4**
+
+# Manejo de Productos
+
+## Rutas
+
+- GET `/api/products` (ya definida)
+- GET `/api/products/:pid` (ya definida)
+- POST `/api/products` para crear un producto.
+- UPDATE `/api/products/:pid` para modificar un producto.
+- DELETE `/api/products/:pid` para eliminar un producto.
+
+Configurados en el archivo: `routes/products.router.js`
+
+## Implementación
+
+En la clase `ProductController`, se han implementado los métodos correspondientes a cada ruta.
+
+Para la creación de un nuevo producto, se ha agregado la función `createProduct(req, res)`, que recibe como parámetro la información del producto a crear y lo agrega al archivo `productos.json` utilizando el file system.
+
+Para modificar un producto existente, se ha agregado la función `updateProduct(req, res)`, que recibe como parámetro la información actualizada del producto y lo modifica en el archivo `productos.json` utilizando el file system.
+
+Para eliminar un producto, se ha agregado la función `deleteProduct(req, res)`, que recibe como parámetro el id del producto a eliminar y lo elimina del archivo `productos.json` utilizando el file system.
+
+# Manejo de Carritos
+
+## Rutas
+
+- GET `/api/carts` (ya definida)
+- GET `/api/carts/:cid` (ya definida)
+- POST `/api/carts` para crear un carrito vacío.
+- UPDATE `/api/carts/:cid/product/:pid/:units` para agregar determinada cantidad (units) de un producto (pid) a un carrito (cid)
+- DELETE `/api/carts/:cid/product/:pid/:units` para quitar determinada cantidad (units) de un producto (pid) a un carrito (cid)
+
+Configuradas en el archivo: `routes/carts.router.js`
+
+## Implementación
+
+En la clase `CartController`, se han implementado los métodos correspondientes a cada ruta.
+
+Para crear un nuevo carrito, se ha agregado la función `createCart(req, res)`, que crea un carrito vacío y lo agrega al archivo `carrito.json` utilizando el file system.
+
+Para agregar un producto a un carrito existente, se ha agregado la función `addProductToCart(req, res)`, que recibe como parámetro el id del carrito, el id del producto y la cantidad de unidades a agregar, y realiza las siguientes operaciones:
+
+- Verifica si el producto tiene suficientes unidades en stock.
+- Verifica si el carrito tiene suficientes unidades disponibles.
+- Agrega el producto al carrito y actualiza la cantidad de unidades en stock en el archivo `productos.json` utilizando el file system.
+
+Para quitar un producto de un carrito existente, se ha agregado la función `removeProductUnitsFromCart(req, res)`, que recibe como parámetro el id del carrito, el id del producto y la cantidad de unidades a quitar, y realiza las siguientes operaciones:
+
+- Verifica si el carrito tiene suficientes unidades del producto para quitar.
+- Agrega las unidades al stock del producto en el archivo `productos.json` utilizando el file system.
+- Quita el producto del carrito y actualiza la cantidad de unidades disponibles en el archivo `carrito.json` utilizando el file system.
+
+
+
 ## Autor
 
 Este código fue escrito por **Martín Reta** tinchoreta@gmail.com y está bajo licencia MIT. Siéntete libre de utilizarlo y mejorarlo como desees.
