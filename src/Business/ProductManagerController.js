@@ -44,6 +44,13 @@ class ProductManagerController {
             const products = await this.productManagerAdapter.getProducts();
             const limit = parseInt(request.query.limit);
 
+            if (isNaN(limit) || limit <= 0) {
+                return response.status(400).json({
+                  success: false,
+                  error: 'Bad Request: Limit must be a positive integer'
+                });
+              }    
+
             if (isNaN(limit)) {
                 return response.status(200).json({
                     success: true,

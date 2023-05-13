@@ -47,7 +47,7 @@ class TextFileProductAdapter {
         try {
             const products = await this.PersistenceManager.load();
             if (products.length === 0) {
-                throw new Error('Not found - length= 0');
+                throw new Error('Not found - length = 0');
             }
             const found = products.find((product) => product.id === parseInt(idProduct));
             if (!found) {
