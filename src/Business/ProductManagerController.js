@@ -79,9 +79,7 @@ class ProductManagerController {
   async getProductById(request, response) {
     try {
       const productId = parseInt(request.params.id);
-      const productFound = await this.productManagerAdapter.getProductById(
-        productId
-      );
+      const productFound = await this.productManagerAdapter.getProductById(productId);
       if (productFound) {
         return response.status(200).json({
           success: true,

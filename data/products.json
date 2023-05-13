@@ -29,7 +29,7 @@
     "description": "Descripción del producto 4",
     "price": 809,
     "thumbnail": "https://ejemplo.com/imagen-producto-4.jpg",
-    "stock": 5
+    "stock": 10
   },
   {
     "id": 5,
