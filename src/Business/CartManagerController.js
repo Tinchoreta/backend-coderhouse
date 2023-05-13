@@ -49,7 +49,7 @@ class CartManagerController {
     }
 
     #hasEnoughStock(availableUnits, unitsToAdd) {
-        return availableUnits >= unitsToAdd;
+        return availableUnits > unitsToAdd;
     }
 
     #sendError(res, code, message) {
@@ -153,14 +153,14 @@ class CartManagerController {
         if (!product) {
             return this.#sendError(res, 404, 'Product not found');
         }
-        
+
         const productInCart = cart.products.find(p => p.productId === productId);
         const currentUnits = productInCart ? productInCart.quantity : 0;
         const availableUnits = product.stock - currentUnits;
 
-        console.log(availableUnits + ' units available');
-        console.log(unitsToAdd +' units to add');
-        console.log(currentUnits +' current units');
+        // console.log(availableUnits + ' units available');
+        // console.log(unitsToAdd + ' units to add');
+        // console.log(currentUnits + ' current units');
 
         if (!this.#hasEnoughStock(availableUnits, unitsToAdd)) {
             return this.#sendError(res, 400, 'Not enough stock');
@@ -177,15 +177,14 @@ class CartManagerController {
 
             //si no existe en el carrito, lo agrega al producto con las unidades requeridas
         } else {
+            // console.log(unitsToAddRestrained)
             cart.products.push({ productId, quantity: unitsToAddRestrained });
+            console.log(cart.products)
         }
 
-       // product.stock -= unitsToAddRestrained;
+        const updatedCart = await this.cartManagerAdapter.updateCart(cart);
 
-        this.cartManagerAdapter.updateCart(cart);
-       // this.productAdapter.updateProduct(product);
-
-        res.send(cart);
+        res.send(updatedCart);
     }
 
 

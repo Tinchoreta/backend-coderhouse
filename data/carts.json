@@ -5,6 +5,10 @@
       {
         "productId": 5,
         "quantity": 1
+      },
+      {
+        "productId": 4,
+        "quantity": 5
       }
     ]
   },
