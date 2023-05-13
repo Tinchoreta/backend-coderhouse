@@ -35,6 +35,7 @@ class CartManagerController {
     #_validateProductExists = async (res, pid) => {
         try {
             const product = await this.productAdapter.getProductById(pid);
+
             if (!product) {
                 res.status(404).send('Product not found');
                 return false;
@@ -47,8 +48,8 @@ class CartManagerController {
         }
     }
 
-    #hasEnoughStock(product, unitsToAdd) {
-        return product.stock >= unitsToAdd;
+    #hasEnoughStock(availableUnits, unitsToAdd) {
+        return availableUnits > unitsToAdd;
     }
 
     #sendError(res, code, message) {
@@ -132,32 +133,38 @@ class CartManagerController {
         response.status(200).json(updatedItem);
     }
 
-    addProductToCart(req, res) {
+    async addProductUnitsToCart(req, res) {
         const cartId = parseInt(req.params.cid);
         const productId = parseInt(req.params.pid);
         const unitsToAdd = Number(req.params.units);
 
         if (isNaN(cartId) || isNaN(productId) || isNaN(unitsToAdd) || unitsToAdd <= 0) {
-            return this.sendError(res, 400, 'Invalid parameters');
+            return this.#sendError(res, 400, 'Invalid parameters');
         }
 
-        const cart = this._validateCartExists(res, cartId);
+        const cart = await this.#_validateCartExists(res, cartId);
+
         if (!cart) {
-            return this.sendError(res, 404, 'Cart not found');
+            return this.#sendError(res, 404, 'Cart not found');
         }
 
-        const product = this._validateProductExists(res, productId);
+        const product = await this.#_validateProductExists(res, productId);
+
         if (!product) {
-            return this.sendError(res, 404, 'Product not found');
-        }
-
-        if (!this.hasEnoughStock(product, unitsToAdd)) {
-            return this.sendError(res, 400, 'Not enough stock');
+            return this.#sendError(res, 404, 'Product not found');
         }
 
         const productInCart = cart.products.find(p => p.productId === productId);
         const currentUnits = productInCart ? productInCart.quantity : 0;
         const availableUnits = product.stock - currentUnits;
+
+        // console.log(availableUnits + ' units available');
+        // console.log(unitsToAdd + ' units to add');
+        // console.log(currentUnits + ' current units');
+
+        if (!this.#hasEnoughStock(availableUnits, unitsToAdd)) {
+            return this.#sendError(res, 400, 'Not enough stock');
+        }
 
         //Si hay más unidades agregar que stock del producto, se agregan solo las unidades disponibles
 
@@ -170,15 +177,14 @@ class CartManagerController {
 
             //si no existe en el carrito, lo agrega al producto con las unidades requeridas
         } else {
+            // console.log(unitsToAddRestrained)
             cart.products.push({ productId, quantity: unitsToAddRestrained });
+            console.log(cart.products)
         }
 
-        product.stock -= unitsToAddRestrained;
+        const updatedCart = await this.cartManagerAdapter.updateCart(cart);
 
-        this.cartManagerAdapter.updateCart(cart);
-        this.productAdapter.updatedProduct(product);
-
-        res.send(cart);
+        res.send(updatedCart);
     }
 
 
@@ -213,13 +219,6 @@ class CartManagerController {
                 }
             }
 
-            // Se agregan las unidades al stock del producto
-            product.stock += unitsToRemove;
-
-            // console.log(product.stock)
-            //Se actualiza la cantidad de stock en persistencia
-
-            this.productAdapter.updateProduct(product);
             // console.log(product)
             // Se actualiza la cantidad del producto en el carrito
             const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);

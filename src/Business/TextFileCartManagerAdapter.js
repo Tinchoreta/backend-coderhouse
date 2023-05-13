@@ -48,11 +48,11 @@ class TextFileCartManagerAdapter {
         try {
             const cartsList = await this.PersistenceManager.load();
             if (cartsList.length === 0) {
-                throw new Error('Not found');
+                return null;
             }
             const found = cartsList.find((cart) => cart.id === parseInt(cartId));
             if (!found) {
-                throw new Error("Not found");
+                return null;
             }
             return found;
         } catch (error) {
@@ -71,40 +71,37 @@ class TextFileCartManagerAdapter {
             throw new Error(`addCart: ${error.message}`);
         }
     }
+
     async updateCart(cartToUpdate) {
         try {
             const { id, products } = cartToUpdate;
             const cartId = parseInt(id);
-    
+
             const cartsFromPersistence = await this.PersistenceManager.load();
             const cartToUpdateIndex = cartsFromPersistence.findIndex((cart) => cart.id === cartId);
-    
+
             if (cartToUpdateIndex < 0) {
                 throw new Error(`Cart with ID ${cartId} not found`);
             }
-    
-            cartsFromPersistence[cartToUpdateIndex].products = products.map((productToUpdate) => {
-                const product = cartsFromPersistence[cartToUpdateIndex].products.find((p) => p.productId === productToUpdate.productId);
-    
-                if (product) {
-                    product.quantity = productToUpdate.quantity;
-                    return product;
+
+            products.forEach((productToUpdate) => {
+                const productIndexToUpdate = cartsFromPersistence[cartToUpdateIndex].products.findIndex((p) => p.productId === productToUpdate.productId);
+
+                if (productIndexToUpdate !== -1) {
+                    cartsFromPersistence[cartToUpdateIndex].products[productIndexToUpdate].quantity = productToUpdate.quantity;
+                } else {
+                    cartsFromPersistence[cartToUpdateIndex].products.push(productToUpdate);
                 }
-    
-                return null; // para descartar los productos que no estén en el carrito actualizado
+            });
 
-                // se utiliza para filtrar los elementos de un array y eliminar los valores que son considerados falsy (valores que son falsos cuando son convertidos a booleanos) del array resultante. Es decir, los productos que no estén en el carrito actualizado no quedan en el cartFromPersistence
-            }).filter(Boolean);
-
-    
             await this.PersistenceManager.save(cartsFromPersistence);
-    
+
             return cartsFromPersistence[cartToUpdateIndex];
         } catch (error) {
             throw new Error(`updateCart: ${error.message}`);
         }
     }
-    
+
 
 
     async removeProductFromCart(cartId, productId) {
