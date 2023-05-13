@@ -339,6 +339,81 @@ console.log(products);
 Para las pruebas, se sugiere vaciar el archivo `./data/data.json` ya que sino algunas pruebas como borrar el producto con ID 10 no tendrán el efecto deseado al no encontrar el producto que ya fue borrado del archivo.
 Con estos pasos se puede probar el funcionamiento de la clase TextFileProductAdapter y los métodos para agregar, obtener, actualizar y eliminar productos (CRUD)
 
+
+## Desafio entregable Número uno (Sprint-3)
+
+En este sprint se ha creado la clase `ProductManagerController`, la cual tiene como función actuar como controlador en la gestión de productos. Se encarga de recibir y responder solicitudes HTTP para agregar, obtener, actualizar y eliminar productos, y utiliza un adaptador productManagerAdapter para interactuar con la base de datos, que en este caso se trata de un archivo JSON, administrado por PersistenceManager y TextFileStrategy.
+
+Además, en el código de esta clase se proporciona una lista de *códigos de estado HTTP* con sus correspondientes descripciones, con el fin de tener un mejor entendimiento de los errores que pueden surgir al realizar solicitudes.
+
+A continuación, se detalla el uso de los métodos de esta clase:
+
+`addProduct`: recibe una solicitud HTTP con los datos del producto a agregar en el cuerpo de la solicitud, verifica que la solicitud contenga los datos necesarios y utiliza el adaptador para agregar el producto a la base de datos. Responde con un código de estado HTTP 201 y el producto agregado en caso de éxito, o un código de estado HTTP 400 o 500 en caso de error.
+
+`getProducts`: recibe una solicitud HTTP para obtener todos los productos, verifica si se ha especificado un límite en la cantidad de productos a devolver y utiliza el adaptador para obtener los productos de la base de datos. Responde con un código de estado HTTP 200 y los productos obtenidos en caso de éxito, o un código de estado HTTP 500 en caso de error.
+
+`getProductById`: recibe una solicitud HTTP para obtener un producto específico según su ID, utiliza el adaptador para buscar el producto en la base de datos y responde con un código de estado HTTP 200 y el producto encontrado en caso de éxito, o un código de estado HTTP 404 o 500 en caso de error.
+
+`updateProductItem`: recibe una solicitud HTTP para actualizar un producto específico según su ID, utiliza el adaptador para actualizar el producto en la base de datos y responde con un código de estado HTTP 200 y el producto actualizado en caso de éxito, o un código de estado HTTP 500 en caso de error.
+
+`removeProductItem`: recibe una solicitud HTTP para eliminar un producto específico según su ID, utiliza el adaptador para eliminar el producto de la base de datos y responde con un código de estado HTTP 204 en caso de éxito, o un código de estado HTTP 500 en caso de error.
+
+# **Primera entrega proyecto Final - Sprint-4**
+
+# Manejo de Productos
+
+## Rutas
+
+- GET `/api/products` (ya definida)
+- GET `/api/products/:pid` (ya definida)
+- POST `/api/products` para crear un producto.
+- UPDATE `/api/products/:pid` para modificar un producto.
+- DELETE `/api/products/:pid` para eliminar un producto.
+
+Configurados en el archivo: `routes/products.router.js`
+
+## Implementación
+
+En la clase `ProductController`, se han implementado los métodos correspondientes a cada ruta.
+
+Para la creación de un nuevo producto, se ha agregado la función `createProduct(req, res)`, que recibe como parámetro la información del producto a crear y lo agrega al archivo `productos.json` utilizando el file system.
+
+Para modificar un producto existente, se ha agregado la función `updateProduct(req, res)`, que recibe como parámetro la información actualizada del producto y lo modifica en el archivo `productos.json` utilizando el file system.
+
+Para eliminar un producto, se ha agregado la función `deleteProduct(req, res)`, que recibe como parámetro el id del producto a eliminar y lo elimina del archivo `productos.json` utilizando el file system.
+
+# Manejo de Carritos
+
+## Rutas
+
+- GET `/api/carts` (ya definida)
+- GET `/api/carts/:cid` (ya definida)
+- POST `/api/carts` para crear un carrito vacío.
+- UPDATE `/api/carts/:cid/product/:pid/:units` para agregar determinada cantidad (units) de un producto (pid) a un carrito (cid)
+- DELETE `/api/carts/:cid/product/:pid/:units` para quitar determinada cantidad (units) de un producto (pid) a un carrito (cid)
+
+Configuradas en el archivo: `routes/carts.router.js`
+
+## Implementación
+
+En la clase `CartController`, se han implementado los métodos correspondientes a cada ruta.
+
+Para crear un nuevo carrito, se ha agregado la función `createCart(req, res)`, que crea un carrito vacío y lo agrega al archivo `carrito.json` utilizando el file system.
+
+Para agregar un producto a un carrito existente, se ha agregado la función `addProductToCart(req, res)`, que recibe como parámetro el id del carrito, el id del producto y la cantidad de unidades a agregar, y realiza las siguientes operaciones:
+
+- Verifica si el producto tiene suficientes unidades en stock.
+- Verifica si el carrito tiene suficientes unidades disponibles.
+- Agrega el producto al carrito y actualiza la cantidad de unidades en stock en el archivo `productos.json` utilizando el file system.
+
+Para quitar un producto de un carrito existente, se ha agregado la función `removeProductUnitsFromCart(req, res)`, que recibe como parámetro el id del carrito, el id del producto y la cantidad de unidades a quitar, y realiza las siguientes operaciones:
+
+- Verifica si el carrito tiene suficientes unidades del producto para quitar.
+- Agrega las unidades al stock del producto en el archivo `productos.json` utilizando el file system.
+- Quita el producto del carrito y actualiza la cantidad de unidades disponibles en el archivo `carrito.json` utilizando el file system.
+
+
+
 ## Autor
 
 Este código fue escrito por **Martín Reta** tinchoreta@gmail.com y está bajo licencia MIT. Siéntete libre de utilizarlo y mejorarlo como desees.
