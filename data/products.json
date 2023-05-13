@@ -78,5 +78,12 @@
     "price": 92.99,
     "thumbnail": "https://ejemplo.com/imagen-producto-10.jpg",
     "stock": 5
+  },
+  {
+    "id": 11,
+    "title": "Producto 11",
+    "description": "Descripción del producto 11",
+    "price": 458,
+    "thumbnail": "https://ejemplo.com/imagen-producto-11.jpg"
   }
 ]

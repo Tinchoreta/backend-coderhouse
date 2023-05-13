@@ -47,13 +47,11 @@ class TextFileProductAdapter {
         try {
             const products = await this.PersistenceManager.load();
             if (products.length === 0) {
-                throw new Error('Not found - length = 0');
+                throw new Error('Product not found');
             }
             const found = products.find((product) => product.id === parseInt(idProduct));
-            if (!found) {
-                throw new Error("Not found");
-            }
-            return found;
+                                    
+            return found || null;
         } catch (error) {
             throw new Error(`getProductById: ${error.message}`);
         }
@@ -129,9 +127,9 @@ class TextFileProductAdapter {
             }
             //Se cargan los datos de los productos desde data.json
             const products = await this.PersistenceManager.load();
-            console.log(products)
+            //console.log(products)
             const productIndex = products.findIndex((product) => product.id === id);
-            console.log(productIndex)
+            //console.log(productIndex)
             //Si no se encuentra el producto en el archivo data.json 
             //findIndex devolverá -1
             if (productIndex === -1) {
@@ -142,6 +140,7 @@ class TextFileProductAdapter {
 
             //Y se vuelve a guardar en data.json los restantes productos.
             await this.PersistenceManager.save(products);
+            return true;
         } catch (error) {
             throw new Error(`deleteProduct: ${error.message}`);
         }

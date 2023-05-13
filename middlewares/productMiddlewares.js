@@ -1,15 +1,47 @@
-import TextFileProductAdapter from "../src/Business/TextFileProductAdapter";
-import ProductManagerController from "../src/Business/ProductManagerController";
+import TextFileProductAdapter from "../src/Business/TextFileProductAdapter.js";
 
-const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/products.json");
-const productController = new ProductManagerController(textFileProductAdapter);
+const textFileProductAdapter = TextFileProductAdapter.getInstance(
+  "./data/products.json"
+);
 
-function validateProductExistence(req, res, next) {
-    const productId = req.params.id;
-    const product = textFileProductAdapter.getProductById(productId);
-    if (!product) {
-      return res.status(404).json({ success: false, error: 'Product not found' });
-    }
-    next();
+async function validateProductExistence(req, res, next) {
+  const productId = req.params.id;
+
+  if (isNaN(productId)) {
+    return res.status(400).json({ success: false, error: "Invalid product ID" });
   }
+  
+  const product = await textFileProductAdapter.getProductById(productId);
+  if (!product) {
+    return res.status(404).json({ success: false, error: "Product not found" });
+  }
+  next();
+}
 
+/*
+Ejemplo de producto
+"id": 2,
+"title": "Producto 2",
+"description": "Descripción del producto 2",
+"price": 438,
+"thumbnail": "https://ejemplo.com/imagen-producto-2.jpg",
+"stock": 5 */
+
+async function validateProductFields(req, res, next) {
+  const { id, title, description, price, thumbnail, stock } = req.body;
+  if (!id || !title || !price || !description || !thumbnail || stock<0) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Missing required fields" });
+  }
+  const existingProduct = await textFileProductAdapter.getProductById(id);
+  if (existingProduct) {
+    return res
+      .status(409)
+      .json({ success: false, error: "Product with this ID already exists" });
+  }
+  req.product = { id, title, price, description, thumbnail, stock: stock || 0 };
+  next();
+}
+
+export { validateProductExistence, validateProductFields };
