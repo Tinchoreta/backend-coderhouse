@@ -76,13 +76,16 @@ class TextFileProductAdapter {
         try {
             const products = await this.PersistenceManager.load();
             const {id} = productToUpdate;
-            const productId = id; 
+            const productId = parseInt(id); 
 
             if (isNaN(productId)) {
                 throw new Error(`Invalid product ID: ${productIdToModify}`);
             }
 
+            //console.log(productId);
             const productToUpdateRetrieved = products.find((product) => product.id === productId);
+
+            // console.log(productToUpdateRetrieved)
 
             if (!productToUpdate) {
                 throw new Error(`Product with ID ${productId} not found`);
@@ -101,7 +104,7 @@ class TextFileProductAdapter {
                     ? parseInt(productToUpdate.stock)
                     : productToUpdateRetrieved.stock
             };
-
+            
             const updatedProducts = products.map((product) => {
                 if (product.id === productId) {
                     return updatedProduct;

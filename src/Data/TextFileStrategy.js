@@ -16,6 +16,7 @@ class TextFileStrategy {
 
             fs.writeFile(this.filePath, JSON.stringify(data, null, 2), ENCODING, (error) => {
                 if (error) {
+                    console.log(error)
                     reject(error);
                 } else {
                     resolve();

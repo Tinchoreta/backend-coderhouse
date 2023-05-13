@@ -115,6 +115,22 @@ class ProductManagerController {
     if (!updatedProduct || typeof updatedProduct !== "object") {
       return response.status(400).send({ message: "Invalid update data" });
     }
+    // Validate that the product properties are not empty strings
+    if (updatedProduct.title === "") {
+      return response.status(400).send({ message: "Title cannot be empty" });
+    }
+    if (updatedProduct.description === "") {
+      return response.status(400).send({ message: "Description cannot be empty" });
+    }
+    if (updatedProduct.price === "") {
+      return response.status(400).send({ message: "Price cannot be empty" });
+    }
+    if (updatedProduct.thumbnail === "") {
+      return response.status(400).send({ message: "Thumbnail cannot be empty" });
+    }
+    if (updatedProduct.stock === "") {
+      return response.status(400).send({ message: "Stock cannot be empty" });
+    }
 
     try {
       // Update the product
@@ -126,9 +142,7 @@ class ProductManagerController {
         thumbnail: updatedProduct.thumbnail,
         stock: updatedProduct.stock,
       };
-      const updatedItem = await this.productManagerAdapter.updateProduct(
-        product
-      );
+      const updatedItem = await this.productManagerAdapter.updateProduct(product);
       response.status(200).json(updatedItem);
     } catch (error) {
       console.error(
@@ -156,10 +170,10 @@ class ProductManagerController {
         ? response
           .status(200)
           .send(
-          {
-            success: true,
-            message: "Product deleted successfully",
-          })
+            {
+              success: true,
+              message: "Product deleted successfully",
+            })
         : response
           .status(400)
           .send(

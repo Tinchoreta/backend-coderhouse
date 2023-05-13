@@ -28,7 +28,9 @@ router.post(
   (req, res) => productController.addProduct(req, res)
 );
 
-router.put("/:id", (req, res) => productController.updateProductItem(req, res));
+router.put("/:id", 
+(req, res, next)=> validateProductExistence(req, res, next),
+(req, res) => productController.updateProductItem(req, res));
 
 router.delete("/:id", 
 (req, res, next)=> validateProductExistence(req, res, next),
