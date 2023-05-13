@@ -48,11 +48,11 @@ class TextFileCartManagerAdapter {
         try {
             const cartsList = await this.PersistenceManager.load();
             if (cartsList.length === 0) {
-                throw new Error('Not found');
+                return null;
             }
             const found = cartsList.find((cart) => cart.id === parseInt(cartId));
             if (!found) {
-                throw new Error("Not found");
+                return null;
             }
             return found;
         } catch (error) {

@@ -132,27 +132,29 @@ class CartManagerController {
         response.status(200).json(updatedItem);
     }
 
-    addProductToCart(req, res) {
+    addProductUnitsToCart(req, res) {
         const cartId = parseInt(req.params.cid);
         const productId = parseInt(req.params.pid);
         const unitsToAdd = Number(req.params.units);
 
         if (isNaN(cartId) || isNaN(productId) || isNaN(unitsToAdd) || unitsToAdd <= 0) {
-            return this.sendError(res, 400, 'Invalid parameters');
+            return this.#sendError(res, 400, 'Invalid parameters');
         }
 
-        const cart = this._validateCartExists(res, cartId);
+        const cart = this.#_validateCartExists(res, cartId);
+        
         if (!cart) {
-            return this.sendError(res, 404, 'Cart not found');
+            return this.#sendError(res, 404, 'Cart not found');
         }
 
-        const product = this._validateProductExists(res, productId);
+        const product = this.#_validateProductExists(res, productId);
+
         if (!product) {
-            return this.sendError(res, 404, 'Product not found');
+            return this.#sendError(res, 404, 'Product not found');
         }
 
-        if (!this.hasEnoughStock(product, unitsToAdd)) {
-            return this.sendError(res, 400, 'Not enough stock');
+        if (!this.#hasEnoughStock(product, unitsToAdd)) {
+            return this.#sendError(res, 400, 'Not enough stock');
         }
 
         const productInCart = cart.products.find(p => p.productId === productId);
@@ -176,7 +178,7 @@ class CartManagerController {
         product.stock -= unitsToAddRestrained;
 
         this.cartManagerAdapter.updateCart(cart);
-        this.productAdapter.updatedProduct(product);
+        this.productAdapter.updateProduct(product);
 
         res.send(cart);
     }

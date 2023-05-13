@@ -17,7 +17,7 @@ class ProductManager {
         return this.products;
     };
 
-    addProduct ({ title, description, price, thumbnail, stock }) {
+    addProduct({ title, description, price, thumbnail, stock }) {
         if (!title || title.length === 0) {
             throw new Error('El campo título es obligatorio');
         }
@@ -33,11 +33,11 @@ class ProductManager {
         if (stock < 0) {
             throw new Error('El campo stock no puede ser menor que cero');
         }
-        
+
         //si el stock no se especifica, por defecto será cero.
 
         stock = stock ?? 0;
-    
+
         const newId = this.getLastId() + 1;
         const newProduct = new Product(newId, title, description, price, thumbnail, stock);
         this.products.push(newProduct);
@@ -49,7 +49,7 @@ class ProductManager {
         return lastIndex < 0 ? 0 : this.products[lastIndex].id;
     };
 
-    getProductById (idProduct) {
+    getProductById(idProduct) {
         const found = this.products.find((product) => product.id === parseInt(idProduct));
         if (!found) {
             throw new Error("Producto no encontrado");
@@ -72,7 +72,7 @@ class ProductManager {
         return product;
     };
 
-    deleteProduct (idProduct) {
+    deleteProduct(idProduct) {
         const productIndex = this.products.findIndex((product) => product.id === parseInt(idProduct));
         if (productIndex === -1) {
             throw new Error(`Producto con ID: ${idProduct} no encontrado`);
