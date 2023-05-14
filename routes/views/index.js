@@ -1,33 +1,32 @@
 import { Router } from "express"
+import TextFileProductAdapter from "../../src/Business/TextFileProductAdapter.js";
+// import {
+//     validateProductExistence,
+//     validateProductFields,
+// } from "../../middlewares/productMiddlewares.js";
+
+const router = Router();
+
+const textFileProductAdapter = TextFileProductAdapter.getInstance(
+    "./data/products.json"
+);
+
 const viewRouter = Router();
 
-
-// viewRouter.get('/chat', async(req,res,next)=> {
-//     try {
-//         return res.render('chat',{
-//             title: 'chat',
-//             script: 'chat.js'
-//         });
-//     } catch(error) {
-//         next(error);
-//     }
-// })
-
-
-viewRouter.get('/', async(req,res,next)=> {
+viewRouter.get('/', async (req, res, next) => {
     try {
-
+        
         let name = "Tincho"
-        let itemsOnCart = 10;
+        let itemsOnCart = await textFileProductAdapter.getProducts().length;
         let totalPrice = 150;
 
-        return res.render('index',{
+        return res.render('index', {
             title: 'BootShop',
             user: name,
             itemsOnCart1: itemsOnCart,
             totalPrice: totalPrice
         });
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 })

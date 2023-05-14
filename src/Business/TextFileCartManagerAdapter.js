@@ -43,6 +43,22 @@ class TextFileCartManagerAdapter {
         }
     }
 
+    async calculateCartPrice(cartId) {
+        try {
+            const cartToCalculatePrice = await this.getCartById(cartId);
+            if (cartToCalculatePrice.length === 0) {
+                return 0;
+            }
+            let totalPrice = 0;
+            cartToCalculatePrice.products.forEach((product) => {
+                totalPrice += product.price;
+            });
+            return totalPrice;
+        } catch (error) {
+            throw new Error(`calculateCartPrice: ${error.message}`);
+        }
+    }
+    
 
     async getCartById(cartId) {
         try {
