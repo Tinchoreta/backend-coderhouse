@@ -51,7 +51,9 @@ class TextFileProductAdapter {
             }
             const found = products.find((product) => product.id === parseInt(idProduct));
             
+            console.log(found);
             return found || null;
+
         } catch (error) {
             throw new Error(`getProductById: ${error.message}`);
         }
@@ -60,9 +62,9 @@ class TextFileProductAdapter {
     async addProduct(productToAdd) {
         try {
             //Hago un destructuring de las propiedades del product a agregar
-            const { title, description, price, thumbnail, stock } = productToAdd;
+            const { id, title, description, price, thumbnail, stock } = productToAdd;
             const products = await this.PersistenceManager.load();
-            const newProduct = { id: products.length + 1, title, description, price, thumbnail, stock };
+            const newProduct = { id: id, title, description, price, thumbnail, stock };
             products.push(newProduct);
             await this.PersistenceManager.save(products);
             return newProduct;
