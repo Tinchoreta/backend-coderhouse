@@ -1,0 +1,44 @@
+<div class="container">
+	<div class="row justify-content-center mt-5">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header bg-dark text-white">
+					<h4 class="card-title text-center">Agregar Producto</h4>
+				</div>
+				<div class="card-body">
+					<form id="productForm" method="POST">
+						<div class="mb-3">
+							<label for="title" class="form-label">Título</label>
+							<input type="text" class="form-control" id="title" name="title" required>
+						</div>
+						<div class="mb-3">
+							<label for="description" class="form-label">Descripción</label>
+							<textarea class="form-control" id="description" name="description" required></textarea>
+						</div>
+						<div class="mb-3">
+							<label for="price" class="form-label">Precio</label>
+							<input type="number" class="form-control" id="price" name="price" min="0" step="0.01"
+								required>
+						</div>
+						<div class="mb-3">
+							<label for="thumbnail" class="form-label">Imagen (URL)</label>
+							<input type="text" class="form-control" id="thumbnail" name="thumbnail" required>
+						</div>
+						<div class="mb-3">
+							<label for="stock" class="form-label">Cantidad en Stock</label>
+							<input type="number" class="form-control" id="stock" name="stock" min="0" required>
+						</div>
+						<div class="d-flex justify-content-end">
+							<button type="button" class="btn btn-default me-2" onclick="limpiar()">Limpiar</button>
+							<button type="submit" class="btn btn-primary">Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script src="/js/{{script}}"></script>
+<link href="/css/{{css}}" rel="stylesheet" type="text/css">

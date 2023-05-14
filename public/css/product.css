@@ -1,0 +1,47 @@
+body {
+    background-color: #3A3F44;
+    color: #fff;
+}
+
+.form-group label {
+    color: #3b463b;
+}
+
+.btn {
+    box-sizing: border-box;
+}
+
+.btn-default {
+    background-color: #3A3F44;
+    border-color: #3A3F44;
+    color: #2f1f1f;
+    transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.btn-default:hover {
+    box-shadow: 0 0 0 1px #4059e8;
+    
+}
+
+.btn-primary {
+    background-color: #222a22;
+    border-color: #18AE18;
+    transition:  0.3s ease, color 0.3s ease;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 0 1px #4059e8;
+    
+}
+
+.card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #8C9BA5;
+    padding: 20px;
+    width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
