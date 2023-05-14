@@ -3,7 +3,6 @@
 .chatArea {
     font-family: 'Roboto', sans-serif;
     font-size: 2em;
-    /* Modificamos el tamaño de letra a 2em */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,7 +15,6 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     font-size: 1.5em;
-    /* Modificamos el tamaño de letra a 1em */
     height: 96px;
     padding: 1rem 2rem;
     text-align: center;
@@ -26,14 +24,12 @@
     border: none;
     background: #E2FFE8;
     font-size: .4em;
-    /* Modificamos el tamaño de letra a .5em */
     border-radius: 20px;
 }
 
 .bg-white {
     border: 1px solid #E7E7E9;
     font-size: .4em;
-    /* Modificamos el tamaño de letra a .5em */
     border-radius: 20px;
 }
 
@@ -41,22 +37,37 @@
     border-radius: 12px;
     border: 1px solid #F0F0F0;
     font-size: 0.4em;
-    /* Modificamos el tamaño de letra a 0.5em */
+    height: 48px;
+    padding:.5rem 1rem;
+    text-align: center;
+    width: 100%;
+    background: #F0F0F0;
+    border-radius: 12px;
+    font-size: 0.4em;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    box-shadow: none;
+    transition: all.3s ease-in-out;
+    -webkit-transition: all.3s ease-in-out;
+    -moz-transition: all.3s ease-in-out;
+    -ms-transition: all.3s ease-in-out;
+    -o-transition: all.3s ease-in-out;
+    transition: all.3s ease-in-out;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
 }
 
 .form-control::placeholder {
     font-size: 1.2em;
-    /* Modificamos el tamaño de letra a 0.5em */
     color: #C4C4C4;
 }
 
 .btn {
-    background-color: #FEC52E;
+    background-color: #ded113;
     color: #fff;
     border: none;
     border-radius: 25px;
     font-size: 0.6em;
-    /* Modificamos el tamaño de letra a 0.8em */
     padding: 10px 20px;
     transition: all 0.3s ease-in-out;
     margin-right: auto;
