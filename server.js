@@ -1,30 +1,23 @@
-import express from 'express';
-import __dirname from './utils.js'
-import indexRoutes from './routes/index.js'
-import errorHandler from './middlewares/errorHandler.js';
-import notFoundHandler from './middlewares/notFound.js';
+import app from "./app.js"
+import { Server } from "socket.io"
 
-
-
-const server = express()
 
 const PORT = 8080
+const ready = ()=> console.log(`Server ready on port: ${PORT}`)
 
-const ready = ()=> console.log(`server ready on port: ${PORT}`)
+const httpServer = app.listen(PORT, ready)
+const socketServer = new Server(httpServer);
 
-server.listen(PORT, ready)
 
-server.use(express.json())
-
-server.use(express.urlencoded({extended:true}))
-
-server.use(express.static(__dirname + '/public'));
-console.log(__dirname)
-try {
-    
-    //console.log(indexRoutes.stack);
-    server.use('/', indexRoutes);
-
-} catch (error) {
-    console.log(error.message);
-}
+socketServer.on(
+    'connection',
+    socket => {
+        console.log(`client ${socket.id} connected`)
+    }
+    //agregar recepcion de la autenticacion
+        //en la practica debe emitir los mensajes de la memoria
+        //en la entrega debe enviar las opciones del chatbot que crean necesarias
+    //agregar recepcion del nuevo mensaje
+        //en la práctica debe enviar los mensajes de la memoria
+        //para la entrega debe emitir una respuesta
+)
