@@ -1,8 +1,10 @@
 import express from 'express';
 import __dirname from './utils.js'
 import indexRoutes from './routes/index.js'
+import errorHandler from './middlewares/errorHandler.js';
+import notFoundHandler from './middlewares/notFound.js';
 
-// import CartManager from './src/Business/CartManager.js';
+
 
 const server = express()
 
