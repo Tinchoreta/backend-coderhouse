@@ -1,4 +1,17 @@
 import { Router } from "express"
-const router = Router();
+const viewRouter = Router();
 
-export default router;
+
+viewRouter.get('/', async(req,res,next)=> {
+    try {
+        return res.render('chat',{
+            title: 'chat',
+            script: 'chat.js'
+        });
+    } catch(error) {
+        next(error);
+    }
+})
+
+
+export default viewRouter;
