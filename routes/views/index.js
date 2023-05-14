@@ -16,10 +16,16 @@ const viewRouter = Router();
 
 viewRouter.get('/', async(req,res,next)=> {
     try {
+
         let name = "Tincho"
+        let itemsOnCart = 10;
+        let totalPrice = 150;
+
         return res.render('index',{
-            title: 'index',
-            name: name
+            title: 'BootShop',
+            user: name,
+            itemsOnCart1: itemsOnCart,
+            totalPrice: totalPrice
         });
     } catch(error) {
         next(error);

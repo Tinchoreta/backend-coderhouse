@@ -1,26 +1,26 @@
 [
   {
     "id": 1,
-    "title": "Producto 1",
-    "description": "Descripción del producto 1",
+    "title": "Memoria Sandisk 16 Gb",
+    "description": "Memoria Micro Sd Ultra Sandisk 16gb Clase 10",
     "price": 578,
-    "thumbnail": "https://ejemplo.com/imagen-producto-1.jpg",
+    "thumbnail": "8.jpg",
     "stock": 5
   },
   {
     "id": 2,
-    "title": "Producto 2",
-    "description": "Descripción del producto 2",
+    "title": "Cámara digital Lumix 10",
+    "description": "14 Megapixels. 18.0 x Optical Zoom. 3.0-inch LCD Screen. Full HD photos and 1280 x 720p HD movie capture. ISO sensitivity ISO6400 at reduced resolution. Tracking Auto Focus. Motion Panorama Mode. Face Detection technology",
     "price": 438,
-    "thumbnail": "https://ejemplo.com/imagen-producto-2.jpg",
+    "thumbnail": "3.jpg",
     "stock": 5
   },
   {
     "id": 3,
-    "title": "Producto 3",
-    "description": "Descripción del producto 3",
+    "title": "Cámara Fujifilm FinePix S2950",
+    "description": " 4 x AA batteries not included. WxDxH 110.2 ×81.4x73.4mm. Weight 0.341kg (excluding battery and memory card). Weight 0.437kg (including battery and memory card).",
     "price": 734,
-    "thumbnail": "https://ejemplo.com/imagen-producto-3.jpg",
+    "thumbnail": "4.jpg",
     "stock": 5
   },
   {
