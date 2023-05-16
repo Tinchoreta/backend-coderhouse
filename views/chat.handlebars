@@ -4,39 +4,28 @@
             <i class="fa fa-comments" aria-hidden="true"></i>
             <span class="pb-5 mt-4">Live chat</span>
             <i class="fa fa-users" aria-hidden="true"></i>
+            <p class="w-25 p-3 font-italic text-center" id="username"></p>
         </div>
 
         <div class="d-flex flex-row p-3">
             <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30"
                 height="30">
-            <div class="chat ml-2 p-3">Hello and thankyou for visiting birdlymind. Please click the video above</div>
+            <p class="chat ml-2 p-3 messages" id="chatMessages">
+                {{!-- Aqui va la conversacion de chat --}}
+                Holaa4
+            </p>
         </div>
 
-        <div class="d-flex flex-row p-3">
-            <div class="bg-white mr-2 p-3"><span class="text-muted">Hello and thankyou for visiting birdlynind.</span>
-            </div>
-            <img src="https://img.icons8.com/color/48/000000/circled-user-male-skin-type-7.png" width="30" height="30">
-        </div>
-
-        <div class="d-flex flex-row p-3">
-            <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30"
-                height="30">
-            <div class="myvideo ml-2"><img src="https://imgur.com/GOxU1jx.png" width="200"></div>
-        </div>
-
-        <div class="d-flex flex-row p-3">
-            <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30"
-                height="30">
-            <div class="chat ml-2 p-3"><span class="text-muted dot">. . .</span></div>
-        </div>
+        {{!-- texarea to send message --}}
 
         <div class="form-group px-3">
-            <textarea class="form-control" rows="5" placeholder="Type your message" id="chatBox"></textarea>
-
+            <textarea class="form-control chatBox" rows="2"  placeholder="Type your message" id="chatBox"></textarea>
         </div>
 
-        <button type="button" class="btn btn-primary btn-lg float-end pull-right m-2 p-2">Send</button>
+        <button type="button" class="btn btn-primary btn-lg float-end pull-right m-2 p-2"
+            id="btnSend">Send</button>
 
     </div>
 </div>
 <link href="/css/{{css}}" rel="stylesheet" type="text/css">
+<script src="/socket.io/socket.io.js"></script>

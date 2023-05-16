@@ -25,6 +25,8 @@
     background: #E2FFE8;
     font-size: .4em;
     border-radius: 20px;
+    height: 350px;
+    max-height: 600px;
 }
 
 .bg-white {
@@ -126,4 +128,8 @@ textarea {
     /* Reduce el ancho del icono SVG */
     height: 10px;
     /* Reduce la altura del icono SVG */
+}
+
+#username {
+    font-size: 14px;
 }
