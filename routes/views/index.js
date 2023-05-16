@@ -6,7 +6,6 @@ import TextFileCartManagerAdapter from "../../src/Business/TextFileCartManagerAd
 //     validateProductFields,
 // } from "../../middlewares/productMiddlewares.js";
 
-const router = Router();
 
 const textFileProductAdapter = TextFileProductAdapter.getInstance(
     "./data/products.json"
