@@ -109,5 +109,13 @@
     "price": 1,
     "thumbnail": "img.jpg",
     "stock": 100
+  },
+  {
+    "id": 16,
+    "title": "des16",
+    "description": "fffff",
+    "price": 123,
+    "thumbnail": "imagen13.jpg",
+    "stock": 122222
   }
 ]

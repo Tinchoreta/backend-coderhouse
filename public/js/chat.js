@@ -7,12 +7,13 @@ Swal.fire({
     inputValidator: (value) => !value && "please write your name",
     allowOutsideClick: false,
     icon: "success",
-    background: "#04CB28",
+    background: "#767e87",
     confirmButtonText: "Aceptar",
-    confirmButtonColor: "#3b463b"
+    confirmButtonColor: "#B5DC86",
+    textColor: "#FFF"
 }).then((res) => {
     userName = res.value;
-    document.getElementById("username").innerHTML = userName;
+    document.getElementById("username").innerHTML = "Conectado como: " + userName;
     socket.emit("auth", userName);
 });
 

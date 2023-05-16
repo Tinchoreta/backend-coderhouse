@@ -11,21 +11,9 @@ body {
     box-sizing: border-box;
 }
 
-.btn-default {
-    background-color: #3A3F44;
-    border-color: #3A3F44;
-    color: #2f1f1f;
-    transition: box-shadow 0.3s ease, color 0.3s ease;
-}
-
-.btn-default:hover {
-    box-shadow: 0 0 0 1px #4059e8;
-    
-}
-
 .btn-primary {
-    background-color: #222a22;
-    border-color: #18AE18;
+    background-color: #788078;
+    border-color: #cdd5cd;
     transition:  0.3s ease, color 0.3s ease;
 }
 
@@ -43,5 +31,5 @@ body {
     padding: 20px;
     width: 300px;
     max-width: 100%;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
