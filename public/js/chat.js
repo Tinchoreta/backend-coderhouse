@@ -1,6 +1,12 @@
 let socket = io();
 let userName;
 
+let chatBox = document.getElementById("chatBox");
+chatBox.addEventListener("keyup", handleSendMessage);
+
+let btnSend = document.getElementById("btnSend");
+btnSend.addEventListener("click", handleSendMessage);
+
 Swal.fire({
     title: "Write your name :)",
     input: "text",
@@ -15,17 +21,15 @@ Swal.fire({
     userName = res.value;
     document.getElementById("username").innerHTML = "Conectado como: " + userName;
     socket.emit("auth", userName);
+    chatBox.focus();
 });
 
 
-let chatBox = document.getElementById("chatBox");
-chatBox.addEventListener("keyup", handleSendMessage);
 
-let btnSend = document.getElementById("btnSend");
-btnSend.addEventListener("click", handleSendMessage);
 
 function handleSendMessage(e) {
     if (e.key === "Enter" || e.type === "click") {
+        // e.preventDefautl();
         let message = chatBox.value;
         if (message.trim()) {
             socket.emit("newMessage", {
@@ -33,8 +37,14 @@ function handleSendMessage(e) {
                 message
             });
             chatBox.value = "";
+            scrollToBottom();
         }
     }
+}
+
+function scrollToBottom() {
+    const chatMessages = document.getElementById("chatMessages");
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 socket.on("allMessages", (message) => {
@@ -43,6 +53,10 @@ socket.on("allMessages", (message) => {
         .join("");
 });
 
+
+socket.on("newMessage", (message) => {
+    document.getElementById("chatMessages").innerHTML = message;
+});
 
 
     // // crea un nuevo elemento div para contener el mensaje y el nombre de usuario
