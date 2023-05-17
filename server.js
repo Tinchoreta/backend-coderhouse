@@ -27,42 +27,65 @@ socketServer.on("connection", (socket) => {
     let isAuthenticated = false;
 
     const sendMessage = (message) => {
-        socket.emit("newMessage", message);
+
+        chats.push({
+            userName: "Bootshop",
+            message: message
+        });
+        console.log(chats);
+
+        socket.emit("allMessages", chats);
     };
 
     const processInput = (input) => {
-        const message = String(input).toLowerCase().trim();
+        
+        const message = String(input[input.length-1].message).toLocaleLowerCase().trim();
 
-        if (!isAuthenticated) {
-            if (message === "/start") {
-                
-                console.log(message);
-                isAuthenticated = true;
-                sendMessage("Hola, bienvenido a Bootshop. Elige una opción:");
-                sendMessage("1. Ver producto más barato");
-                sendMessage("2. Ver producto más caro");
-                sendMessage("3. Salir");
-            } else {
-                sendMessage("Bienvenido a Bootshop! Para comenzar, escribe '/start'");
-            }
-        }  
-        else {
-        if (message === "1") {
-            sendMessage("El producto más barato es ...");
-        } else if (message === "2") {
-            sendMessage("El producto más caro es ...");
-        } else if (message === "3") {
-            sendMessage("Gracias por usar Bootshop. ¡Hasta luego!");
-            isAuthenticated = false;
+        console.log(message);
+        console.log(isAuthenticated);
+
+        if (message === "/start" && !isAuthenticated) {
+            console.log(message + " is authenticated");
+            isAuthenticated = true;
+            sendMessage("Elige una opción:");
+            sendMessage("1. Ver producto más barato");
+            sendMessage("2. Ver producto más caro");
+            sendMessage("3. Salir");
+        } else if (!isAuthenticated) {
+            sendMessage("Bienvenido a Bootshop! Para comenzar, escribe '/start'");
+            return;
+
         } else {
-            sendMessage("Opción inválida. Por favor, elige una opción válida.");
-        }
-    }
-};
+            isAuthenticated = false;
+            // console.log(message + "numero " + typeof (message));
 
-socket.on("newMessage", (data) => {
-    processInput(data);
-});
+            switch (message) {
+                case "1":
+                    sendMessage("El producto más barato es ...");
+                    
+                    break;
+                case "2":
+                    sendMessage("El producto más caro es ...");
+                    
+                    break;
+                case "3":
+                    sendMessage("Gracias por usar Bootshop. ¡Hasta luego!");
+                    
+                    break;
+                default:
+                    sendMessage("Opción inválida. Por favor, elige una opción válida.");
+                    break;
+            }
+        }
+
+
+    };
+
+
+    socket.on("newMessage", (data) => {
+        chats.push(data)
+        processInput(chats);
+    });
 });
 
 

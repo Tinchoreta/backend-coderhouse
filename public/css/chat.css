@@ -27,6 +27,8 @@
     border-radius: 20px;
     height: 20vh;
     max-height: 35vh;
+    justify-content: center;
+    padding-left: 1em;
 }
 
 .bg-white {
@@ -128,7 +130,9 @@ textarea {
     height: 10px;
     
 }
-
+#chatMessages{
+    overflow-y: auto;
+}
 #username {
     font-size: 14px;
     margin-top: 20px;

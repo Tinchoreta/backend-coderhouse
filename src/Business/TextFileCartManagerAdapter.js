@@ -60,6 +60,8 @@ class TextFileCartManagerAdapter {
         // }
     }
     
+    
+
     async calculateProductsQuantityOnCart(cartId){
         try {
             const cartToCalculatePrice = await this.getCartById(cartId);

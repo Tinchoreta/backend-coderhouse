@@ -33,8 +33,8 @@ function handleSendMessage(e) {
         let message = chatBox.value;
         if (message.trim()) {
             socket.emit("newMessage", {
-                userName,
-                message
+                userName: userName,
+                message: message
             });
             chatBox.value = "";
             scrollToBottom();
@@ -51,12 +51,13 @@ socket.on("allMessages", (message) => {
     document.getElementById("chatMessages").innerHTML = message
         .map((msg) => `<br><b>${msg.userName}</b>: ${msg.message}`)
         .join("");
+    scrollToBottom();
 });
 
 
-socket.on("newMessage", (message) => {
-    document.getElementById("chatMessages").innerHTML = message;
-});
+// socket.on("newMessage", (message) => {
+//     document.getElementById("chatMessages").innerHTML += `<br><b>${message.userName}:</b> ${message.message}`;
+// });
 
 
     // // crea un nuevo elemento div para contener el mensaje y el nombre de usuario
