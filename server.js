@@ -9,19 +9,6 @@ const httpServer = app.listen(PORT, ready)
 const socketServer = new Server(httpServer);
 
 const chats = [];
-// socketServer.on("connection", (socket) => {
-//     // socket server trabaja para todos los clientes
-//     //   console.log(socket.client.id);
-//     socket.on("auth", () => {
-//         //socket solo para cada cliente
-//         socketServer.emit("allMessages", chats);
-//     });
-//     socket.on("newMessage", (data) => {
-//         chats.push(data);
-//         console.log(chats);
-//         socketServer.emit("allMessages", chats);
-//     });
-// });
 
 socketServer.on("connection", (socket) => {
     let isAuthenticated = false;
@@ -77,9 +64,7 @@ socketServer.on("connection", (socket) => {
                     break;
             }
         }
-
-
-    };
+};
 
 
     socket.on("newMessage", (data) => {

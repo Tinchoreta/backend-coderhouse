@@ -1,15 +1,13 @@
 import { Router } from "express"
 import TextFileProductAdapter from "../../src/Business/TextFileProductAdapter.js";
 import TextFileCartManagerAdapter from "../../src/Business/TextFileCartManagerAdapter.js";
-// import {
-//     validateProductExistence,
-//     validateProductFields,
-// } from "../../middlewares/productMiddlewares.js";
+import chatRouter from './chat.js'
+import productRouter from "./product.js"
 
 
-const textFileProductAdapter = TextFileProductAdapter.getInstance(
-    "./data/products.json"
-);
+// const textFileProductAdapter = TextFileProductAdapter.getInstance(
+//     "./data/products.json"
+// );
 
 const textFileCartAdapter = TextFileCartManagerAdapter.getInstance("./data/carts.json");
 
@@ -32,5 +30,8 @@ viewRouter.get('/', async (req, res, next) => {
         next(error);
     }
 })
+
+viewRouter.use('/chat', chatRouter);
+viewRouter.use('/new_product', productRouter);
 
 export default viewRouter;

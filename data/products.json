@@ -117,5 +117,13 @@
     "price": 123,
     "thumbnail": "imagen13.jpg",
     "stock": 122222
+  },
+  {
+    "id": 18,
+    "title": "ti18",
+    "description": "181888",
+    "price": 150,
+    "thumbnail": "18.jpg",
+    "stock": 100
   }
 ]

@@ -50,7 +50,7 @@ class TextFileProductAdapter {
                 return null;
             }
             const found = products.find((product) => product.id === parseInt(idProduct));
-            
+
             console.log(found);
             return found || null;
 

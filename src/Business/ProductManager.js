@@ -52,7 +52,7 @@ class ProductManager {
     getProductById(idProduct) {
         const found = this.products.find((product) => product.id === parseInt(idProduct));
         if (!found) {
-            throw new Error("Producto no encontrado");
+            return null;
         }
         return found;
     };
@@ -79,6 +79,19 @@ class ProductManager {
         }
         this.products.splice(productIndex, 1);
     };
+
+    calculateTotalPrice(products) {
+        try {
+            let totalPrice = 0;
+            for (const product of products) {
+                const productData = this.getProductById(product.id); 
+                totalPrice += productData.price * product.quantity;
+            }
+            return totalPrice;
+        } catch (error) {
+            throw new Error(`calculateTotalPrice: ${error.message}`);
+        }
+    }
 }
 
 export default ProductManager;

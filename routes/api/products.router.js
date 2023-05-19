@@ -17,8 +17,8 @@ const productController = new ProductManagerController(textFileProductAdapter);
 router.get("/", (req, res) => productController.getProducts(req, res));
 
 router.get(
-  "/:id",  
-  (req, res, next)=> validateProductExistence(req, res, next),
+  "/:id",
+  (req, res, next) => validateProductExistence(req, res, next),
   (req, res) => productController.getProductById(req, res)
 );
 
@@ -28,13 +28,13 @@ router.post(
   (req, res) => productController.addProduct(req, res)
 );
 
-router.put("/:id", 
-(req, res, next)=> validateProductExistence(req, res, next),
-(req, res) => productController.updateProductItem(req, res));
+router.put("/:id",
+  (req, res, next) => validateProductExistence(req, res, next),
+  (req, res) => productController.updateProductItem(req, res));
 
-router.delete("/:id", 
-(req, res, next)=> validateProductExistence(req, res, next),
-(req, res) =>  productController.removeProductItem(req, res)
+router.delete("/:id",
+  (req, res, next) => validateProductExistence(req, res, next),
+  (req, res) => productController.removeProductItem(req, res)
 );
 
 export default router;
