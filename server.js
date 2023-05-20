@@ -1,6 +1,6 @@
 import app from "./app.js"
 import { Server } from "socket.io"
-
+import TextFileProductAdapter from "./src/Business/TextFileProductAdapter.js"
 
 const PORT = 8080
 const ready = () => console.log(`Server ready on port: ${PORT}`)
@@ -49,6 +49,7 @@ socketServer.on("connection", (socket) => {
             switch (message) {
                 case "1":
                     sendMessage("El producto más barato es ...");
+                    productAdapter = TextFileProductAdapter.getInstance("./data/products.json");
                     
                     break;
                 case "2":

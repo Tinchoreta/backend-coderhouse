@@ -15,16 +15,13 @@ Swal.fire({
     icon: "success",
     background: "#767e87",
     confirmButtonText: "Aceptar",
-    confirmButtonColor: "#B5DC86",
-    textColor: "#FFF"
+    confirmButtonColor: "#B5DC86"
 }).then((res) => {
     userName = res.value;
     document.getElementById("username").innerHTML = "Conectado como: " + userName;
     socket.emit("auth", userName);
     chatBox.focus();
 });
-
-
 
 
 function handleSendMessage(e) {
