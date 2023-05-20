@@ -63,6 +63,7 @@ C:.
 \---views
     |   chat.handlebars
     |   index.handlebars
+    |   addProduct.handlebars
     |   
     \---layouts
             main.handlebars

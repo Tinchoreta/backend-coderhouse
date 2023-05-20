@@ -93,45 +93,5 @@
     "price": 458,
     "thumbnail": "https://ejemplo.com/imagen-producto-12.jpg",
     "stock": 0
-  },
-  {
-    "id": 15,
-    "title": "ff",
-    "description": "fggg",
-    "price": 111,
-    "thumbnail": "34234",
-    "stock": 23
-  },
-  {
-    "id": 19,
-    "title": "aaa",
-    "description": "sss",
-    "price": 1,
-    "thumbnail": "img.jpg",
-    "stock": 100
-  },
-  {
-    "id": 16,
-    "title": "des16",
-    "description": "fffff",
-    "price": 123,
-    "thumbnail": "imagen13.jpg",
-    "stock": 122222
-  },
-  {
-    "id": 18,
-    "title": "ti18",
-    "description": "181888",
-    "price": 150,
-    "thumbnail": "18.jpg",
-    "stock": 100
-  },
-  {
-    "id": 21,
-    "title": "Tit19",
-    "description": "Descrip 19",
-    "price": 1999,
-    "thumbnail": "img19.jpg",
-    "stock": 100
   }
 ]

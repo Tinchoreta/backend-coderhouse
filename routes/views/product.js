@@ -1,17 +1,23 @@
-import { Router } from "express"
+import { Router } from "express";
+import ProductViewController from "../../src/controllers/ProductViewController.js";
+
 const productRouter = Router();
 
+productRouter.get("/", async (req, res, next) => {
+  try {
+    const productViewController = new ProductViewController();
+    productViewController.renderAddProductForm(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
-productRouter.get('/', async(req,res,next)=> {
-    try {
-        return res.render('addProduct',{
-            title: 'Product Add',
-            script: 'product.js',
-            css: 'product.css'
-        });
-    } catch(error) {
-        next(error);
-    }
-})
 
 export default productRouter;
+
+
+//change
+
+
+
+
