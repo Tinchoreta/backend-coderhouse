@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManagerController from "../../src/Business/ProductManagerController.js";
+import ProductManagerController from "../../src/controllers/ProductManagerController.js";
 import TextFileProductAdapter from "../../src/Business/TextFileProductAdapter.js";
 import {
   validateProductExistence,

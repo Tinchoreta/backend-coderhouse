@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import CartManagerController from '../../src/Business/CartManagerController.js';
+import CartManagerController from '../../src/controllers/CartManagerController.js';
 import TextFileCartManagerAdapter from '../../src/Business/TextFileCartManagerAdapter.js';
-import ProductManagerController from '../../src/Business/ProductManagerController.js';
+import ProductManagerController from '../../src/controllers/ProductManagerController.js';
 import TextFileProductAdapter from '../../src/Business/TextFileProductAdapter.js';
 
 const textFileProductAdapter = TextFileProductAdapter.getInstance("./data/products.json");
