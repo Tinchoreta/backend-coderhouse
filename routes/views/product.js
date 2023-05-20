@@ -14,10 +14,3 @@ productRouter.get("/", async (req, res, next) => {
 
 
 export default productRouter;
-
-
-//change
-
-
-
-

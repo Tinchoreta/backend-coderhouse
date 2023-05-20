@@ -25,7 +25,7 @@ class ProductManagerController {
       productToAdd.stock = 0;
     }
 
-    // console.log(JSON.stringify(productToAdd));
+    console.log(JSON.stringify(productToAdd));
 
     try {
       const addedProduct = await this.productManagerAdapter.addProduct(

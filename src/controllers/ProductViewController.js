@@ -4,7 +4,7 @@ class ProductViewController {
   renderAddProductForm(req, res) {
     try {
       return res.render("addProduct", {
-        title: "Product Add",
+        title: "Product add Form",
         script: "product.js",
         css: "product.css",
       });

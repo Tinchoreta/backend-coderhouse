@@ -36,17 +36,27 @@ router.post(
 
       // Llamar al método renderAddProductResponse del ProductViewController
       const productViewController = new ProductViewController();
-      productViewController.renderAddProductResponse(req, res, true, "Producto agregado exitosamente");
+      productViewController.renderAddProductResponse(
+        req,
+        res,
+        true,
+        "Producto agregado exitosamente"
+      );
     } catch (error) {
       // Manejo del error al agregar el producto
 
       // Llamar al método renderAddProductResponse del ProductViewController
       const productViewController = new ProductViewController();
-      productViewController.renderAddProductResponse(req, res, false, "Error al agregar el producto");
+      productViewController.renderAddProductResponse(
+        req,
+        res,
+        false,
+        "Error al agregar el producto"
+      );
     }
   }
-  
 );
+
 
 router.put("/:id",
   (req, res, next) => validateProductExistence(req, res, next),
