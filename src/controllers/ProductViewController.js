@@ -19,7 +19,7 @@ class ProductViewController {
 
   renderAddProductResponse(req, res, success, message) {
     const data = {
-      success: success,
+      success: true,
       message: message,
       css: "product.css",
     };

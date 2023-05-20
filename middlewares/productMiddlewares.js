@@ -44,7 +44,7 @@ async function validateProductFields(req, res, next) {
     .status(400)
     .json({ success: false, error: "Invalid product fields" });
   }
-  console.log(id + ": en middle")
+  
   const existingProduct = await textFileProductAdapter.getProductById(id);
   if (existingProduct) {
     return res

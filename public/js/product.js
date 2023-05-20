@@ -1,53 +1,85 @@
-// // Función para limpiar los campos del formulario
-// function limpiar() {
-//     document.getElementById("id").value = "";
-//     document.getElementById("title").value = "";
-//     document.getElementById("description").value = "";
-//     document.getElementById("price").value = "";
-//     document.getElementById("thumbnail").value = "";
-//     document.getElementById("stock").value = "";
-// }
+// Función para limpiar los campos del formulario
+function limpiar() {
+  document.getElementById("id").value = "";
+  document.getElementById("title").value = "";
+  document.getElementById("description").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("thumbnail").value = "";
+  document.getElementById("stock").value = "";
+}
 
-// // Función para agregar un nuevo producto
-// async function agregarProducto() {
-//     try {
-//         // Obtenemos los valores del formulario
-//         let id = document.getElementById("id").value;
-//         let title = document.getElementById("title").value;
-//         let description = document.getElementById("description").value;
-//         let price = document.getElementById("price").value;
-//         let thumbnail = document.getElementById("thumbnail").value;
-//         let stock = document.getElementById("stock").value;
+// Función para agregar un nuevo producto
+async function agregarProducto(event) {
+  event.preventDefault();
+  try {
+    // Obtenemos los valores del formulario
+    let id = document.getElementById("id").value;
+    let title = document.getElementById("title").value;
+    let description = document.getElementById("description").value;
+    let price = document.getElementById("price").value;
+    let thumbnail = document.getElementById("thumbnail").value;
+    let stock = document.getElementById("stock").value;
 
-//         // Creamos un objeto con los datos del nuevo producto
-//         let nuevoProducto = {
-//             id: id,
-//             title: title,
-//             description: description,
-//             price: price,
-//             thumbnail: thumbnail,
-//             stock: stock
-//         };
+    // Creamos un objeto con los datos del nuevo producto
+    let nuevoProducto = {
+      id: id,
+      title: title,
+      description: description,
+      price: price,
+      thumbnail: thumbnail,
+      stock: stock,
+    };
 
-//         console.log(nuevoProducto);
+    //console.log(nuevoProducto);
 
-//         // Realizamos una llamada POST a nuestro endpoint para agregar el nuevo producto
-//         const response = await fetch('/api/products/', {
-//             method: 'POST',
-//             body: JSON.stringify(nuevoProducto),
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-//         });
+    // Realizamos una llamada POST a nuestro endpoint para agregar el nuevo producto
+    const response = await fetch("http://localhost:8080/api/products", {
+      method: "POST",
+      body: JSON.stringify(nuevoProducto),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    
+    const data = await response.json();
+    const status = await response.status;
+        
+    //si fue creado el producto y agregado a la persistencia
+    if (status === 201) {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Product added successfully",
+        customClass: {
+          container: "my-swal-container",
+          icon: "my-swal-icon",
+          title: "my-swal-title",
+          content: "my-swal-content",
+          actions: "my-swal-actions",
+          confirmButton: "my-swal-confirm",
+        },
+      });
+      limpiar();
+    } else {
 
-//         const data = await response.json();
+    //    console.log(JSON.stringify(data));
 
-//         console.log('Nuevo producto agregado:', data);
-//         alert('Producto agregado correctamente');
-//         limpiar();
-//     } catch (error) {
-//         console.error('Error al agregar el producto:', error);
-//         alert('Hubo un error al agregar el producto: '+ error.message);
-//     }
-// }
-// document.getElementById("productForm").addEventListener("submit", agregarProducto);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "There was en error trying to save the product: " + data.error,
+      });
+    }
+  } catch (error) {
+    console.error("Error at adding product:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "There was en error trying to save the product: " + error.message,
+    });
+  }
+}
+
+document
+  .getElementById("productForm")
+  .addEventListener("submit", agregarProducto);

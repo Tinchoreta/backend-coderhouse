@@ -5,6 +5,9 @@ import {
   validateProductExistence,
   validateProductFields,
 } from "../../middlewares/productMiddlewares.js";
+
+import axios from 'axios';
+
 import ProductViewController from "../../src/controllers/ProductViewController.js";
 
 
@@ -27,35 +30,8 @@ router.get(
 
 router.post(
   "/",
-  (req, res, next) => validateProductFields(req, res, next),
-
-  async (req, res) => {
-    try {
-      // Lógica para agregar el producto exitosamente
-      (req, res) => productController.addProduct(req, res);
-
-      // Llamar al método renderAddProductResponse del ProductViewController
-      const productViewController = new ProductViewController();
-      productViewController.renderAddProductResponse(
-        req,
-        res,
-        true,
-        "Producto agregado exitosamente"
-      );
-    } catch (error) {
-      // Manejo del error al agregar el producto
-
-      // Llamar al método renderAddProductResponse del ProductViewController
-      const productViewController = new ProductViewController();
-      productViewController.renderAddProductResponse(
-        req,
-        res,
-        false,
-        "Error al agregar el producto"
-      );
-    }
-  }
-);
+(req, res, next) => validateProductFields(req, res, next),
+(req, res) => productController.addProduct(req, res));
 
 
 router.put("/:id",

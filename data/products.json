@@ -93,5 +93,21 @@
     "price": 458,
     "thumbnail": "https://ejemplo.com/imagen-producto-12.jpg",
     "stock": 0
+  },
+  {
+    "id": 23,
+    "title": "Tit23",
+    "description": "DEsc23",
+    "price": 1224,
+    "thumbnail": "img23.jpg",
+    "stock": 1000
+  },
+  {
+    "id": 45,
+    "title": "dhfgytititittit4hhhtdh",
+    "description": "frrfdesdddesd",
+    "price": 12355,
+    "thumbnail": "323523",
+    "stock": 1222
   }
 ]
