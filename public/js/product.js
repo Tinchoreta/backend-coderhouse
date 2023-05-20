@@ -59,12 +59,10 @@ async function agregarProducto(event) {
           confirmButton: "my-swal-confirm",
         },
       });
-      limpiar();
+    
     } else {
 
-    //    console.log(JSON.stringify(data));
-
-      Swal.fire({
+    Swal.fire({
         icon: "error",
         title: "Error",
         text: "There was en error trying to save the product: " + data.error,
