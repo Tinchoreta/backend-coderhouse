@@ -19,16 +19,16 @@
     "id": 3,
     "title": "Cámara Fujifilm FinePix S2950",
     "description": " 4 x AA batteries not included. WxDxH 110.2 ×81.4x73.4mm. Weight 0.341kg (excluding battery and memory card). Weight 0.437kg (including battery and memory card).",
-    "price": 734,
+    "price": 1734,
     "thumbnail": "4.jpg",
     "stock": 5
   },
   {
     "id": 4,
-    "title": "Producto 4",
-    "description": "Descripción del producto 4",
+    "title": "Pendrive 16Gb USB con porta memoria SD",
+    "description": "Pendrive Sandisk 16Gb USB con porta memoria SD. Especialmente diseñado para cámaras digitales y un rápido acceso a las fotos",
     "price": 10,
-    "thumbnail": "https://ejemplo.com/imagen-producto-4.jpg",
+    "thumbnail": "11.jpg",
     "stock": 10
   },
   {
@@ -93,13 +93,5 @@
     "price": 458,
     "thumbnail": "https://ejemplo.com/imagen-producto-12.jpg",
     "stock": 0
-  },
-  {
-    "id": 23,
-    "title": "Tit23",
-    "description": "DEsc23",
-    "price": 1224,
-    "thumbnail": "img23.jpg",
-    "stock": 1000
   }
 ]

@@ -1,9 +1,9 @@
 import { Router } from "express";
 import ProductViewController from "../../src/controllers/ProductViewController.js";
 
-const productRouter = Router();
+const addProductRouter = Router();
 
-productRouter.get("/", async (req, res, next) => {
+addProductRouter.get("/", async (req, res, next) => {
   try {
     const productViewController = new ProductViewController();
     productViewController.renderAddProductForm(req, res);
@@ -13,4 +13,4 @@ productRouter.get("/", async (req, res, next) => {
 });
 
 
-export default productRouter;
+export default addProductRouter;
