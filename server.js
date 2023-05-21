@@ -1,6 +1,8 @@
 import app from "./app.js"
 import { Server } from "socket.io"
 import TextFileProductAdapter from "./src/Business/TextFileProductAdapter.js"
+import ProductManager from "./src/Business/ProductManager.js"
+import Product from "./src/Business/Product.js"
 
 const PORT = 8080
 const ready = () => console.log(`Server ready on port: ${PORT}`)
@@ -19,20 +21,20 @@ socketServer.on("connection", (socket) => {
             userName: "Bootshop",
             message: message
         });
-        console.log(chats);
+        // console.log(chats);
 
         socket.emit("allMessages", chats);
     };
 
-    const processInput = (input) => {
+    const processInput = async (input) => {
         
         const message = String(input[input.length-1].message).toLocaleLowerCase().trim();
 
-        console.log(message);
-        console.log(isAuthenticated);
+        // console.log(message);
+        // console.log(isAuthenticated);
 
         if (message === "/start" && !isAuthenticated) {
-            console.log(message + " is authenticated");
+           // console.log(message + " is authenticated");
             isAuthenticated = true;
             sendMessage("Elige una opción:");
             sendMessage("1. Ver producto más barato");
@@ -45,15 +47,53 @@ socketServer.on("connection", (socket) => {
         } else {
             isAuthenticated = false;
             // console.log(message + "numero " + typeof (message));
+            let productAdapter = TextFileProductAdapter.getInstance(
+              "./data/products.json"
+            );
+            let products = await productAdapter.getProducts();
 
             switch (message) {
                 case "1":
-                    sendMessage("El producto más barato es ...");
-                    productAdapter = TextFileProductAdapter.getInstance("./data/products.json");
                     
+                    
+                    // console.log(products[0].description + " product");
+                    if (products.length > 0 && products) {
+                        let productManager = new ProductManager(products);
+                        // console.log(productManager.getProducts());
+                        let cheapestPriceProduct = new Product();
+                        cheapestPriceProduct = productManager.getCheapestPriceProduct();
+                        let prod = cheapestPriceProduct.toString();
+                        prod = JSON.stringify(prod);
+                        console.log(prod);
+                        sendMessage(
+                        "El producto más barato es: " +
+                          cheapestPriceProduct.title + " Precio: $" + cheapestPriceProduct.price);
+                    } else {
+                        sendMessage("No hay productos disponibles");
+                        break;
+                    }
                     break;
                 case "2":
-                    sendMessage("El producto más caro es ...");
+                    
+                       products = await productAdapter.getProducts();
+                    // console.log(products[0].description + " product");
+                    if (products.length > 0 && products) {
+                        let productManager = new ProductManager(products);
+                        // console.log(productManager.getProducts());
+                        let mostExpensivePriceProduct = new Product();
+                        mostExpensivePriceProduct =
+                          productManager.getMostExpensivePriceProduct();
+                        sendMessage(
+                          "El producto más caro es: " +
+                            mostExpensivePriceProduct.title +
+                            " Precio: $" +
+                            mostExpensivePriceProduct.price
+                        );
+                    } else {
+                        sendMessage("No hay productos disponibles");
+                        break;
+                    }
+                    break;
                     
                     break;
                 case "3":

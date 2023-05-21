@@ -1,4 +1,3 @@
-
 /* 
 
 Definir una clase que se llame ProductManager, 
@@ -6,11 +5,11 @@ la cuál tendrá un arreglo de Productos que iniciará vacíos.
 
 */
 
-import Product from './Product.js';
+import Product from "./Product.js";
 
 class ProductManager {
-  constructor() {
-    this.products = [];
+  constructor(products) {
+    this.products = products;
   }
 
   getProducts() {
@@ -105,31 +104,40 @@ class ProductManager {
     }
   }
 
-  calculateCheapestPrice() {
+  getCheapestPriceProduct() {
     try {
+      if (this.products.length === 0) {
+        //console.log("null product");
+        return null;
+      }
       let cheapestPrice = Infinity;
+      let productWithLowestPrice = null;
       for (let i = 0; i < this.products.length; i++) {
         const productData = this.products[i];
         if (productData.price < cheapestPrice) {
           cheapestPrice = productData.price;
+          productWithLowestPrice = productData;
         }
       }
-      return cheapestPrice;
+      //console.log(productWithLowestPrice);
+      return productWithLowestPrice;
     } catch (error) {
       throw new Error(`calculateCheapestPrice: ${error.message}`);
     }
   }
 
-  calculateMostExpensivePrice() {
+  getMostExpensivePriceProduct() {
     try {
       let mostExpensivePrice = 0;
+      let productWithHighestPrice = null;
       for (let i = 0; i < this.products.length; i++) {
         const productData = this.products[i];
         if (productData.price > mostExpensivePrice) {
           mostExpensivePrice = productData.price;
+          productWithHighestPrice = productData;
         }
       }
-      return mostExpensivePrice;
+      return productWithHighestPrice;
     } catch (error) {
       throw new Error(`calculateMostExpensivePrice: ${error.message}`);
     }
