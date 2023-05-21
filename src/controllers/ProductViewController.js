@@ -5,8 +5,24 @@ class ProductViewController {
     try {
       return res.render("addProduct", {
         title: "Product add Form",
-        script: "product.js",
-        css: "product.css",
+        script: "addProduct.js",
+        css: "addProduct.css",
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        error: "Internal Server Error",
+      });
+    }
+  }
+
+  renderProductsForm(req, res) {
+    try {
+      return res.render("products", {
+        title: "Products",
+        script: "products.js",
+        css: "products.css",
       });
     } catch (error) {
       console.error(error);
