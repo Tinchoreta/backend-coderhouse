@@ -9,10 +9,6 @@ import logger from "morgan";
 
 const app = express()
 
-//template engine
-app.engine('handlebars',engine())
-app.set('views',__dirname + '/views')
-app.set('view engine','handlebars')
 
 //middlewares   
 //app.use('/',express.static('public'))
@@ -22,6 +18,10 @@ app.use('/', mainRouter);
 app.use('/',express.static(join(__dirname, 'public')));
 app.use(logger("dev"));
 
+//template engine
+app.engine('handlebars', engine())
+app.set('views', __dirname + '/views')
+app.set('view engine', 'handlebars')
 
 
 app.use(errorHandler)

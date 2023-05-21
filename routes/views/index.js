@@ -36,7 +36,7 @@ viewRouter.get('/', async (req, res, next) => {
 viewRouter.use('/chat', chatRouter);
 viewRouter.use('/new_product', addProductRouter);
 viewRouter.use("/products", productsRouter);
-viewRouter.use("/product_details", productDetailsRouter);
+viewRouter.use("/product_details/", productDetailsRouter);
 viewRouter.use("/product_summary", productSummaryRouter);
 
 

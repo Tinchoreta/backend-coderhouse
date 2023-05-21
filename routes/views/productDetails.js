@@ -1,13 +1,13 @@
 import { Router } from "express";
+import ProductViewController from "../../src/controllers/ProductViewController.js";
+
 const productDetailsRouter = Router();
 
-productDetailsRouter.get("/", async (req, res, next) => {
+productDetailsRouter.get("/:pid", async (req, res, next) => {
   try {
-    return res.render("productDetails", {
-      title: "ProductDetails",
-      script: "productDetails.js",
-      css: "productDetails.css",
-    });
+    const productId = parseInt(req.params.pid);
+    const productViewController = new ProductViewController();
+    productViewController.renderProductDetailsForm(req, res, productId);
   } catch (error) {
     next(error);
   }
