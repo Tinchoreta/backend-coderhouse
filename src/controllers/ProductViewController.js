@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 class ProductViewController {
   constructor() { }
 
@@ -19,9 +21,8 @@ class ProductViewController {
 
   async renderProductsForm(req, res) {
     try {
-      const response = await fetch("http://localhost:8080/api/products/");
-      const responseJson = await response.json();
-      const products = responseJson.response;
+      const response = await axios.get("http://localhost:8080/api/products/");
+      const products = response.data.response;
 
       return res.render("products", {
         title: "Products",
@@ -40,10 +41,10 @@ class ProductViewController {
 
   async renderProductDetailsForm(req, res, productId) {
     try {
-      const response = await fetch(`http://localhost:8080/api/products/${productId}`);
-      const responseJson = await response.json();
-      const productDetails = responseJson.response;
-
+      // console.log(`http://localhost:8080/api/products/${productId}`);
+      const response = await axios.get(`http://localhost:8080/api/products/${productId}`);
+      const productDetails = response.data.product;
+      
       return res.render("productDetails", {
         title: "Product Details",
         script: "productDetails.js",
@@ -58,8 +59,6 @@ class ProductViewController {
       });
     }
   }
-
-
 
   renderAddProductResponse(req, res, success, message) {
     const data = {
