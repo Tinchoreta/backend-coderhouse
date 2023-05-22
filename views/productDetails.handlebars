@@ -168,9 +168,9 @@
                     </ul>
                     <div class="row">
                         <div id="gallery" class="span3">
-                            <a href="/themes/images/products/large/{{productDetails.thumbnail}}"
+                            <a href="/themes/images/products/{{productDetails.thumbnail}}"
                                 title={{productDetails.title}}>
-                                <img src="/themes/images/products/large/{{productDetails.thumbnail}}" style="width:60%"
+                                <img src="/themes/images/products/{{productDetails.thumbnail}}" style="width:60%"
                                     alt={{productDetails.title}}/>
                             </a>
                             {{!-- <div id="differentview" class="moreOptopm carousel slide">
@@ -211,7 +211,7 @@
                         </div>
                         <div class="span6">
                             <h3>{{productDetails.title}}</h3>
-                            <small>- (14MP, 18x Optical Zoom) 3-inch LCD</small>
+                            {{!-- <small>- (14MP, 18x Optical Zoom) 3-inch LCD</small> --}}
                             <hr class="soft" />
                             <form class="form-horizontal qtyFrm">
                                 <div class="control-group">
