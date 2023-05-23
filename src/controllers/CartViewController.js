@@ -22,20 +22,20 @@ class CartViewController {
         //TODO: Change hardcoded values on cart 1 and name to show on index page
 
         try {
-            const cartToRender = await textFileCartAdapter.getCartById(1);
-            const productsList = await textFileCartAdapter.getProducts();
+            const cartToRender = await this.textFileCartAdapter.getCartById(1);
+            const productsList = await this.textFileProductAdapter.getProducts();
             const productManager = new ProductManager(productsList);
 
-            let cartManager = new CartManager(cartToRender,productManager);
+            let cartManager = new CartManager([cartToRender],productManager);
             
             let name = "Tincho"
-            let itemsOnCart = cartManager.getItems;
+            let itemsOnCart1 = cartManager.getCartTotalItemsQuantity(1);
             let totalPrice = cartManager.calculateTotalPrice(1);
 
             return res.render('index', {
                 title: 'BootShop',
                 user: name,
-                itemsOnCart1: itemsOnCart,
+                itemsOnCart1: itemsOnCart1,
                 totalPrice: totalPrice
             });
 
@@ -49,3 +49,5 @@ class CartViewController {
     }
 
 }
+
+export default CartViewController;
