@@ -27,15 +27,15 @@
     "id": 4,
     "title": "16Gb USB flash drive with SD memory holder",
     "description": "Sandisk 16Gb USB flash drive with SD memory holder. Specially designed for digital cameras and quick access to photos",
-    "price": 12,
+    "price": 10,
     "thumbnail": "7.jpg",
-    "stock": 10
+    "stock": 5
   },
   {
     "id": 5,
     "title": "Ebook Reader Kindle Paperwhite 11 Gen 6,8puLG 8gb Sumergible Color Negro",
     "description": "Kindle E-reader: Store and carry beloved books. Paper-like reading experience without eye strain.",
-    "price": 150,
+    "price": 50,
     "thumbnail": "kindle.png",
     "stock": 5
   },
@@ -45,7 +45,7 @@
     "description": "FUJIFILM X-H2 Kit: High-res mirrorless camera + protective bag bundle + baterry charger + SD 32Gb. 40MP APS-C X-Trans5 BSI Sensor",
     "price": 1931,
     "thumbnail": "9.jpg",
-    "stock": 5
+    "stock": 10
   },
   {
     "id": 7,
@@ -69,6 +69,6 @@
     "description": "Camera FUJIFILM FINEPIX S series: 18x zoom, 14MP CCD, image stabilization, 7.6cm LCD, HD video, tracking autofocus.",
     "price": 2599.99,
     "thumbnail": "5.jpg",
-    "stock": 9
+    "stock": 5
   }
 ]

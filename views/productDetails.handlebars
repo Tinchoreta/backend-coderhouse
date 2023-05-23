@@ -217,7 +217,8 @@
                                 <div class="control-group">
                                     <label class="control-label" style="font-size: 16px;"><span>${{productDetails.price}}</span></label>
                                     <div class="controls">
-                                        <input type="number" class="span1" placeholder="Qty." style="width: 55px; height: 30px; font-size: 14px;" />
+                                        <input type="number" class="span1" placeholder="Qty." style="width: 55px; height: 30px; font-size: 14px;" min="0" max="{{productDetails.stock}}"/>
+                                        <input type="hidden" id="productId" value={{productDetails.id}}>
                                         <button type="submit" class="btn btn-medium btn-primary pull-right"> Add to cart
                                             <i class=" icon-shopping-cart"></i></button>
                                     </div>
@@ -225,7 +226,7 @@
                             </form>
 
                             <hr class="soft" />
-                            <h4>100 items in stock</h4>
+                            <h4>{{productDetails.stock}} items in stock</h4>
                             <form class="form-horizontal qtyFrm pull-right">
                                 <div class="control-group">
                                     <label class="control-label"><span>Color</span></label>
@@ -565,7 +566,7 @@
                                                         <a href="product_details.html"><img
                                                                 src="/themes/images/products/10.jpg" alt="" /></a>
                                                         <div class="caption">
-                                                            <h5>Manicure &amp; Pedicure</h5>
+                                                            <h5>Digital &amp; Assets</h5>
                                                             <p>
                                                                 Lorem Ipsum is simply dummy text.
                                                             </p>
@@ -584,7 +585,7 @@
                                                         <a href="product_details.html"><img
                                                                 src="/themes/images/products/11.jpg" alt="" /></a>
                                                         <div class="caption">
-                                                            <h5>Manicure &amp; Pedicure</h5>
+                                                            <h5>Digital &amp; Assets</h5>
                                                             <p>
                                                                 Lorem Ipsum is simply dummy text.
                                                             </p>
@@ -603,7 +604,7 @@
                                                         <a href="product_details.html"><img
                                                                 src="/themes/images/products/12.jpg" alt="" /></a>
                                                         <div class="caption">
-                                                            <h5>Manicure &amp; Pedicure</h5>
+                                                            <h5>Digital &amp; Assets</h5>
                                                             <p>
                                                                 Lorem Ipsum is simply dummy text.
                                                             </p>
@@ -622,7 +623,7 @@
                                                         <a href="product_details.html"><img
                                                                 src="/themes/images/products/13.jpg" alt="" /></a>
                                                         <div class="caption">
-                                                            <h5>Manicure &amp; Pedicure</h5>
+                                                            <h5>Digital &amp; Assets</h5>
                                                             <p>
                                                                 Lorem Ipsum is simply dummy text.
                                                             </p>
@@ -641,7 +642,7 @@
                                                         <a href="product_details.html"><img
                                                                 src="/themes/images/products/1.jpg" alt="" /></a>
                                                         <div class="caption">
-                                                            <h5>Manicure &amp; Pedicure</h5>
+                                                            <h5>Digital &amp; Assets</h5>
                                                             <p>
                                                                 Lorem Ipsum is simply dummy text.
                                                             </p>
@@ -660,7 +661,7 @@
                                                         <a href="product_details.html"><img
                                                                 src="/themes/images/products/2.jpg" alt="" /></a>
                                                         <div class="caption">
-                                                            <h5>Manicure &amp; Pedicure</h5>
+                                                            <h5>Digital &amp; Assets</h5>
                                                             <p>
                                                                 Lorem Ipsum is simply dummy text.
                                                             </p>

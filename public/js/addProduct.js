@@ -9,7 +9,7 @@ function limpiar() {
 }
 
 // Función para agregar un nuevo producto
-async function agregarProducto(event) {
+async function addProductToInventory(event) {
     event.preventDefault();
     try {
         // Obtenemos los valores del formulario
@@ -78,4 +78,4 @@ async function agregarProducto(event) {
 
 document
     .getElementById("productForm")
-    .addEventListener("submit", agregarProducto);
+    .addEventListener("submit", addProductToInventory);

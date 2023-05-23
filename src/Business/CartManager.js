@@ -1,7 +1,8 @@
 class CartManager {
-    constructor() {
+    constructor(cartList, productManager) {
         //cartList tiene un par {idProducto, quantity} que expresa el id del producto y la cantidad que se va a comprar
-        this.cartList = [];
+        this.cartList = cartList;
+        this.productManager = productManager;
     }
 
     getCarts() {
@@ -50,23 +51,25 @@ class CartManager {
         cartToUpdate.quantity = quantity;
     }
 
-    getCartTotalQuantity(cartId) {
+    getCartTotalItemsQuantity(cartId) {
         const cartToCalculateTotal = this.getCartById(cartId);
         return cartToCalculateTotal.products.reduce((acc, product) => {
             return acc + product.quantity;
         }, 0);
     }
 
-    getCartProductQuantity(cartId, productId) {
+    getProductQuantity(cartId, productId) {
         const cartToCalculateQuantity = this.getCartById(cartId);
         const product = cartToCalculateQuantity.products.find(product => product.id === productId);
         return product ? product.quantity : 0;
     }
-    async calculateTotalPrice(products) {
+
+
+    async calculateTotalPrice(cartId) {
         try {
             let totalPrice = 0;
-            for (const product of products) {
-                const productData = await getProductById(product.id); // Aquí debes llamar a tu función que obtiene el producto por id
+            for (const product of this.cartList.products) {
+                const productData = await getProductById(product.id); // Aquí se llama a la función que obtiene el producto por id
                 totalPrice += productData.price * product.quantity;
             }
             return totalPrice;

@@ -43,23 +43,6 @@ class TextFileCartManagerAdapter {
         }
     }
 
-    async calculateCartPrice(cartId) {
-        //TODO: calculate
-        // try {
-        //     const cartToCalculatePrice = await this.getCartById(cartId);
-        //     if (cartToCalculatePrice.length === 0) {
-        //         return 0;
-        //     }
-        //     let totalPrice = 0;
-        //     cartToCalculatePrice.products.forEach((product) => {
-        //         totalPrice += product.price;
-        //     });
-        //     return totalPrice;
-        // } catch (error) {
-        //     throw new Error(`calculateCartPrice: ${error.message}`);
-        // }
-    }
-
     async getProductsIds(cartId) {
         try {
             const cartToCalculatePrice = await this.getCartById(cartId);
@@ -73,22 +56,6 @@ class TextFileCartManagerAdapter {
         }
     }
 
-
-    async calculateProductsQuantityOnCart(cartId) {
-        try {
-            const cartToCalculatePrice = await this.getCartById(cartId);
-            if (cartToCalculatePrice.length === 0) {
-                return 0;
-            }
-            let totalQuantity = 0;
-            cartToCalculatePrice.products.forEach((product) => {
-                totalQuantity += product.quantity;
-            });
-            return totalQuantity;
-        } catch (error) {
-            throw new Error(`calculateProductsQuantityOnCart: ${error.message}`);
-        }
-    }
 
     async getCartById(cartId) {
         try {
