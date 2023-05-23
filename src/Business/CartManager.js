@@ -1,36 +1,31 @@
 class CartManager {
     constructor(cartList, productManager) {
-        //cartList tiene un par {idProducto, quantity} que expresa el id del producto y la cantidad que se va a comprar
         this.cartList = cartList;
         this.productManager = productManager;
     }
 
     getCarts() {
         return this.cartList;
-    };
+    }
 
-    addCart({ productId, quantity }) {
-
+    addCart({ products }) {
         const newId = this.getLastId() + 1;
-        this.cartList.push(newId, { productId, quantity });
+        const newCart = { id: newId, products };
+        this.cartList.push(newCart);
         return newId;
-    };
+    }
 
-    getLastId = () => {
+    getLastId() {
         const lastIndex = this.cartList.length - 1;
-        return lastIndex < 0 ? 0 : this.cartList[lastIndex].id;
-    };
+        return lastIndex >= 0 ? this.cartList[lastIndex].id : 0;
+    }
 
-    getCartById(cartIdToget) {
-        const found = this.cartList.find((cart) => cart.id === parseInt(cartIdToget));
-        if (!found) {
-            return null;
-        }
-        return found;
-    };
+    getCartById(cartIdToGet) {
+        return this.cartList.find((cart) => cart.id === parseInt(cartIdToGet)) || null;
+    }
 
     removeCart(cartId) {
-        const index = this.cartList.findIndex(cart => cart.id === cartId);
+        const index = this.cartList.findIndex((cart) => cart.id === cartId);
         if (index !== -1) {
             this.cartList.splice(index, 1);
         }
@@ -42,35 +37,44 @@ class CartManager {
 
     clearCart(cartId) {
         const cartToUpdate = this.getCartById(cartId);
-        cartToUpdate.products = [];
+        if (cartToUpdate) {
+            cartToUpdate.products = [];
+        }
     }
 
-    updateCart(cartId, { productId, quantity }) {
+    updateCart(cartId, products) {
         const cartToUpdate = this.getCartById(cartId);
-        cartToUpdate.productId = productId;
-        cartToUpdate.quantity = quantity;
+        if (cartToUpdate) {
+            cartToUpdate.products = products;
+        }
     }
 
     getCartTotalItemsQuantity(cartId) {
         const cartToCalculateTotal = this.getCartById(cartId);
-        return cartToCalculateTotal.products.reduce((acc, product) => {
-            return acc + product.quantity;
-        }, 0);
+        if (cartToCalculateTotal) {
+            return cartToCalculateTotal.products.reduce((acc, product) => acc + product.quantity, 0);
+        }
+        return 0;
     }
 
     getProductQuantity(cartId, productId) {
         const cartToCalculateQuantity = this.getCartById(cartId);
-        const product = cartToCalculateQuantity.products.find(product => product.id === productId);
-        return product ? product.quantity : 0;
+        if (cartToCalculateQuantity) {
+            const product = cartToCalculateQuantity.products.find((product) => product.productId === productId);
+            return product ? product.quantity : 0;
+        }
+        return 0;
     }
 
-
-    async calculateTotalPrice(cartId) {
+    calculateTotalPrice(cartId) {
         try {
+            const cart = this.getCartById(cartId);
             let totalPrice = 0;
-            for (const product of this.cartList.products) {
-                const productData = await getProductById(product.id); // Aquí se llama a la función que obtiene el producto por id
-                totalPrice += productData.price * product.quantity;
+            if (cart) {
+                for (const item of cart.products) {
+                    const productData = this.productManager.getProductById(item.productId);
+                    totalPrice += productData.price * item.quantity;
+                }
             }
             return totalPrice;
         } catch (error) {
@@ -78,4 +82,5 @@ class CartManager {
         }
     }
 }
+
 export default CartManager;

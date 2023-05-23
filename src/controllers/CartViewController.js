@@ -24,8 +24,9 @@ class CartViewController {
         try {
             const cartToRender = await textFileCartAdapter.getCartById(1);
             const productsList = await textFileCartAdapter.getProducts();
+            const productManager = new ProductManager(productsList);
 
-            let cartManager = new CartManager(cartToRender,productsList);
+            let cartManager = new CartManager(cartToRender,productManager);
             
             let name = "Tincho"
             let itemsOnCart = cartManager.getItems;
