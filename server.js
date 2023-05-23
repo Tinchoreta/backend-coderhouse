@@ -4,6 +4,7 @@ import TextFileProductAdapter from "./src/Business/TextFileProductAdapter.js"
 import ProductManager from "./src/Business/ProductManager.js"
 import Product from "./src/Business/Product.js"
 
+
 const PORT = 8080
 const ready = () => console.log(`Server ready on port: ${PORT}`)
 

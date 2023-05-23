@@ -6,6 +6,8 @@ import notFoundHandler from './middlewares/notFound.js';
 import { engine } from 'express-handlebars';
 import {join} from 'path';
 import logger from "morgan";
+import {connect} from "mongoose"; 
+import mongoose from "mongoose";
 
 const app = express()
 
@@ -27,6 +29,8 @@ app.set('view engine', 'handlebars')
 app.use(errorHandler)
 app.use(notFoundHandler)
 
-
+connect('mongodb+srv://tinchoreta:21362428@cluster0.xgzbctr.mongodb.net/coder-backend')
+.then(()=> console.log("Database Connected"))
+.catch(err => console.log(err))
 
 export default app;
