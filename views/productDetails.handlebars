@@ -213,11 +213,11 @@
                             <h3>{{productDetails.title}}</h3>
                             {{!-- <small>- (14MP, 18x Optical Zoom) 3-inch LCD</small> --}}
                             <hr class="soft" />
-                            <form class="form-horizontal qtyFrm">
+                            <form class="form-horizontal qtyFrm" id="qtyFrm">
                                 <div class="control-group">
                                     <label class="control-label" style="font-size: 16px;"><span>${{productDetails.price}}</span></label>
                                     <div class="controls">
-                                        <input type="number" class="span1" placeholder="Qty." style="width: 55px; height: 30px; font-size: 14px;" min="0" max="{{productDetails.stock}}"/>
+                                        <input type="number" class="span1" placeholder="Qty." style="width: 55px; height: 30px; font-size: 14px;" min="0" max="{{productDetails.stock}}" id="quantity"/>
                                         <input type="hidden" id="productId" value={{productDetails.id}}>
                                         <button type="submit" class="btn btn-medium btn-primary pull-right"> Add to cart
                                             <i class=" icon-shopping-cart"></i></button>

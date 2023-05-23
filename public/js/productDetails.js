@@ -1,19 +1,21 @@
-import axios from 'axios';
+document.getElementById("qtyFrm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Previene el envío del formulario
 
-document
-    .getElementById("qtyFrm")
-    .addEventListener("submit", addProductToCart);
+    const productId = parseInt(document.getElementById("productId").value);
+    const quantity = parseInt(document.getElementById("quantity").value);
 
-const productId = parseInt(document.getElementById("productId").value);
-
+    addProductToCart(1, productId, quantity);
+});
 
 async function addProductToCart(cartId, productId, quantity) {
+    console.log(productId, quantity);
+    // TODO: Corregir el cartId codificado después
+    const url = `http://localhost:8080/api/carts/1/product/${productId}/${quantity}`;
 
-    //TODO: Fix this hardcoded cartId later
-    const url = `http://localhost:8080/api/cart/1/prod/${productId}/${quantity}`;
-
-    const response = axios.post(url);
-
-    console.log(response);
-
+    try {
+        const response = await axios.put(url);
+        console.log(response);
+    } catch (error) {
+        console.error(error);
+    }
 }

@@ -9,6 +9,10 @@
       {
         "productId": 4,
         "quantity": 2
+      },
+      {
+        "productId": 1,
+        "quantity": 3
       }
     ]
   },
@@ -115,13 +119,5 @@
         "quantity": 5
       }
     ]
-  },
-  {
-    "id": 10,
-    "products": []
-  },
-  {
-    "id": 11,
-    "products": []
   }
 ]
