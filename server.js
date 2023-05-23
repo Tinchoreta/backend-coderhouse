@@ -64,7 +64,7 @@ socketServer.on("connection", (socket) => {
                         cheapestPriceProduct = productManager.getCheapestPriceProduct();
                         let prod = cheapestPriceProduct.toString();
                         prod = JSON.stringify(prod);
-                        console.log(prod);
+                        // console.log(prod);
                         sendMessage(
                             "El producto más barato es: " +
                             cheapestPriceProduct.title + " Precio: $" + cheapestPriceProduct.price);
