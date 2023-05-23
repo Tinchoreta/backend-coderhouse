@@ -64,7 +64,7 @@ class ProductViewController {
     const data = {
       success: true,
       message: message,
-      css: "product.css",
+      css: "addProduct.css",
     };
     res.render("addProduct", data);
   }
