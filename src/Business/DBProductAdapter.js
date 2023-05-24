@@ -8,7 +8,7 @@ class DBProductAdapter {
         if (DBProductAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-        this.PersistenceManager = new PersistenceManager(new DBStrategy(uri));
+        this.persistenceManager = new PersistenceManager(new DBStrategy(uri));
         DBProductAdapter.instance = this;
     }
 
@@ -21,11 +21,8 @@ class DBProductAdapter {
 
     async getProducts() {
         try {
-            const products = await this.PersistenceManager.load();
-            if (products.length === 0) {
-                return [];
-            }
-            return products;
+            const products = await this.persistenceManager.load('products');
+            return products || [];
         } catch (error) {
             throw new Error(`getProducts: ${error.message}`);
         }
@@ -33,10 +30,7 @@ class DBProductAdapter {
 
     async getProductById(idProduct) {
         try {
-            const products = await this.PersistenceManager.load();
-            if (products.length === 0) {
-                return null;
-            }
+            const products = await this.persistenceManager.load('products');
             const found = products.find(
                 (product) => product.id === parseInt(idProduct)
             );
@@ -48,10 +42,10 @@ class DBProductAdapter {
 
     async addProduct(productToAdd) {
         try {
-            const products = await this.PersistenceManager.load();
+            const products = await this.persistenceManager.load('products');
             const newProduct = { ...productToAdd };
             products.push(newProduct);
-            await this.PersistenceManager.save(products);
+            await this.persistenceManager.save('products', products);
             return newProduct;
         } catch (error) {
             throw new Error(`addProduct: ${error.message}`);
@@ -60,35 +54,30 @@ class DBProductAdapter {
 
     async updateProduct(productToUpdate) {
         try {
-            const products = await this.PersistenceManager.load();
+            const products = await this.persistenceManager.load('products');
             const { id } = productToUpdate;
             const productId = parseInt(id);
 
             if (isNaN(productId)) {
-                throw new Error(`Invalid product ID: ${productIdToModify}`);
+                throw new Error(`Invalid product ID: ${productId}`);
             }
 
-            const productToUpdateRetrieved = products.find(
+            const productIndex = products.findIndex(
                 (product) => product.id === productId
             );
 
-            if (!productToUpdateRetrieved) {
+            if (productIndex === -1) {
                 throw new Error(`Product with ID ${productId} not found`);
             }
 
             const updatedProduct = {
-                ...productToUpdateRetrieved,
+                ...products[productIndex],
                 ...productToUpdate,
             };
 
-            const updatedProducts = products.map((product) => {
-                if (product.id === productId) {
-                    return updatedProduct;
-                }
-                return product;
-            });
+            products[productIndex] = updatedProduct;
 
-            await this.PersistenceManager.save(updatedProducts);
+            await this.persistenceManager.save('products', products);
 
             return updatedProduct;
         } catch (error) {
@@ -102,13 +91,18 @@ class DBProductAdapter {
             if (isNaN(id)) {
                 throw new Error(`Product ID "${idToDelete}" is not a valid number`);
             }
-            const products = await this.PersistenceManager.load();
+
+            const products = await this.persistenceManager.load('products');
             const productIndex = products.findIndex((product) => product.id === id);
+
             if (productIndex === -1) {
                 throw new Error(`Product with ID: ${idToDelete} not found`);
             }
+
             products.splice(productIndex, 1);
-            await this.PersistenceManager.save(products);
+
+            await this.persistenceManager.save('products', products);
+
             return true;
         } catch (error) {
             throw new Error(`deleteProduct: ${error.message}`);
