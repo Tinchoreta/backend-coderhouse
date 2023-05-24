@@ -12,6 +12,6 @@ let schema = new Schema({
 
 })
 
-let Product = model(collection, schema);
+let ProductModel = model(collection, schema);
 
-export default Product;
+export default ProductModel;
