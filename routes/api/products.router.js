@@ -6,11 +6,6 @@ import {
   validateProductFields,
 } from "../../middlewares/productMiddlewares.js";
 
-import axios from 'axios';
-
-import ProductViewController from "../../src/controllers/ProductViewController.js";
-
-
 
 const router = Router();
 

@@ -6,7 +6,6 @@ Entonces esta clase administra la persistencia, sea de dónde sea que venga.
 Solo hay que implementar una clase Adapter para cada estrategia de persistencia.
 */
 
-import fs from 'fs';
 class PersistenceManager {
     constructor(strategy) {
         this.strategy = strategy;

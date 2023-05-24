@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
 class DBStrategy {
-    constructor(uri) {
+    constructor(uri, model) {
         this.uri = uri;
+        this.model = model;
         this.connection = null;
     }
 
@@ -30,20 +31,18 @@ class DBStrategy {
         }
     }
 
-    getModel(collectionName, schemaDefinition) {
-        if (!this.connection) {
-            throw new Error('Not connected to MongoDB');
-        }
+    // getModel(collectionName, schemaDefinition) {
+    //     if (!this.connection) {
+    //         throw new Error('Not connected to MongoDB');
+    //     }
 
-        const schema = new mongoose.Schema(schemaDefinition);
-        return this.connection.model(collectionName, schema);
-    }
+    //     const schema = new mongoose.Schema(schemaDefinition);
+    //     return this.connection.model(collectionName, schema);
+    // }
 
     async save(collectionName, data) {
         try {
-            const Model = this.getModel(collectionName, {});
-            const instance = new Model(data);
-            await instance.save();
+            await this.model.create(data);
             console.log(`Data saved to collection ${collectionName}`);
         } catch (error) {
             console.error(`Failed to save data to collection ${collectionName}:`, error);
@@ -53,8 +52,7 @@ class DBStrategy {
 
     async load(collectionName) {
         try {
-            const Model = this.getModel(collectionName, {});
-            const data = await Model.find({});
+            const data = await this.model.find({});
             console.log(`Data loaded from collection ${collectionName}`);
             return data;
         } catch (error) {
@@ -65,8 +63,7 @@ class DBStrategy {
 
     async delete(collectionName) {
         try {
-            const Model = this.getModel(collectionName, {});
-            await Model.deleteMany({});
+            await this.model.deleteMany({});
             console.log(`Data deleted from collection ${collectionName}`);
         } catch (error) {
             console.error(`Failed to delete data from collection ${collectionName}:`, error);
@@ -76,3 +73,4 @@ class DBStrategy {
 }
 
 export default DBStrategy;
+

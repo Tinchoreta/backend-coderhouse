@@ -1,5 +1,6 @@
 import PersistenceManager from '../Data/PersistenceManager.js';
 import DBStrategy from '../Data/DBStrategy.js';
+import ProductModel from '../models/product.model.js';
 
 class DBProductAdapter {
     static instance;
@@ -8,7 +9,7 @@ class DBProductAdapter {
         if (DBProductAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-        this.persistenceManager = new PersistenceManager(new DBStrategy(uri));
+        this.persistenceManager = new PersistenceManager(new DBStrategy(uri, ProductModel));
         DBProductAdapter.instance = this;
     }
 
