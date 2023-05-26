@@ -39,6 +39,45 @@ class PersistenceManager {
         }
     }
 
+    async addOne(query) {
+        try {
+            return await this.strategy.addOne(query);
+        } catch (error) {
+            throw new Error('Error al insertar los datos');
+        }
+    }
+
+    async getOne(query) {
+        try {
+            return await this.strategy.getOne(query);
+        } catch (error) {
+            throw new Error('Error al obtener los datos');
+        }
+    }
+
+    async insertOne(data) {
+        try {
+            await this.strategy.insertOne(data);
+        } catch (error) {
+            throw new Error('Error al insertar los datos');
+        }
+    }
+
+    async modifyOne(query, data) {
+        try {
+            await this.strategy.modifyOne(query, data);
+        } catch (error) {
+            throw new Error('Error al modificar los datos');
+        }
+    }
+
+    async deleteOne(query) {
+        try {
+            await this.strategy.deleteOne(query);
+        } catch (error) {
+            throw new Error('Error al eliminar los datos');
+        }
+    }
 }
 
 export default PersistenceManager;

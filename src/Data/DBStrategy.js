@@ -31,42 +31,77 @@ class DBStrategy {
         }
     }
 
-    // getModel(collectionName, schemaDefinition) {
-    //     if (!this.connection) {
-    //         throw new Error('Not connected to MongoDB');
-    //     }
-
-    //     const schema = new mongoose.Schema(schemaDefinition);
-    //     return this.connection.model(collectionName, schema);
-    // }
-
-    async save(collectionName, data) {
+    async save(data) {
         try {
             await this.model.create(data);
-            console.log(`Data saved to collection ${collectionName}`);
+            console.log('Data saved to collection', this.model.collection.collectionName);
         } catch (error) {
-            console.error(`Failed to save data to collection ${collectionName}:`, error);
+            console.error('Failed to save data:', error);
             throw error; // Propagate the error to the caller
         }
     }
 
-    async load(collectionName) {
+    async load() {
         try {
             const data = await this.model.find({});
-            console.log(`Data loaded from collection ${collectionName}`);
+            console.log('Data loaded from collection', this.model.collection.collectionName);
             return data;
         } catch (error) {
-            console.error(`Failed to load data from collection ${collectionName}:`, error);
+            console.error('Failed to load data:', error);
             throw error; // Propagate the error to the caller
         }
     }
 
-    async delete(collectionName) {
+    async delete() {
         try {
             await this.model.deleteMany({});
-            console.log(`Data deleted from collection ${collectionName}`);
+            console.log('Data deleted from collection', this.model.collection.collectionName);
         } catch (error) {
-            console.error(`Failed to delete data from collection ${collectionName}:`, error);
+            console.error('Failed to delete data:', error);
+            throw error; // Propagate the error to the caller
+        }
+    }
+
+    async getOne(filter) {
+        try {
+            const data = await this.model.findOne(filter);
+            console.log('Retrieved document from collection', this.model.collection.collectionName);
+            return data;
+        } catch (error) {
+            console.error('Failed to retrieve document:', error);
+            throw error; // Propagate the error to the caller
+        }
+    }
+
+    async deleteOne(filter) {
+        try {
+            const result = await this.model.deleteOne(filter);
+            console.log('Deleted document from collection', this.model.collection.collectionName);
+            return result;
+        } catch (error) {
+            console.error('Failed to delete document:', error);
+            throw error; // Propagate the error to the caller
+        }
+    }
+
+    async modifyOne(filter, update) {
+        try {
+            const result = await this.model.updateOne(filter, update);
+            console.log('Modified document in collection', this.model.collection.collectionName);
+            return result;
+        } catch (error) {
+            console.error('Failed to modify document:', error);
+            throw error; // Propagate the error to the caller
+        }
+    }
+
+    async addOne(data) {
+        try {
+            const result = await this.model.create(data);
+            console.log('Added document to collection', this.model.collection.collectionName);
+            return result;
+        } catch (error) {
+            console.error('Failed to add document:', error);
             throw error; // Propagate the error to the caller
         }
     }
