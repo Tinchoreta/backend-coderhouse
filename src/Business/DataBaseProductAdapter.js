@@ -22,8 +22,7 @@ class DataBaseProductAdapter {
 
     async getProducts() {
         try {
-            const products = await this.persistenceManager.load('products');
-            return products || [];
+            return await this.persistenceManager.load();
         } catch (error) {
             throw new Error(`getProducts: ${error.message}`);
         }
@@ -31,11 +30,7 @@ class DataBaseProductAdapter {
 
     async getProductById(idProduct) {
         try {
-            const products = await this.persistenceManager.load('products');
-            const found = products.find(
-                (product) => product.id === parseInt(idProduct)
-            );
-            return found || null;
+            return await this.persistenceManager.getOne({ id: parseInt(idProduct) });
         } catch (error) {
             throw new Error(`getProductById: ${error.message}`);
         }
@@ -43,11 +38,7 @@ class DataBaseProductAdapter {
 
     async addProduct(productToAdd) {
         try {
-            const products = await this.persistenceManager.load('products');
-            const newProduct = { ...productToAdd };
-            products.push(newProduct);
-            await this.persistenceManager.save('products', products);
-            return newProduct;
+            return await this.persistenceManager.addOne(productToAdd);
         } catch (error) {
             throw new Error(`addProduct: ${error.message}`);
         }
@@ -55,7 +46,6 @@ class DataBaseProductAdapter {
 
     async updateProduct(productToUpdate) {
         try {
-            const products = await this.persistenceManager.load('products');
             const { id } = productToUpdate;
             const productId = parseInt(id);
 
@@ -63,24 +53,7 @@ class DataBaseProductAdapter {
                 throw new Error(`Invalid product ID: ${productId}`);
             }
 
-            const productIndex = products.findIndex(
-                (product) => product.id === productId
-            );
-
-            if (productIndex === -1) {
-                throw new Error(`Product with ID ${productId} not found`);
-            }
-
-            const updatedProduct = {
-                ...products[productIndex],
-                ...productToUpdate,
-            };
-
-            products[productIndex] = updatedProduct;
-
-            await this.persistenceManager.save('products', products);
-
-            return updatedProduct;
+            return await this.persistenceManager.modifyOne({ id: productId }, productToUpdate);
         } catch (error) {
             throw new Error(`updateProduct: ${error.message}`);
         }
@@ -93,18 +66,7 @@ class DataBaseProductAdapter {
                 throw new Error(`Product ID "${idToDelete}" is not a valid number`);
             }
 
-            const products = await this.persistenceManager.load('products');
-            const productIndex = products.findIndex((product) => product.id === id);
-
-            if (productIndex === -1) {
-                throw new Error(`Product with ID: ${idToDelete} not found`);
-            }
-
-            products.splice(productIndex, 1);
-
-            await this.persistenceManager.save('products', products);
-
-            return true;
+            return await this.persistenceManager.deleteOne({ id });
         } catch (error) {
             throw new Error(`deleteProduct: ${error.message}`);
         }
