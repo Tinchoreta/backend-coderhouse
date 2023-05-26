@@ -1,13 +1,14 @@
-Folder PATH listing for volume Datos
-Volume serial number is 40A6-71A2
-D:.
+Listado de rutas de carpetas para el volumen OS
+El número de serie del volumen es 94B4-89A5
+C:.
 |   .gitignore
+|   app.js
+|   favicon.png
 |   indexProgram.js
-|   output.doc
-|   output.txt
 |   package-lock.json
 |   package.json
 |   README.md
+|   routesStructure.txt
 |   server.js
 |   utils.js
 |   
@@ -17,6 +18,21 @@ D:.
 +---data
 |       carts.json
 |       products.json
+|       
++---middlewares
+|       errorHandler.js
+|       multer.js
+|       notFound.js
+|       productMiddlewares.js
+|       userMiddlewares.js
+|       
++---public
+|   |   chat.js
+|   |   favicon.ico
+|   |   
+|   \---img
+|           what!.jpg
+|           
 +---routes
 |   |   index.js
 |   |   
@@ -27,19 +43,28 @@ D:.
 |   |       products.router.js
 |   |       
 |   \---views
+|           auth.js
 |           index.js
 |           
-\---src
-    +---Business
-    |       CartManager.js
-    |       CartManagerController.js
-    |       Product.js
-    |       ProductManager.js
-    |       ProductManagerController.js
-    |       TextFileCartManagerAdapter.js
-    |       TextFileProductAdapter.js
-    |       
-    \---Data
-            PersistenceManager.js
-            TextFileStrategy.js
-            
++---src
+|   +---Business
+|   |       CartManager.js
+|   |       CartManagerController.js
+|   |       Product.js
+|   |       ProductManager.js
+|   |       ProductManagerController.js
+|   |       TextFileCartManagerAdapter.js
+|   |       TextFileProductAdapter.js
+|   |       
+|   \---Data
+|           PersistenceManager.js
+|           TextFileStrategy.js
+|           
+\---views
+    |   chat.handlebars
+    |   index.handlebars
+    |   addProduct.handlebars
+    |   
+    \---layouts
+            main.handlebars
+

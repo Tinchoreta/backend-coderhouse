@@ -4,11 +4,19 @@
     "products": [
       {
         "productId": 5,
-        "quantity": 1
+        "quantity": 3
       },
       {
         "productId": 4,
-        "quantity": 5
+        "quantity": 2
+      },
+      {
+        "productId": 1,
+        "quantity": 3
+      },
+      {
+        "productId": 2,
+        "quantity": 4
       }
     ]
   },
@@ -115,13 +123,5 @@
         "quantity": 5
       }
     ]
-  },
-  {
-    "id": 10,
-    "products": []
-  },
-  {
-    "id": 11,
-    "products": []
   }
 ]
