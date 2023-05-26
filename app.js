@@ -7,10 +7,12 @@ import { engine } from 'express-handlebars';
 import { join } from 'path';
 import logger from "morgan";
 import DataBaseStrategy from './src/Data/DataBaseStrategy.js';
+import dotenv from 'dotenv';
 
+
+dotenv.config();
 
 const app = express()
-
 
 //middlewares   
 
@@ -25,17 +27,16 @@ app.engine('handlebars', engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
-
 app.use(errorHandler)
 app.use(notFoundHandler)
 
-let URI = 'mongodb+srv://tinchoreta:21362428@cluster0.xgzbctr.mongodb.net/coder-backend';
+let URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.xgzbctr.mongodb.net/coder-backend`;
 
-let DataBaseStrategy = new DataBaseStrategy(URI);
+let dataBaseStrategy = new DataBaseStrategy(URI);
 
 async function connect() {
     try {
-        await DataBaseStrategy.connect();
+        await dataBaseStrategy.connect();
         console.log("Database Connected");
     } catch (error) {
         console.log(error);

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import ProductManagerController from "../../src/controllers/ProductManagerController.js";
-import TextFileProductAdapter from "../../src/Business/TextFileProductAdapter.js";
+import DataBaseProductAdapter from "../../src/Business/DataBaseProductAdapter.js";
 import {
   validateProductExistence,
   validateProductFields,
@@ -9,7 +9,7 @@ import {
 
 const router = Router();
 
-const textFileProductAdapter = TextFileProductAdapter.getInstance(
+const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
   "./data/products.json"
 );
 
