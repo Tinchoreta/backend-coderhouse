@@ -75,9 +75,13 @@ class DataBaseStrategy {
 
     async deleteOne(filter) {
         try {
+            // console.log(filter);
             const result = await this.model.deleteOne(filter);
             console.log('Deleted document from collection: ', this.model.collection.collectionName);
-            return result;
+            
+            const isDeleted = result.deletedCount;
+            console.log(isDeleted + ' deleteOne strategy was called');
+            return isDeleted;
         } catch (error) {
             console.error('Failed to delete document:', error);
             throw error; // Propagate the error to the caller

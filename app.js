@@ -34,7 +34,7 @@ app.use(notFoundHandler)
 
 let URI = process.env.MONGO_DB_URI;
 
-console.log(URI);
+//console.log(URI);
 
 let dataBaseStrategy = new DataBaseStrategy(URI);
 

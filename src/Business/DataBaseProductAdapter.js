@@ -66,7 +66,12 @@ class DataBaseProductAdapter {
                 throw new Error(`Product ID "${idToDelete}" is not a valid number`);
             }
 
-            return await this.persistenceManager.deleteOne({ id });
+            const result = await this.persistenceManager.deleteOne({ id: id });
+            
+            console.log(result + ' deleted adapter');
+            
+            return result;
+            
         } catch (error) {
             throw new Error(`deleteProduct: ${error.message}`);
         }

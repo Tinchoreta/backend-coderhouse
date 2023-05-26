@@ -57,7 +57,7 @@ class PersistenceManager {
 
     async insertOne(data) {
         try {
-            await this.strategy.insertOne(data);
+            return await this.strategy.insertOne(data);
         } catch (error) {
             throw new Error('Error al insertar los datos');
         }
@@ -65,7 +65,7 @@ class PersistenceManager {
 
     async modifyOne(query, data) {
         try {
-            await this.strategy.modifyOne(query, data);
+            return await this.strategy.modifyOne(query, data);
         } catch (error) {
             throw new Error('Error al modificar los datos');
         }
@@ -73,7 +73,7 @@ class PersistenceManager {
 
     async deleteOne(query) {
         try {
-            await this.strategy.deleteOne(query);
+            return await this.strategy.deleteOne(query);
         } catch (error) {
             throw new Error('Error al eliminar los datos');
         }

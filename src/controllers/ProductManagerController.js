@@ -151,10 +151,10 @@ class ProductManagerController {
   }
 
   async removeProductItem(request, response) {
-    const productId = request.params.id;
+    const productId = Number(request.params.id);
 
     // Validate that the product ID is valid
-    if (!productId || typeof productId !== "string") {
+    if (!productId || isNaN(productId)) {
       return response.status(400).send({ message: "Invalid product ID" });
     }
 
@@ -163,8 +163,9 @@ class ProductManagerController {
       const isDeleted = await this.productManagerAdapter.deleteProduct(
         productId
       );
+      console.log(isDeleted + "Controller delete");
 
-      isDeleted
+      isDeleted === 1 //borró un registro. Viene de deleteOne(id)
         ? response
           .status(200)
           .send(
