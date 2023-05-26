@@ -1,23 +1,23 @@
 import PersistenceManager from '../Data/PersistenceManager.js';
-import DBStrategy from '../Data/DBStrategy.js';
+import DataBaseStrategy from '../Data/DataBaseStrategy.js';
 import ProductModel from '../models/product.model.js';
 
-class DBProductAdapter {
+class DataBaseProductAdapter {
     static instance;
 
     constructor(uri) {
-        if (DBProductAdapter.instance) {
+        if (DataBaseProductAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-        this.persistenceManager = new PersistenceManager(new DBStrategy(uri, ProductModel));
-        DBProductAdapter.instance = this;
+        this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, ProductModel));
+        DataBaseProductAdapter.instance = this;
     }
 
     static getInstance(uri) {
-        if (!DBProductAdapter.instance) {
-            DBProductAdapter.instance = new DBProductAdapter(uri);
+        if (!DataBaseProductAdapter.instance) {
+            DataBaseProductAdapter.instance = new DataBaseProductAdapter(uri);
         }
-        return DBProductAdapter.instance;
+        return DataBaseProductAdapter.instance;
     }
 
     async getProducts() {
@@ -111,4 +111,4 @@ class DBProductAdapter {
     }
 }
 
-export default DBProductAdapter;
+export default DataBaseProductAdapter;

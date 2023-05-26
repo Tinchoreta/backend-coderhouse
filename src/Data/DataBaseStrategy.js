@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-class DBStrategy {
+class DataBaseStrategy {
     constructor(uri, model) {
         this.uri = uri;
         this.model = model;
@@ -107,5 +107,5 @@ class DBStrategy {
     }
 }
 
-export default DBStrategy;
+export default DataBaseStrategy;
 
