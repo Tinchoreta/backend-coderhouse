@@ -34,7 +34,7 @@ class DataBaseStrategy {
     async save(data) {
         try {
             await this.model.create(data);
-            console.log('Data saved to collection', this.model.collection.collectionName);
+            console.log('Data saved to collection: ', this.model.collection.collectionName);
         } catch (error) {
             console.error('Failed to save data:', error);
             throw error; // Propagate the error to the caller
@@ -44,7 +44,7 @@ class DataBaseStrategy {
     async load() {
         try {
             const data = await this.model.find({});
-            console.log('Data loaded from collection', this.model.collection.collectionName);
+            console.log('Data loaded from collection: ', this.model.collection.collectionName);
             return data;
         } catch (error) {
             console.error('Failed to load data:', error);
@@ -55,7 +55,7 @@ class DataBaseStrategy {
     async delete() {
         try {
             await this.model.deleteMany({});
-            console.log('Data deleted from collection', this.model.collection.collectionName);
+            console.log('Data deleted from collection: ', this.model.collection.collectionName);
         } catch (error) {
             console.error('Failed to delete data:', error);
             throw error; // Propagate the error to the caller
@@ -65,7 +65,7 @@ class DataBaseStrategy {
     async getOne(filter) {
         try {
             const data = await this.model.findOne(filter);
-            console.log('Retrieved document from collection', this.model.collection.collectionName);
+            console.log('Retrieved document from collection: ', this.model.collection.collectionName);
             return data;
         } catch (error) {
             console.error('Failed to retrieve document:', error);
@@ -76,7 +76,7 @@ class DataBaseStrategy {
     async deleteOne(filter) {
         try {
             const result = await this.model.deleteOne(filter);
-            console.log('Deleted document from collection', this.model.collection.collectionName);
+            console.log('Deleted document from collection: ', this.model.collection.collectionName);
             return result;
         } catch (error) {
             console.error('Failed to delete document:', error);
@@ -87,7 +87,7 @@ class DataBaseStrategy {
     async modifyOne(filter, update) {
         try {
             const result = await this.model.updateOne(filter, update);
-            console.log('Modified document in collection', this.model.collection.collectionName);
+            console.log('Modified document in collection: ', this.model.collection.collectionName);
             return result;
         } catch (error) {
             console.error('Failed to modify document:', error);
@@ -98,7 +98,7 @@ class DataBaseStrategy {
     async addOne(data) {
         try {
             const result = await this.model.create(data);
-            console.log('Added document to collection', this.model.collection.collectionName);
+            console.log('Added document to collection: ', this.model.collection.collectionName);
             return result;
         } catch (error) {
             console.error('Failed to add document:', error);

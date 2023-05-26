@@ -13,7 +13,7 @@ class ProductManagerController {
     this.productManagerAdapter = productManagerAdapter;
   }
 
-  async addProduct(request, response,next ) {
+  async addProduct(request, response, next) {
     const productToAdd = request.body;
     if (!productToAdd || Object.keys(productToAdd).length === 0) {
       return response.status(400).json({
@@ -46,7 +46,7 @@ class ProductManagerController {
       const products = await this.productManagerAdapter.getProducts();
       console.log(products);
 
-      const limit = parseInt(request.query.limit) || 10;
+      const limit = parseInt(request.query.limit) || 0;
 
       if (limit < 0 || limit > products.length) {
         return response.status(400).json({

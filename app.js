@@ -30,7 +30,11 @@ app.set('view engine', 'handlebars')
 app.use(errorHandler)
 app.use(notFoundHandler)
 
-let URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.xgzbctr.mongodb.net/coder-backend`;
+//let URI = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.xgzbctr.mongodb.net/coder-backend`;
+
+let URI = process.env.MONGO_DB_URI;
+
+console.log(URI);
 
 let dataBaseStrategy = new DataBaseStrategy(URI);
 

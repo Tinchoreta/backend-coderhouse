@@ -9,11 +9,13 @@ import {
 
 const router = Router();
 
+console.log(process.env.MONGODB_URI);
+
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
-  "./data/products.json"
+  process.env.MONGODB_URI
 );
 
-const productController = new ProductManagerController(textFileProductAdapter);
+const productController = new ProductManagerController(dataBaseProductAdapter);
 
 router.get("/", (req, res) => productController.getProducts(req, res));
 
