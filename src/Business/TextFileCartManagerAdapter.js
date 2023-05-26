@@ -43,6 +43,19 @@ class TextFileCartManagerAdapter {
         }
     }
 
+    async getProductsIds(cartId) {
+        try {
+            const cartToCalculatePrice = await this.getCartById(cartId);
+            if (cartToCalculatePrice.length === 0) {
+                return [];
+            }
+            const productsIds = cartToCalculatePrice.products.map((product) => product.id);
+            return productsIds;
+        } catch (error) {
+            throw new Error(`getProductsIds: ${error.message}`);
+        }
+    }
+
 
     async getCartById(cartId) {
         try {

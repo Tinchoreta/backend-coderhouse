@@ -13,7 +13,7 @@ class ProductManagerController {
     this.productManagerAdapter = productManagerAdapter;
   }
 
-  async addProduct(request, response) {
+  async addProduct(request, response, next) {
     const productToAdd = request.body;
     if (!productToAdd || Object.keys(productToAdd).length === 0) {
       return response.status(400).json({
@@ -25,7 +25,7 @@ class ProductManagerController {
       productToAdd.stock = 0;
     }
 
-    console.log(JSON.stringify(productToAdd));
+    // console.log(JSON.stringify(productToAdd) + " added");
 
     try {
       const addedProduct = await this.productManagerAdapter.addProduct(
@@ -46,7 +46,7 @@ class ProductManagerController {
       const products = await this.productManagerAdapter.getProducts();
       console.log(products);
 
-      const limit = parseInt(request.query.limit);
+      const limit = parseInt(request.query.limit) || 0;
 
       if (limit < 0 || limit > products.length) {
         return response.status(400).json({
@@ -151,10 +151,10 @@ class ProductManagerController {
   }
 
   async removeProductItem(request, response) {
-    const productId = request.params.id;
+    const productId = Number(request.params.id);
 
     // Validate that the product ID is valid
-    if (!productId || typeof productId !== "string") {
+    if (!productId || isNaN(productId)) {
       return response.status(400).send({ message: "Invalid product ID" });
     }
 
@@ -163,8 +163,9 @@ class ProductManagerController {
       const isDeleted = await this.productManagerAdapter.deleteProduct(
         productId
       );
+      console.log(isDeleted + "Controller delete");
 
-      isDeleted
+      isDeleted === 1 //borró un registro. Viene de deleteOne(id)
         ? response
           .status(200)
           .send(

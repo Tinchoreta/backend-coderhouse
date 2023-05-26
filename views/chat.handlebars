@@ -1,0 +1,29 @@
+<div class="container d-flex justify-content-center chatArea">
+    <div class="card mt-5">
+        <div class="d-flex flex-row justify-content-between adiv text-white">
+            <i class="fa fa-comments" aria-hidden="true"></i>
+            <span class="pb-5 mt-4 text-white">Bootshop chat</span>
+            <i class="fa fa-users" aria-hidden="true"></i>
+            <p class="w-25 p-3 font-italic text-center" id="username"></p>
+        </div>
+
+        <div class="d-flex flex-row p-3">
+            <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30"
+                height="30">
+            <p class="chat ml-2 p-3 messages" id="chatMessages">
+                {{!-- Aqui va la conversacion de chat --}}
+
+            </p>
+        </div>
+
+        {{!-- texarea to send message --}}
+
+        <div class="form-group px-3">
+            <textarea class="form-control chatBox" rows="2" placeholder="Type your message" id="chatBox"></textarea>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-lg float-end pull-right m-2 p-2" id="btnSend">Send</button>
+
+    </div>
+</div>
+<link href="/css/{{css}}" rel="stylesheet" type="text/css">

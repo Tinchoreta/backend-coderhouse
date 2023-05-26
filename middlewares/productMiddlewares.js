@@ -28,19 +28,31 @@ Ejemplo de producto
 "stock": 5 */
 
 async function validateProductFields(req, res, next) {
-  const { id, title, description, price, thumbnail, stock } = req.body;
+  let { id, title, description, price, thumbnail, stock } = req.body;
   if (!id || !title || !price || !description || !thumbnail || stock<0) {
     return res
       .status(400)
       .json({ success: false, error: "Missing required fields" });
   }
+
+  id = parseInt(id);
+  price = parseFloat(price);
+  stock = parseFloat(stock);
+
+  if (isNaN(id) || isNaN(price) || isNaN(stock)) {
+    return res
+    .status(400)
+    .json({ success: false, error: "Invalid product fields" });
+  }
+  
   const existingProduct = await textFileProductAdapter.getProductById(id);
   if (existingProduct) {
     return res
       .status(409)
       .json({ success: false, error: "Product with this ID already exists" });
   }
-  req.product = { id, title, price, description, thumbnail, stock: stock || 0 };
+
+  req.body = { id, title, price, description, thumbnail, stock: stock || 0 };
   next();
 }
 

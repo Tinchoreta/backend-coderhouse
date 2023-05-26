@@ -241,8 +241,6 @@ class CartManagerController {
         }
     }
 
-
-
     async deleteCart(request, response) {
         const cartId = request.params.id;
         await this.cartManagerAdapter.deleteCart(cartId);

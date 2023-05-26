@@ -1,89 +1,74 @@
 [
   {
     "id": 1,
-    "title": "Producto 1",
-    "description": "Descripción del producto 1",
-    "price": 578,
-    "thumbnail": "https://ejemplo.com/imagen-producto-1.jpg",
+    "title": "Sandisk SD memory - 16 Gb",
+    "description": "Memory Micro Sd Ultra Sandisk 16gb Class 10. Shock resistant, Temperature resistant, Waterproof, X-ray proof",
+    "price": 8,
+    "thumbnail": "8.jpg",
     "stock": 5
   },
   {
     "id": 2,
-    "title": "Producto 2",
-    "description": "Descripción del producto 2",
+    "title": "Cámara digital Lumix 10",
+    "description": "14 Megapixels. 18.0 x Optical Zoom. 3.0-inch LCD Screen. Full HD photos and 1280 x 720p HD movie capture. ISO sensitivity ISO6400 at reduced resolution.",
     "price": 438,
-    "thumbnail": "https://ejemplo.com/imagen-producto-2.jpg",
+    "thumbnail": "3.jpg",
     "stock": 5
   },
   {
     "id": 3,
-    "title": "Producto 3",
-    "description": "Descripción del producto 3",
-    "price": 734,
-    "thumbnail": "https://ejemplo.com/imagen-producto-3.jpg",
+    "title": "Cámara Fujifilm FinePix S2950",
+    "description": "4 x AA batteries not included. WxDxH 110.2 ×81.4x73.4mm. Weight 0.341kg (excluding battery and memory card). Weight 0.437kg.",
+    "price": 1734,
+    "thumbnail": "4.jpg",
     "stock": 5
   },
   {
     "id": 4,
-    "title": "Producto 4",
-    "description": "Descripción del producto 4",
-    "price": 809,
-    "thumbnail": "https://ejemplo.com/imagen-producto-4.jpg",
-    "stock": 10
+    "title": "16Gb USB flash drive with SD memory holder",
+    "description": "Sandisk 16Gb USB flash drive with SD memory holder. Specially designed for digital cameras and quick access to photos",
+    "price": 10,
+    "thumbnail": "7.jpg",
+    "stock": 5
   },
   {
     "id": 5,
-    "title": "Producto 5",
-    "description": "Descripción del producto 5",
-    "price": 870,
-    "thumbnail": "https://ejemplo.com/imagen-producto-5.jpg",
+    "title": "Ebook Reader Kindle Paperwhite 11 Gen 6,8puLG 8gb Sumergible Color Negro",
+    "description": "Kindle E-reader: Store and carry beloved books. Paper-like reading experience without eye strain.",
+    "price": 50,
+    "thumbnail": "kindle.png",
     "stock": 5
   },
   {
     "id": 6,
-    "title": "Producto 6",
-    "description": "Descripción del producto 6",
-    "price": 631,
-    "thumbnail": "https://ejemplo.com/imagen-producto-6.jpg",
-    "stock": 5
+    "title": "FUJIFILM X-H2 Mirrorless Camera, Bag Kit and 32Gb micro SD Card",
+    "description": "FUJIFILM X-H2 Kit: High-res mirrorless camera + protective bag bundle + baterry charger + SD 32Gb. 40MP APS-C X-Trans5 BSI Sensor",
+    "price": 1931,
+    "thumbnail": "9.jpg",
+    "stock": 10
   },
   {
     "id": 7,
-    "title": "Producto 7",
-    "description": "Descripción del producto 7",
-    "price": 617,
-    "thumbnail": "https://ejemplo.com/imagen-producto-7.jpg",
+    "title": "Nikon Coolpix L25 digital camera (10 megapixels, 5x optical zoom, 7.5 cm (3 inch) display",
+    "description": "10 megapixels, 5x optical zoom, 7.5cm TFT monitor: Share beautiful moments with friends and family. Good visibility indoors and outdoors.",
+    "price": 317,
+    "thumbnail": "1.jpg",
     "stock": 5
   },
   {
     "id": 8,
-    "title": "Producto 8",
-    "description": "Descripción del producto 8",
+    "title": "14.1-megapixel Lumix DMC-S3 and the 12.1-megapixel Lumix DMC-S",
+    "description": "Both cameras feature 720p (at 30fps) HD video recording, a 28mm wide-angle 4x optical zoom lens, a Venus Engine VI image processor, a 2.7-inch Intelligent LCD",
     "price": 296,
-    "thumbnail": "https://ejemplo.com/imagen-producto-8.jpg",
+    "thumbnail": "14.jpg",
     "stock": 5
   },
   {
     "id": 9,
-    "title": "Producto 9",
-    "description": "Esta es la nueva descripción del producto",
-    "price": 25.99,
-    "thumbnail": "https://ejemplo.com/imagen-producto-9.jpg",
-    "stock": 9
-  },
-  {
-    "id": "10",
-    "title": "Producto 10 - updated 4",
-    "description": "Esta es la nueva descripción del producto 10",
-    "price": 94.99,
-    "thumbnail": "https://ejemplo.com/imagen-producto-10.jpg",
-    "stock": 104
-  },
-  {
-    "id": 11,
-    "title": "Producto 11",
-    "description": "Descripción del producto 11",
-    "price": 458,
-    "thumbnail": "https://ejemplo.com/imagen-producto-11.jpg"
+    "title": "Fujifilm FinePix S2980 digital camera (14 megapixels, 18x optical zoom, 7.6 cm (3 inch) display",
+    "description": "Camera FUJIFILM FINEPIX S series: 18x zoom, 14MP CCD, image stabilization, 7.6cm LCD, HD video, tracking autofocus.",
+    "price": 2599.99,
+    "thumbnail": "5.jpg",
+    "stock": 5
   }
 ]
