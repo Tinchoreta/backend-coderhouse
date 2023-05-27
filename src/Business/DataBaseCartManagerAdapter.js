@@ -1,20 +1,21 @@
 import PersistenceManager from '../Data/PersistenceManager.js';
 import DataBaseStrategy from '../Data/DataBaseStrategy.js';
+import CartModel from '../Models/CartModel.js';
 
 class DataBaseCartManagerAdapter {
     static instance;
 
-    constructor(collectionName) {
+    constructor(uri) {
         if (DataBaseCartManagerAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-        this.PersistenceManager = new PersistenceManager(new DataBaseStrategy(collectionName));
+        this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, CartModel));
         DataBaseCartManagerAdapter.instance = this;
     }
 
-    static getInstance(collectionName) {
+    static getInstance(uri) {
         if (!DataBaseCartManagerAdapter.instance) {
-            DataBaseCartManagerAdapter.instance = new DataBaseCartManagerAdapter(collectionName);
+            DataBaseCartManagerAdapter.instance = new DataBaseCartManagerAdapter(uri);
         }
         return DataBaseCartManagerAdapter.instance;
     }

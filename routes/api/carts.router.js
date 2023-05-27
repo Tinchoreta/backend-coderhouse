@@ -1,18 +1,20 @@
 import { Router } from "express";
 import CartManagerController from "../../src/controllers/CartManagerController.js";
-import TextFileCartManagerAdapter from "../../src/Business/TextFileCartManagerAdapter.js";
-import ProductManagerController from "../../src/controllers/ProductManagerController.js";
-import TextFileProductAdapter from "../../src/Business/TextFileProductAdapter.js";
 
-const textFileProductAdapter = TextFileProductAdapter.getInstance(
-    "./data/products.json"
+import DataBaseCartManagerAdapter from "../../src/Business/DataBaseCartManagerAdapter.js";
+import DataBaseProductAdapter from "../../src/Business/DataBaseProductAdapter.js";
+
+
+
+const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
+    process.env.MONGODB_URI
 );
 
-const textFileCartAdapter =
-    TextFileCartManagerAdapter.getInstance("./data/carts.json");
+const dataBaseCartAdapter =
+    DataBaseCartManagerAdapter.getInstance(process.env.MONGODB_URI);
 const cartController = new CartManagerController(
-    textFileCartAdapter,
-    textFileProductAdapter
+    dataBaseCartAdapter,
+    dataBaseProductAdapter
 );
 
 const router = Router();

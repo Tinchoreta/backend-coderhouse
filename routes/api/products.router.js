@@ -9,7 +9,7 @@ import {
 
 const router = Router();
 
-console.log(process.env.MONGODB_URI);
+// console.log(process.env.MONGODB_URI);
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
   process.env.MONGODB_URI
