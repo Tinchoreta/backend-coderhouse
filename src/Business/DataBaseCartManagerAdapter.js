@@ -1,6 +1,6 @@
 import PersistenceManager from '../Data/PersistenceManager.js';
 import DataBaseStrategy from '../Data/DataBaseStrategy.js';
-import CartModel from '../Models/CartModel.js';
+import CartModel from '../models/cart.model.js';
 
 class DataBaseCartManagerAdapter {
     static instance;
@@ -9,12 +9,14 @@ class DataBaseCartManagerAdapter {
         if (DataBaseCartManagerAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-        this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, CartModel));
+        console.log(uri);
+        this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, CartModel ));
         DataBaseCartManagerAdapter.instance = this;
     }
 
     static getInstance(uri) {
         if (!DataBaseCartManagerAdapter.instance) {
+            console.log(uri + " en getInstance");
             DataBaseCartManagerAdapter.instance = new DataBaseCartManagerAdapter(uri);
         }
         return DataBaseCartManagerAdapter.instance;
@@ -22,7 +24,8 @@ class DataBaseCartManagerAdapter {
 
     async getCarts() {
         try {
-            const data = await this.PersistenceManager.load();
+            const data = await this.persistenceManager.load();
+            // console.log(data + " loaded");
             return data.map((cart) => cart.toJSON());
         } catch (error) {
             throw new Error(`getCarts: ${error.message}`);

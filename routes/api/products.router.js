@@ -5,14 +5,13 @@ import {
   validateProductExistence,
   validateProductFields,
 } from "../../middlewares/productMiddlewares.js";
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = Router();
 
-// console.log(process.env.MONGODB_URI);
-
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
-  process.env.MONGODB_URI
+  process.env.MONGO_DB_URI
 );
 
 const productController = new ProductManagerController(dataBaseProductAdapter);
