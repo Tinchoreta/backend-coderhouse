@@ -1,9 +1,12 @@
 import app from "./app.js"
 import { Server } from "socket.io"
-import TextFileProductAdapter from "./src/Business/TextFileProductAdapter.js"
+// import TextFileProductAdapter from "./src/Business/TextFileProductAdapter.js"
+import DataBaseProductAdapter from "./src/Business/DataBaseProductAdapter.js";
 import ProductManager from "./src/Business/ProductManager.js"
 import Product from "./src/Business/Product.js"
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const PORT = 8080
 const ready = () => console.log(`Server ready on port: ${PORT}`)
@@ -48,9 +51,8 @@ socketServer.on("connection", (socket) => {
         } else {
             isAuthenticated = false;
             // console.log(message + "numero " + typeof (message));
-            let productAdapter = TextFileProductAdapter.getInstance(
-                "./data/products.json"
-            );
+            let productAdapter = DataBaseProductAdapter.getInstance(
+                process.env.MONGO_DB_URI);
             let products = await productAdapter.getProducts();
 
             switch (message) {
