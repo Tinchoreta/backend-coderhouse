@@ -1,17 +1,21 @@
-import TextFileProductAdapter from "../src/Business/TextFileProductAdapter.js";
+import DataBaseProductAdapter from "../src/Business/DataBaseProductAdapter.js";
 
-const textFileProductAdapter = TextFileProductAdapter.getInstance(
-  "./data/products.json"
-);
+// Función que devuelve el adaptador de la base de datos
+function getDatabaseProductAdapter() {
+  const mongoDBURI = process.env.MONGO_DB_URI;
+  return DataBaseProductAdapter.getInstance(mongoDBURI);
+}
 
 async function validateProductExistence(req, res, next) {
   const productId = req.params.id;
 
-  if (isNaN(productId)) {
+  if (!productId) {
     return res.status(400).json({ success: false, error: "Invalid product ID" });
   }
-  
-  const product = await textFileProductAdapter.getProductById(productId);
+
+  const dataBaseProductAdapter = getDatabaseProductAdapter();
+
+  const product = await dataBaseProductAdapter.getProductById(productId);
   if (!product) {
     return res.status(404).json({ success: false, error: "Product not found" });
   }
@@ -28,24 +32,25 @@ Ejemplo de producto
 "stock": 5 */
 
 async function validateProductFields(req, res, next) {
-  let { id, title, description, price, thumbnail, stock } = req.body;
-  if (!id || !title || !price || !description || !thumbnail || stock<0) {
+  let {title, description, price, thumbnail, stock } = req.body;
+  if (!title || !price || !description || !thumbnail || stock < 0) {
     return res
       .status(400)
       .json({ success: false, error: "Missing required fields" });
   }
 
-  id = parseInt(id);
   price = parseFloat(price);
   stock = parseFloat(stock);
 
-  if (isNaN(id) || isNaN(price) || isNaN(stock)) {
+  if ( isNaN(price) || isNaN(stock)) {
     return res
-    .status(400)
-    .json({ success: false, error: "Invalid product fields" });
+      .status(400)
+      .json({ success: false, error: "Invalid product fields" });
   }
-  
-  const existingProduct = await textFileProductAdapter.getProductById(id);
+
+  const dataBaseProductAdapter = getDatabaseProductAdapter();
+  const existingProduct = await dataBaseProductAdapter.getProductById(id);
+
   if (existingProduct) {
     return res
       .status(409)

@@ -7,6 +7,9 @@
 				</div>
 				<div class="card-body">
 					<form id="productForm" method="POST" action="/products">
+						<div class="mt-3 prodId">
+							<p class="text-center">ID del producto: <span id="productID"></span></p>
+						</div>
 						<div class="mb-3">
 							<label for="title" class="form-label text-end">Título</label>
 							<input type="text" class="form-control text-end" id="title" name="title" required>
@@ -34,9 +37,6 @@
 							<button type="submit" class="btn btn-primary">Guardar</button>
 						</div>
 					</form>
-					<div class="mt-3">
-						<p class="text-center">ID del producto: <span id="productID"></span></p>
-					</div>
 					<div class="mt-3 text-center">
 						<a href="/products" class="btn btn-link">Ver todos los productos</a>
 					</div>
