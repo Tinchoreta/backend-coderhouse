@@ -37,6 +37,7 @@ class CartViewController {
             return res.render('index', {
                 title: 'BootShop',
                 user: name,
+                script: "index.js",
                 cartManager: cartManager
             });
 
