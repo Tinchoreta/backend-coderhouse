@@ -10,7 +10,7 @@ import CartManagerController from "../../src/controllers/CartManagerController.j
 const router = Router();
 dotenv.config();
 
-console.log(process.env.MONGO_DB_URI + " en router" );
+// console.log(process.env.MONGO_DB_URI + " en router" );
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
     process.env.MONGO_DB_URI

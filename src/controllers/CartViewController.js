@@ -1,20 +1,22 @@
+
 import axios from 'axios';
+import dotenv from 'dotenv';
 import CartManager from "../../src/Business/CartManager.js";
-import TextFileProductAdapter from "../../src/Business/TextFileProductAdapter.js";
-import TextFileCartManagerAdapter from "../../src/Business/TextFileCartManagerAdapter.js";
+import DataBaseProductAdapter from "../../src/Business/DataBaseProductAdapter.js";
+import DataBaseCartManagerAdapter from "../../src/Business/DataBaseCartManagerAdapter.js";
+
 import ProductManager from '../Business/ProductManager.js';
+
 
 
 class CartViewController {
 
     constructor() {
 
-        const pathToCart = "./data/carts.json";
-        const pathToProduct = "./data/products.json";
+        dotenv.config();
 
-        this.textFileProductAdapter = TextFileProductAdapter.getInstance(pathToProduct);
-
-        this.textFileCartAdapter = TextFileCartManagerAdapter.getInstance(pathToCart);
+        this.DataBaseProductAdapter = DataBaseProductAdapter.getInstance(process.env.MONGO_DB_URI);
+        this.DataBaseCartAdapter = DataBaseCartManagerAdapter.getInstance(process.env.MONGO_DB_URI);
     }
 
     async renderIndex(req, res) {
@@ -22,21 +24,20 @@ class CartViewController {
         //TODO: Change hardcoded values on cart 1 and name to show on index page
 
         try {
-            const cartToRender = await this.textFileCartAdapter.getCartById(1);
-            const productsList = await this.textFileProductAdapter.getProducts();
+            const cartToRender = await this.DataBaseCartAdapter.getCartById(1);
+            const productsList = await this.DataBaseProductAdapter.getProducts();
             const productManager = new ProductManager(productsList);
 
             let cartManager = new CartManager([cartToRender],productManager);
             
             let name = "Tincho"
-            let itemsOnCart1 = cartManager.getCartTotalItemsQuantity(1);
-            let totalPrice = cartManager.calculateTotalPrice(1);
+            // let itemsOnCart1 = cartManager.getCartTotalItemsQuantity(1);
+            // let totalPrice = cartManager.calculateTotalPrice(1);
 
             return res.render('index', {
                 title: 'BootShop',
                 user: name,
-                itemsOnCart1: itemsOnCart1,
-                totalPrice: totalPrice
+                cartManager: cartManager
             });
 
         } catch (error) {
