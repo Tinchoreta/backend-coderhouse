@@ -1,24 +1,34 @@
-
 import Handlebars from 'handlebars';
 
 // Helper para obtener el número de items en el carrito
-export function cartItemCount(cartManager) {
-    return cartManager.getCartTotalItemsQuantity(1);
-}
+Handlebars.registerHelper('cartItemCount', function (options) {
+    const cartManager = options.data.root.cartManager;
+
+    console.log('cartItemCount helper:', cartManager); // Agregar este console.log
+
+    let count = cartManager.getCartTotalItemsQuantity(647298);
+
+    console.log(count);
+
+    return count;
+});
 
 // Helper para obtener el precio total del carrito
-export function cartTotal(cartManager) {
-    return cartManager.calculateTotalPrice(1);
-}
+Handlebars.registerHelper('cartTotal', function (options) {
+    const cartManager = options.data.root.cartManager;
+
+    console.log('cartTotal helper:', cartManager); // Agregar este console.log
+
+    let result = cartManager.calculateTotalPrice(647298);
+
+    console.log(result);
+
+    return result;
+});
 
 // Helper para formatear un precio en formato moneda
-export function formatPrice(price) {
+Handlebars.registerHelper('formatPrice', function (price) {
     return `$${price.toFixed(2)}`;
-}
-
-// Registro de los helpers en la instancia de Handlebars
-Handlebars.registerHelper('cartItemCount', cartItemCount);
-Handlebars.registerHelper('cartTotal', cartTotal);
-Handlebars.registerHelper('formatPrice', formatPrice);
+});
 
 export default Handlebars;

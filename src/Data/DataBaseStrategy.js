@@ -66,8 +66,8 @@ class DataBaseStrategy {
     async getOne(filter) {
         try {
             const data = await this.model.findOne(filter);
-            // console.log('Retrieved document from collection:', this.model.collection.collectionName);
-            return data ? data.toJSON() : null;
+            console.log('Retrieved document from collection:', this.model.collection.collectionName + " " + data); 
+            return data ? data : null;
         } catch (error) {
             console.error('Failed to retrieve document:', error);
             throw error;

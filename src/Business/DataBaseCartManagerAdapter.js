@@ -9,14 +9,14 @@ class DataBaseCartManagerAdapter {
         if (DataBaseCartManagerAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-        console.log(uri);
+        // console.log(uri);
         this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, CartModel ));
         DataBaseCartManagerAdapter.instance = this;
     }
 
     static getInstance(uri) {
         if (!DataBaseCartManagerAdapter.instance) {
-            console.log(uri + " en getInstance");
+            // console.log(uri + " en getInstance");
             DataBaseCartManagerAdapter.instance = new DataBaseCartManagerAdapter(uri);
         }
         return DataBaseCartManagerAdapter.instance;

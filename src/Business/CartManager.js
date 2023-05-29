@@ -20,9 +20,24 @@ class CartManager {
         return lastIndex >= 0 ? this.cartList[lastIndex].id : 0;
     }
 
+    // getCartById(cartIdToGet) {
+    //     return this.cartList.find((cart) => parseInt(cart.id) === parseInt(cartIdToGet)) || null;
+    // }
+
     getCartById(cartIdToGet) {
-        return this.cartList.find((cart) => cart.id === parseInt(cartIdToGet)) || null;
+        const targetCartId = parseInt(cartIdToGet);
+        for (const cart of this.cartList) {
+            const currentCartId = parseInt(cart.id);
+            // console.log(`Checking cart with id ${currentCartId}`);
+            if (currentCartId === targetCartId) {
+                // console.log(`Found cart with id ${currentCartId}`);
+                return cart;
+            }
+        }
+        // console.log(`No cart found with id ${targetCartId}`);
+        return null;
     }
+
 
     removeCart(cartId) {
         const index = this.cartList.findIndex((cart) => cart.id === cartId);
@@ -73,7 +88,8 @@ class CartManager {
             if (cart) {
                 for (const item of cart.products) {
                     const productData = this.productManager.getProductById(item.productId);
-                    totalPrice += productData.price * item.quantity;
+
+                    productData ? totalPrice += productData.price * item.quantity : totalPrice = totalPrice; 
                 }
             }
             return totalPrice;
