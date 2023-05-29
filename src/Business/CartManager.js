@@ -25,9 +25,9 @@ class CartManager {
     // }
 
     getCartById(cartIdToGet) {
-        const targetCartId = parseInt(cartIdToGet);
+        const targetCartId = cartIdToGet;
         for (const cart of this.cartList) {
-            const currentCartId = parseInt(cart.id);
+            const currentCartId = cart.id;
             // console.log(`Checking cart with id ${currentCartId}`);
             if (currentCartId === targetCartId) {
                 // console.log(`Found cart with id ${currentCartId}`);
@@ -37,7 +37,6 @@ class CartManager {
         // console.log(`No cart found with id ${targetCartId}`);
         return null;
     }
-
 
     removeCart(cartId) {
         const index = this.cartList.findIndex((cart) => cart.id === cartId);

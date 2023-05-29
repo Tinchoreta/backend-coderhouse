@@ -1,9 +1,5 @@
 [
     {
-        "_id": {
-            "$oid": "6471185ed4b3ba1b2c7484e4"
-        },
-        "id": 1,
         "title": "Sandisk SD memory - 16 Gb",
         "description": "Memory Micro Sd Ultra Sandisk 16gb Class 10. Shock resistant, Temperature resistant, Waterproof, X-ray proof",
         "price": 8,
@@ -11,10 +7,6 @@
         "stock": 5
     },
     {
-        "_id": {
-            "$oid": "6471185ed4b3ba1b2c7484e5"
-        },
-        "id": 2,
         "title": "Cámara digital Lumix 10",
         "description": "14 Megapixels. 18.0 x Optical Zoom. 3.0-inch LCD Screen. Full HD photos and 1280 x 720p HD movie capture. ISO sensitivity ISO6400 at reduced resolution.",
         "price": 438,
@@ -22,10 +14,6 @@
         "stock": 5
     },
     {
-        "_id": {
-            "$oid": "6471185ed4b3ba1b2c7484e6"
-        },
-        "id": 3,
         "title": "Cámara Fujifilm FinePix S2950",
         "description": "4 x AA batteries not included. WxDxH 110.2 ×81.4x73.4mm. Weight 0.341kg (excluding battery and memory card). Weight 0.437kg.",
         "price": 1734,
@@ -33,10 +21,6 @@
         "stock": 5
     },
     {
-        "_id": {
-            "$oid": "6471185ed4b3ba1b2c7484e7"
-        },
-        "id": 4,
         "title": "16Gb USB flash drive with SD memory holder",
         "description": "Sandisk 16Gb USB flash drive with SD memory holder. Specially designed for digital cameras and quick access to photos",
         "price": 10,
@@ -44,10 +28,6 @@
         "stock": 5
     },
     {
-        "_id": {
-            "$oid": "6471185ed4b3ba1b2c7484e8"
-        },
-        "id": 5,
         "title": "Ebook Reader Kindle Paperwhite 11 Gen 6,8puLG 8gb Sumergible Color Negro",
         "description": "Kindle E-reader: Store and carry beloved books. Paper-like reading experience without eye strain.",
         "price": 50,
@@ -55,10 +35,6 @@
         "stock": 5
     },
     {
-        "_id": {
-            "$oid": "6471185ed4b3ba1b2c7484e9"
-        },
-        "id": 6,
         "title": "FUJIFILM X-H2 Mirrorless Camera, Bag Kit and 32Gb micro SD Card",
         "description": "FUJIFILM X-H2 Kit: High-res mirrorless camera + protective bag bundle + baterry charger + SD 32Gb. 40MP APS-C X-Trans5 BSI Sensor",
         "price": 1931,
@@ -66,10 +42,6 @@
         "stock": 10
     },
     {
-        "_id": {
-            "$oid": "6471185ed4b3ba1b2c7484ea"
-        },
-        "id": 7,
         "title": "Nikon Coolpix L25 digital camera (10 megapixels, 5x optical zoom, 7.5 cm (3 inch) display",
         "description": "10 megapixels, 5x optical zoom, 7.5cm TFT monitor: Share beautiful moments with friends and family. Good visibility indoors and outdoors.",
         "price": 317,
@@ -77,10 +49,6 @@
         "stock": 5
     },
     {
-        "_id": {
-            "$oid": "6471185ed4b3ba1b2c7484eb"
-        },
-        "id": 8,
         "title": "14.1-megapixel Lumix DMC-S3 and the 12.1-megapixel Lumix DMC-S",
         "description": "Both cameras feature 720p (at 30fps) HD video recording, a 28mm wide-angle 4x optical zoom lens, a Venus Engine VI image processor, a 2.7-inch Intelligent LCD",
         "price": 296,
@@ -88,9 +56,6 @@
         "stock": 5
     },
     {
-        "_id": {
-            "$oid": "6471190814681718730e8545"
-        },
         "title": "Producto 12",
         "description": "Descripción del producto 12",
         "price": 458,

@@ -24,14 +24,14 @@ class CartViewController {
         //TODO: Change hardcoded values on cart 1 and name to show on index page
 
         try {
-            const cartToRender = await this.DataBaseCartAdapter.getCartById(1);
+            const cartToRender = await this.DataBaseCartAdapter.getCartById('64751413d4b3ba1b2c7484fc');
             const productsList = await this.DataBaseProductAdapter.getProducts();
             const productManager = new ProductManager(productsList);
 
             cartManager = new CartManager([cartToRender],productManager);
             
             console.log(cartManager);
-            
+
             let name = "Tincho"
             // let itemsOnCart1 = cartManager.getCartTotalItemsQuantity(1);
             // let totalPrice = cartManager.calculateTotalPrice(1);

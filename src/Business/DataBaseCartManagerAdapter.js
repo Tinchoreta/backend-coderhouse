@@ -43,7 +43,7 @@ class DataBaseCartManagerAdapter {
 
     async getCartById(cartId) {
         try {
-            const cart = await this.persistenceManager.getOne({ id: parseInt(cartId) });
+            const cart = await this.persistenceManager.getOne({ id: cartId });
             return cart || [];
         } catch (error) {
             throw new Error(`getCartById: ${error.message}`);

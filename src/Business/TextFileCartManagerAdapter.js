@@ -63,7 +63,7 @@ class TextFileCartManagerAdapter {
             if (cartsList.length === 0) {
                 return null;
             }
-            const found = cartsList.find((cart) => cart.id === parseInt(cartId));
+            const found = cartsList.find((cart) => cart.id === cartId);
             if (!found) {
                 return null;
             }
@@ -76,7 +76,7 @@ class TextFileCartManagerAdapter {
     async createCart() {
         try {
             const cart = await this.PersistenceManager.load();
-            const newCart = { id: cart.length + 1, products: [] };
+            const newCart = { products: [] };
             cart.push(newCart);
             await this.PersistenceManager.save(cart);
             return newCart.id;
@@ -88,7 +88,7 @@ class TextFileCartManagerAdapter {
     async updateCart(cartToUpdate) {
         try {
             const { id, products } = cartToUpdate;
-            const cartId = parseInt(id);
+            const cartId = id;
 
             const cartsFromPersistence = await this.PersistenceManager.load();
             const cartToUpdateIndex = cartsFromPersistence.findIndex((cart) => cart.id === cartId);
@@ -124,17 +124,17 @@ class TextFileCartManagerAdapter {
             }
 
             const cartsFromPersistence = await this.cartManagerAdapter.getCarts();
-            const cartFound = cartsFromPersistence.find((cart) => cart.id === parseInt(cartId));
+            const cartFound = cartsFromPersistence.find((cart) => cart.id === cartId);
             if (!cartFound) {
                 throw new Error(`Cart with ID: ${cartId} not found`);
             }
 
-            const product = cartFound.products.find((product) => product.productId === parseInt(productId));
+            const product = cartFound.products.find((product) => product.productId === productId);
             if (!product) {
                 throw new Error(`Product with ID: ${productId} not found in cart with ID: ${cartId}`);
             }
 
-            cartFound.products = cartFound.products.filter((product) => product.productId !== parseInt(productId));
+            cartFound.products = cartFound.products.filter((product) => product.productId !== productId);
             await this.cartManagerAdapter.updateCart({
                 id: cartId,
                 products: cartFound.products
@@ -156,9 +156,9 @@ class TextFileCartManagerAdapter {
             }
             //Se cargan los datos de los productos desde data.json
             const cartsLoaded = await this.PersistenceManager.load();
-            console.log(cartsLoaded)
+            
             const cartIndex = cartsLoaded.findIndex((product) => product.id === id);
-            console.log(cartIndex)
+            
             //Si no se encuentra el producto en el archivo data.json 
             //findIndex devolverá -1
             if (cartIndex === -1) {
