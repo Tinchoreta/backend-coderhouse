@@ -1,10 +1,11 @@
 import express from 'express';
 import { join } from 'path';
 import logger from 'morgan';
+import mainRouter from './routes/index.js'
 import DataBaseStrategy from './src/Data/DataBaseStrategy.js';
 import dotenv from 'dotenv';
 import { engine } from 'express-handlebars';
-import Handlebars from './handlebarsHelpers.js';
+import Handlebars from './helpers/handlebarsHelper.js';
 import __dirname from './utils.js'
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFound.js';
