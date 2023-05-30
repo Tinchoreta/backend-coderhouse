@@ -68,9 +68,9 @@ class DataBaseProductAdapter {
 
             const result = await this.persistenceManager.deleteOne({ _id: id });
 
-            console.log(result + ' deleted adapter');
+            // console.log(result + ' deleted adapter');
 
-            return result;
+            return result.deletedCount;
 
         } catch (error) {
             throw new Error(`deleteProduct: ${error.message}`);
