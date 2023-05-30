@@ -34,7 +34,7 @@ class DataBaseCartManagerAdapter {
 
     async getProductsIds(cartId) {
         try {
-            const cart = await this.persistenceManager.getOne({ id: parseInt(cartId) });
+            const cart = await this.persistenceManager.getOne({ _id: parseInt(cartId) });
             return cart ? cart.products.map((product) => product.id) : [];
         } catch (error) {
             throw new Error(`getProductsIds: ${error.message}`);
@@ -43,8 +43,8 @@ class DataBaseCartManagerAdapter {
 
     async getCartById(cartId) {
         try {
-            const cart = await this.persistenceManager.getOne({ id: cartId });
-            return cart || [];
+            const cart = await this.persistenceManager.getOne({ _id: cartId });
+            return cart || null;
         } catch (error) {
             throw new Error(`getCartById: ${error.message}`);
         }
@@ -54,7 +54,7 @@ class DataBaseCartManagerAdapter {
         try {
             const cart = { id: null, products: [] };
             const createdCart = await this.persistenceManager.addOne(cart);
-            return createdCart.id;
+            return createdCart._id;
         } catch (error) {
             throw new Error(`createCart: ${error.message}`);
         }
@@ -107,12 +107,12 @@ class DataBaseCartManagerAdapter {
 
     async deleteCart(idToDelete) {
         try {
-            const id = Number(idToDelete);
-            if (isNaN(id)) {
+            const id = idToDelete;
+            if (!id) {
                 throw new Error(`Cart ID "${idToDelete}" is not a valid number`);
             }
 
-            const isDeleted = await this.persistenceManager.deleteOne({ id });
+            const isDeleted = await this.persistenceManager.deleteOne({ _id });
 
             if (!isDeleted) {
                 throw new Error(`Cart with ID: ${idToDelete} could not be deleted`);

@@ -20,16 +20,16 @@ class CartViewController {
     }
 
     async renderIndex(req, res) {
-        let cartManager;        
+        let cartManager;
         //TODO: Change hardcoded values on cart 1 and name to show on index page
 
         try {
-            const cartToRender = await this.DataBaseCartAdapter.getCartById('64751413d4b3ba1b2c7484fc');
+            const cartToRender = await this.DataBaseCartAdapter.getCartById('64765d546145585e447a0436');
             const productsList = await this.DataBaseProductAdapter.getProducts();
             const productManager = new ProductManager(productsList);
 
-            cartManager = new CartManager([cartToRender],productManager);
-            
+            cartManager = new CartManager([cartToRender], productManager);
+
             console.log(cartManager);
 
             let name = "Tincho"
