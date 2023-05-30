@@ -45,7 +45,7 @@ async function addProductToInventory(event) {
 
         //si fue creado el producto y agregado a la persistencia
         if (status === 201) {
-            document.getElementById("productID").value = data._id;
+            document.getElementById("productID").textContent = data._id;
             Swal.fire({
                 icon: "success",
                 title: "Success",

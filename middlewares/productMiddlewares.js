@@ -48,16 +48,7 @@ async function validateProductFields(req, res, next) {
       .json({ success: false, error: "Invalid product fields" });
   }
 
-  const dataBaseProductAdapter = getDatabaseProductAdapter();
-  const existingProduct = await dataBaseProductAdapter.getProductById(id);
-
-  if (existingProduct) {
-    return res
-      .status(409)
-      .json({ success: false, error: "Product with this ID already exists" });
-  }
-
-  req.body = { id, title, price, description, thumbnail, stock: stock || 0 };
+  req.body = { title, price, description, thumbnail, stock: stock || 0 };
   next();
 }
 
