@@ -163,7 +163,7 @@ class ProductManagerController {
       );
       // console.log(isDeleted + "Controller delete");
 
-      isDeleted > 0 //borró uno o varios registros. Viene de deleteOne(id)
+      isDeleted > 0 //borró uno o varios registros. Viene de deleteOne(id) que devuelve un objeto con propiedad deletedCount (indica cuántos registros se borraron).
         ? response
           .status(200)
           .send(
