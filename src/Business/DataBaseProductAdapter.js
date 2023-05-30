@@ -61,7 +61,7 @@ class DataBaseProductAdapter {
 
     async deleteProduct(idToDelete) {
         try {
-            const id = Number(idToDelete);
+            const id = idToDelete;
             if (!id) {
                 throw new Error(`Product ID "${idToDelete}" is not a valid number`);
             }
