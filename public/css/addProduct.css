@@ -63,9 +63,9 @@ body {
 
 .form-control {
     margin-bottom: 10px;
-    text-align: right;
-    direction: rtl;
+    text-align: left;
 }
+
 
 .swal2-container {
     background-color: #8C9BA5;

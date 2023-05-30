@@ -44,7 +44,7 @@ class ProductManagerController {
   async getProducts(request, response) {
     try {
       const products = await this.productManagerAdapter.getProducts();
-      console.log(products);
+      // console.log(products);
 
       const limit = parseInt(request.query.limit) || 0;
 

@@ -104,7 +104,7 @@ class DataBaseStrategy {
             const document = new this.model(data);
             const result = await document.save();
             // console.log('Added document to collection: ', this.model.collection.collectionName);
-            return result.toJSON();
+            return result;
         } catch (error) {
             console.error('Failed to add document:', error);
             throw error;

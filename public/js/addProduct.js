@@ -1,6 +1,6 @@
 // Función para limpiar los campos del formulario
 function limpiar() {
-    document.getElementById("id").value = "";
+    document.getElementById("productID").value = "";
     document.getElementById("title").value = "";
     document.getElementById("description").value = "";
     document.getElementById("price").value = "";
@@ -13,7 +13,7 @@ async function addProductToInventory(event) {
     event.preventDefault();
     try {
         // Obtenemos los valores del formulario
-        let id = document.getElementById("id").value;
+        
         let title = document.getElementById("title").value;
         let description = document.getElementById("description").value;
         let price = document.getElementById("price").value;
@@ -22,7 +22,6 @@ async function addProductToInventory(event) {
 
         // Creamos un objeto con los datos del nuevo producto
         let nuevoProducto = {
-            id: id,
             title: title,
             description: description,
             price: price,
@@ -46,6 +45,7 @@ async function addProductToInventory(event) {
 
         //si fue creado el producto y agregado a la persistencia
         if (status === 201) {
+            document.getElementById("productID").value = data._id;
             Swal.fire({
                 icon: "success",
                 title: "Success",
