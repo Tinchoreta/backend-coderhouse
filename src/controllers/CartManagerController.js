@@ -129,7 +129,7 @@ class CartManagerController {
     async updateCartItem(request, response) {
         const cartId = request.params.id;
         const updatedProduct = request.body;
-        const updatedItem = await this.cartManagerAdapter.updateCart({ id: cartId, products: updatedProduct });
+        const updatedItem = await this.cartManagerAdapter.updateCart({ _id: cartId, products: updatedProduct });
         response.status(200).json(updatedItem);
     }
 
@@ -138,7 +138,7 @@ class CartManagerController {
         const productId = parseInt(req.params.pid);
         const unitsToAdd = Number(req.params.units);
 
-        if (isNaN(cartId) || isNaN(productId) || isNaN(unitsToAdd) || unitsToAdd <= 0) {
+        if (!cartId || !productId || isNaN(unitsToAdd) || unitsToAdd <= 0) {
             return this.#sendError(res, 400, 'Invalid parameters');
         }
 
@@ -166,7 +166,7 @@ class CartManagerController {
             return this.#sendError(res, 400, 'Not enough stock');
         }
 
-        //Si hay más unidades agregar que stock del producto, se agregan solo las unidades disponibles
+        //Si hay más unidades para agregar que stock del producto, se agregan solo las unidades disponibles
 
         const unitsToAddRestrained = unitsToAdd > availableUnits ? availableUnits : unitsToAdd;
 
@@ -194,7 +194,7 @@ class CartManagerController {
             const productId = parseInt(req.params.pid);
             let unitsToRemove = Number(req.params.units);
 
-            if (isNaN(cartId) || isNaN(productId) || isNaN(unitsToRemove) || unitsToRemove <= 0) {
+            if (!cartId || isNaN(productId) || isNaN(unitsToRemove) || unitsToRemove <= 0) {
                 return this.#sendError(res, 400, 'Invalid parameters');
             }
 

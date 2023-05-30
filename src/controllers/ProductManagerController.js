@@ -24,9 +24,7 @@ class ProductManagerController {
     if (!productToAdd.stock) {
       productToAdd.stock = 0;
     }
-
     // console.log(JSON.stringify(productToAdd) + " added");
-
     try {
       const addedProduct = await this.productManagerAdapter.addProduct(
         productToAdd
@@ -78,7 +76,7 @@ class ProductManagerController {
 
   async getProductById(request, response) {
     try {
-      const productId = parseInt(request.params.id);
+      const productId = request.params.id;
       const productFound = await this.productManagerAdapter.getProductById(productId);
       if (productFound) {
         return response.status(200).json({

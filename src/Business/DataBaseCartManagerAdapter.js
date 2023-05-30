@@ -63,9 +63,9 @@ class DataBaseCartManagerAdapter {
     async updateCart(cartToUpdate) {
         try {
             const { id, products } = cartToUpdate;
-            const cartId = parseInt(id);
+            const cartId = id;
 
-            const cart = await this.persistenceManager.getOne({ id: cartId });
+            const cart = await this.persistenceManager.getOne({ _id: cartId });
             if (!cart) {
                 throw new Error(`Cart with ID ${cartId} not found`);
             }
@@ -83,15 +83,15 @@ class DataBaseCartManagerAdapter {
 
     async removeProductFromCart(cartId, productId) {
         try {
-            const cart = await this.persistenceManager.getOne({ id: parseInt(cartId) });
+            const cart = await this.persistenceManager.getOne({ _id: cartId });
             if (!cart) {
                 throw new Error(`Cart with ID: ${cartId} not found`);
             }
 
-            const updatedProducts = cart.products.filter((product) => product.productId !== parseInt(productId));
+            const updatedProducts = cart.products.filter((product) => product.productId !== productId);
 
             const updatedCart = await this.persistenceManager.modifyOne(
-                { id: cart.id },
+                { _id: cart.id },
                 { products: updatedProducts }
             );
 

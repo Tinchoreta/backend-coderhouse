@@ -92,7 +92,8 @@ class DataBaseStrategy {
         try {
             const result = await this.model.updateOne(filter, update);
             // console.log('Modified document in collection:', this.model.collection.collectionName);
-            return result;
+            const itemModified = result.modifiedCount === 1? await this.model.getOne(filter) : null;
+            return itemModified;
         } catch (error) {
             console.error('Failed to modify document:', error);
             throw error;
