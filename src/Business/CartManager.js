@@ -4,6 +4,15 @@ class CartManager {
         this.productManager = productManager;
     }
 
+    static instance = null;
+
+    static getInstance(cartList, productManager) {
+        if (!CartManager.instance) {
+            CartManager.instance = new CartManager(cartList, productManager);
+        }
+        return CartManager.instance;
+    }
+
     getCarts() {
         return this.cartList;
     }

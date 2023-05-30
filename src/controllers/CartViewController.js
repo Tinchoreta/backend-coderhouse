@@ -28,9 +28,9 @@ class CartViewController {
             const productsList = await this.DataBaseProductAdapter.getProducts();
             const productManager = new ProductManager(productsList);
 
-            cartManager = new CartManager([cartToRender], productManager);
+            cartManager = CartManager.getInstance([cartToRender], productManager);
 
-            console.log(cartManager);
+            // console.log(cartManager);
 
             let name = "Tincho"
             // let itemsOnCart1 = cartManager.getCartTotalItemsQuantity(1);
