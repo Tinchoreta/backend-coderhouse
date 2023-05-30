@@ -4,7 +4,7 @@ import DataBaseProductAdapter from "../../src/Business/DataBaseProductAdapter.js
 import {
   validateProductExistence,
   validateProductFields,
-} from "../../middlewares/productMiddlewares.js";
+} from "../../middlewares/productMiddleware.js";
 import dotenv from 'dotenv';
 dotenv.config();
 

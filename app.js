@@ -1,18 +1,23 @@
 import express from 'express';
 import { join } from 'path';
 import logger from 'morgan';
+import { engine } from 'express-handlebars';
+
 import mainRouter from './routes/index.js'
 import DataBaseStrategy from './src/Data/DataBaseStrategy.js';
-import dotenvMiddlewares from './middlewares/dotenvMiddlewares.js';
-import { engine } from 'express-handlebars';
-import Handlebars from './helpers/handlebarsHelper.js';
-import __dirname from './utils.js'
+
+import dotenvMiddlewares from './middlewares/dotenvMiddleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFound.js';
+import cartMiddleware from './middlewares/cartMiddleware.js';
+
+import Handlebars from './helpers/handlebarsHelper.js';
+import __dirname from './utils.js'
 
 // const HandlebarsWithHelpers = Handlebars.create(); // Handlebars con helpers
 
 const app = express();
+
 
 //Para importar las variables de entorno de .env
 app.use(dotenvMiddlewares);
@@ -30,8 +35,11 @@ async function connect() {
     }
 }
 
+//Conectar la base de datos
 connect();
 
+//Para hacer una especie de contexto de React para el carrito de compras
+app.use(cartMiddleware);
 
 //middlewares
 app.use(logger('dev'));
