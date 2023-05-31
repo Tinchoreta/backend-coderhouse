@@ -26,10 +26,8 @@ const cartMiddleware = async (req, res, next) => {
 
     } catch (error) {
         console.error(error);
-        return res.status(500).json({
-            success: false,
-            error: "Internal Server Error",
-        });
+        next(error);
+        
     }
 }
 
