@@ -5,10 +5,11 @@ import addProductRouter from "./addProduct.js"
 import productDetailsRouter from "./productDetails.js";
 import productSummaryRouter from "./productSummary.js";
 import CartViewController from "../../src/controllers/CartViewController.js";
+import cartMiddleware from "../../middlewares/cartMiddleware.js";
 
 const viewRouter = Router();
 
-viewRouter.get('/', async (req, res, next) => {
+viewRouter.get('/',cartMiddleware, async (req, res, next) => {
     try {
         const cartViewController = new CartViewController();
         cartViewController.renderIndex(req,res);
