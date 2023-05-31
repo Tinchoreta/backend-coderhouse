@@ -64,23 +64,7 @@ class ProductViewController {
     }
   }
 
-  async renderProductSummaryForm(req, res, cartId) {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/carts/${cartId}`);
-      return res.render("productSummary", {
-        title: "Product Summary",
-        script: "productSummary.js",
-        css: "productSummary.css",
-        cartManager: req.cartManager
-      });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        success: false,
-        error: "Internal Server Error",
-      });
-    }
-  }
+
   renderAddProductResponse(req, res, success, message) {
     const data = {
       success: true,
