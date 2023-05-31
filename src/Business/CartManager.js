@@ -72,6 +72,29 @@ class CartManager {
         }
     }
 
+    getProducts(cartId) {
+        const cart = this.getCartById(cartId);
+        if (cart) {
+            const products = [];
+            for (const item of cart.products) {
+                const productData = this.productManager.getProductById(item.productId);
+                if (productData) {
+                    const { _id, titulo, descripción, thumbnail, stock } = productData;
+                    const product = {
+                        _id,
+                        titulo,
+                        descripción,
+                        thumbnail,
+                        stock,
+                    };
+                    products.push(product);
+                }
+            }
+            return products;
+        }
+        return [];
+    }
+
     getCartTotalItemsQuantity(cartId) {
         const cartToCalculateTotal = this.getCartById(cartId);
         if (cartToCalculateTotal) {
