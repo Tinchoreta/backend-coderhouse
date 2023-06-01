@@ -11,7 +11,8 @@ const cartMiddleware = async (req, res, next) => {
         const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(process.env.MONGO_DB_URI);
         const dataBaseCartAdapter = DataBaseCartManagerAdapter.getInstance(process.env.MONGO_DB_URI);
 
-
+        //TODO: Change this hard-coded cartID
+        
         const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0436');
         const productsList = await dataBaseProductAdapter.getProducts();
         const productManager = new ProductManager(productsList);

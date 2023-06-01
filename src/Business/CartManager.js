@@ -79,13 +79,15 @@ class CartManager {
             for (const item of cart.products) {
                 const productData = this.productManager.getProductById(item.productId);
                 if (productData) {
-                    const { _id, titulo, descripción, thumbnail, stock } = productData;
+                    const { _id, title, description,price, thumbnail, stock } = productData;
                     const product = {
                         _id,
-                        titulo,
-                        descripción,
+                        title,
+                        price,
+                        description,
                         thumbnail,
                         stock,
+                        quantity: item.quantity
                     };
                     products.push(product);
                 }
