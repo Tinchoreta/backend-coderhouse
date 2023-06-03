@@ -5,7 +5,7 @@ la cuál tendrá un arreglo de Productos que iniciará vacíos.
 
 */
 
-import Product from "./Product.js";
+import Product from "../Product.js";
 
 class ProductManager {
   constructor(products) {
