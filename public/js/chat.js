@@ -18,7 +18,7 @@ Swal.fire({
     confirmButtonColor: "#B5DC86"
 }).then((res) => {
     userName = res.value;
-    document.getElementById("username").innerHTML = "Conectado como: " + userName;
+    document.getElementById("username").innerHTML = "Connected as: " + userName;
     socket.emit("auth", userName);
     chatBox.focus();
 });
