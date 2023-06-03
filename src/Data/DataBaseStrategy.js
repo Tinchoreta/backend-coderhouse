@@ -74,6 +74,16 @@ class DataBaseStrategy {
         }
     }
 
+    async getMany(filter) {
+        try {
+            const data = await this.model.find(filter);
+            return data ? data : null;
+        } catch (error) {
+            console.error('Failed to retrieve document (getMany):', error);
+            throw error;
+        }
+    }
+
     async deleteOne(filter) {
         try {
             const result = await this.model.deleteOne(filter);

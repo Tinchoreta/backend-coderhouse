@@ -1,20 +1,22 @@
-import DataBaseProductAdapter from "../Business/DataBaseProductAdapter.js";
+// import DataBaseProductAdapter from "../Business/DataBaseProductAdapter.js";
 import ProductManager from "../Business/managers/ProductManager.js";
 // import Product from "../Business/Product.js"; 
 
 class Chat {
-    constructor(socket) {
+    constructor(socket, productAdapter, messageAdapter) {
         this.socket = socket;
         this.isAuthenticated = false;
         this.chats = [];
+        this.productAdapter = productAdapter;
+        this.messageAdapter = messageAdapter;
     }
 
-    sendMessage(message) {
+    async sendMessage(message) {
         this.chats.push({
-            userName: "Bootshop",
+            userName: "assistant@Bootshop.com",
             message: message
         });
-
+        await this.saveMessageToDatabase("assistant@Bootshop.com", message);
         this.socket.emit("allMessages", this.chats);
     }
 
@@ -28,7 +30,7 @@ class Chat {
             return;
         } else {
             this.isAuthenticated = false;
-            const productAdapter = DataBaseProductAdapter.getInstance(process.env.MONGO_DB_URI);
+            const productAdapter = this.productAdapter;
             const products = await productAdapter.getProducts();
 
             switch (message) {
@@ -76,10 +78,26 @@ class Chat {
         }
     }
 
-    handleNewMessage(data) {
+    async handleNewMessage(data) {
         this.chats.push(data);
+        await this.saveMessageToDatabase(data.userName, data.message); // Persistir el mensaje en la base de datos
         this.processInput(this.chats);
     }
-}
 
+    async saveMessageToDatabase(userName, message) {
+        const newMessage = { user: userName, message };
+        await this.messageAdapter.saveMessage(newMessage);
+    }
+
+    async loadUserMessages(user) {
+        try {
+            const messages = await this.messageAdapter.getMessagesByUserEmail(user);
+            const messagesArray = Array.from(messages); // Convertir a un array
+            this.chats.push(...messagesArray);
+            this.socket.emit("allMessages", this.chats);
+        } catch (error) {
+            console.error(`Error loading user messages: ${error}`);
+        }
+    }
+}
 export default Chat;

@@ -55,6 +55,14 @@ class PersistenceManager {
         }
     }
 
+    async getMany(query) {
+        try {
+            return await this.strategy.getMany(query);
+        } catch (error) {
+            throw new Error('Error al obtener los datos');
+        }
+    }
+
     async insertOne(data) {
         try {
             return await this.strategy.insertOne(data);
