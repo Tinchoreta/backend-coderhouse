@@ -13,7 +13,7 @@ class Chat {
 
     async sendMessage(message) {
         this.chats.push({
-            userName: "assistant@Bootshop.com",
+            user: "assistant@Bootshop.com",
             message: message
         });
         await this.saveMessageToDatabase("assistant@Bootshop.com", message);

@@ -30,7 +30,7 @@ function handleSendMessage(e) {
         let message = chatBox.value;
         if (message.trim()) {
             socket.emit("newMessage", {
-                userName: userName,
+                user: userName,
                 message: message
             });
             chatBox.value = "";
@@ -46,7 +46,7 @@ function scrollToBottom() {
 
 socket.on("allMessages", (message) => {
     document.getElementById("chatMessages").innerHTML = message
-        .map((msg) => `<br><b>${msg.userName}</b>: ${msg.message}`)
+        .map((msg) => `<br><b>${msg.user}</b>: ${msg.message}`)
         .join("");
     scrollToBottom();
 });
