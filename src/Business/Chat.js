@@ -92,7 +92,7 @@ class Chat {
     async loadUserMessages(user) {
         try {
             const messages = await this.messageAdapter.getMessagesByUserEmail(user);
-            const messagesArray = Array.from(messages); // Convertir a un array
+            const messagesArray = await messages.toArray();
             this.chats.push(...messagesArray);
             this.socket.emit("allMessages", this.chats);
         } catch (error) {
