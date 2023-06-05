@@ -80,7 +80,7 @@ class Chat {
 
     async handleNewMessage(data) {
         this.chats.push(data);
-        await this.saveMessageToDatabase(data.userName, data.message); // Persistir el mensaje en la base de datos
+        await this.saveMessageToDatabase(data.user, data.message); // Persistir el mensaje en la base de datos
         this.processInput(this.chats);
     }
 
