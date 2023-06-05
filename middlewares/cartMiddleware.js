@@ -3,7 +3,7 @@ import CartManager from '../src/Business/managers/CartManager.js';
 import ProductManager from '../src/Business/managers/ProductManager.js';
 
 import DataBaseCartManagerAdapter from '../src/Business/adapters/DataBaseCartManagerAdapter.js';
-import DataBaseProductAdapter from '../src/Business/DataBaseProductAdapter.js';
+import DataBaseProductAdapter from '../src/Business/adapters/DataBaseProductAdapter.js';
 
 const cartMiddleware = async (req, res, next) => {
 

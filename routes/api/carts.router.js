@@ -2,7 +2,7 @@ import { Router } from "express";
 import dotenv from 'dotenv';
 
 import DataBaseCartManagerAdapter from "../../src/Business/adapters/DataBaseCartManagerAdapter.js";
-import DataBaseProductAdapter from "../../src/Business/DataBaseProductAdapter.js";
+import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
 import CartManagerController from "../../src/controllers/CartManagerController.js";
 
 

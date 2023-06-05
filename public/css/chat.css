@@ -36,6 +36,7 @@
     font-size: .4em;
     border-radius: 20px;
 }
+
 .form-group {
     position: relative;
     height: 100px;
@@ -129,24 +130,40 @@ textarea {
 .swal2-modal {
     font-size: 14px;
     max-width: 400px;
-    
+
 }
 
 .swal2-icon svg {
     width: 10px;
     height: 10px;
-    
+
 }
-#chatMessages{
+
+#chatMessages {
     overflow-y: auto;
     overflow-x: hidden;
     word-wrap: break-word;
 }
+
 #username {
     font-size: 14px;
     margin-top: 20px;
 }
 
-.text-white{
+.text-white {
     color: #fff;
+}
+
+.btn-logout {
+    background-color: #ff5a5a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 5px 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-logout:hover {
+    background-color: #ff4242;
 }

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import ProductManagerController from "../../src/controllers/ProductManagerController.js";
-import DataBaseProductAdapter from "../../src/Business/DataBaseProductAdapter.js";
+import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
 import {
   validateProductExistence,
   validateProductFields,

@@ -1,6 +1,6 @@
-import PersistenceManager from '../Data/PersistenceManager.js';
-import DataBaseStrategy from '../Data/DataBaseStrategy.js';
-import ProductModel from '../models/product.model.js';
+import PersistenceManager from '../../Data/PersistenceManager.js';
+import DataBaseStrategy from '../../Data/DataBaseStrategy.js';
+import ProductModel from '../../models/product.model.js';
 
 class DataBaseProductAdapter {
     static instance;

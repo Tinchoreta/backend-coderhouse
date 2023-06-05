@@ -1,4 +1,4 @@
-import DataBaseProductAdapter from "../src/Business/DataBaseProductAdapter.js";
+import DataBaseProductAdapter from "../src/Business/adapters/DataBaseProductAdapter.js";
 
 // Función que devuelve el adaptador de la base de datos
 function getDatabaseProductAdapter() {
