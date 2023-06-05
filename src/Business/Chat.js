@@ -1,6 +1,4 @@
-// import DataBaseProductAdapter from "../Business/DataBaseProductAdapter.js";
 import ProductManager from "../Business/managers/ProductManager.js";
-// import Product from "../Business/Product.js"; 
 
 class Chat {
     constructor(socket, productAdapter, messageAdapter) {
@@ -16,7 +14,7 @@ class Chat {
             user: "assistant@Bootshop.com",
             message: message
         });
-        await this.saveMessageToDatabase("assistant@Bootshop.com", message);
+        // await this.saveMessageToDatabase("assistant@Bootshop.com", message);
         this.socket.emit("allMessages", this.chats);
     }
 
@@ -80,7 +78,7 @@ class Chat {
 
     async handleNewMessage(data) {
         this.chats.push(data);
-        await this.saveMessageToDatabase(data.user, data.message); // Persistir el mensaje en la base de datos
+        // await this.saveMessageToDatabase(data.user, data.message); // Persistir el mensaje en la base de datos
         this.processInput(this.chats);
     }
 

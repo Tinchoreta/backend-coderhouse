@@ -158,12 +158,14 @@ textarea {
     background-color: #ff5a5a;
     color: #fff;
     border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    padding: 5px 10px;
+    border-radius: 25px;
+    font-size: 0.6em;
+    padding: 10px 20px;
     transition: all 0.3s ease-in-out;
+    margin-left: 0.5em;
+    margin-bottom: 1em;
 }
 
 .btn-logout:hover {
-    background-color: #ff4242;
+    background-color: #ff0000;
 }

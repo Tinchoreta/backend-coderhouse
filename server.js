@@ -22,4 +22,9 @@ socketServer.on("connection", (socket) => {
     socket.on("newMessage", (data) => {
         chat.handleNewMessage(data);
     });
+
+    socket.on("disconnect", () => {
+        console.log("Cliente desconectado");
+        // Realizar otras tareas o notificaciones en el servidor
+    });
 });
