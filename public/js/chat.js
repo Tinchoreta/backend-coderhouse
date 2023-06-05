@@ -23,6 +23,10 @@ Swal.fire({
     chatBox.focus();
 });
 
+socket.on("disconnect", () => {
+    console.log("Conexión perdida con el servidor");
+    // Realizar otras tareas o notificaciones al usuario
+});
 
 function handleSendMessage(e) {
     if (e.key === "Enter" || e.type === "click") {

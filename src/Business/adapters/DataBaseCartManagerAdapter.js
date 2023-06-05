@@ -1,6 +1,6 @@
-import PersistenceManager from '../Data/PersistenceManager.js';
-import DataBaseStrategy from '../Data/DataBaseStrategy.js';
-import CartModel from '../models/cart.model.js';
+import PersistenceManager from '../../Data/PersistenceManager.js';
+import DataBaseStrategy from '../../Data/DataBaseStrategy.js';
+import CartModel from '../../models/cart.model.js';
 
 class DataBaseCartManagerAdapter {
     static instance;
@@ -10,7 +10,7 @@ class DataBaseCartManagerAdapter {
             throw new Error("Ya existe una instancia de esta clase");
         }
         // console.log(uri);
-        this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, CartModel ));
+        this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, CartModel));
         DataBaseCartManagerAdapter.instance = this;
     }
 

@@ -1,16 +1,14 @@
 import { Router } from "express";
 import dotenv from 'dotenv';
 
-import DataBaseCartManagerAdapter from "../../src/Business/DataBaseCartManagerAdapter.js";
+import DataBaseCartManagerAdapter from "../../src/Business/adapters/DataBaseCartManagerAdapter.js";
 import DataBaseProductAdapter from "../../src/Business/DataBaseProductAdapter.js";
 import CartManagerController from "../../src/controllers/CartManagerController.js";
-
 
 
 const router = Router();
 dotenv.config();
 
-// console.log(process.env.MONGO_DB_URI + " en router" );
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
     process.env.MONGO_DB_URI
@@ -23,8 +21,6 @@ const cartController = new CartManagerController(
     dataBaseCartAdapter,
     dataBaseProductAdapter
 );
-
-
 
 router.get("/", (req, res) => cartController.getCarts(req, res));
 router.get("/:id", (req, res) => cartController.getCartById(req, res));
