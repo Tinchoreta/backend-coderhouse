@@ -57,7 +57,7 @@ socket.on("allMessages", (message) => {
 
 
 function handleLogout(e) {
-    socket.emit("disconnect");
+    socket.disconnect();
     Swal.fire({
         title: "Disconnected",
         text: "Session disconnected",

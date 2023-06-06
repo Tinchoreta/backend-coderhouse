@@ -18,7 +18,7 @@ const sessionSchema = new mongoose.Schema({
             ref: "Conversation",
         },
     ]
-});
+}, { versionKey: false });
 
 const SessionModel = mongoose.model("Session", sessionSchema);
 

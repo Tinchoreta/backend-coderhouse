@@ -14,11 +14,14 @@ class Chat {
     }
 
     async sendMessage(message) {
+        let user = "assistant@Bootshop.com";
         this.chats.push({
-            user: "assistant@Bootshop.com",
+            user: user,
             message: message
         });
-        // await this.saveMessageToDatabase("assistant@Bootshop.com", message);
+        if (this.conversation) {
+            this.conversation.addMessage(user, message);
+        }
         this.socket.emit("allMessages", this.chats);
     }
 
@@ -69,8 +72,8 @@ class Chat {
                 messages: []
             };
 
-            const conversation = await this.conversationAdapter.saveConversation(conversationData);
-            this.conversation = conversation;    
+            this.conversation = new Conversation(conversationData.sessionId, conversationData.user, conversationData.startTime);
+            await this.conversationAdapter.saveConversation(conversationData);
 
         }
         this.sendMessage("Elige una opción:");
@@ -101,23 +104,46 @@ class Chat {
 
     async handleNewMessage(data) {
         this.chats.push(data);
-        this.conversation.addMessage(data.user, data.message);
+        if (this.conversation) {
+            this.conversation.addMessage(data.user, data.message);
+        }
         this.processInput(this.chats);
     }
 
     async saveSessionAndConversation() {
         try {
             if (this.session) {
+                this.session.endTime = Date.now();
                 await this.sessionAdapter.saveSession(this.session);
             }
 
             if (this.conversation) {
-                await this.conversationAdapter.saveConversation(this.conversation);
+                this.conversation.endConversation();
+
+                // Guardar la conversación y obtener su ID
+                const savedConversation = await this.conversationAdapter.saveConversation(this.conversation);
+
+                // Agregar el ID de la conversación al array de conversations de la sesión
+                this.session.conversations.push(savedConversation._id);
+
+                const conversationData = {
+                    sessionId: this.conversation.sessionId,
+                    user: this.conversation.user,
+                    startTime: this.conversation.startTime,
+                    endTime: this.conversation.endTime,
+                    messages: this.conversation.getAllMessages()
+                };
+
+                await Promise.all([
+                    this.sessionAdapter.saveSession(this.session),
+                    this.conversationAdapter.saveConversation(conversationData)
+                ]);
             }
         } catch (error) {
             console.error(`Error saving session and conversation: ${error}`);
         }
     }
+
 
     async loadUserConversations(userName) {
         try {
@@ -142,8 +168,12 @@ class Chat {
 
 
     endChat() {
-        this.socket.disconnect();
-        this.saveSessionAndConversation();
+        this.saveSessionAndConversation().then(() => {
+            this.socket.disconnect();
+        }).catch((error) => {
+            console.error("Error al guardar la sesión y la conversación:", error);
+            this.socket.disconnect();
+        });
     }
 
 }

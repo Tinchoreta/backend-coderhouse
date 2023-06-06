@@ -1,14 +1,17 @@
 class Conversation {
-    constructor(user) {
-        this.id = id;
+    constructor(sessionId, user, startTime) {
+        this.sessionId = sessionId;
         this.user = user;
         this.messages = [];
-        this.startTime = new Date(); // Timestamp de inicio de la conversación
+        this.startTime = startTime || new Date();
         this.endTime = null; // Timestamp de finalización de la conversación
     }
 
-    addMessage(message) {
-        this.messages.push(message);
+    addMessage(user, message) {
+        this.messages.push({
+            user: user, 
+            message: message
+        });
     }
 
     getAllMessages() {
