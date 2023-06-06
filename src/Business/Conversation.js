@@ -1,5 +1,5 @@
 class Conversation {
-    constructor(id, user) {
+    constructor(user) {
         this.id = id;
         this.user = user;
         this.messages = [];

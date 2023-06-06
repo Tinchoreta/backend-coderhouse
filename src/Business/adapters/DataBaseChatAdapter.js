@@ -1,7 +1,7 @@
-import PersistenceManager from '../Data/PersistenceManager.js';
-import DataBaseStrategy from '../Data/DataBaseStrategy.js';
-import SessionModel from '../models/session.model.js';
-import ConversationModel from '../models/conversation.model.js';
+import PersistenceManager from '../../Data/PersistenceManager.js';
+import DataBaseStrategy from '../../Data/DataBaseStrategy.js';
+import SessionModel from '../../models/session.model.js';
+import ConversationModel from '../../models/conversation.model.js';
 
 class DataBaseSessionAdapter {
     static instance;

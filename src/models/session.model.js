@@ -11,7 +11,13 @@ const sessionSchema = new mongoose.Schema({
     },
     endTime: {
         type: Date
-    }
+    },
+    conversations: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Conversation",
+        },
+    ]
 });
 
 const SessionModel = mongoose.model("Session", sessionSchema);

@@ -1,12 +1,16 @@
 import ProductManager from "../Business/managers/ProductManager.js";
+import Conversation from "./Conversation.js";
 
 class Chat {
-    constructor(socket, productAdapter, messageAdapter) {
+    constructor(socket, productAdapter, sessionAdapter, conversationAdapter) {
         this.socket = socket;
         this.isAuthenticated = false;
         this.chats = [];
         this.productAdapter = productAdapter;
-        this.messageAdapter = messageAdapter;
+        this.sessionAdapter = sessionAdapter;
+        this.conversationAdapter = conversationAdapter;
+        this.session = null;
+        this.conversation = null;
     }
 
     async sendMessage(message) {
@@ -48,8 +52,27 @@ class Chat {
         }
     }
 
-    startChat() {
+    async startChat(userName) {
         this.isAuthenticated = true;
+        if (!this.session) {
+            const sessionOwner = userName; // Establecer el propietario de la sesión actual
+            this.session = await this.sessionAdapter.saveSession({
+                sessionOwner: sessionOwner,
+                startTime: new Date()
+            });
+
+            // Crear una nueva conversación y obtener su ID
+            const conversationData = {
+                sessionId: this.session._id, // Obtener el ID de la sesión creada
+                user: sessionOwner,
+                startTime: new Date(),
+                messages: []
+            };
+
+            const conversation = await this.conversationAdapter.saveConversation(conversationData);
+            this.conversation = conversation;    
+
+        }
         this.sendMessage("Elige una opción:");
         this.sendMessage("1. Ver producto más barato");
         this.sendMessage("2. Ver producto más caro");
@@ -78,27 +101,50 @@ class Chat {
 
     async handleNewMessage(data) {
         this.chats.push(data);
-        // await this.saveMessageToDatabase(data.user, data.message); // Persistir el mensaje en la base de datos
+        this.conversation.addMessage(data.user, data.message);
         this.processInput(this.chats);
     }
 
-    async saveMessageToDatabase(userName, message) {
-        const newMessage = { user: userName, message };
-        await this.messageAdapter.saveMessage(newMessage);
-    }
-
-    async loadUserMessages(user) {
+    async saveSessionAndConversation() {
         try {
-            const messages = await this.messageAdapter.getMessagesByUserEmail(user);
-            const messagesArray = messages.map(message => ({
-                user: message.user,
-                message: message.message
-            }));
-            this.chats.push(...messagesArray);
-            this.socket.emit("allMessages", this.chats);
+            if (this.session) {
+                await this.sessionAdapter.saveSession(this.session);
+            }
+
+            if (this.conversation) {
+                await this.conversationAdapter.saveConversation(this.conversation);
+            }
         } catch (error) {
-            console.error(`Error loading user messages: ${error}`);
+            console.error(`Error saving session and conversation: ${error}`);
         }
     }
+
+    async loadUserConversations(userName) {
+        try {
+            const sessions = await this.sessionAdapter.getSessions();
+
+            for (const session of sessions) {
+                if (session.sessionOwner === userName) {
+                    this.session = session;
+
+                    for (const conversationId of session.conversations) {
+                        const conversation = await this.conversationAdapter.getConversationById(conversationId);
+                        this.chats.push(...conversation.messages);
+                    }
+                }
+            }
+
+            this.socket.emit("allMessages", this.chats);
+        } catch (error) {
+            console.error(`Error loading user conversations: ${error}`);
+        }
+    }
+
+
+    endChat() {
+        this.socket.disconnect();
+        this.saveSessionAndConversation();
+    }
+
 }
 export default Chat;

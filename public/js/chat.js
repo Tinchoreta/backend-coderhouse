@@ -7,9 +7,6 @@ chatBox.addEventListener("keyup", handleSendMessage);
 let btnSend = document.getElementById("btnSend");
 btnSend.addEventListener("click", handleSendMessage);
 
-let btnLogout = document.getElementById("btnLogout");
-btnLogout.addEventListener("click", handleLogout);
-
 Swal.fire({
     title: "Write your email :)",
     input: 'email',
@@ -60,7 +57,7 @@ socket.on("allMessages", (message) => {
 
 
 function handleLogout(e) {
-    socket.disconnect();
+    socket.emit("disconnect");
     Swal.fire({
         title: "Disconnected",
         text: "Session disconnected",
@@ -69,3 +66,8 @@ function handleLogout(e) {
         background: "#767e87"
     });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    let btnLogout = document.getElementById("btnLogout");
+    btnLogout.addEventListener("click", handleLogout);
+});
