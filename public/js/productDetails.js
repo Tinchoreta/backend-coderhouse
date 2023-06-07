@@ -15,8 +15,24 @@ async function addProductToCart(cartId, productId, quantity) {
 
     try {
         const response = await axios.put(url);
+        if (response.status === 200){
+            Swal.fire({
+                title: "Product added",
+                text: `Product added successfully`,
+                icon: "success",
+                confirmButtonText: "OK",
+                background: "#767e87"
+            });
+        }
         console.log(response);
     } catch (error) {
         console.error(error);
+        Swal.fire({
+            title: "Product not added",
+            text: `Product could not be added: ${JSON.stringify(error.response.data.error)}`,
+            icon: "warning",
+            confirmButtonText: "OK",
+            background: "#767e87"
+        });
     }
 }
