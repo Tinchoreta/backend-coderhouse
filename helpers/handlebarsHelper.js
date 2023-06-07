@@ -5,7 +5,7 @@ Handlebars.registerHelper('cartItemCount', function (options) {
     const cartManager = options.data.root.cartManager;
 
     // console.log('cartItemCount helper:', cartManager); // Agregar este console.log
-    //TODO:  Change the cart id for this: 64765d546145585e447a0436
+    //TODO:  Change the cart id 64765d546145585e447a0436 hardcoded
     let count = cartManager.getCartTotalItemsQuantity('64765d546145585e447a0436');
 
     // console.log(count);

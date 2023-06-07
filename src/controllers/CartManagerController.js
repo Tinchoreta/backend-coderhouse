@@ -49,7 +49,7 @@ class CartManagerController {
     }
 
     #hasEnoughStock(availableUnits, unitsToAdd) {
-        return availableUnits > unitsToAdd;
+        return availableUnits >= unitsToAdd;
     }
 
     #sendError(res, code, message) {
@@ -134,8 +134,8 @@ class CartManagerController {
     }
 
     async addProductUnitsToCart(req, res) {
-        const cartId = parseInt(req.params.cid);
-        const productId = parseInt(req.params.pid);
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
         const unitsToAdd = Number(req.params.units);
 
         if (!cartId || !productId || isNaN(unitsToAdd) || unitsToAdd <= 0) {
@@ -190,11 +190,11 @@ class CartManagerController {
 
     async removeProductUnitsFromCart(req, res) {
         try {
-            const cartId = parseInt(req.params.cid);
-            const productId = parseInt(req.params.pid);
+            const cartId = req.params.cid;
+            const productId = req.params.pid;
             let unitsToRemove = Number(req.params.units);
 
-            if (!cartId || isNaN(productId) || isNaN(unitsToRemove) || unitsToRemove <= 0) {
+            if (!cartId || !productId || isNaN(unitsToRemove) || unitsToRemove <= 0) {
                 return this.#sendError(res, 400, 'Invalid parameters');
             }
 
