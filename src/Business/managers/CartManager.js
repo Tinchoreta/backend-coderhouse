@@ -4,6 +4,15 @@ class CartManager {
         this.productManager = productManager;
     }
 
+    static instance = null;
+
+    static getInstance(cartList, productManager) {
+        if (!CartManager.instance) {
+            CartManager.instance = new CartManager(cartList, productManager);
+        }
+        return CartManager.instance;
+    }
+
     getCarts() {
         return this.cartList;
     }
@@ -20,8 +29,22 @@ class CartManager {
         return lastIndex >= 0 ? this.cartList[lastIndex].id : 0;
     }
 
+    // getCartById(cartIdToGet) {
+    //     return this.cartList.find((cart) => parseInt(cart.id) === parseInt(cartIdToGet)) || null;
+    // }
+
     getCartById(cartIdToGet) {
-        return this.cartList.find((cart) => cart.id === parseInt(cartIdToGet)) || null;
+        const targetCartId = cartIdToGet;
+        for (const cart of this.cartList) {
+            const currentCartId = cart.id;
+            // console.log(`Checking cart with id ${currentCartId}`);
+            if (currentCartId === targetCartId) {
+                // console.log(`Found cart with id ${currentCartId}`);
+                return cart;
+            }
+        }
+        // console.log(`No cart found with id ${targetCartId}`);
+        return null;
     }
 
     removeCart(cartId) {
@@ -49,6 +72,31 @@ class CartManager {
         }
     }
 
+    getProducts(cartId) {
+        const cart = this.getCartById(cartId);
+        if (cart) {
+            const products = [];
+            for (const item of cart.products) {
+                const productData = this.productManager.getProductById(item.productId);
+                if (productData) {
+                    const { _id, title, description,price, thumbnail, stock } = productData;
+                    const product = {
+                        _id,
+                        title,
+                        price,
+                        description,
+                        thumbnail,
+                        stock,
+                        quantity: item.quantity
+                    };
+                    products.push(product);
+                }
+            }
+            return products;
+        }
+        return [];
+    }
+
     getCartTotalItemsQuantity(cartId) {
         const cartToCalculateTotal = this.getCartById(cartId);
         if (cartToCalculateTotal) {
@@ -73,7 +121,8 @@ class CartManager {
             if (cart) {
                 for (const item of cart.products) {
                     const productData = this.productManager.getProductById(item.productId);
-                    totalPrice += productData.price * item.quantity;
+
+                    productData ? totalPrice += productData.price * item.quantity : totalPrice = totalPrice; 
                 }
             }
             return totalPrice;

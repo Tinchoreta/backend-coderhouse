@@ -23,12 +23,14 @@ class ProductViewController {
     try {
       const response = await axios.get("http://localhost:8080/api/products/");
       const products = response.data.response;
+      const cartManager = req.cartManager;
 
       return res.render("products", {
         title: "Products",
         script: "products.js",
         css: "products.css",
-        products: products
+        products: products,
+        cartManager: cartManager
       });
     } catch (error) {
       console.error(error);
@@ -44,12 +46,14 @@ class ProductViewController {
       // console.log(`http://localhost:8080/api/products/${productId}`);
       const response = await axios.get(`http://localhost:8080/api/products/${productId}`);
       const productDetails = response.data.product;
-      
+      const cartManager = req.cartManager;
+
       return res.render("productDetails", {
         title: "Product Details",
         script: "productDetails.js",
         css: "productDetails.css",
-        productDetails: productDetails
+        productDetails: productDetails,
+        cartManager: cartManager
       });
     } catch (error) {
       console.error(error);
@@ -59,6 +63,7 @@ class ProductViewController {
       });
     }
   }
+
 
   renderAddProductResponse(req, res, success, message) {
     const data = {

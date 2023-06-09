@@ -24,9 +24,7 @@ class ProductManagerController {
     if (!productToAdd.stock) {
       productToAdd.stock = 0;
     }
-
     // console.log(JSON.stringify(productToAdd) + " added");
-
     try {
       const addedProduct = await this.productManagerAdapter.addProduct(
         productToAdd
@@ -44,7 +42,7 @@ class ProductManagerController {
   async getProducts(request, response) {
     try {
       const products = await this.productManagerAdapter.getProducts();
-      console.log(products);
+      // console.log(products);
 
       const limit = parseInt(request.query.limit) || 0;
 
@@ -78,7 +76,7 @@ class ProductManagerController {
 
   async getProductById(request, response) {
     try {
-      const productId = parseInt(request.params.id);
+      const productId = request.params.id;
       const productFound = await this.productManagerAdapter.getProductById(productId);
       if (productFound) {
         return response.status(200).json({
@@ -151,10 +149,10 @@ class ProductManagerController {
   }
 
   async removeProductItem(request, response) {
-    const productId = Number(request.params.id);
+    const productId = request.params.id;
 
     // Validate that the product ID is valid
-    if (!productId || isNaN(productId)) {
+    if (!productId) {
       return response.status(400).send({ message: "Invalid product ID" });
     }
 
@@ -163,9 +161,9 @@ class ProductManagerController {
       const isDeleted = await this.productManagerAdapter.deleteProduct(
         productId
       );
-      console.log(isDeleted + "Controller delete");
+      // console.log(isDeleted + "Controller delete");
 
-      isDeleted === 1 //borró un registro. Viene de deleteOne(id)
+      isDeleted  //Boolean. Viene de deleteOne(id) que devuelve un objeto con propiedad deletedCount (indica cuántos registros se borraron).
         ? response
           .status(200)
           .send(

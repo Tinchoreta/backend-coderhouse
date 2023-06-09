@@ -9,10 +9,11 @@
                         <a href="product_summary.html"><span class="">Es</span></a>
                         <span class="btn btn-mini">En</span>
                         <a href="product_summary.html"><span>&pound;</span></a>
-                        <span class="btn btn-mini">$155.00</span>
+                        <span class="btn btn-mini">${{cartTotal}}</span>
                         <a href="product_summary.html"><span class="">$</span></a>
                         <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i
-                                    class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                                    class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
+                            </span> </a>
                     </div>
                 </div>
             </div>
@@ -25,7 +26,7 @@
                 </a>
                 <div class="navbar-inner">
                     <a class="brand" href="/"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
-                    <form class="form-inline navbar-search" method="post" action="products.html">
+                    <form class="form-inline navbar-search" method="post" action="/products">
                         <input id="srchFld" class="srchTxt" type="text" />
                         <select class="srchTxt">
                             <option>All</option>
@@ -82,53 +83,53 @@
                 <!-- Sidebar ================================================== -->
                 <div id="sidebar" class="span3">
                     <div class="well well-small"><a id="myCart" href="product_summary.html"><img
-                                src="themes/images/ico-cart.png" alt="cart">3 Items in your cart <span
-                                class="badge badge-warning pull-right">$155.00</span></a></div>
+                                src="themes/images/ico-cart.png" alt="cart">{{cartItemCount}} Items in your cart <span
+                                class="badge badge-warning pull-right">${{cartTotal}}</span></a></div>
                     <ul id="sideManu" class="nav nav-tabs nav-stacked">
                         <li class="subMenu open"><a> ELECTRONICS [230]</a>
                             <ul>
-                                <li><a class="active" href="products.html"><i class="icon-chevron-right"></i>Cameras
+                                <li><a class="active" href="/products"><i class="icon-chevron-right"></i>Cameras
                                         (100) </a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Computers, Tablets &
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Computers, Tablets &
                                         laptop (30)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Mobile Phone (80)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Sound & Vision (15)</a>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Mobile Phone (80)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Sound & Vision (15)</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="subMenu"><a> CLOTHES [840] </a>
                             <ul style="display:none">
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Women's Clothing (45)</a>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Women's Clothing (45)</a>
                                 </li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Women's Shoes (8)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Women's Hand Bags (5)</a>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Women's Shoes (8)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Women's Hand Bags (5)</a>
                                 </li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Men's Clothings (45)</a>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Men's Clothings (45)</a>
                                 </li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Men's Shoes (6)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Kids Clothing (5)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Kids Shoes (3)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Men's Shoes (6)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Kids Clothing (5)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Kids Shoes (3)</a></li>
                             </ul>
                         </li>
                         <li class="subMenu"><a>FOOD AND BEVERAGES [1000]</a>
                             <ul style="display:none">
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Angoves (35)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Bouchard Aine & Fils
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Angoves (35)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Bouchard Aine & Fils
                                         (8)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>French Rabbit (5)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Louis Bernard (45)</a>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>French Rabbit (5)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Louis Bernard (45)</a>
                                 </li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>BIB Wine (Bag in Box)
+                                <li><a href="/products"><i class="icon-chevron-right"></i>BIB Wine (Bag in Box)
                                         (8)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Other Liquors & Wine
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Other Liquors & Wine
                                         (5)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Garden (3)</a></li>
-                                <li><a href="products.html"><i class="icon-chevron-right"></i>Khao Shong (11)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Garden (3)</a></li>
+                                <li><a href="/products"><i class="icon-chevron-right"></i>Khao Shong (11)</a></li>
                             </ul>
                         </li>
-                        <li><a href="products.html">HEALTH & BEAUTY [18]</a></li>
-                        <li><a href="products.html">SPORTS & LEISURE [58]</a></li>
-                        <li><a href="products.html">BOOKS & ENTERTAINMENTS [14]</a></li>
+                        <li><a href="/products">HEALTH & BEAUTY [18]</a></li>
+                        <li><a href="/products">SPORTS & LEISURE [58]</a></li>
+                        <li><a href="/products">BOOKS & ENTERTAINMENTS [14]</a></li>
                     </ul>
                     <br />
                     <div class="thumbnail">
@@ -165,7 +166,7 @@
                         <li><a href="http://localhost:8080/">Home</a> <span class="divider">/</span></li>
                         <li class="active"> SHOPPING CART</li>
                     </ul>
-                    <h3> SHOPPING CART [ <small>3 Item(s) </small>]<a href="products.html"
+                    <h3> SHOPPING CART [ <small>3 Item(s) </small>]<a href="/products"
                             class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>
                     <hr class="soft" />
                     <table class="table table-bordered">
@@ -217,56 +218,30 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{#cartProducts}}
                             <tr>
-                                <td> <img width="60" src="themes/images/products/4.jpg" alt="" /></td>
-                                <td>MASSA AST<br />Color : black, Material : metal</td>
+                                <td> <img width="60" src="themes/images/products/{{thumbnail}}" alt="" /></td>
+                                <td>{{substring title 0 20}}<br />Desc: {{substring description 0 25}}</td>
                                 <td>
-                                    <div class="input-append"><input class="span1" style="max-width:34px"
-                                            placeholder="1" id="appendedInputButtons" size="16" type="text"><button
-                                            class="btn" type="button"><i class="icon-minus"></i></button><button
-                                            class="btn" type="button"><i class="icon-plus"></i></button><button
-                                            class="btn btn-danger" type="button"><i
-                                                class="icon-remove icon-white"></i></button> </div>
+                                    <div class="input-append">
+                                        <input class="span1" style="max-width:34px" placeholder="{{quantity}}"
+                                            id="{{_id}}" size="16" type="text">
+                                        <button class="btn" type="button"><i class="icon-minus"></i></button>
+                                        <button class="btn" type="button"><i class="icon-plus"></i></button>
+                                        <button class="btn btn-danger" type="button"><i
+                                                class="icon-remove icon-white"></i></button>
+                                    </div>
                                 </td>
-                                <td>$120.00</td>
+                                <td>${{price}}</td>
                                 <td>$25.00</td>
                                 <td>$15.00</td>
-                                <td>$110.00</td>
+                                <td>${{calculateTotal price quantity}}</td>
                             </tr>
-                            <tr>
-                                <td> <img width="60" src="themes/images/products/8.jpg" alt="" /></td>
-                                <td>MASSA AST<br />Color : black, Material : metal</td>
-                                <td>
-                                    <div class="input-append"><input class="span1" style="max-width:34px"
-                                            placeholder="1" size="16" type="text"><button class="btn" type="button"><i
-                                                class="icon-minus"></i></button><button class="btn" type="button"><i
-                                                class="icon-plus"></i></button><button class="btn btn-danger"
-                                            type="button"><i class="icon-remove icon-white"></i></button> </div>
-                                </td>
-                                <td>$7.00</td>
-                                <td>--</td>
-                                <td>$1.00</td>
-                                <td>$8.00</td>
-                            </tr>
-                            <tr>
-                                <td> <img width="60" src="themes/images/products/3.jpg" alt="" /></td>
-                                <td>MASSA AST<br />Color : black, Material : metal</td>
-                                <td>
-                                    <div class="input-append"><input class="span1" style="max-width:34px"
-                                            placeholder="1" size="16" type="text"><button class="btn" type="button"><i
-                                                class="icon-minus"></i></button><button class="btn" type="button"><i
-                                                class="icon-plus"></i></button><button class="btn btn-danger"
-                                            type="button"><i class="icon-remove icon-white"></i></button> </div>
-                                </td>
-                                <td>$120.00</td>
-                                <td>$25.00</td>
-                                <td>$15.00</td>
-                                <td>$110.00</td>
-                            </tr>
+                            {{/cartProducts}}
 
                             <tr>
                                 <td colspan="6" style="text-align:right">Total Price: </td>
-                                <td> $228.00</td>
+                                <td> ${{cartTotal}}</td>
                             </tr>
                             <tr>
                                 <td colspan="6" style="text-align:right">Total Discount: </td>
@@ -277,13 +252,14 @@
                                 <td> $31.00</td>
                             </tr>
                             <tr>
-                                <td colspan="6" style="text-align:right"><strong>TOTAL ($228 - $50 + $31) =</strong>
+                                <td colspan="6" style="text-align:right"><strong>TOTAL (${{cartTotal}} - $50 + $31)
+                                        =</strong>
                                 </td>
-                                <td class="label label-important" style="display:block"> <strong> $155.00 </strong></td>
+                                <td class="label label-important" style="display:block"> <strong> ${{calcTotalWithDiscTax}} </strong>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-
 
                     <table class="table table-bordered">
                         <tbody>

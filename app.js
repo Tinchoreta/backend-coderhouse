@@ -1,53 +1,61 @@
 import express from 'express';
-import __dirname from './utils.js'
+import { join } from 'path';
+import logger from 'morgan';
+import { engine } from 'express-handlebars';
+
 import mainRouter from './routes/index.js'
+import DataBaseStrategy from './src/Data/DataBaseStrategy.js';
+
+import dotenvMiddlewares from './middlewares/dotenvMiddleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFound.js';
-import { engine } from 'express-handlebars';
-import { join } from 'path';
-import logger from "morgan";
-import DataBaseStrategy from './src/Data/DataBaseStrategy.js';
-import dotenv from 'dotenv';
+import cartMiddleware from './middlewares/cartMiddleware.js';
+
+import Handlebars from './helpers/handlebarsHelper.js';
+import __dirname from './utils.js'
+
+// const HandlebarsWithHelpers = Handlebars.create(); // Handlebars con helpers
+
+const app = express();
 
 
-dotenv.config();
-
-const app = express()
-
-//middlewares   
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use('/', mainRouter);
-app.use('/', express.static(join(__dirname, 'public')));
-app.use(logger("dev"));
-
-//template engine
-app.engine('handlebars', engine())
-app.set('views', __dirname + '/views')
-app.set('view engine', 'handlebars')
-
-app.use(errorHandler)
-app.use(notFoundHandler)
-
-//let URI = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.xgzbctr.mongodb.net/coder-backend`;
+//Para importar las variables de entorno de .env
+app.use(dotenvMiddlewares);
 
 let URI = process.env.MONGO_DB_URI;
-
-//console.log(URI);
 
 let dataBaseStrategy = new DataBaseStrategy(URI);
 
 async function connect() {
     try {
         await dataBaseStrategy.connect();
-        console.log("Database Connected");
+        console.log('Database Connected');
     } catch (error) {
         console.log(error);
     }
 }
 
+//Conectar la base de datos
 connect();
 
+//Para hacer una especie de contexto de React para el carrito de compras
+app.use(cartMiddleware);
+
+//middlewares
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/', mainRouter);
+app.use('/', express.static(join(__dirname, 'public')));
+
+
+//template engine
+app.engine('handlebars', engine({ handlebars: Handlebars }));
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'handlebars');
+
+app.use(errorHandler);
+app.use(notFoundHandler);
 
 export default app;

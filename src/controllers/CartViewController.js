@@ -1,44 +1,45 @@
 import axios from 'axios';
-import CartManager from "../../src/Business/CartManager.js";
-import TextFileProductAdapter from "../../src/Business/TextFileProductAdapter.js";
-import TextFileCartManagerAdapter from "../../src/Business/TextFileCartManagerAdapter.js";
-import ProductManager from '../Business/ProductManager.js';
-
+// import dotenv from 'dotenv';
 
 class CartViewController {
 
     constructor() {
-
-        const pathToCart = "./data/carts.json";
-        const pathToProduct = "./data/products.json";
-
-        this.textFileProductAdapter = TextFileProductAdapter.getInstance(pathToProduct);
-
-        this.textFileCartAdapter = TextFileCartManagerAdapter.getInstance(pathToCart);
+        // dotenv.config();
     }
 
     async renderIndex(req, res) {
-        
+
         //TODO: Change hardcoded values on cart 1 and name to show on index page
 
         try {
-            const cartToRender = await this.textFileCartAdapter.getCartById(1);
-            const productsList = await this.textFileProductAdapter.getProducts();
-            const productManager = new ProductManager(productsList);
-
-            let cartManager = new CartManager([cartToRender],productManager);
-            
+            const cartManager = req.cartManager;
             let name = "Tincho"
-            let itemsOnCart1 = cartManager.getCartTotalItemsQuantity(1);
-            let totalPrice = cartManager.calculateTotalPrice(1);
 
             return res.render('index', {
                 title: 'BootShop',
                 user: name,
-                itemsOnCart1: itemsOnCart1,
-                totalPrice: totalPrice
+                script: 'index.js',
+                cartManager: cartManager
             });
 
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                success: false,
+                error: "Internal Server Error",
+            });
+        }
+    }
+
+    async renderCart(req, res, cartId) {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/carts/${cartId}`);
+            return res.render("cart", {
+                title: "Product Summary",
+                script: "productSummary.js",
+                css: "productSummary.css",
+                cartManager: req.cartManager
+            });
         } catch (error) {
             console.error(error);
             return res.status(500).json({

@@ -1,6 +1,9 @@
 Listado de rutas de carpetas para el volumen OS
 El número de serie del volumen es 94B4-89A5
+C:\Coder\Backend\Entregas\Final\backend-coderhouse>tree /a /f > routesStructure.txt
+
 C:.
+|   .env
 |   .gitignore
 |   app.js
 |   favicon.png
@@ -27,12 +30,352 @@ C:.
 |       userMiddlewares.js
 |       
 +---public
-|   |   chat.js
 |   |   favicon.ico
 |   |   
-|   \---img
-|           what!.jpg
-|           
+|   +---bootstrap
+|   |   +---css
+|   |   |       bootstrap-responsive.min.css
+|   |   |       bootstrap.min.css
+|   |   |       
+|   |   +---img
+|   |   |       glyphicons-halflings-white.png
+|   |   |       glyphicons-halflings.png
+|   |   |       
+|   |   \---js
+|   |           bootstrap.min.js
+|   |           
+|   +---css
+|   |       addProduct.css
+|   |       chat.css
+|   |       productDetails.css
+|   |       products.css
+|   |       
+|   +---fontawesome
+|   |   +---css
+|   |   |       font-awesome.css
+|   |   |       font-awesome.min.css
+|   |   |       
+|   |   +---fonts
+|   |   |       fontawesome-webfont.eot
+|   |   |       fontawesome-webfont.svg
+|   |   |       fontawesome-webfont.ttf
+|   |   |       fontawesome-webfont.woff
+|   |   |       fontawesome-webfont.woff2
+|   |   |       FontAwesome.otf
+|   |   |       
+|   |   +---less
+|   |   |       animated.less
+|   |   |       bordered-pulled.less
+|   |   |       core.less
+|   |   |       fixed-width.less
+|   |   |       font-awesome.less
+|   |   |       icons.less
+|   |   |       larger.less
+|   |   |       list.less
+|   |   |       mixins.less
+|   |   |       path.less
+|   |   |       rotated-flipped.less
+|   |   |       screen-reader.less
+|   |   |       stacked.less
+|   |   |       variables.less
+|   |   |       
+|   |   \---scss
+|   |           font-awesome.scss
+|   |           _animated.scss
+|   |           _bordered-pulled.scss
+|   |           _core.scss
+|   |           _fixed-width.scss
+|   |           _icons.scss
+|   |           _larger.scss
+|   |           _list.scss
+|   |           _mixins.scss
+|   |           _path.scss
+|   |           _rotated-flipped.scss
+|   |           _screen-reader.scss
+|   |           _stacked.scss
+|   |           _variables.scss
+|   |           
+|   +---img
+|   |       what!.jpg
+|   |       
+|   +---js
+|   |       addProduct.js
+|   |       chat.js
+|   |       productDetails.js
+|   |       products.js
+|   |       
+|   +---pages
+|   |       compair.html
+|   |       components.html
+|   |       contact.html
+|   |       faq.html
+|   |       forgetpass.html
+|   |       index.html
+|   |       legal_notice.html
+|   |       login.html
+|   |       normal.html
+|   |       products.html
+|   |       product_details.html
+|   |       product_summary.html
+|   |       register.html
+|   |       special_offer.html
+|   |       tac.html
+|   |       
+|   \---themes
+|       +---amelia
+|       |       bootstrap.css
+|       |       bootstrap.min.css
+|       |       
+|       +---bootshop
+|       |       bootstrap.min.css
+|       |       
+|       +---businessltd
+|       |       bootstrap.min.css
+|       |       
+|       +---cerulean
+|       |       bootstrap.min.css
+|       |       
+|       +---css
+|       |       base.css
+|       |       bootstrap-responsive.min.css
+|       |       font-awesome-ie7.css
+|       |       font-awesome.css
+|       |       
+|       +---cyborg
+|       |       bootstrap.min.css
+|       |       
+|       +---font
+|       |       fontawesome-webfont.eot
+|       |       fontawesome-webfont.svg
+|       |       fontawesome-webfont.ttf
+|       |       fontawesome-webfont.woff
+|       |       museo_slab_300-webfont.eot
+|       |       museo_slab_300-webfont.ttf
+|       |       museo_slab_500-webfont.eot
+|       |       museo_slab_500-webfont.ttf
+|       |       proximanova-webfont.eot
+|       |       proximanova-webfont.ttf
+|       |       
+|       +---images
+|       |   |   facebook.png
+|       |   |   headerRepeat.png
+|       |   |   ico-cart.png
+|       |   |   logo.png
+|       |   |   new.png
+|       |   |   payment_methods.png
+|       |   |   search.png
+|       |   |   tabRepeatInactive.png
+|       |   |   twitter.png
+|       |   |   youtube.png
+|       |   |   
+|       |   +---carousel
+|       |   |       1.png
+|       |   |       2.png
+|       |   |       3.png
+|       |   |       4.png
+|       |   |       5.png
+|       |   |       6.png
+|       |   |       7.png
+|       |   |       
+|       |   +---ico
+|       |   |       apple-touch-icon-114-precomposed.png
+|       |   |       apple-touch-icon-144-precomposed.png
+|       |   |       apple-touch-icon-57-precomposed.png
+|       |   |       apple-touch-icon-72-precomposed.png
+|       |   |       favicon.ico
+|       |   |       
+|       |   +---lightbox
+|       |   |       Close.png
+|       |   |       lightbox-blank.gif
+|       |   |       lightbox-btn-close.gif
+|       |   |       lightbox-btn-next.gif
+|       |   |       lightbox-btn-prev.gif
+|       |   |       lightbox-ico-loading.gif
+|       |   |       
+|       |   \---products
+|       |       |   1.jpg
+|       |       |   10.jpg
+|       |       |   11.jpg
+|       |       |   12.jpg
+|       |       |   13.jpg
+|       |       |   14.jpg
+|       |       |   2.jpg
+|       |       |   3.jpg
+|       |       |   4.jpg
+|       |       |   5.jpg
+|       |       |   6.jpg
+|       |       |   7.jpg
+|       |       |   8.jpg
+|       |       |   9.jpg
+|       |       |   b1.jpg
+|       |       |   b2.jpg
+|       |       |   b3.jpg
+|       |       |   b4.jpg
+|       |       |   kindle.png
+|       |       |   panasonic.jpg
+|       |       |   Panasonic_S3.jpg
+|       |       |   
+|       |       \---large
+|       |               3.jpg
+|       |               8.jpg
+|       |               81.jpg
+|       |               82.jpg
+|       |               83.jpg
+|       |               84.jpg
+|       |               f1.jpg
+|       |               f2.jpg
+|       |               f3.jpg
+|       |               
+|       +---img
+|       |       glyphicons-halflings-white.png
+|       |       glyphicons-halflings.png
+|       |       
+|       +---journal
+|       |       bootstrap.min.css
+|       |       
+|       +---js
+|       |   |   bootshop.js
+|       |   |   bootstrap.min.js
+|       |   |   jquery.js
+|       |   |   jquery.lightbox-0.5.js
+|       |   |   less.js
+|       |   |   
+|       |   \---google-code-prettify
+|       |           prettify.css
+|       |           prettify.js
+|       |           
+|       +---less
+|       |   |   accordion.less
+|       |   |   alerts.less
+|       |   |   amelia.less
+|       |   |   bootshop.less
+|       |   |   bootstrap.less
+|       |   |   breadcrumbs.less
+|       |   |   button-groups.less
+|       |   |   buttons.less
+|       |   |   carousel.less
+|       |   |   classified.less
+|       |   |   close.less
+|       |   |   code.less
+|       |   |   component-animations.less
+|       |   |   dropdowns.less
+|       |   |   font-awesome-ie7.less
+|       |   |   font-awesome.less
+|       |   |   forms.less
+|       |   |   grid.less
+|       |   |   hero-unit.less
+|       |   |   labels-badges.less
+|       |   |   layouts.less
+|       |   |   mixins.less
+|       |   |   modals.less
+|       |   |   navbar.less
+|       |   |   navs.less
+|       |   |   pager.less
+|       |   |   pagination.less
+|       |   |   popovers.less
+|       |   |   progress-bars.less
+|       |   |   reset.less
+|       |   |   responsive-1200px-min.less
+|       |   |   responsive-767px-max.less
+|       |   |   responsive-768px-979px.less
+|       |   |   responsive-navbar.less
+|       |   |   responsive-utilities.less
+|       |   |   responsive.less
+|       |   |   scaffolding.less
+|       |   |   simplex.less
+|       |   |   sprites.less
+|       |   |   tables.less
+|       |   |   thumbnails.less
+|       |   |   tooltip.less
+|       |   |   type.less
+|       |   |   utilities.less
+|       |   |   variables.less
+|       |   |   wells.less
+|       |   |   
+|       |   +---amelia
+|       |   |       bootswatch.less
+|       |   |       variables.less
+|       |   |       
+|       |   +---bootshop
+|       |   |       main.less
+|       |   |       variables.less
+|       |   |       
+|       |   +---oregional
+|       |   \---simplex
+|       |           bootswatch.less
+|       |           variables.less
+|       |           
+|       +---readable
+|       |       bootstrap.min.css
+|       |       
+|       +---simplex
+|       |       bootstrap.min.css
+|       |       
+|       +---slate
+|       |       bootstrap.min.css
+|       |       
+|       +---spacelab
+|       |       bootstrap.min.css
+|       |       
+|       +---spruce
+|       |       bootstrap.css
+|       |       bootstrap.min.css
+|       |       
+|       +---superhero
+|       |       bootstrap.min.css
+|       |       
+|       +---switch
+|       |   |   theamswitcher.js
+|       |   |   themeswitch.css
+|       |   |   
+|       |   \---images
+|       |       |   hideme.png
+|       |       |   styleTgl.png
+|       |       |   
+|       |       +---clr
+|       |       |       amelia.png
+|       |       |       bootshop.png
+|       |       |       businessltd.png
+|       |       |       cerulean.png
+|       |       |       cyborg.png
+|       |       |       journal.png
+|       |       |       readable.png
+|       |       |       simplex.png
+|       |       |       slate.png
+|       |       |       spacelab.png
+|       |       |       spruce.png
+|       |       |       superhero.png
+|       |       |       united.png
+|       |       |       
+|       |       \---pattern
+|       |               pattern1.png
+|       |               pattern10.png
+|       |               pattern11.png
+|       |               pattern12.png
+|       |               pattern13.png
+|       |               pattern14.png
+|       |               pattern15.png
+|       |               pattern16.png
+|       |               pattern16~.png
+|       |               pattern17.png
+|       |               pattern17~.png
+|       |               pattern18.png
+|       |               pattern19.png
+|       |               pattern19~.png
+|       |               pattern2.png
+|       |               pattern20.png
+|       |               pattern20~.png
+|       |               pattern3.png
+|       |               pattern4.png
+|       |               pattern5.png
+|       |               pattern6.png
+|       |               pattern7.png
+|       |               pattern8.png
+|       |               pattern9.png
+|       |               
+|       \---united
+|               bootstrap.min.css
+|               
 +---routes
 |   |   index.js
 |   |   
@@ -43,28 +386,47 @@ C:.
 |   |       products.router.js
 |   |       
 |   \---views
+|           addProduct.js
 |           auth.js
+|           chat.js
 |           index.js
+|           productDetails.js
+|           products.js
+|           productSummary.js
 |           
 +---src
 |   +---Business
 |   |       CartManager.js
-|   |       CartManagerController.js
+|   |       DataBaseCartManagerAdapter.js
+|   |       DataBaseProductAdapter.js
 |   |       Product.js
 |   |       ProductManager.js
-|   |       ProductManagerController.js
 |   |       TextFileCartManagerAdapter.js
 |   |       TextFileProductAdapter.js
 |   |       
-|   \---Data
-|           PersistenceManager.js
-|           TextFileStrategy.js
+|   +---controllers
+|   |       CartManagerController.js
+|   |       CartViewController.js
+|   |       ProductManagerController.js
+|   |       ProductViewController.js
+|   |       
+|   +---Data
+|   |       DataBaseStrategy.js
+|   |       PersistenceManager.js
+|   |       TextFileStrategy.js
+|   |       
+|   \---models
+|           cart.model.js
+|           product.model.js
 |           
 \---views
+    |   addProduct.handlebars
     |   chat.handlebars
     |   index.handlebars
-    |   addProduct.handlebars
+    |   productDetails.handlebars
+    |   products.handlebars
+    |   productSummary.handlebars
     |   
     \---layouts
             main.handlebars
-
+            

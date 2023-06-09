@@ -30,7 +30,7 @@ class DataBaseProductAdapter {
 
     async getProductById(idProduct) {
         try {
-            return await this.persistenceManager.getOne({ id: parseInt(idProduct) });
+            return await this.persistenceManager.getOne({ _id: idProduct });
         } catch (error) {
             throw new Error(`getProductById: ${error.message}`);
         }
@@ -47,13 +47,13 @@ class DataBaseProductAdapter {
     async updateProduct(productToUpdate) {
         try {
             const { id } = productToUpdate;
-            const productId = parseInt(id);
+            const productId = id;
 
-            if (isNaN(productId)) {
+            if (!productId) {
                 throw new Error(`Invalid product ID: ${productId}`);
             }
 
-            return await this.persistenceManager.modifyOne({ id: productId }, productToUpdate);
+            return await this.persistenceManager.modifyOne({ _id: productId }, productToUpdate);
         } catch (error) {
             throw new Error(`updateProduct: ${error.message}`);
         }
@@ -61,17 +61,17 @@ class DataBaseProductAdapter {
 
     async deleteProduct(idToDelete) {
         try {
-            const id = Number(idToDelete);
-            if (isNaN(id)) {
+            const id = idToDelete;
+            if (!id) {
                 throw new Error(`Product ID "${idToDelete}" is not a valid number`);
             }
 
-            const result = await this.persistenceManager.deleteOne({ id: id });
-            
-            console.log(result + ' deleted adapter');
-            
-            return result;
-            
+            const isDeleted = await this.persistenceManager.deleteOne({ _id: id });
+
+            // console.log(result + ' deleted adapter');
+
+            return isDeleted;
+
         } catch (error) {
             throw new Error(`deleteProduct: ${error.message}`);
         }

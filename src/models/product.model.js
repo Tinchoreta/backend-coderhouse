@@ -9,7 +9,7 @@ let schema = new Schema({
     stock: {type: Number, required: true}
     // category: {type: String, required: true},
     // created_at: {type: Date, default: Date.now}
-})
+});
 
 let ProductModel = model(collection, schema);
 

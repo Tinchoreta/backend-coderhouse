@@ -5,7 +5,7 @@ la cuál tendrá un arreglo de Productos que iniciará vacíos.
 
 */
 
-import Product from "./Product.js";
+import Product from "../Product.js";
 
 class ProductManager {
   constructor(products) {
@@ -39,9 +39,7 @@ class ProductManager {
 
     stock = stock ?? 0;
 
-    const newId = this.getLastId() + 1;
     const newProduct = new Product(
-      newId,
       title,
       description,
       price,
@@ -59,7 +57,7 @@ class ProductManager {
 
   getProductById(idProduct) {
     const found = this.products.find(
-      (product) => product.id === parseInt(idProduct)
+      (product) => product.id === idProduct
     );
     if (!found) {
       return null;
@@ -84,7 +82,7 @@ class ProductManager {
 
   deleteProduct(idProduct) {
     const productIndex = this.products.findIndex(
-      (product) => product.id === parseInt(idProduct)
+      (product) => product.id === idProduct
     );
     if (productIndex === -1) {
       throw new Error(`Producto con ID: ${idProduct} no encontrado`);

@@ -49,7 +49,7 @@ class TextFileProductAdapter {
             if (products.length === 0) {
                 return null;
             }
-            const found = products.find((product) => product.id === parseInt(idProduct));
+            const found = products.find((product) => product.id === idProduct);
 
          //   console.log(found);
             return found || null;
@@ -78,7 +78,7 @@ class TextFileProductAdapter {
         try {
             const products = await this.PersistenceManager.load();
             const { id } = productToUpdate;
-            const productId = parseInt(id);
+            const productId = id;
 
             if (isNaN(productId)) {
                 throw new Error(`Invalid product ID: ${productIdToModify}`);
@@ -126,7 +126,7 @@ class TextFileProductAdapter {
     async deleteProduct(idToDelete) {
         try {
             //Se convierte el idToDelete a número y si no es un número tira un error
-            const id = Number(idToDelete);
+            const id = idToDelete;
             if (isNaN(id)) {
                 throw new Error(`Product ID "${idToDelete}" is not a valid number`);
             }
