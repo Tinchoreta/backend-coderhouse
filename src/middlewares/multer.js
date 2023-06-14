@@ -7,13 +7,13 @@ import { __dirname } from '../utils.js'
 
 const storage = multer.diskStorage({
     //destination para indicar donde se guardará
-    destination: (req,file,cb) => cb(null,__dirname+'/public/img'),
+    destination: (req, file, cb) => cb(null, __dirname + '/public/img'),
     //filename para indicar el nombre con que se guardará
 
-    filename: (req,file,cb) => cb(null,file.originalname)
+    filename: (req, file, cb) => cb(null, file.originalname)
 })
 
 //instanciamos
-const uploader = multer({storage})
+const uploader = multer({ storage })
 
 export default uploader

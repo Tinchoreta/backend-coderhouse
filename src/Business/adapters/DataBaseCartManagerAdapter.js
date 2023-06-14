@@ -1,5 +1,5 @@
-import PersistenceManager from '../../Data/PersistenceManager.js';
-import DataBaseStrategy from '../../Data/DataBaseStrategy.js';
+import PersistenceManager from '../../persistence/PersistenceManager.js';
+import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import CartModel from '../../models/cart.model.js';
 
 class DataBaseCartManagerAdapter {

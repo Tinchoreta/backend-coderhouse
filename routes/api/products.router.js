@@ -4,9 +4,9 @@ import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductA
 import {
   validateProductExistence,
   validateProductFields,
-} from "../../middlewares/productMiddleware.js";
-import dotenv from 'dotenv';
-dotenv.config();
+} from "../../src/middlewares/productMiddleware.js";
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 const router = Router();
 
@@ -26,8 +26,8 @@ router.get(
 
 router.post(
   "/",
-(req, res, next) => validateProductFields(req, res, next),
-(req, res) => productController.addProduct(req, res));
+  (req, res, next) => validateProductFields(req, res, next),
+  (req, res) => productController.addProduct(req, res));
 
 
 router.put("/:id",

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
 import DataBaseCartManagerAdapter from "../../src/Business/adapters/DataBaseCartManagerAdapter.js";
 import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
@@ -7,7 +7,7 @@ import CartManagerController from "../../src/controllers/CartManagerController.j
 
 
 const router = Router();
-dotenv.config();
+// dotenv.config();
 
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(

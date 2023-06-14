@@ -1,8 +1,8 @@
 import app from "./app.js"
 import { Server } from "socket.io"
-import Chat from "./src/Business/Chat.js"
-import DataBaseProductAdapter from "./src/Business/adapters/DataBaseProductAdapter.js"
-import { DataBaseSessionAdapter, DataBaseConversationAdapter }  from "./src/Business/adapters/DataBaseChatAdapter.js"
+import Chat from "./Business/Chat.js"
+import DataBaseProductAdapter from "./Business/adapters/DataBaseProductAdapter.js"
+import { DataBaseSessionAdapter, DataBaseConversationAdapter } from "./Business/adapters/DataBaseChatAdapter.js"
 
 const PORT = 8080
 const ready = () => console.log(`Server ready on port: ${PORT}`)

@@ -5,14 +5,14 @@ import addProductRouter from "./addProduct.js"
 import productDetailsRouter from "./productDetails.js";
 import productSummaryRouter from "./cart.js";
 import CartViewController from "../../src/controllers/CartViewController.js";
-import cartMiddleware from "../../middlewares/cartMiddleware.js";
+import cartMiddleware from "../../src/middlewares/cartMiddleware.js";
 
 const viewRouter = Router();
 
-viewRouter.get('/',cartMiddleware, async (req, res, next) => {
+viewRouter.get('/', cartMiddleware, async (req, res, next) => {
     try {
         const cartViewController = new CartViewController();
-        cartViewController.renderIndex(req,res, );
+        cartViewController.renderIndex(req, res,);
 
     } catch (error) {
         next(error);

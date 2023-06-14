@@ -1,4 +1,4 @@
-import DataBaseProductAdapter from "../src/Business/adapters/DataBaseProductAdapter.js";
+import DataBaseProductAdapter from "../Business/adapters/DataBaseProductAdapter.js";
 
 // Función que devuelve el adaptador de la base de datos
 function getDatabaseProductAdapter() {
@@ -32,7 +32,7 @@ Ejemplo de producto
 "stock": 5 */
 
 async function validateProductFields(req, res, next) {
-  let {title, description, price, thumbnail, stock } = req.body;
+  let { title, description, price, thumbnail, stock } = req.body;
   if (!title || !price || !description || !thumbnail || stock < 0) {
     return res
       .status(400)
@@ -42,7 +42,7 @@ async function validateProductFields(req, res, next) {
   price = parseFloat(price);
   stock = parseFloat(stock);
 
-  if ( isNaN(price) || isNaN(stock)) {
+  if (isNaN(price) || isNaN(stock)) {
     return res
       .status(400)
       .json({ success: false, error: "Invalid product fields" });

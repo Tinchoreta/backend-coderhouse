@@ -3,10 +3,10 @@ import { join } from 'path';
 import logger from 'morgan';
 import { engine } from 'express-handlebars';
 
-import mainRouter from './routes/index.js'
-import DataBaseStrategy from './src/Data/DataBaseStrategy.js';
+import mainRouter from '../routes/index.js'
+import DataBaseStrategy from './persistence/DataBaseStrategy.js';
 
-import dotenvMiddlewares from './middlewares/dotenvMiddleware.js';
+// import dotenvMiddlewares from './src/middlewares/dotenvMiddleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFound.js';
 import cartMiddleware from './middlewares/cartMiddleware.js';
@@ -14,13 +14,14 @@ import cartMiddleware from './middlewares/cartMiddleware.js';
 import Handlebars from './helpers/handlebarsHelper.js';
 import __dirname from './utils.js'
 
+import dotenv from 'dotenv';
 // const HandlebarsWithHelpers = Handlebars.create(); // Handlebars con helpers
 
 const app = express();
 
 
 //Para importar las variables de entorno de .env
-app.use(dotenvMiddlewares);
+dotenv.config();
 
 let URI = process.env.MONGO_DB_URI;
 

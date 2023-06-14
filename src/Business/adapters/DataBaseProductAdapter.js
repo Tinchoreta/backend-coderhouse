@@ -1,5 +1,5 @@
-import PersistenceManager from '../../Data/PersistenceManager.js';
-import DataBaseStrategy from '../../Data/DataBaseStrategy.js';
+import PersistenceManager from '../../persistence/PersistenceManager.js';
+import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import ProductModel from '../../models/product.model.js';
 
 class DataBaseProductAdapter {
@@ -10,6 +10,7 @@ class DataBaseProductAdapter {
             throw new Error("Ya existe una instancia de esta clase");
         }
         this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, ProductModel));
+        this.model = ProductModel;
         DataBaseProductAdapter.instance = this;
     }
 
@@ -20,13 +21,46 @@ class DataBaseProductAdapter {
         return DataBaseProductAdapter.instance;
     }
 
-    async getProducts() {
+    async getProducts(limit = 10, page = 1, sort = {}, query = {}) {
         try {
-            return await this.persistenceManager.load();
+            // Obtenemos los parámetros de paginación
+            const options = {
+                limit: parseInt(limit),
+                page: parseInt(page),
+                sort: sort,
+            };
+
+            // Realizamos la consulta utilizando aggregates y paginate de Mongoose
+            const result = await this.persistenceManager.model.aggregate([
+                {
+                    $match: query,
+                },
+                {
+                    $facet: {
+                        paginatedResults: [
+                            { $sort: options.sort },
+                            { $skip: (options.page - 1) * options.limit },
+                            { $limit: options.limit },
+                        ],
+                        totalCount: [
+                            {
+                                $count: 'count',
+                            },
+                        ],
+                    },
+                },
+            ]);
+
+            // Extraemos los resultados paginados y el total de elementos
+            const products = result[0].paginatedResults;
+            const totalCount = result[0].totalCount[0].count;
+
+            return { products, totalCount };
         } catch (error) {
             throw new Error(`getProducts: ${error.message}`);
         }
     }
+
 
     async getProductById(idProduct) {
         try {

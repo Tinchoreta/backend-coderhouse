@@ -41,30 +41,20 @@ class ProductManagerController {
 
   async getProducts(request, response) {
     try {
-      const products = await this.productManagerAdapter.getProducts();
-      // console.log(products);
+      const { limit = 10, page = 1, sort = {}, query = {} } = request.query;
 
-      const limit = parseInt(request.query.limit) || 0;
+      const result = await this.productManagerAdapter.getProducts(
+        limit,
+        page,
+        sort,
+        query
+      );
 
-      if (limit < 0 || limit > products.length) {
-        return response.status(400).json({
-          success: false,
-          error: "Bad Request: Limit must be a positive integer",
-        });
-      }
-
-      if (isNaN(limit) || !limit) {
-        return response.status(200).json({
-          success: true,
-          response: products,
-        });
-      } else {
-        const limitedProducts = products.slice(0, limit);
-        return response.status(200).json({
-          success: true,
-          response: limitedProducts,
-        });
-      }
+      return response.status(200).json({
+        success: true,
+        response: result.products,
+        totalCount: result.totalCount,
+      });
     } catch (error) {
       console.error(error);
       return response.status(500).json({
