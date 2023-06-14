@@ -31,7 +31,7 @@ class DataBaseProductAdapter {
             };
 
             // Realizamos la consulta utilizando aggregates y paginate de Mongoose
-            const result = await this.persistenceManager.model.aggregate([
+            const result = await this.model.aggregate([
                 {
                     $match: query,
                 },
