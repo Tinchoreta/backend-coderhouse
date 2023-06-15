@@ -41,7 +41,7 @@ class ProductManagerController {
 
   async getProducts(request, response) {
     try {
-      const { limit = 10, page = 1, sort = {}, query = {} } = request.query;
+      const { limit = 10, page = 1, sort = "", query = {} } = request.query;
 
       const result = await this.productManagerAdapter.getProducts(
         limit,

@@ -21,38 +21,42 @@ class DataBaseProductAdapter {
         return DataBaseProductAdapter.instance;
     }
 
-    async getProducts(limit = 10, page = 1, sort = {}, query = {}) {
+    async getProducts(limit = 10, page = 1, sort = "", query = {}) {
         try {
             const options = {
                 limit: parseInt(limit),
                 page: parseInt(page),
-                sort: {},
             };
 
             // Verifico si se proporcionó una ordenación
             if (sort === "asc" || sort === "desc") {
                 options.sort = { price: sort === "asc" ? 1 : -1 };
             }
-            // Realizamos la consulta utilizando aggregates y paginate de Mongoose
-            const result = await this.model.aggregate([
+
+            const aggregationStages = [
                 {
                     $match: query,
                 },
                 {
+                    $sort: options.sort || undefined,
+                },
+                {
                     $facet: {
                         paginatedResults: [
-                            { $sort: options.sort },
                             { $skip: (options.page - 1) * options.limit },
                             { $limit: options.limit },
                         ],
                         totalCount: [
                             {
-                                $count: 'count',
+                                $count: "count",
                             },
                         ],
                     },
                 },
-            ]);
+            ];
+
+            // Realizamos la consulta utilizando aggregates y paginate de Mongoose
+            const result = await this.model.aggregate(aggregationStages);
 
             // Extraemos los resultados paginados y el total de elementos
             const products = result[0].paginatedResults;
@@ -63,6 +67,7 @@ class DataBaseProductAdapter {
             throw new Error(`getProducts: ${error.message}`);
         }
     }
+
 
 
     async getProductById(idProduct) {
