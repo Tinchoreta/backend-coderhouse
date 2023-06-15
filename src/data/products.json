@@ -56,11 +56,32 @@
         "stock": 5
     },
     {
-        "title": "Producto 12",
-        "description": "Descripción del producto 12",
-        "price": 458,
-        "thumbnail": "8.jpg",
-        "stock": 100,
-        "__v": 0
+        "title": "14.1-megapixel COOLPIX L24 and the 12.1-megapixel Lumix DMC-S",
+        "description": "You get a high resolution 14MP CCD sensor, a sharp Nikon 3.6x zoom lens that will carry you from a wide-angle 37mm to 134mm telephoto (equivalent in 35mm format)",
+        "price": 150,
+        "thumbnail": "2.jpg",
+        "stock": 3
+    },
+    {
+        "title": "Fujifilm FinePix S1600 12,2 MP",
+        "description": "ou get a high resolution 12.2MP CCD sensor, a sharp Nikon 3.6x zoom lens that will carry you from a wide-angle 37mm to 134mm telephoto (equivalent in 35mm format)",
+        "price": 690,
+        "thumbnail": "5.jpg",
+        "stock": 2
+    },
+    {
+        "title": "Panasonic Lumix DMC-FH27",
+        "description": "The Lumix DMC-FH27 is a very compact digicam with a potent 8x zoom, potentially making it a good choice for vacationers. Has 16MP resolution and a 7x 28-196mm zoom",
+        "price": 350,
+        "thumbnail": "13.jpg",
+        "stock": 8
+    },
+    {
+        "title": "SanDisk 8 GB SDHC Card Class 4 sdsdb-008g",
+        "description": "Built to last, with an operational shock rating of 2,000 Gs, equivalent to a ten foot drop. High transfer speed for fast copying and downloading, class 4.",
+        "price": 50,
+        "thumbnail": "6.jpg",
+        "stock": 15
     }
+
 ]
