@@ -7,13 +7,18 @@ function getDatabaseProductAdapter() {
 }
 
 async function validateProductExistence(req, res, next) {
+  const dataBaseProductAdapter = getDatabaseProductAdapter();
   const productId = req.params.id;
 
   if (!productId) {
     return res.status(400).json({ success: false, error: "Invalid product ID" });
   }
 
-  const dataBaseProductAdapter = getDatabaseProductAdapter();
+  if (!dataBaseProductAdapter.isValidProductId(productId)) {
+    return res.status(400).json({ success: false, error: "Invalid product ID" });
+  }
+
+  
 
   const product = await dataBaseProductAdapter.getProductById(productId);
   if (!product) {

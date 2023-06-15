@@ -1,6 +1,7 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import ProductModel from '../../models/product.model.js';
+import mongoose from 'mongoose';
 
 class DataBaseProductAdapter {
     static instance;
@@ -69,7 +70,13 @@ class DataBaseProductAdapter {
     }
 
 
-
+    async isValidProductId(productId) {
+        try {
+            return mongoose.isValidObjectId(productId);
+        } catch (error) {
+            throw new Error(`isValidProductId: ${error.message}`);
+        }
+    }
 
 
     async getProductById(idProduct) {
