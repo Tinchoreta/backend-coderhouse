@@ -17,9 +17,7 @@ async function validateProductExistence(req, res, next) {
   if (!dataBaseProductAdapter.isValidProductId(productId)) {
     return res.status(400).json({ success: false, error: "Invalid product ID" });
   }
-
   
-
   const product = await dataBaseProductAdapter.getProductById(productId);
   if (!product) {
     return res.status(404).json({ success: false, error: "Product not found" });

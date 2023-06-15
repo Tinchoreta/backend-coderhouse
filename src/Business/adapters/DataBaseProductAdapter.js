@@ -72,7 +72,8 @@ class DataBaseProductAdapter {
 
     async isValidProductId(productId) {
         try {
-            return mongoose.isValidObjectId(productId);
+            let isValid = await mongoose.isValidObjectId(productId);
+            return isValid;
         } catch (error) {
             throw new Error(`isValidProductId: ${error.message}`);
         }
@@ -81,6 +82,9 @@ class DataBaseProductAdapter {
 
     async getProductById(idProduct) {
         try {
+            let isValidId = await this.isValidProductId(idProduct)
+            if( !isValidId ) return null;
+
             return await this.persistenceManager.getOne({ _id: idProduct });
         } catch (error) {
             throw new Error(`getProductById: ${error.message}`);
