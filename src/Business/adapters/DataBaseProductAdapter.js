@@ -70,6 +70,8 @@ class DataBaseProductAdapter {
 
 
 
+
+
     async getProductById(idProduct) {
         try {
             return await this.persistenceManager.getOne({ _id: idProduct });
