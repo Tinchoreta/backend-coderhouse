@@ -47,13 +47,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', mainRouter);
-app.use('/', express.static(join(__dirname, 'public')));
+app.use('/', express.static(join(__dirname, '../public')));
 
 
 //template engine
 app.engine('handlebars', engine({ handlebars: Handlebars }));
 
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '../../views');
 app.set('view engine', 'handlebars');
 
 app.use(errorHandler);
