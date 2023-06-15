@@ -23,13 +23,16 @@ class DataBaseProductAdapter {
 
     async getProducts(limit = 10, page = 1, sort = {}, query = {}) {
         try {
-            // Obtenemos los parámetros de paginación
             const options = {
                 limit: parseInt(limit),
                 page: parseInt(page),
-                sort: sort,
+                sort: {},
             };
 
+            // Verifico si se proporcionó una ordenación
+            if (sort === "asc" || sort === "desc") {
+                options.sort = { price: sort === "asc" ? 1 : -1 };
+            }
             // Realizamos la consulta utilizando aggregates y paginate de Mongoose
             const result = await this.model.aggregate([
                 {
