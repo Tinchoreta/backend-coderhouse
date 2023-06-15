@@ -14,7 +14,7 @@ const cartMiddleware = async (req, res, next) => {
         //TODO: Change this hard-coded cartID
 
         const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0436');
-        const productsList = await dataBaseProductAdapter.getProducts(5,1,"asc");
+        const productsList = await dataBaseProductAdapter.getProducts(20,1,"asc");
         const productManager = new ProductManager(productsList);
 
         const cartManager = CartManager.getInstance([cartToRender], productManager);

@@ -6,7 +6,7 @@ Handlebars.registerHelper('cartItemCount', function (options) {
 
     // console.log('cartItemCount helper:', cartManager); // Agregar este console.log
     //TODO:  Change the cart id 64765d546145585e447a0436 hardcoded
-    let count = cartManager.getCartTotalItemsQuantity('64765d546145585e447a0436');
+    let count = cartManager?.getCartTotalItemsQuantity('64765d546145585e447a0436');
 
     // console.log(count);
 
@@ -19,7 +19,7 @@ Handlebars.registerHelper('cartTotal', function (options) {
 
     // console.log('cartTotal helper:', cartManager); // Agregar este console.log
 
-    let result = cartManager.calculateTotalPrice('64765d546145585e447a0436');
+    let result = cartManager?.calculateTotalPrice('64765d546145585e447a0436');
 
     // console.log(result);
 

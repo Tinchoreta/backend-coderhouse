@@ -56,7 +56,7 @@ class ProductManager {
   };
 
   getProductById(idProduct) {
-    const found = this.products.find(
+    const found = this.products?.find(
       (product) => product.id === idProduct
     );
     if (!found) {

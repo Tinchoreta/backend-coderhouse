@@ -37,9 +37,9 @@ class DataBaseProductAdapter {
                 {
                     $match: query,
                 },
-                {
-                    $sort: options.sort || undefined,
-                },
+                ...((sort !== "") ? [
+                    { $sort: options.sort }
+                ] : []),
                 {
                     $facet: {
                         paginatedResults: [
