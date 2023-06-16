@@ -241,6 +241,39 @@ class CartManagerController {
         }
     }
 
+    async removeProductFromCart(req, res) {
+        try {
+            const cartId = req.params.cid;
+            const productId = req.params.pid;
+
+            if (!cartId || !productId) {
+                return this.#sendError(res, 400, 'Invalid parameters');
+            }
+
+            const cart = await this.#_validateCartExists(res, cartId);
+
+            if (!cart) {
+                return this.#sendError(res, 404, 'Cart not found');
+            }
+
+            const productIndex = cart.products.findIndex((item) => item.productId.toString() === productId);
+
+            if (productIndex === -1) {
+                return this.#sendError(res, 404, 'Product not found in cart');
+            }
+
+            cart.products.splice(productIndex, 1);
+
+            const updatedCart = await this.cartManagerAdapter.updateCart(cart);
+
+            return res.status(200).json(updatedCart);
+        } catch (error) {
+            console.error(error);
+            return this.#sendError(res, 500, 'Internal server error');
+        }
+    }
+
+
     async deleteCart(request, response) {
         const cartId = request.params.id;
         await this.cartManagerAdapter.deleteCart(cartId);

@@ -29,13 +29,21 @@ router.get("/:id", (req, res) => cartController.getCartById(req, res));
 
 router.post("/", (req, res) => cartController.createCart(req, res));
 
-router.put("/:cid/product/:pid/:units", 
+router.put("/:cid/product/:pid/:units",
     checkProductExistenceInCart,
-(req, res) => cartController.addProductUnitsToCart(req, res)
+    (req, res) => cartController.addProductUnitsToCart(req, res)
 );
-router.delete("/:cid/product/:pid/:units", 
-checkProductExistenceInCart, (req, res) =>
-    cartController.removeProductUnitsFromCart(req, res)
+
+router.delete("/:cid/products/:pid",
+    checkProductExistenceInCart,
+    (req, res) => cartController.removeProductFromCart(req, res)
 );
+
+
+router.delete("/:cid/product/:pid/:units",
+    checkProductExistenceInCart,
+    (req, res) => cartController.removeProductUnitsFromCart(req, res)
+);
+
 
 export default router;
