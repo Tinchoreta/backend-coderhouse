@@ -5,11 +5,21 @@ import ProductManager from '../Business/managers/ProductManager.js';
 import DataBaseCartManagerAdapter from '../Business/adapters/DataBaseCartManagerAdapter.js';
 import DataBaseProductAdapter from '../Business/adapters/DataBaseProductAdapter.js';
 
+async function getDatabaseCartAdapter() {
+    const mongoDBURI = process.env.MONGO_DB_URI;
+    return DataBaseCartManagerAdapter.getInstance(mongoDBURI);
+}
+
+async function getDatabaseProductAdapter() {
+    const mongoDBURI = process.env.MONGO_DB_URI;
+    return DataBaseProductAdapter.getInstance(mongoDBURI);
+}
+
 const cartMiddleware = async (req, res, next) => {
 
     try {
-        const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(process.env.MONGO_DB_URI);
-        const dataBaseCartAdapter = DataBaseCartManagerAdapter.getInstance(process.env.MONGO_DB_URI);
+        const dataBaseProductAdapter = await getDatabaseProductAdapter();
+        const dataBaseCartAdapter = await getDatabaseCartAdapter();
 
         //TODO: Change this hard-coded cartID
 
@@ -32,4 +42,23 @@ const cartMiddleware = async (req, res, next) => {
     }
 }
 
-export default cartMiddleware;
+async function checkProductExistenceInCart(req, res, next) {
+    const cartId = req.params.cid;
+    const productId = req.params.pid;
+
+    try {
+        const dataBaseCartAdapter = await getDatabaseCartAdapter();
+        // Verificar si el producto existe en el carrito
+        const productIds = await dataBaseCartAdapter.getProductsIds(cartId);
+
+        if (!productIds.includes(productId)) {
+            return res.status(400).json({ success: false, error: "Product does not exist in cart" });
+        }
+
+        next();
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+}
+
+export { cartMiddleware, checkProductExistenceInCart };

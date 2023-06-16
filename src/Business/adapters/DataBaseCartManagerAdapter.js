@@ -34,7 +34,7 @@ class DataBaseCartManagerAdapter {
 
     async getProductsIds(cartId) {
         try {
-            const cart = await this.persistenceManager.getOne({ _id: parseInt(cartId) });
+            const cart = await this.persistenceManager.getOne({ _id: cartId });
             return cart ? cart.products.map((product) => product.id) : [];
         } catch (error) {
             throw new Error(`getProductsIds: ${error.message}`);

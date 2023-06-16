@@ -1,6 +1,6 @@
 import { Router } from "express";
 import ProductViewController from "../../src/controllers/ProductViewController.js";
-import cartMiddleware from "../../src/middlewares/cartMiddleware.js";
+import { cartMiddleware } from "../../src/middlewares/cartMiddleware.js";
 
 const productDetailsRouter = Router();
 

@@ -9,7 +9,7 @@ import DataBaseStrategy from './persistence/DataBaseStrategy.js';
 // import dotenvMiddlewares from './src/middlewares/dotenvMiddleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFound.js';
-import cartMiddleware from './middlewares/cartMiddleware.js';
+import { cartMiddleware } from './middlewares/cartMiddleware.js';
 
 import Handlebars from './helpers/handlebarsHelper.js';
 import __dirname from './utils.js'

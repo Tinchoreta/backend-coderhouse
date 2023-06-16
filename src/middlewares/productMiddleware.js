@@ -1,13 +1,13 @@
 import DataBaseProductAdapter from "../Business/adapters/DataBaseProductAdapter.js";
 
 // Función que devuelve el adaptador de la base de datos
-function getDatabaseProductAdapter() {
+async function getDatabaseProductAdapter() {
   const mongoDBURI = process.env.MONGO_DB_URI;
   return DataBaseProductAdapter.getInstance(mongoDBURI);
 }
 
 async function validateProductExistence(req, res, next) {
-  const dataBaseProductAdapter = getDatabaseProductAdapter();
+  const dataBaseProductAdapter = await getDatabaseProductAdapter();
   const productId = req.params.id;
 
   if (!productId) {
@@ -35,24 +35,50 @@ Ejemplo de producto
 "stock": 5 */
 
 async function validateProductFields(req, res, next) {
-  let { title, description, price, thumbnail, stock } = req.body;
-  if (!title || !price || !description || !thumbnail || stock < 0) {
-    return res
-      .status(400)
-      .json({ success: false, error: "Missing required fields" });
+  const { title, description, price, thumbnail, stock } = req.body;
+
+  if (!title || !price || !description || !thumbnail) {
+    return res.status(400).json({
+      success: false,
+      error: 'Missing required fields'
+    });
   }
 
-  price = parseFloat(price);
-  stock = parseFloat(stock);
+  const parsedPrice = parseFloat(price);
+  const parsedStock = stock !== undefined ? parseFloat(stock) : 0;
 
-  if (isNaN(price) || isNaN(stock)) {
-    return res
-      .status(400)
-      .json({ success: false, error: "Invalid product fields" });
+  if (isNaN(parsedPrice) || isNaN(parsedStock)) {
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid product fields'
+    });
   }
 
-  req.body = { title, price, description, thumbnail, stock: stock || 0 };
+  req.body = {
+    title,
+    price: parsedPrice,
+    description,
+    thumbnail,
+    stock: parsedStock
+  };
+
   next();
 }
 
-export { validateProductExistence, validateProductFields };
+
+
+
+async function checkDuplicateProductFields(req, res, next) {
+  const dataBaseProductAdapter = getDatabaseProductAdapter();
+  const { title, description } = req.body;
+
+  // Check if title and description already exist in the database
+  const existingProduct = await dataBaseProductAdapter.getProductByTitleAndDescription(title, description);
+  if (existingProduct?.length > 0) {
+    return res.status(400).json({ success: false, error: "Duplicate product fields" });
+  }
+
+  next();
+}
+
+export { validateProductExistence, validateProductFields, checkDuplicateProductFields};

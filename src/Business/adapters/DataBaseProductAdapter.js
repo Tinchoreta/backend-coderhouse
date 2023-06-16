@@ -83,7 +83,7 @@ class DataBaseProductAdapter {
     async getProductById(idProduct) {
         try {
             let isValidId = await this.isValidProductId(idProduct)
-            if( !isValidId ) return null;
+            if (!isValidId) return null;
 
             return await this.persistenceManager.getOne({ _id: idProduct });
         } catch (error) {
@@ -131,6 +131,25 @@ class DataBaseProductAdapter {
             throw new Error(`deleteProduct: ${error.message}`);
         }
     }
+    async getProductByTitleAndDescription(title, description) {
+    try {
+        // Construir los criterios de búsqueda
+        const query = {
+            // Buscar documentos que coincidan exactamente con el título proporcionado (insensible a mayúsculas y minúsculas)
+            title: { $regex: new RegExp(`^${title}$`, 'i') },
+            // Buscar documentos que coincidan exactamente con la descripción proporcionada (insensible a mayúsculas y minúsculas)
+            description: { $regex: new RegExp(`^${description}$`, 'i') },
+        };
+
+        const products = await this.persistenceManager.getMany(query);
+        
+        return products;
+    } catch (error) {
+        
+        throw new Error(`getProductByTitleAndDescription: ${error.message}`);
+    }
+}
+
 }
 
 export default DataBaseProductAdapter;
