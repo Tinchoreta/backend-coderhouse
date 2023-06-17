@@ -22,7 +22,7 @@ class ProductViewController {
   async renderProductsForm(req, res) {
     try {
       const response = await axios.get("http://localhost:8080/api/products/");
-      const products = response.data.response;
+      const products = response.data.payload;
       const cartManager = req.cartManager;
 
       return res.render("products", {
@@ -45,7 +45,7 @@ class ProductViewController {
     try {
       // console.log(`http://localhost:8080/api/products/${productId}`);
       const response = await axios.get(`http://localhost:8080/api/products/${productId}`);
-      const productDetails = response.data.product;
+      const productDetails = response.data.payload;
       const cartManager = req.cartManager;
 
       return res.render("productDetails", {

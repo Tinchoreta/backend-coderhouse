@@ -4,6 +4,7 @@
         "description": "Memory Micro Sd Ultra Sandisk 16gb Class 10. Shock resistant, Temperature resistant, Waterproof, X-ray proof",
         "price": 8,
         "thumbnail": "8.jpg",
+        "category": "Accesories",
         "stock": 5
     },
     {
@@ -11,6 +12,7 @@
         "description": "14 Megapixels. 18.0 x Optical Zoom. 3.0-inch LCD Screen. Full HD photos and 1280 x 720p HD movie capture. ISO sensitivity ISO6400 at reduced resolution.",
         "price": 438,
         "thumbnail": "3.jpg",
+        "category": "Cameras",
         "stock": 5
     },
     {
@@ -18,6 +20,7 @@
         "description": "4 x AA batteries not included. WxDxH 110.2 ×81.4x73.4mm. Weight 0.341kg (excluding battery and memory card). Weight 0.437kg.",
         "price": 1734,
         "thumbnail": "4.jpg",
+        "category": "Cameras",
         "stock": 5
     },
     {
@@ -25,6 +28,7 @@
         "description": "Sandisk 16Gb USB flash drive with SD memory holder. Specially designed for digital cameras and quick access to photos",
         "price": 10,
         "thumbnail": "7.jpg",
+        "category": "Accesories",
         "stock": 5
     },
     {
@@ -32,6 +36,7 @@
         "description": "Kindle E-reader: Store and carry beloved books. Paper-like reading experience without eye strain.",
         "price": 50,
         "thumbnail": "kindle.png",
+        "category": "E-readers",
         "stock": 5
     },
     {
@@ -39,6 +44,7 @@
         "description": "FUJIFILM X-H2 Kit: High-res mirrorless camera + protective bag bundle + baterry charger + SD 32Gb. 40MP APS-C X-Trans5 BSI Sensor",
         "price": 1931,
         "thumbnail": "9.jpg",
+        "category": "Cameras",
         "stock": 10
     },
     {
@@ -46,6 +52,7 @@
         "description": "10 megapixels, 5x optical zoom, 7.5cm TFT monitor: Share beautiful moments with friends and family. Good visibility indoors and outdoors.",
         "price": 317,
         "thumbnail": "1.jpg",
+        "category": "Cameras",
         "stock": 5
     },
     {
@@ -53,6 +60,7 @@
         "description": "Both cameras feature 720p (at 30fps) HD video recording, a 28mm wide-angle 4x optical zoom lens, a Venus Engine VI image processor, a 2.7-inch Intelligent LCD",
         "price": 296,
         "thumbnail": "14.jpg",
+        "category": "Cameras",
         "stock": 5
     },
     {
@@ -60,6 +68,7 @@
         "description": "You get a high resolution 14MP CCD sensor, a sharp Nikon 3.6x zoom lens that will carry you from a wide-angle 37mm to 134mm telephoto (equivalent in 35mm format)",
         "price": 150,
         "thumbnail": "2.jpg",
+        "category": "Cameras",
         "stock": 3
     },
     {
@@ -67,6 +76,7 @@
         "description": "ou get a high resolution 12.2MP CCD sensor, a sharp Nikon 3.6x zoom lens that will carry you from a wide-angle 37mm to 134mm telephoto (equivalent in 35mm format)",
         "price": 690,
         "thumbnail": "5.jpg",
+        "category": "Cameras",
         "stock": 2
     },
     {
@@ -74,6 +84,7 @@
         "description": "The Lumix DMC-FH27 is a very compact digicam with a potent 8x zoom, potentially making it a good choice for vacationers. Has 16MP resolution and a 7x 28-196mm zoom",
         "price": 350,
         "thumbnail": "13.jpg",
+        "category": "Cameras",
         "stock": 8
     },
     {
@@ -81,6 +92,7 @@
         "description": "Built to last, with an operational shock rating of 2,000 Gs, equivalent to a ten foot drop. High transfer speed for fast copying and downloading, class 4.",
         "price": 50,
         "thumbnail": "6.jpg",
+        "category": "Accesories",
         "stock": 15
     }
 
