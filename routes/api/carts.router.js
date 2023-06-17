@@ -34,7 +34,7 @@ router.put("/:cid/product/:pid/:units",
     (req, res) => cartController.addProductUnitsToCart(req, res)
 );
 
-router.delete("/:cid/products/:pid",
+router.delete("/:cid/product/:pid",
     checkProductExistenceInCart,
     (req, res) => cartController.removeProductFromCart(req, res)
 );
