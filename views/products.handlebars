@@ -177,12 +177,12 @@
                     <hr class="soft" />
                     <form class="form-horizontal span6">
                         <div class="control-group">
-                            <label class="control-label alignL">Sort By </label>
-                            <select>
-                                <option>Product name A - Z</option>
-                                <option>Product name Z - A</option>
-                                <option>Product Stoke</option>
-                                <option>Price Lowest first</option>
+                            <label class="control-label alignL" for="sortSelect">Sort By</label>
+                            <select id="sortSelect" name="sortOption">
+                                <option value="name-asc">Product name A - Z</option>
+                                <option value="name-desc">Product name Z - A</option>
+                                <option value="stock">Product Stock</option>
+                                <option value="price-asc">Price Lowest first</option>
                             </select>
                         </div>
                     </form>

@@ -27,20 +27,31 @@ class DataBaseProductAdapter {
             const options = {
                 limit: parseInt(limit),
                 page: parseInt(page),
+                sort: {}
             };
 
-            // Verifico si se proporcionó una ordenación
-            if (sort === "asc" || sort === "desc") {
-                options.sort = { price: sort === "asc" ? 1 : -1 };
+            // Verificar si se proporcionó una ordenación
+            if (sort === "name-asc") {
+                options.sort = { title: 1 };
+            } 
+            if (sort === "name-desc") {
+                options.sort = { title: -1 };
+            } 
+            if (sort === "stock") {
+                options.sort = { stock: -1 };
+            } 
+            if (sort === "price-asc" || sort === "asc") {
+                options.sort = { price: 1 };
+            }
+            if (sort === "price-desc" || sort === "desc") {
+                options.sort = { price: -1 };
             }
 
             const aggregationStages = [
                 {
                     $match: query,
                 },
-                ...((sort !== "") ? [
-                    { $sort: options.sort }
-                ] : []),
+                ...(sort !== "" ? [{ $sort: options.sort }] : []),
                 {
                     $facet: {
                         paginatedResults: [
@@ -56,10 +67,10 @@ class DataBaseProductAdapter {
                 },
             ];
 
-            // Realizamos la consulta utilizando aggregates y paginate de Mongoose
-            const result = await this.model.aggregate(aggregationStages);
+            // Realizar la consulta utilizando aggregates y paginate de Mongoose
+            const result = await this.model.aggregate(aggregationStages).collation({ locale: "en" });
 
-            // Extraemos los resultados paginados y el total de elementos
+            // Extraer los resultados paginados y el total de elementos
             const products = result[0].paginatedResults;
             const totalCount = result[0].totalCount[0].count;
 

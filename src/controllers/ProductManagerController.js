@@ -39,34 +39,41 @@ class ProductManagerController {
     }
   }
 
-async getProducts(request, response) {
-  try {
-    const { limit = 10, page = 1, sort = '', query = {} } = request.query;
+  async getProducts(request, response) {
+    try {
+      
+      const { limit, page, sort } = this.#getQueryParams(request);
 
-    const result = await this.productManagerAdapter.getProducts(limit, page, sort, query);
+      const result = await this.productManagerAdapter.getProducts(limit, page, sort);
 
-    const adaptedProducts = result.products;
+      const adaptedProducts = result.products;
 
-    return response.status(200).json({
-      status: 'success',
-      payload: adaptedProducts,
-      totalPages: Math.ceil(result.totalCount / limit),
-      prevPage: page > 1 ? page - 1 : null,
-      nextPage: page < Math.ceil(result.totalCount / limit) ? page + 1 : null,
-      page,
-      hasPrevPage: page > 1,
-      hasNextPage: page < Math.ceil(result.totalCount / limit),
-      prevLink: page > 1 ? `/products?limit=${limit}&page=${page - 1}&sort=${sort}` : null,
-      nextLink: page < Math.ceil(result.totalCount / limit) ? `/products?limit=${limit}&page=${page + 1}&sort=${sort}` : null,
-    });
-  } catch (error) {
-    console.error(error);
-    return response.status(500).json({
-      status: 'error',
-      error: 'Internal Server Error',
-    });
+      return response.status(200).json({
+        status: 'success',
+        payload: adaptedProducts,
+        totalPages: Math.ceil(result.totalCount / limit),
+        prevPage: page > 1 ? page - 1 : null,
+        nextPage: page < Math.ceil(result.totalCount / limit) ? page + 1 : null,
+        page,
+        hasPrevPage: page > 1,
+        hasNextPage: page < Math.ceil(result.totalCount / limit),
+        prevLink: page > 1 ? `/products?limit=${limit}&page=${page - 1}&sort=${sort}` : null,
+        nextLink: page < Math.ceil(result.totalCount / limit) ? `/products?limit=${limit}&page=${page + 1}&sort=${sort}` : null,
+      });
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        status: 'error',
+        error: 'Internal Server Error',
+      });
+    }
   }
-}
+
+  #getQueryParams(request) {
+    const { limit = 10, page = 1, sort ="" } = request.query;
+    return { limit, page, sort };
+  }
+
 
   async getProductById(request, response) {
     try {

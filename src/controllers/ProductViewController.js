@@ -21,7 +21,10 @@ class ProductViewController {
 
   async renderProductsForm(req, res) {
     try {
-      const response = await axios.get("http://localhost:8080/api/products/");
+      const { limit, page, sort } = req.query; 
+      
+      const url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&sort=${sort}`;
+      const response = await axios.get(url);
       const products = response.data.payload;
       const cartManager = req.cartManager;
 
