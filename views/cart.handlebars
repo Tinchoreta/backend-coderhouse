@@ -226,10 +226,12 @@
                                     <div class="input-append">
                                         <input class="span1" style="max-width:34px" placeholder="{{quantity}}"
                                             id="{{_id}}" size="16" type="text">
-                                        <button class="btn" type="button"><i class="icon-minus"></i></button>
-                                        <button class="btn" type="button"><i class="icon-plus"></i></button>
-                                        <button class="btn btn-danger" type="button"><i
-                                                class="icon-remove icon-white"></i></button>
+                                        <button class="btn btn-minus" data-product-id="{{_id}}" type="button"><i
+                                                class="icon-minus"></i></button>
+                                        <button class="btn btn-plus" data-product-id="{{_id}}" type="button"><i
+                                                class="icon-plus"></i></button>
+                                        <button class="btn btn-danger btn-remove" data-product-id="{{_id}}"
+                                            type="button"><i class="icon-remove icon-white"></i></button>
                                     </div>
                                 </td>
                                 <td>${{price}}</td>
@@ -255,7 +257,8 @@
                                 <td colspan="6" style="text-align:right"><strong>TOTAL (${{cartTotal}} - $50 + $31)
                                         =</strong>
                                 </td>
-                                <td class="label label-important" style="display:block"> <strong> ${{calcTotalWithDiscTax}} </strong>
+                                <td class="label label-important" style="display:block"> <strong>
+                                        ${{calcTotalWithDiscTax}} </strong>
                                 </td>
                             </tr>
                         </tbody>

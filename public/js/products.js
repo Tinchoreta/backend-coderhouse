@@ -28,6 +28,5 @@ sortSelect.addEventListener('change', () => {
         })
         .catch(error => {
             console.error(error);
-            // Manejar el error de la solicitud
         });
 });
