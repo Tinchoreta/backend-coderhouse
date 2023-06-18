@@ -25,21 +25,21 @@ class DataBaseProductAdapter {
     async getProducts(limit = 10, page = 1, sort = "", query = {}) {
         try {
             const options = {
-                limit: parseInt(limit),
-                page: parseInt(page),
+                limit: !Number.isNaN(parseInt(limit)) ? parseInt(limit) : 10,
+                page: !Number.isNaN(parseInt(page)) ? parseInt(page) : 1,
                 sort: {}
             };
 
             // Verificar si se proporcionó una ordenación
             if (sort === "name-asc") {
                 options.sort = { title: 1 };
-            } 
+            }
             if (sort === "name-desc") {
                 options.sort = { title: -1 };
-            } 
+            }
             if (sort === "stock") {
                 options.sort = { stock: -1 };
-            } 
+            }
             if (sort === "price-asc" || sort === "asc") {
                 options.sort = { price: 1 };
             }
@@ -51,7 +51,7 @@ class DataBaseProductAdapter {
                 {
                     $match: query,
                 },
-                ...(sort !== "" ? [{ $sort: options.sort }] : []),
+                ...(Object.keys(options.sort).length !== 0 ? [{ $sort: options.sort }] : []),
                 {
                     $facet: {
                         paginatedResults: [
@@ -79,6 +79,8 @@ class DataBaseProductAdapter {
             throw new Error(`getProducts: ${error.message}`);
         }
     }
+
+
 
 
     async isValidProductId(productId) {

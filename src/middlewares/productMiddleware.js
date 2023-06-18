@@ -32,7 +32,10 @@ Ejemplo de producto
 "description": "Descripción del producto 2",
 "price": 438,
 "thumbnail": "https://ejemplo.com/imagen-producto-2.jpg",
-"stock": 5 */
+"stock": 5 
+"category": "Cameras",
+"created_at": "
+*/
 
 async function validateProductFields(req, res, next) {
   const { title, description, price, thumbnail, stock } = req.body;
@@ -64,9 +67,6 @@ async function validateProductFields(req, res, next) {
 
   next();
 }
-
-
-
 
 async function checkDuplicateProductFields(req, res, next) {
   const dataBaseProductAdapter = getDatabaseProductAdapter();

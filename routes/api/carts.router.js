@@ -30,7 +30,6 @@ router.get("/:id", (req, res) => cartController.getCartById(req, res));
 router.post("/", (req, res) => cartController.createCart(req, res));
 
 router.put("/:cid/product/:pid/:units",
-    checkProductExistenceInCart,
     (req, res) => cartController.addProductUnitsToCart(req, res)
 );
 

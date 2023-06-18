@@ -52,7 +52,7 @@ class DataBaseCartManagerAdapter {
 
     async createCart() {
         try {
-            const cart = { id: null, products: [] };
+            const cart = { products: [] };
             const createdCart = await this.persistenceManager.addOne(cart);
             return createdCart._id;
         } catch (error) {

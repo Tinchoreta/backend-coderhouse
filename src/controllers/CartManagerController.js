@@ -66,7 +66,10 @@ class CartManagerController {
                 });
                 return;
             }
-            response.status(201).json(addedCartId);
+            response.status(201).json({
+                success: true,
+                response: addedCartId
+            });
         } catch (error) {
             console.error(error);
             response.status(500).json({
