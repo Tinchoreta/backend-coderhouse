@@ -19,11 +19,34 @@ class ProductViewController {
     }
   }
 
+  // Método para construir la URL con parámetros opcionales
+  #buildProductsUrl(baseURL, queryParams) {
+    const { limit, page, sort, title } = queryParams;
+
+    let url = baseURL;
+
+    if (limit !== undefined) {
+      url += `?limit=${limit}`;
+    }
+    if (page !== undefined) {
+      url += `${limit !== undefined ? '&' : '?'}page=${page}`;
+    }
+    if (sort !== undefined) {
+      url += `${(limit !== undefined || page !== undefined) ? '&' : '?'}sort=${sort}`;
+    }
+    if (title !== undefined) {
+      url += `${(limit !== undefined || page !== undefined || sort !== undefined) ? '&' : '?'}title=${title}`;
+    }
+
+    return url;
+  }
+  
   async renderProductsForm(req, res) {
     try {
-      const { limit, page, sort, title } = req.query; 
-      
-      const url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&sort=${sort}&title=${title}`;
+      const { limit, page, sort, title } = req.query;
+      const baseURL = 'http://localhost:8080/api/products';
+      const url = this.#buildProductsUrl(baseURL, { limit, page, sort, title });
+
       const response = await axios.get(url);
       const products = response.data.payload;
       const cartManager = req.cartManager;
@@ -53,6 +76,7 @@ class ProductViewController {
       });
     }
   }
+
 
   async renderProductDetailsForm(req, res, productId) {
     try {

@@ -1,10 +1,6 @@
-const queryParams = new URLSearchParams(window.location.search);
-const limit = queryParams.get('limit') || 10;
-const page = queryParams.get('page') || 1;
-
 document.addEventListener("DOMContentLoaded", () => {
-
     const sortSelect = document.getElementById('sortSelect');
+    const titleFilterInput = document.getElementById('titleFilter');
 
     // Establecer la opción seleccionada en el elemento sortSelect
     const selectedOption = queryParams.get('sort');
@@ -12,25 +8,31 @@ document.addEventListener("DOMContentLoaded", () => {
         sortSelect.value = selectedOption;
     }
 
+    // Establecer el valor del filtro de título
+    const titleFilterValue = queryParams.get('title');
+    if (titleFilterValue) {
+        titleFilterInput.value = titleFilterValue;
+    }
+
     sortSelect.addEventListener('change', () => {
         const selectedOption = sortSelect.value;
-
-        // Construir la cadena de consulta actualizada
-        const updatedParams = new URLSearchParams(window.location.search);
-        updatedParams.set('sort', selectedOption);
-        const updatedQueryString = updatedParams.toString();
-
-        // Construir la URL completa con la cadena de consulta actualizada
-        const url = `${window.location.pathname}?${updatedQueryString}`;
-
-        axios.get(url)
-            .then(response => {
-                const data = response.data;
-                window.location = url; // Redireccionar a la URL completa
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        updateQueryString('sort', selectedOption);
     });
 
+    titleFilterInput.addEventListener('input', () => {
+        const titleValue = titleFilterInput.value;
+        updateQueryString('title', titleValue);
+    });
+
+    function updateQueryString(param, value) {
+        const updatedParams = new URLSearchParams(window.location.search);
+        if (value) {
+            updatedParams.set(param, value);
+        } else {
+            updatedParams.delete(param);
+        }
+        const updatedQueryString = updatedParams.toString();
+        const url = `${window.location.pathname}?${updatedQueryString}`;
+        window.location = url;
+    }
 });
