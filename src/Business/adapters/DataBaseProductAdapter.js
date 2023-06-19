@@ -72,8 +72,8 @@ class DataBaseProductAdapter {
             const result = await this.model.aggregate(aggregationStages).collation({ locale: "en" });
 
             // Extraer los resultados paginados y el total de elementos
-            const products = result[0].paginatedResults;
-            const totalCount = result[0].totalCount[0].count;
+            const products = result[0]?.paginatedResults;
+            const totalCount = result[0]?.totalCount[0]?.count;
 
             return { products, totalCount };
         } catch (error) {

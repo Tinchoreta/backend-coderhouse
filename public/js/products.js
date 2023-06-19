@@ -1,17 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
     const sortSelect = document.getElementById('sortSelect');
     const titleFilterInput = document.getElementById('titleFilter');
+    const filterText = document.getElementById('filterText');
+    const clearFilterButton = document.getElementById('clearFilterButton');
+
+    // Obtener los parámetros de la URL
+    const queryParams = new URLSearchParams(window.location.search);
+    const selectedOption = queryParams.get('sort');
+    const titleFilterValue = queryParams.get('title');
 
     // Establecer la opción seleccionada en el elemento sortSelect
-    const selectedOption = queryParams.get('sort');
     if (selectedOption) {
         sortSelect.value = selectedOption;
     }
 
     // Establecer el valor del filtro de título
-    const titleFilterValue = queryParams.get('title');
     if (titleFilterValue) {
         titleFilterInput.value = titleFilterValue;
+        filterText.textContent = `Filtered by: ${titleFilterValue}`;
+        clearFilterButton.style.display = 'inline-block';
     }
 
     sortSelect.addEventListener('change', () => {
@@ -24,15 +31,28 @@ document.addEventListener("DOMContentLoaded", () => {
         updateQueryString('title', titleValue);
     });
 
+    clearFilterButton.addEventListener('click', () => {
+        clearFilter();
+    });
+
     function updateQueryString(param, value) {
         const updatedParams = new URLSearchParams(window.location.search);
         if (value) {
             updatedParams.set(param, value);
+            filterText.textContent = `Filtered by: ${value}`;
+            clearFilterButton.style.display = 'inline-block';
         } else {
             updatedParams.delete(param);
+            filterText.textContent = '';
+            clearFilterButton.style.display = 'none';
         }
         const updatedQueryString = updatedParams.toString();
         const url = `${window.location.pathname}?${updatedQueryString}`;
-        window.location = url;
+        window.location.href = url;
+    }
+
+    function clearFilter() {
+        titleFilterInput.value = '';
+        updateQueryString('title', null);
     }
 });
