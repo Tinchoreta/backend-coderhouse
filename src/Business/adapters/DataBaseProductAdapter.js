@@ -47,6 +47,7 @@ class DataBaseProductAdapter {
                 options.sort = { price: -1 };
             }
 
+            //Gestionar todos los aggregation stages
             const aggregationStages = [
                 {
                     $match: query,
