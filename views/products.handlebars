@@ -519,13 +519,11 @@
                     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
                     <div class="pagination">
                         <ul>
-                            <li><a href="#">&lsaquo;</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">...</a></li>
-                            <li><a href="#">&rsaquo;</a></li>
+                            <li><a href="{{prevLink}}">&lsaquo;</a></li>
+                            {{#each pages}}
+                            <li><a href="{{this.link}}">{{this.page}}</a></li>
+                            {{/each}}
+                            <li><a href="{{nextLink}}">&rsaquo;</a></li>
                         </ul>
                     </div>
                     <br class="clr" />

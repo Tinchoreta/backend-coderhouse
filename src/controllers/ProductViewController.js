@@ -27,13 +27,23 @@ class ProductViewController {
       const response = await axios.get(url);
       const products = response.data.payload;
       const cartManager = req.cartManager;
+      const { totalPages, prevLink, nextLink, pages } = response.data;
+
+      const adaptedPages = pages.map((pageData) => ({
+        page: pageData.page.toString(), // Convertir a cadena de texto
+        link: pageData.link,
+      }));
 
       return res.render("products", {
         title: "Products",
         script: "products.js",
         css: "products.css",
         products: products,
-        cartManager: cartManager
+        cartManager: cartManager,
+        totalPages: totalPages,
+        prevLink: prevLink,
+        nextLink: nextLink,
+        pages: adaptedPages
       });
     } catch (error) {
       console.error(error);

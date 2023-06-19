@@ -42,23 +42,33 @@ class ProductManagerController {
   async getProducts(request, response) {
     try {
       
-      const { limit, page, sort } = this.#getQueryParams(request);
+      const { limit, page, sort, title } = this.#getQueryParams(request);
 
       const result = await this.productManagerAdapter.getProducts(limit, page, sort);
 
-      const adaptedProducts = result.products;
+      const filteredProducts = this.#filterProductsByTitle(result.products, title);
+
+      const totalPages = Math.ceil(result.totalCount / limit);
+      const prevLink = page > 1 ? `/products?limit=${limit}&page=${page - 1}&sort=${sort}` : null;
+      const nextLink = page < totalPages ? `/products?limit=${limit}&page=${page + 1}&sort=${sort}` : null;
+
+      const pages = [];
+      for (let i = 1; i <= totalPages; i++) {
+        const link = `/products?limit=${limit}&page=${i}&sort=${sort}`;
+        pages.push({ page: i, link });
+      }
 
       return response.status(200).json({
         status: 'success',
-        payload: adaptedProducts,
-        totalPages: Math.ceil(result.totalCount / limit),
+        payload: filteredProducts,
+        totalPages: totalPages,
         prevPage: page > 1 ? page - 1 : null,
         nextPage: page < Math.ceil(result.totalCount / limit) ? page + 1 : null,
-        page,
+        pages: pages,
         hasPrevPage: page > 1,
         hasNextPage: page < Math.ceil(result.totalCount / limit),
-        prevLink: page > 1 ? `/products?limit=${limit}&page=${page - 1}&sort=${sort}` : null,
-        nextLink: page < Math.ceil(result.totalCount / limit) ? `/products?limit=${limit}&page=${page + 1}&sort=${sort}` : null,
+        prevLink: prevLink ? prevLink: null,
+        nextLink: nextLink ? nextLink: null
       });
     } catch (error) {
       console.error(error);
@@ -70,8 +80,17 @@ class ProductManagerController {
   }
 
   #getQueryParams(request) {
-    const { limit = 10, page = 1, sort ="" } = request.query;
+    const { limit = 6, page = 1, sort ="" } = request.query;
     return { limit, page, sort };
+  }
+
+  #filterProductsByTitle(products, title) {
+    if (!title) {
+      return products; 
+    }
+
+    const regex = new RegExp(title, 'i');
+    return products.filter(product => regex.test(product.title));
   }
 
 

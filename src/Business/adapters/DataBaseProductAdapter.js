@@ -22,10 +22,10 @@ class DataBaseProductAdapter {
         return DataBaseProductAdapter.instance;
     }
 
-    async getProducts(limit = 10, page = 1, sort = "", query = {}) {
+    async getProducts(limit = 6, page = 1, sort = "", query = {}) {
         try {
             const options = {
-                limit: !Number.isNaN(parseInt(limit)) ? parseInt(limit) : 10,
+                limit: !Number.isNaN(parseInt(limit)) ? parseInt(limit) : 6,
                 page: !Number.isNaN(parseInt(page)) ? parseInt(page) : 1,
                 sort: {}
             };
