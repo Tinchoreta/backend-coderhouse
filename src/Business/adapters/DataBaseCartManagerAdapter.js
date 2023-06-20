@@ -1,6 +1,7 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import CartModel from '../../models/cart.model.js';
+import ProductModel from '../../models/product.model.js';
 
 class DataBaseCartManagerAdapter {
     static instance;
@@ -24,9 +25,8 @@ class DataBaseCartManagerAdapter {
 
     async getCarts() {
         try {
-            const data = await this.persistenceManager.load();
-            // console.log(data + " loaded");
-            return data.map((cart) => cart.toJSON());
+            const carts = await this.persistenceManager.load();
+            return carts;
         } catch (error) {
             throw new Error(`getCarts: ${error.message}`);
         }
@@ -116,6 +116,18 @@ class DataBaseCartManagerAdapter {
             throw new Error(`deleteCart: ${error.message}`);
         }
     }
+
+    async populateProducts(carts) {
+        try {
+            const populatedCarts = await this.persistenceManager.populateMany(carts, 'products' , ProductModel);
+            return populatedCarts;
+        } catch (error) {
+            throw new Error(`populateProducts: ${error.message}`);
+        }
+    }
+
+
+
 }
 
 export default DataBaseCartManagerAdapter;

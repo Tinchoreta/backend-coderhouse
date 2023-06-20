@@ -74,15 +74,26 @@ class DataBaseStrategy {
         }
     }
 
-    async getMany(filter) {
+    async getMany(filter, sortOptions = null, limit = null) {
         try {
-            const data = await this.model.find(filter);
-            return data ? data : null;
+            let query = await this.model.find(filter);
+
+            if (sortOptions !== null) {
+                query = query.sort(sortOptions);
+            }
+
+            if (limit !== null) {
+                query = query.limit(limit);
+            }
+
+            return query ? query : null;
         } catch (error) {
-            console.error('Failed to retrieve document (getMany):', error);
+            console.error('Failed to retrieve documents (getMany):', error);
             throw error;
         }
     }
+
+
 
     async deleteOne(filter) {
         try {
@@ -121,6 +132,32 @@ class DataBaseStrategy {
             throw error;
         }
     }
-}
+    async populateMany(docs, options, foreignModel) {
+        try {
+            const populatedDocs = await this.model.findById('64765d546145585e447a0436').populate('products.productId');
+            return populatedDocs;
+        } catch (error) {
+            console.error(`populateMany: ${error.message}`);
+            throw error;
+        }
+    }
+    
+    async aggregate(pipeline) {
+        try {
+            const result = await this.model.aggregate(pipeline);
+            return result;
+        } catch (error) {
+            throw new Error(`aggregate: ${error.message}`);
+        }
+    }
+    async find(filter) {
+        try {
+            const result = await this.model.find(filter);
+            return result;
+        } catch (error) {
+            throw new Error(`find: ${error.message}`);
+        }
+    }
 
+}
 export default DataBaseStrategy;

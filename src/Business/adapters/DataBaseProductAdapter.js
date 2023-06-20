@@ -146,23 +146,33 @@ class DataBaseProductAdapter {
         }
     }
     async getProductByTitleAndDescription(title, description) {
-    try {
-        // Construir los criterios de búsqueda
-        const query = {
-            // Buscar documentos que coincidan exactamente con el título proporcionado (insensible a mayúsculas y minúsculas)
-            title: { $regex: new RegExp(`^${title}$`, 'i') },
-            // Buscar documentos que coincidan exactamente con la descripción proporcionada (insensible a mayúsculas y minúsculas)
-            description: { $regex: new RegExp(`^${description}$`, 'i') },
-        };
+        try {
+            // Construir los criterios de búsqueda
+            const query = {
+                // Buscar documentos que coincidan exactamente con el título proporcionado (insensible a mayúsculas y minúsculas)
+                title: { $regex: new RegExp(`^${title}$`, 'i') },
+                // Buscar documentos que coincidan exactamente con la descripción proporcionada (insensible a mayúsculas y minúsculas)
+                description: { $regex: new RegExp(`^${description}$`, 'i') },
+            };
 
-        const products = await this.persistenceManager.getMany(query);
-        
-        return products;
-    } catch (error) {
-        
-        throw new Error(`getProductByTitleAndDescription: ${error.message}`);
+            const products = await this.persistenceManager.getMany(query);
+
+            return products;
+        } catch (error) {
+
+            throw new Error(`getProductByTitleAndDescription: ${error.message}`);
+        }
     }
-}
+
+    // async populateCartsWithProducts(carts) {
+    //     try {
+    //         const populatedCarts = await this.persistenceManager.populateMany(carts, { path: 'products' });
+    //         return populatedCarts;
+    //     } catch (error) {
+    //         throw new Error(`populateCartsWithProducts: ${error.message}`);
+    //     }
+    // }
+
 
 }
 

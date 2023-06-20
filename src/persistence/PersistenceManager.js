@@ -55,13 +55,20 @@ class PersistenceManager {
         }
     }
 
-    async getMany(query) {
+    async getMany(filter = null, sortOptions = null, limit = null) {
         try {
+            const query = {
+                filter: filter ?? {},
+                sortOptions: sortOptions ?? {},
+                limit: limit ?? 0
+            };
+
             return await this.strategy.getMany(query);
         } catch (error) {
             throw new Error('Error al obtener los datos');
         }
     }
+
 
     async insertOne(data) {
         try {
@@ -86,6 +93,34 @@ class PersistenceManager {
             throw new Error('Error al eliminar los datos');
         }
     }
+
+    async populateMany(docs, options, foreignModel) {
+        try {
+            const populatedDocs = await this.strategy.populateMany(docs, options, foreignModel);
+            return populatedDocs;
+        } catch (error) {
+            throw new Error(`populateMany: ${error.message}`);
+        }
+    }
+
+    async aggregate(pipeline) {
+        try {
+            const result = await this.strategy.aggregate(pipeline);
+            return result;
+        } catch (error) {
+            throw new Error(`aggregate: ${error.message}`);
+        }
+    }
+
+    async find(filter) {
+        try {
+            const result = await this.strategy.find(filter);
+            return result;
+        } catch (error) {
+            throw new Error(`find: ${error.message}`);
+        }
+    }
+
 }
 
 export default PersistenceManager;
