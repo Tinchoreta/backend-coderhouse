@@ -117,16 +117,23 @@ class DataBaseCartManagerAdapter {
         }
     }
 
-    async populateProducts(carts) {
+    async populateProducts(options) {
         try {
-            const populatedCarts = await this.persistenceManager.populateMany(carts, 'products' , ProductModel);
-            return populatedCarts;
+            const populatedCart = await this.persistenceManager.populateMany( 'products' , 'productId', options);
+            return populatedCart;
         } catch (error) {
             throw new Error(`populateProducts: ${error.message}`);
         }
     }
 
-
+    async populateProductsById(idToPopulate, options) {
+        try {
+            const populatedCart = await this.persistenceManager.populateOne(idToPopulate,'products', 'productId', options);
+            return populatedCart;
+        } catch (error) {
+            throw new Error(`populateProducts: ${error.message}`);
+        }
+    }
 
 }
 

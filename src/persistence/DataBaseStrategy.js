@@ -132,16 +132,30 @@ class DataBaseStrategy {
             throw error;
         }
     }
-    async populateMany(docs, options, foreignModel) {
+    async populateOne(idToPopulate, collection, key, options) {
         try {
-            const populatedDocs = await this.model.findById('64765d546145585e447a0436').populate('products.productId');
+            const populatedDocs = await this.model
+                .findById(idToPopulate)
+                .populate(`${collection}.${key}`, null, null, options);
+            return populatedDocs;
+        } catch (error) {
+            console.error(`populateOne: ${error.message}`);
+            throw error;
+        }
+    }
+
+    async populateMany(collection, key, options) {
+        try {
+            const populatedDocs = await this.model
+                .find({})
+                .populate(`${collection}.${key}`, null, null, options);
             return populatedDocs;
         } catch (error) {
             console.error(`populateMany: ${error.message}`);
             throw error;
         }
     }
-    
+
     async aggregate(pipeline) {
         try {
             const result = await this.model.aggregate(pipeline);

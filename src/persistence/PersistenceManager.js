@@ -94,9 +94,18 @@ class PersistenceManager {
         }
     }
 
-    async populateMany(docs, options, foreignModel) {
+    async populateOne(idToPopulate, collection, key, options) {
         try {
-            const populatedDocs = await this.strategy.populateMany(docs, options, foreignModel);
+            const populatedDocs = await this.strategy.populateOne(idToPopulate, collection, key, options);
+            return populatedDocs;
+        } catch (error) {
+            throw new Error(`populateMany: ${error.message}`);
+        }
+    }
+
+    async populateMany(collection, key, options) {
+        try {
+            const populatedDocs = await this.strategy.populateMany(collection, key, options);
             return populatedDocs;
         } catch (error) {
             throw new Error(`populateMany: ${error.message}`);

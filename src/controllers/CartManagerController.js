@@ -81,11 +81,10 @@ class CartManagerController {
 
     async getCarts(request, response) {
         try {
-            const carts = await this.cartManagerAdapter.getCarts();
+            // const carts = await this.cartManagerAdapter.getCarts();
             const limit = !Number.isNaN(parseInt(request.query.limit)) ? parseInt(request.query.limit) : 5;
 
-            const populatedCarts = await this.cartManagerAdapter.populateProducts(carts);
-
+            const populatedCarts = await this.cartManagerAdapter.populateProducts({limit: limit});
             return response.status(200).json({
                 success: true,
                 response: populatedCarts
@@ -98,9 +97,6 @@ class CartManagerController {
             });
         }
     }
-
-
-
 
     async getCartById(request, response) {
         try {
