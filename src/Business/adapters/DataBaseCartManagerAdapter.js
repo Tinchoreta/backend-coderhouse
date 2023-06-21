@@ -1,7 +1,8 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import CartModel from '../../models/cart.model.js';
-import ProductModel from '../../models/product.model.js';
+// import ProductModel from '../../models/product.model.js';
+import mongoose from 'mongoose';
 
 class DataBaseCartManagerAdapter {
     static instance;
@@ -119,21 +120,85 @@ class DataBaseCartManagerAdapter {
 
     async populateProducts(options) {
         try {
-            const populatedCart = await this.persistenceManager.populateMany( 'products' , 'productId', options);
+            const populatedCart = await this.persistenceManager.populateMany('products', 'productId', options);
             return populatedCart;
         } catch (error) {
             throw new Error(`populateProducts: ${error.message}`);
         }
     }
 
-    async populateProductsById(idToPopulate, options) {
+    async populateProductsById(idToPopulate, options = null) {
         try {
-            const populatedCart = await this.persistenceManager.populateOne(idToPopulate,'products', 'productId', options);
+            const populatedCart = await this.persistenceManager.populateOne(idToPopulate, 'products', 'productId', options);
             return populatedCart;
         } catch (error) {
             throw new Error(`populateProducts: ${error.message}`);
         }
     }
+
+    async calculateCartTotalPrice(cartId) {
+        try {
+            // Poblar el carrito con los productos
+            const populatedCart = await this.populateProductsById(cartId);
+
+            if (!populatedCart) {
+                throw new Error('Cart not found');
+            }
+
+            // Realizar la consulta del precio total del carrito
+            const pipeline = [
+                {
+                    $match: {
+                        _id: new mongoose.Types.ObjectId(cartId)
+                    }
+                },
+                {
+                    $unwind: "$products"
+                },
+                {
+                    $lookup: {
+                        from: "products",
+                        localField: "products.productId",
+                        foreignField: "_id",
+                        as: "productData"
+                    }
+                },
+                {
+                    $unwind: "$productData"
+                },
+                {
+                    $project: {
+                        quantity: "$products.quantity",
+                        price: "$productData.price",
+                        totalForItem: {
+                            $multiply: ["$products.quantity", "$productData.price"]
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: 0,
+                        totalPrice: {
+                            $sum: "$totalForItem"
+                        }
+                    }
+                }
+            ]
+            
+            const result = await this.persistenceManager.aggregate(pipeline);
+
+            if (result.length === 0) {
+                throw new Error('Cart not found');
+            }
+
+            return result[0].totalPrice;
+
+        } catch (error) {
+            console.error('Failed to calculate cart total price:', error);
+            throw error;
+        }
+    }
+
 
 }
 

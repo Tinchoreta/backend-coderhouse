@@ -27,6 +27,8 @@ router.get("/", (req, res) => cartController.getCarts(req, res));
 
 router.get("/:id", (req, res) => cartController.getCartById(req, res));
 
+router.get("/bills/:cid", (req, res) => cartController.calculateCartTotalPrice(req, res));
+
 router.post("/", (req, res) => cartController.createCart(req, res));
 
 router.put("/:cid/product/:pid/:units",

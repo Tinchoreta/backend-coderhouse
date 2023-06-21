@@ -93,8 +93,6 @@ class DataBaseStrategy {
         }
     }
 
-
-
     async deleteOne(filter) {
         try {
             const result = await this.model.deleteOne(filter);
@@ -158,7 +156,8 @@ class DataBaseStrategy {
 
     async aggregate(pipeline) {
         try {
-            const result = await this.model.aggregate(pipeline);
+            const result = await this.model                
+                .aggregate(pipeline);
             return result;
         } catch (error) {
             throw new Error(`aggregate: ${error.message}`);

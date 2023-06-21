@@ -84,7 +84,7 @@ class CartManagerController {
             // const carts = await this.cartManagerAdapter.getCarts();
             const limit = !Number.isNaN(parseInt(request.query.limit)) ? parseInt(request.query.limit) : 5;
 
-            const populatedCarts = await this.cartManagerAdapter.populateProducts({limit: limit});
+            const populatedCarts = await this.cartManagerAdapter.populateProducts({ limit: limit });
             return response.status(200).json({
                 success: true,
                 response: populatedCarts
@@ -269,6 +269,18 @@ class CartManagerController {
         }
     }
 
+    async calculateCartTotalPrice(req, res) {
+        try {
+            const cartId = req.params.cid;
+
+            const totalPrice = await this.cartManagerAdapter.calculateCartTotalPrice(cartId);
+
+            res.status(200).json({ totalPrice });
+        } catch (error) {
+            console.error('Failed to calculate cart total price:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 
     async deleteCart(request, response) {
         const cartId = request.params.id;
