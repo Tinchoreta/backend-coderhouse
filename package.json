@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Tinchoreta/backend-coderhouse#readme",
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "axios": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",

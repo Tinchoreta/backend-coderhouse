@@ -6,7 +6,6 @@ import { engine } from 'express-handlebars';
 import mainRouter from '../routes/index.js'
 import DataBaseStrategy from './persistence/DataBaseStrategy.js';
 
-// import dotenvMiddlewares from './src/middlewares/dotenvMiddleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFound.js';
 import { cartMiddleware } from './middlewares/cartMiddleware.js';
@@ -15,7 +14,10 @@ import Handlebars from './helpers/handlebarsHelper.js';
 import __dirname from './utils.js'
 
 import dotenv from 'dotenv';
-// const HandlebarsWithHelpers = Handlebars.create(); // Handlebars con helpers
+
+import faker from '@faker-js/faker';
+import cookieParser from 'cookie-parser';
+import expressSession from 'express-session';
 
 const app = express();
 
@@ -49,6 +51,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', mainRouter);
 app.use('/', express.static(join(__dirname, '../public')));
 
+app.use(cookieParser(process.env.SECRET_COOKIE));
+app.use(expressSession(
+    {
+        secret: process.env.SECRET_SESSION,
+        resave: true,
+        saveUninitialized: true
+    }
+));
 
 //template engine
 app.engine('handlebars', engine({ handlebars: Handlebars }));
@@ -58,5 +68,7 @@ app.set('view engine', 'handlebars');
 
 app.use(errorHandler);
 app.use(notFoundHandler);
+
+
 
 export default app;
