@@ -1,7 +1,7 @@
 class AuthController {
     async getCounter(request, response) {
         try {
-            if (!request.session.counter) {
+            if (!request.session?.counter) {
                 request.session.counter = 1;
             } else {
                 request.session.counter++;
@@ -20,6 +20,7 @@ class AuthController {
                 return response.status(400).json({ success: false, error: "Bad Request: No mail provided" });
             }
             request.session.mail = mail;
+            
             return response.status(200).json({ message: `${request.session.mail} ha iniciado sesión` });
         } catch (error) {
             console.error("Error logging in:", error);

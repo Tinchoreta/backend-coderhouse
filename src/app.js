@@ -15,7 +15,7 @@ import __dirname from './utils.js'
 
 import dotenv from 'dotenv';
 
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
 
@@ -44,13 +44,7 @@ connect();
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);
 
-//middlewares
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use('/', mainRouter);
-app.use('/', express.static(join(__dirname, '../public')));
-
+//Sesion y cookies
 app.use(cookieParser(process.env.SECRET_COOKIE));
 app.use(expressSession(
     {
@@ -59,6 +53,21 @@ app.use(expressSession(
         saveUninitialized: true
     }
 ));
+
+// Middleware de prueba
+app.use((req, res, next) => {
+    console.log("Middleware de prueba después de la sesión.");
+    next();
+});
+
+//middlewares
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/', mainRouter);
+app.use('/', express.static(join(__dirname, '../public')));
+
+
 
 //template engine
 app.engine('handlebars', engine({ handlebars: Handlebars }));

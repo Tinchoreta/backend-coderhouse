@@ -1,5 +1,5 @@
 function auth(req, res, next) {
-    if (req.session?.mail === 'admin@admin.com') {
+    if (req.session?.mail === 'tinchoreta@gmail.com') {
         return next()
     }
     return res.status(401).json({
