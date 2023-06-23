@@ -15,10 +15,16 @@ class AuthController {
 
     async login(request, response, next) {
         try {
-            const { mail } = request.body;
+            const { mail, pass } = request.body;
             if (!mail) {
                 return response.status(400).json({ success: false, error: "Bad Request: No mail provided" });
             }
+            if (!pass) {
+                return response.status(400).json({ success: false, error: "Bad Request: No pass provided" });
+            }
+            
+            // TODO: Check user exists and password is correct
+
             request.session.mail = mail;
             
             return response.status(200).json({ message: `${request.session.mail} ha iniciado sesión` });

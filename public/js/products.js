@@ -3,6 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const titleFilterInput = document.getElementById('titleFilter');
     const filterText = document.getElementById('filterText');
     const clearFilterButton = document.getElementById('clearFilterButton');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+
+    //Obtener el usuario (email)
+    const username = sessionStorage.getItem('username') || 'User';
+    welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
+    console.log('Username:', username);
+
 
     // Obtener los parámetros de la URL
     const queryParams = new URLSearchParams(window.location.search);
