@@ -27,7 +27,10 @@ class AuthController {
 
             request.session.mail = mail;
             
-            return response.status(200).json({ message: `${request.session.mail} ha iniciado sesión` });
+            return response.status(200).json({ 
+                success: true,
+                message: `${request.session.mail} ha iniciado sesión` 
+            });
         } catch (error) {
             console.error("Error logging in:", error);
             next();
@@ -39,14 +42,18 @@ class AuthController {
             return response.status(200).json({ message: 'administrador autorizado' });
         } catch (error) {
             console.error("Error getting private content:", error);
-            return response.status(500).json({ success: false, error: "Internal Server Error" });
+            return response.status(500).json({ 
+                success: false, 
+                error: "Internal Server Error" });
         }
     }
 
     async logout(request, response, next) {
         try {
             request.session.destroy();
-            return response.status(200).json({ message: `ha cerrado sesión` });
+            return response.status(200).json({ 
+                success: true,
+                message: `ha cerrado sesión` });
         } catch (error) {
             console.error("Error logging out:", error);
             next();

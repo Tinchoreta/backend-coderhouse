@@ -9,12 +9,15 @@ loginBtnModal.addEventListener('click', (event) => {
 
     if (String(email).trim() === 'tinchoreta@gmail.com' && String(pass).trim() === 'Cocohueso23') {
         // Aquí se hace un request al servidor para iniciar la sesión
-        fetch('/auth/login', {
+        fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, pass }),
+            body: JSON.stringify({ 
+                mail:email, 
+                pass: pass 
+            }),
         })
             .then(response => response.json())
             .then(data => {
@@ -40,12 +43,15 @@ loginBtn.addEventListener('click', (event) => {
 
     if (String(email).trim() === 'tinchoreta@gmail.com' && String(pass).trim() === 'Cocohueso23') {
         // Aquí se hace un request al servidor para iniciar la sesión
-        fetch('/auth/login', {
+        fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, pass }),
+            body: JSON.stringify({
+                mail: email,
+                pass: pass
+            }),
         })
             .then(response => response.json())
             .then(data => {
