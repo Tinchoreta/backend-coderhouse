@@ -40,10 +40,10 @@ class Chat {
 
             switch (message) {
                 case "1":
-                    this.handleCheapestProduct(products);
+                    this.handleCheapestProduct(products.products);
                     break;
                 case "2":
-                    this.handleMostExpensiveProduct(products);
+                    this.handleMostExpensiveProduct(products.products);
                     break;
                 case "3":
                     this.sendMessage("Gracias por usar Bootshop. ¡Hasta luego!");

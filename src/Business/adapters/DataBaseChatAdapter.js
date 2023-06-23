@@ -29,11 +29,11 @@ class DataBaseSessionAdapter {
         }
     }
 
-    async getChatSessionById(sessionId) {
+    async getChatSessionById(chatSessionId) {
         try {
-            return await this.persistenceManager.getOne({ _id: sessionId });
+            return await this.persistenceManager.getOne({ _id: chatSessionId });
         } catch (error) {
-            throw new Error(`getSessionById: ${error.message}`);
+            throw new Error(`getChatSessionById: ${error.message}`);
         }
     }
 
@@ -41,15 +41,15 @@ class DataBaseSessionAdapter {
         try {
             return await this.persistenceManager.addOne(sessionToSave);
         } catch (error) {
-            throw new Error(`saveSession: ${error.message}`);
+            throw new Error(`saveChatSession: ${error.message}`);
         }
     }
 
-    async deleteSession(sessionId) {
+    async deleteChatSession(chatSessionId) {
         try {
-            const id = sessionId;
+            const id = chatSessionId;
             if (!id) {
-                throw new Error(`Session ID "${sessionId}" is not a valid number`);
+                throw new Error(`Session ID "${chatSessionId}" is not a valid number`);
             }
 
             const isDeleted = await this.persistenceManager.deleteOne({ _id: id });
