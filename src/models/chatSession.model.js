@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const sessionSchema = new mongoose.Schema({
+const chatSessionSchema = new mongoose.Schema({
     sessionOwner: {
         type: String,
         required: true
@@ -20,6 +20,6 @@ const sessionSchema = new mongoose.Schema({
     ]
 }, { versionKey: false });
 
-const SessionModel = mongoose.model("Session", sessionSchema);
+const ChatSessionModel = mongoose.model("ChatSession", chatSessionSchema);
 
-export default SessionModel;
+export default ChatSessionModel;

@@ -2,12 +2,12 @@ import ProductManager from "../Business/managers/ProductManager.js";
 import Conversation from "./Conversation.js";
 
 class Chat {
-    constructor(socket, productAdapter, sessionAdapter, conversationAdapter) {
+    constructor(socket, productAdapter, chatSessionAdapter, conversationAdapter) {
         this.socket = socket;
         this.isAuthenticated = false;
         this.chats = [];
         this.productAdapter = productAdapter;
-        this.sessionAdapter = sessionAdapter;
+        this.chatSessionAdapter = chatSessionAdapter;
         this.conversationAdapter = conversationAdapter;
         this.session = null;
         this.conversation = null;
@@ -59,7 +59,7 @@ class Chat {
         this.isAuthenticated = true;
         if (!this.session) {
             const sessionOwner = userName; // Establecer el propietario de la sesión actual
-            this.session = await this.sessionAdapter.saveSession({
+            this.session = await this.chatSessionAdapter.saveChatSession({
                 sessionOwner: sessionOwner,
                 startTime: new Date()
             });
@@ -114,7 +114,7 @@ class Chat {
         try {
             if (this.session) {
                 this.session.endTime = Date.now();
-                await this.sessionAdapter.saveSession(this.session);
+                await this.chatSessionAdapter.saveChatSession(this.session);
             }
 
             if (this.conversation) {
@@ -135,7 +135,7 @@ class Chat {
                 };
 
                 await Promise.all([
-                    this.sessionAdapter.saveSession(this.session),
+                    this.chatSessionAdapter.saveChatSession(this.session),
                     this.conversationAdapter.saveConversation(conversationData)
                 ]);
             }
@@ -147,7 +147,7 @@ class Chat {
 
     async loadUserConversations(userName) {
         try {
-            const sessions = await this.sessionAdapter.getSessions();
+            const sessions = await this.chatSessionAdapter.getChatSessions();
 
             for (const session of sessions) {
                 if (session.sessionOwner === userName) {

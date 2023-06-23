@@ -1,4 +1,4 @@
-class Session {
+class ChatSession {
     constructor(sessionOwner) {
         this.sessionOwner = sessionOwner;
         this.conversations = [];
@@ -19,4 +19,4 @@ class Session {
     }
 }
 
-export default Session;
+export default ChatSession;

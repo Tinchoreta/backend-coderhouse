@@ -1,6 +1,6 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
-import SessionModel from '../../models/session.model.js';
+import ChatSessionModel from '../../models/chatSession.model.js';
 import ConversationModel from '../../models/conversation.model.js';
 
 class DataBaseSessionAdapter {
@@ -10,7 +10,7 @@ class DataBaseSessionAdapter {
         if (DataBaseSessionAdapter.instance) {
             throw new Error("Ya existe una instancia de esta clase");
         }
-        this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, SessionModel));
+        this.persistenceManager = new PersistenceManager(new DataBaseStrategy(uri, ChatSessionModel));
         DataBaseSessionAdapter.instance = this;
     }
 
@@ -21,15 +21,15 @@ class DataBaseSessionAdapter {
         return DataBaseSessionAdapter.instance;
     }
 
-    async getSessions() {
+    async getChatSessions() {
         try {
             return await this.persistenceManager.load();
         } catch (error) {
-            throw new Error(`getSessions: ${error.message}`);
+            throw new Error(`getChatSessions: ${error.message}`);
         }
     }
 
-    async getSessionById(sessionId) {
+    async getChatSessionById(sessionId) {
         try {
             return await this.persistenceManager.getOne({ _id: sessionId });
         } catch (error) {
@@ -37,7 +37,7 @@ class DataBaseSessionAdapter {
         }
     }
 
-    async saveSession(sessionToSave) {
+    async saveChatSession(sessionToSave) {
         try {
             return await this.persistenceManager.addOne(sessionToSave);
         } catch (error) {
@@ -56,7 +56,7 @@ class DataBaseSessionAdapter {
             return isDeleted;
 
         } catch (error) {
-            throw new Error(`deleteSession: ${error.message}`);
+            throw new Error(`deleteChatSession: ${error.message}`);
         }
     }
 }
