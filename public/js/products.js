@@ -1,3 +1,22 @@
+
+const loginBtnModal = document.getElementById('loginBtnModal');
+
+
+loginBtnModal.addEventListener('click', (event) => {
+    event.preventDefault();
+    const email = document.getElementById('inputEmail').value;
+    const pass = document.getElementById('inputPassword').value;
+
+    if (String(email).trim() === 'tinchoreta@gmail.com' && String(pass).trim() === 'Cocohueso23') {
+        window.location = 'products';
+        sessionStorage.setItem('username', email);
+        console.log("Login Success");
+
+    } else {
+        alert("Invalid Credentials")
+    }
+})
+
 document.addEventListener("DOMContentLoaded", () => {
     const sortSelect = document.getElementById('sortSelect');
     const titleFilterInput = document.getElementById('titleFilter');
