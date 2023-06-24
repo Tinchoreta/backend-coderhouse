@@ -7,7 +7,6 @@ loginBtnModal.addEventListener('click', (event) => {
     const email = document.getElementById('inputEmail').value;
     const pass = document.getElementById('inputPassword').value;
 
-    if (String(email).trim() === 'tinchoreta@gmail.com' && String(pass).trim() === 'Cocohueso23') {
         // Aquí se hace un request al servidor para iniciar la sesión
         fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
@@ -31,9 +30,7 @@ loginBtnModal.addEventListener('click', (event) => {
             .catch((error) => {
                 console.error('Error:', error);
             });
-    } else {
-        alert("Invalid Credentials")
-    }
+
 })
 
 loginBtn.addEventListener('click', (event) => {
@@ -41,8 +38,7 @@ loginBtn.addEventListener('click', (event) => {
     const email = document.getElementById('inputEmail1').value;
     const pass = document.getElementById('inputPassword1').value;
 
-    if (String(email).trim() === 'tinchoreta@gmail.com' && String(pass).trim() === 'Cocohueso23') {
-        // Aquí se hace un request al servidor para iniciar la sesión
+          // Aquí se hace un request al servidor para iniciar la sesión
         fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
             headers: {
@@ -65,7 +61,4 @@ loginBtn.addEventListener('click', (event) => {
             .catch((error) => {
                 console.error('Error:', error);
             });
-    } else {
-        alert("Invalid Credentials")
-    }
 })

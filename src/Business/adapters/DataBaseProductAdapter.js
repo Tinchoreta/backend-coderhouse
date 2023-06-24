@@ -81,10 +81,7 @@ class DataBaseProductAdapter {
         }
     }
 
-
-
-
-    async isValidProductId(productId) {
+    async #isValidProductId(productId) {
         try {
             let isValid = await mongoose.isValidObjectId(productId);
             return isValid;
@@ -93,10 +90,9 @@ class DataBaseProductAdapter {
         }
     }
 
-
     async getProductById(idProduct) {
         try {
-            let isValidId = await this.isValidProductId(idProduct)
+            let isValidId = await this.#isValidProductId(idProduct)
             if (!isValidId) return null;
 
             return await this.persistenceManager.getOne({ _id: idProduct });
