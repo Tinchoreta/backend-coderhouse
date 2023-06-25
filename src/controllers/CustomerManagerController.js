@@ -138,3 +138,5 @@ class CustomerManagerController {
         }
     }
 }
+
+export default CustomerManagerController;
