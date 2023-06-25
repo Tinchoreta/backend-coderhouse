@@ -24,10 +24,10 @@ class DataBaseCustomerAdapter {
         return DataBaseCustomerAdapter.instance;
     }
 
-    async getCustomers(limit = 10, page = 1, query = {}) {
+    async getCustomers(limit = 100, page = 1, query = {}) {
         try {
             const options = {
-                limit: !Number.isNaN(parseInt(limit)) ? parseInt(limit) : 10,
+                limit: !Number.isNaN(parseInt(limit)) ? parseInt(limit) : 100,
                 page: !Number.isNaN(parseInt(page)) ? parseInt(page) : 1,
             };
 
@@ -41,7 +41,7 @@ class DataBaseCustomerAdapter {
         }
     }
 
-    async #isValidCustomerId(customerId) {
+    async isValidCustomerId(customerId) {
         try {
             return mongoose.isValidObjectId(customerId);
         } catch (error) {
@@ -51,7 +51,7 @@ class DataBaseCustomerAdapter {
 
     async getCustomerById(id) {
         try {
-            const isValidId = await this.#isValidCustomerId(id);
+            const isValidId = await this.isValidCustomerId(id);
             if (!isValidId) return null;
 
             return await this.model.findById(id);
