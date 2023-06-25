@@ -5,16 +5,16 @@ class CustomerManagerController {
     }
 
     async addCustomer(request, response, next) {
-        const customerToAdd = request.body;
-        if (!customerToAdd || Object.keys(customerToAdd).length === 0) {
-            return response.status(400).json({
-                success: false,
-                error: "Bad Request: No customer data provided",
-            });
-        }
-
         try {
-            const addedCustomer = await this.customerManagerAdapter.addCustomer(customerToAdd);
+            const customerData = request.body;
+            if (!customerData || Object.keys(customerData).length === 0) {
+                return response.status(400).json({
+                    success: false,
+                    error: "Bad Request: No customer data provided",
+                });
+            }
+
+            const addedCustomer = await this.createCustomer(customerData);
             response.status(201).json(addedCustomer);
         } catch (error) {
             console.error("Error adding customer:", error);
@@ -24,6 +24,27 @@ class CustomerManagerController {
             });
         }
     }
+
+    async createCustomer(customerData) {
+        const {
+            address,
+            ...customerFields
+        } = customerData;
+
+        const addressFields = {
+            ...address
+        };
+
+        const addedAddress = await this.customerManagerAdapter.addAddress(addressFields);
+
+        const customerToAdd = {
+            ...customerFields,
+            addresses: [addedAddress._id]
+        };
+
+        return await this.customerManagerAdapter.addCustomer(customerToAdd);
+    }
+
 
     async getCustomers(request, response) {
         try {

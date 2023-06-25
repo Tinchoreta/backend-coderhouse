@@ -1,6 +1,7 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import Customer from '../../models/customer.model.js';
+import Address from '../../models/address.model.js';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
@@ -74,6 +75,14 @@ class DataBaseCustomerAdapter {
             return await this.model.create(customerToAdd);
         } catch (error) {
             throw new Error(`addCustomer: ${error.message}`);
+        }
+    }
+
+    async addAddress(addressToAdd) {
+        try {
+            return await Address.create(addressToAdd);
+        } catch (error) {
+            throw new Error(`addAddress: ${error.message}`);
         }
     }
 
