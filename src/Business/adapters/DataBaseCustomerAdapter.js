@@ -94,6 +94,21 @@ class DataBaseCustomerAdapter {
         }
     }
 
+    getAddressByFields(address) {
+        try {
+            const existingAddress = Address.findOne({
+                addressLine1: address.addressLine1,
+                city: address.city,
+                state: address.state,
+                postalCode: address.postalCode,
+                country: address.country
+            }).exec();
+
+            return existingAddress;
+        } catch (error) {
+            throw new Error(`Error checking existing address: ${error.message}`);
+        }
+    }
 
     async updateCustomer(customerId, customerToUpdate) {
         try {

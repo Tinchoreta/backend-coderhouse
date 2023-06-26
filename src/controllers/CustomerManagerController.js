@@ -27,13 +27,13 @@ class CustomerManagerController {
 
     async createCustomer(customerData) {
         const {
-            address,
+            addresses,
             ...customerFields
         } = customerData;
 
         try {
-            const existingAddress = await this.checkExistingAddress(address);
-            const addedAddress = existingAddress || await this.addAddress(address);
+            const existingAddress = await this.checkExistingAddress(addresses[0]);
+            const addedAddress = existingAddress || await this.addAddress(addresses[0]);
             const customerToAdd = this.createCustomerData(customerFields, addedAddress);
 
             return await this.customerManagerAdapter.addCustomer(customerToAdd);

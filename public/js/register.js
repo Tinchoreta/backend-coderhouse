@@ -38,7 +38,7 @@ async function handleRegisterFormSubmit(event) {
     try {
         // Registrar el cliente
         const registeredCustomer = await registerCustomer(customerData);
-        alert('Registration successful! Customer ID: ' + registeredCustomer.id);
+        alert('Registration successful! Customer ID: ' + registeredCustomer._id);
 
         // Restablecer el formulario
         document.querySelector('form').reset();
@@ -105,10 +105,10 @@ function buildAddress() {
 document.getElementById('btnAddCustomer').addEventListener('click', handleRegisterFormSubmit);
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const selectElements = document.querySelectorAll(".select2");
+// document.addEventListener("DOMContentLoaded", function () {
+//     const selectElements = document.querySelectorAll(".select2");
 
-    selectElements.forEach(function (selectElement) {
-        new Select2(selectElement);
-    });
-});
+//     selectElements.forEach(function (selectElement) {
+//         new Select2(selectElement);
+//     });
+// });
