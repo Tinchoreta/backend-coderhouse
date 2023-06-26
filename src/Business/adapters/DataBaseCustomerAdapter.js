@@ -92,7 +92,34 @@ class DataBaseCustomerAdapter {
                 throw new Error(`Invalid customer ID: ${customerId}`);
             }
 
-            const updatedCustomer = await this.model.findByIdAndUpdate(customerId, customerToUpdate, { new: true });
+            const { addresses, ...updatedCustomerData } = customerToUpdate;
+
+            if (addresses && addresses.length > 0) {
+                // Si se proporciona una lista de direcciones, se actualizan los campos de cada una
+                const updatedAddresses = await Promise.all(
+                    addresses.map(async (address) => {
+                        const { _id, ...updatedAddressData } = address;
+                        if (_id) {
+                            // Si existe el ID de la dirección, se actualizan sus campos
+                            const updatedAddress = await this.updateAddress(_id, updatedAddressData);
+                            return updatedAddress;
+                        } else {
+                            // Si no existe el ID de la dirección, se crea una nueva dirección
+                            const addedAddress = await this.addAddress(updatedAddressData);
+                            return addedAddress;
+                        }
+                    })
+                );
+
+                // Se actualizan las referencias de direcciones en el cliente
+                updatedCustomerData.addresses = updatedAddresses.map((address) => address._id);
+            }
+
+            const updatedCustomer = await this.model.findByIdAndUpdate(
+                customerId,
+                updatedCustomerData,
+                { new: true }
+            );
 
             if (!updatedCustomer) {
                 throw new Error(`Customer not found with ID: ${customerId}`);
@@ -103,6 +130,29 @@ class DataBaseCustomerAdapter {
             throw new Error(`updateCustomer: ${error.message}`);
         }
     }
+
+    async updateAddress(addressId, updatedAddressData) {
+        try {
+            if (!addressId) {
+                throw new Error(`Invalid address ID: ${addressId}`);
+            }
+
+            const updatedAddress = await Address.findByIdAndUpdate(
+                addressId,
+                updatedAddressData,
+                { new: true }
+            );
+
+            if (!updatedAddress) {
+                throw new Error(`Address not found with ID: ${addressId}`);
+            }
+
+            return updatedAddress;
+        } catch (error) {
+            throw new Error(`updateAddress: ${error.message}`);
+        }
+    }
+
 
     async deleteCustomer(idToDelete) {
         try {
