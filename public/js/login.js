@@ -53,6 +53,7 @@ loginBtn.addEventListener('click', (event) => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    sessionStorage.setItem('username', email);
                     window.location = 'products';
                     console.log("Login Success");
                 } else {
