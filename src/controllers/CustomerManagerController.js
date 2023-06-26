@@ -31,18 +31,44 @@ class CustomerManagerController {
             ...customerFields
         } = customerData;
 
-        const addressFields = {
-            ...address
-        };
+        try {
+            const existingAddress = await this.checkExistingAddress(address);
+            const addedAddress = existingAddress || await this.addAddress(address);
+            const customerToAdd = this.createCustomerData(customerFields, addedAddress);
 
-        const addedAddress = await this.customerManagerAdapter.addAddress(addressFields);
+            return await this.customerManagerAdapter.addCustomer(customerToAdd);
+        } catch (error) {
+            throw new Error(`Error creating customer: ${error.message}`);
+        }
+    }
 
+    async checkExistingAddress(address) {
+        try {
+            const existingAddress = await this.customerManagerAdapter.getAddressByFields(address);
+            return existingAddress;
+        } catch (error) {
+            throw new Error(`Error checking existing address: ${error.message}`);
+        }
+    }
+
+    async addAddress(address) {
+        try {
+            const addressFields = {
+                ...address
+            };
+            const addedAddress = await this.customerManagerAdapter.addAddress(addressFields);
+            return addedAddress;
+        } catch (error) {
+            throw new Error(`Error adding address: ${error.message}`);
+        }
+    }
+
+    createCustomerData(customerFields, addedAddress) {
         const customerToAdd = {
             ...customerFields,
             addresses: [addedAddress._id]
         };
-
-        return await this.customerManagerAdapter.addCustomer(customerToAdd);
+        return customerToAdd;
     }
 
 
