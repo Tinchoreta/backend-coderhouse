@@ -241,16 +241,16 @@
 		<button type="button" class="close" data-dismiss="alert">×</button>
 		<strong>Lorem Ipsum is simply</strong> dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
 	 </div> -->
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" id="formAddCustomer">
                             <h4>Your personal information</h4>
                             <div class="control-group">
                                 <label class="control-label">Title <sup>*</sup></label>
                                 <div class="controls">
-                                    <select class="span1" name="days">
+                                    <select class="span1" name="title" id="inputTitle" style="width: 50px">
                                         <option value="">-</option>
-                                        <option value="1">Mr.</option>
-                                        <option value="2">Mrs</option>
-                                        <option value="3">Miss</option>
+                                        <option value="Mr">Mr.</option>
+                                        <option value="Mrs">Mrs</option>
+                                        <option value="Miss">Miss</option>
                                     </select>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@
                             <div class="control-group">
                                 <label class="control-label">Date of Birth <sup>*</sup></label>
                                 <div class="controls">
-                                    <select class="span1" name="days">
+                                    <select class="span1 select2" name="days" style="width: 80px" id="inputDay">
                                         <option value="">-</option>
                                         <option value="1">1&nbsp;&nbsp;</option>
                                         <option value="2">2&nbsp;&nbsp;</option>
@@ -290,26 +290,55 @@
                                         <option value="5">5&nbsp;&nbsp;</option>
                                         <option value="6">6&nbsp;&nbsp;</option>
                                         <option value="7">7&nbsp;&nbsp;</option>
+                                        <option value="8">8&nbsp;&nbsp;</option>
+                                        <option value="9">9&nbsp;&nbsp;</option>
+                                        <option value="10">10&nbsp;&nbsp;</option>
+                                        <option value="11">11&nbsp;&nbsp;</option>
+                                        <option value="12">12&nbsp;&nbsp;</option>
+                                        <option value="13">13&nbsp;&nbsp;</option>
+                                        <option value="14">14&nbsp;&nbsp;</option>
+                                        <option value="15">15&nbsp;&nbsp;</option>
+                                        <option value="16">16&nbsp;&nbsp;</option>
+                                        <option value="17">17&nbsp;&nbsp;</option>
+                                        <option value="18">18&nbsp;&nbsp;</option>
+                                        <option value="19">19&nbsp;&nbsp;</option>
+                                        <option value="20">20&nbsp;&nbsp;</option>
+                                        <option value="21">21&nbsp;&nbsp;</option>
+                                        <option value="22">22&nbsp;&nbsp;</option>
+                                        <option value="23">23&nbsp;&nbsp;</option>
+                                        <option value="24">24&nbsp;&nbsp;</option>
+                                        <option value="25">25&nbsp;&nbsp;</option>
+                                        <option value="26">26&nbsp;&nbsp;</option>
+                                        <option value="27">27&nbsp;&nbsp;</option>
+                                        <option value="28">28&nbsp;&nbsp;</option>
+                                        <option value="29">29&nbsp;&nbsp;</option>
+                                        <option value="30">30&nbsp;&nbsp;</option>
+                                        <option value="31">31&nbsp;&nbsp;</option>
                                     </select>
-                                    <select class="span1" name="days">
+                                    <select class="span1 select2" name="months" style="width: 80px" id="inputMonth">
                                         <option value="">-</option>
-                                        <option value="1">1&nbsp;&nbsp;</option>
-                                        <option value="2">2&nbsp;&nbsp;</option>
-                                        <option value="3">3&nbsp;&nbsp;</option>
-                                        <option value="4">4&nbsp;&nbsp;</option>
-                                        <option value="5">5&nbsp;&nbsp;</option>
-                                        <option value="6">6&nbsp;&nbsp;</option>
-                                        <option value="7">7&nbsp;&nbsp;</option>
+                                        <option value="1">January&nbsp;&nbsp;</option>
+                                        <option value="2">February&nbsp;&nbsp;</option>
+                                        <option value="3">March&nbsp;&nbsp;</option>
+                                        <option value="4">April&nbsp;&nbsp;</option>
+                                        <option value="5">May&nbsp;&nbsp;</option>
+                                        <option value="6">June&nbsp;&nbsp;</option>
+                                        <option value="7">July&nbsp;&nbsp;</option>
+                                        <option value="8">August&nbsp;&nbsp;</option>
+                                        <option value="9">September&nbsp;&nbsp;</option>
+                                        <option value="10">October&nbsp;&nbsp;</option>
+                                        <option value="11">November&nbsp;&nbsp;</option>
+                                        <option value="12">December&nbsp;&nbsp;</option>
                                     </select>
-                                    <select class="span1" name="days">
+                                    <select class="span1 select2" name="years" style="width: 100px" id="inputYear">
                                         <option value="">-</option>
-                                        <option value="1">1&nbsp;&nbsp;</option>
-                                        <option value="2">2&nbsp;&nbsp;</option>
-                                        <option value="3">3&nbsp;&nbsp;</option>
-                                        <option value="4">4&nbsp;&nbsp;</option>
-                                        <option value="5">5&nbsp;&nbsp;</option>
-                                        <option value="6">6&nbsp;&nbsp;</option>
-                                        <option value="7">7&nbsp;&nbsp;</option>
+                                        <option value="1983">1983&nbsp;&nbsp;</option>
+                                        <option value="1984">1984&nbsp;&nbsp;</option>
+                                        <option value="1985">1985&nbsp;&nbsp;</option>
+                                        <option value="1986">1986&nbsp;&nbsp;</option>
+                                        <option value="1987">1987&nbsp;&nbsp;</option>
+                                        <option value="1988">1988&nbsp;&nbsp;</option>
+                                        <option value="1989">1989&nbsp;&nbsp;</option>
                                     </select>
                                 </div>
                             </div>
@@ -471,7 +500,8 @@ Additional information</textarea>
                                 <div class="controls">
                                     <input type="hidden" name="email_create" value="1" />
                                     <input type="hidden" name="is_new_customer" value="1" />
-                                    <input class="btn btn-large btn-success" type="submit" value="Register" />
+                                    <input class="btn btn-large btn-success" type="submit" value="Register"
+                                        id="btnAddCustomer" />
                                 </div>
                             </div>
                         </form>
@@ -626,4 +656,5 @@ Additional information</textarea>
         </div>
     </div>
     <span id="themesBtn"></span>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>

@@ -31,8 +31,9 @@ async function handleRegisterFormSubmit(event) {
         email,
         password,
         dateOfBirth,
-        address,
+        addresses: buildAddress(),
     };
+
 
     try {
         // Registrar el cliente
@@ -66,16 +67,18 @@ function buildAddress() {
     const firstName = document.querySelector('#inputFname').value;
     const lastName = document.querySelector('#inputLname').value;
     const company = document.querySelector('#company').value;
-    const address = document.querySelector('#address').value;
-    const address2 = document.querySelector('#address2').value;
+    const addressLine1 = document.querySelector('#address').value;
+    const addressLine2 = document.querySelector('#address2').value;
     const city = document.querySelector('#city').value;
     const state = document.querySelector('#state').value;
-    const postcode = document.querySelector('#postcode').value;
+    const postalCode = document.querySelector('#postcode').value;
     const country = document.querySelector('#country').value;
-    const additionalInfo = document.querySelector('#additionalInfo').value;
+    const additionalInfo = document.querySelector('#aditionalInfo').value;
+    const phone = document.querySelector('#phone').value;
+    const mobilePhone = document.querySelector('#mobile').value;
 
     // Validar los valores (agrega tus propias validaciones según tus requisitos)
-    if (!firstName || !lastName || !address || !city || !state || !postcode || !country) {
+    if (!firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
         throw new Error('Invalid address');
     }
 
@@ -84,16 +87,28 @@ function buildAddress() {
         firstName,
         lastName,
         company,
-        address,
-        address2,
+        addressLine1,
+        addressLine2,
         city,
         state,
-        postcode,
+        postalCode,
         country,
         additionalInfo,
+        phone,
+        mobilePhone,
     };
 
-    return addressData;
+    return [addressData];
 }
 
-document.querySelector('form').addEventListener('submit', handleRegisterFormSubmit);
+
+document.getElementById('btnAddCustomer').addEventListener('click', handleRegisterFormSubmit);
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectElements = document.querySelectorAll(".select2");
+
+    selectElements.forEach(function (selectElement) {
+        new Select2(selectElement);
+    });
+});
