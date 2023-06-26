@@ -60,7 +60,7 @@ class DataBaseCustomerAdapter {
         }
     }
 
-    #hashPassword = async (password) => {
+    async hashPassword (password)  {
         try {
             const salt = await bcrypt.genSalt(10);
             return await bcrypt.hash(password, salt);
@@ -71,7 +71,7 @@ class DataBaseCustomerAdapter {
 
     async addCustomer(customerToAdd) {
         try {
-            customerToAdd.password = await this.#hashPassword(customerToAdd.password);
+            customerToAdd.password = await this.hashPassword(customerToAdd.password);
             return await this.model.create(customerToAdd);
         } catch (error) {
             throw new Error(`addCustomer: ${error.message}`);
@@ -85,6 +85,15 @@ class DataBaseCustomerAdapter {
             throw new Error(`addAddress: ${error.message}`);
         }
     }
+
+    async getAddressById(addressId) {
+        try {
+            return await Address.findById(addressId);
+        } catch (error) {
+            throw new Error(`getAddressById: ${error.message}`);
+        }
+    }
+
 
     async updateCustomer(customerId, customerToUpdate) {
         try {
