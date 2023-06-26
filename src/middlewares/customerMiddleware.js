@@ -27,9 +27,9 @@ async function validateCustomerExistence(req, res, next) {
 }
 
 async function validateCustomerFields(req, res, next) {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, addresses } = req.body;
 
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !addresses) {
         return res.status(400).json({
             success: false,
             error: "Missing required fields",

@@ -86,16 +86,19 @@ class DataBaseCustomerAdapter {
         }
     }
 
-    async updateCustomer(customerToUpdate) {
+    async updateCustomer(customerId, customerToUpdate) {
         try {
-            const { id } = customerToUpdate;
-            const customerId = id;
-
             if (!customerId) {
                 throw new Error(`Invalid customer ID: ${customerId}`);
             }
 
-            return await this.model.findByIdAndUpdate(customerId, customerToUpdate, { new: true });
+            const updatedCustomer = await this.model.findByIdAndUpdate(customerId, customerToUpdate, { new: true });
+
+            if (!updatedCustomer) {
+                throw new Error(`Customer not found with ID: ${customerId}`);
+            }
+
+            return updatedCustomer;
         } catch (error) {
             throw new Error(`updateCustomer: ${error.message}`);
         }
