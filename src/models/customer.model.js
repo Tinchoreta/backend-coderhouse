@@ -1,7 +1,4 @@
-import mongoose from 'mongoose';
-import Address from './address.model.js';
-
-const { Schema } = mongoose;
+import {model, Schema} from 'mongoose';
 
 const customerSchema = new Schema({
     title: {
@@ -19,7 +16,8 @@ const customerSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true,
     },
     password: {
         type: String,
@@ -35,6 +33,6 @@ const customerSchema = new Schema({
     }]
 });
 
-const Customer = mongoose.model('Customer', customerSchema);
+const Customer = model('Customer', customerSchema);
 
 export default Customer;
