@@ -27,9 +27,9 @@ async function validateUserExistence(req, res, next) {
 }
 
 async function validateUserFields(req, res, next) {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!username || !email || !password) {
+    if (!name || !email || !password) {
         return res.status(400).json({
             success: false,
             error: "Missing required fields",

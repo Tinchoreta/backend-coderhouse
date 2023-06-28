@@ -10,20 +10,30 @@ async function registerCustomer(customerData) {
 async function handleRegisterFormSubmit(event) {
     event.preventDefault();
 
-    
     const title = document.querySelector('#inputTitle').value;
     const firstName = document.querySelector('#inputFname1').value;
     const lastName = document.querySelector('#inputLnam').value;
     const email = document.querySelector('#input_email').value;
     const password = document.querySelector('#inputPassword1').value;
-    const dateOfBirth = buildDateOfBirth(); 
-    const address = buildAddress(); 
+    const dateOfBirth = buildDateOfBirth();
+    const address = buildAddress();
 
-    
     if (!title || !firstName || !lastName || !email || !password || !dateOfBirth || !address) {
-        return alert('Please fill in all required fields.');
+        return Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Please fill in all required fields.",
+            customClass: {
+                container: "my-swal-container",
+                icon: "my-swal-icon",
+                title: "my-swal-title",
+                content: "my-swal-content",
+                actions: "my-swal-actions",
+                confirmButton: "my-swal-confirm",
+            },
+        });
     }
-    
+
     const customerData = {
         title,
         firstName,
@@ -34,16 +44,37 @@ async function handleRegisterFormSubmit(event) {
         addresses: buildAddress(),
     };
 
-
     try {
-        // Registrar el cliente
         const registeredCustomer = await registerCustomer(customerData);
-        alert('Registration successful! Customer ID: ' + registeredCustomer._id);
+        Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Registration successful! Customer ID: " + registeredCustomer._id,
+            customClass: {
+                container: "my-swal-container",
+                icon: "my-swal-icon",
+                title: "my-swal-title",
+                content: "my-swal-content",
+                actions: "my-swal-actions",
+                confirmButton: "my-swal-confirm",
+            },
+        });
 
-        // Restablecer el formulario
         document.querySelector('form').reset();
     } catch (error) {
-        alert('Registration failed. Error: ' + error.message);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Registration failed. Error: " + error.message,
+            customClass: {
+                container: "my-swal-container",
+                icon: "my-swal-icon",
+                title: "my-swal-title",
+                content: "my-swal-content",
+                actions: "my-swal-actions",
+                confirmButton: "my-swal-confirm",
+            },
+        });
     }
 }
 

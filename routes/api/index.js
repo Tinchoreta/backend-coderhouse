@@ -13,6 +13,6 @@ router.use('/carts', cartsRouter)
 router.use('/customers', customersRouter)
 router.use('/products', productsRouter)
 router.use('/sessions', sessionsRouter)
-router.use('/users', sessionsRouter)
+router.use('/users', userRouter)
 
 export default router;

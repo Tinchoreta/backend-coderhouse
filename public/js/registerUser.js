@@ -16,9 +16,12 @@ async function handleRegisterFormSubmit(event) {
     const password = document.querySelector('#inputPassword1').value;
     const role = document.querySelector('#inputRole').value;
 
-    // Validando campos requeridos
     if (!name || !email || !password || !age) {
-        return alert('Por favor, complete todos los campos requeridos.');
+        return Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Por favor, complete todos los campos requeridos."
+        });
     }
 
     const userData = {
@@ -30,20 +33,41 @@ async function handleRegisterFormSubmit(event) {
     };
 
     try {
-        // Registrar al usuario
         const registeredUser = await registerUser(userData);
-        alert('¡Registro exitoso! ID de usuario: ' + registeredUser._id);
+        Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "¡Registro exitoso! ID de usuario: " + registeredUser.email,
+            customClass: {
+                container: "my-swal-container",
+                icon: "my-swal-icon",
+                title: "my-swal-title",
+                content: "my-swal-content",
+                actions: "my-swal-actions",
+                confirmButton: "my-swal-confirm",
+            },
+        });
 
-        // Reiniciar el formulario
         document.querySelector('#formAddUser').reset();
     } catch (error) {
-        alert('Falló el registro. Error: ' + error.message);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Falló el registro. Error: " + error.message,
+            customClass: {
+                container: "my-swal-container",
+                icon: "my-swal-icon",
+                title: "my-swal-title",
+                content: "my-swal-content",
+                actions: "my-swal-actions",
+                confirmButton: "my-swal-confirm",
+            },
+        });
     }
 }
 
 document.getElementById('btnAddUser').addEventListener('click', handleRegisterFormSubmit);
 
-// Previsualizar imagen
 function previewImage(event) {
     var reader = new FileReader();
     reader.onload = function () {
