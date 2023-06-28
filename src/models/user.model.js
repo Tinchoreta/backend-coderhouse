@@ -29,7 +29,7 @@ const userSchema = new Schema({
 
 const User = model('User', userSchema);
 
-export default Customer;
+export default User;
 
 
 

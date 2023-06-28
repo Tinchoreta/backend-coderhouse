@@ -226,18 +226,17 @@
                         </li>
                         <li class="active">User Registration</li>
                     </ul>
-                    <h3>Registration</h3>
+                    <h3>User Registration</h3>
                     <div class="well">
                         <form class="form-horizontal" id="formAddUser">
                             <h4>Your personal information</h4>
                             <div class="control-group">
                                 <label class="control-label" for="inputPhoto">Photo</label>
                                 <div class="controls">
+                                    <img id="imagePreview" src="http://localhost:8080/themes/images/users/generic-user.png" alt="User Photo" width="60"
+                                        height="60" />
                                     <input type="file" id="inputPhoto" name="photo" accept="image/*"
                                         onchange="previewImage(event)" />
-                                    <img id="imagePreview"
-                                        src="http://localhost:8080/themes/images/users/generic-user.png"
-                                        alt="User Photo" width="60" height="60" />
                                 </div>
                             </div>
                             <div class="control-group">
@@ -247,9 +246,9 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label" for="inputEmail">Email <sup>*</sup></label>
+                                <label class="control-label" for="inputEmail1">Email <sup>*</sup></label>
                                 <div class="controls">
-                                    <input type="text" id="inputEmail" placeholder="Email" />
+                                    <input type="text" id="inputEmail1" placeholder="Email" />
                                 </div>
                             </div>
                             <div class="control-group">
@@ -259,9 +258,9 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label" for="inputPassword">Password <sup>*</sup></label>
+                                <label class="control-label" for="inputPassword1">Password <sup>*</sup></label>
                                 <div class="controls">
-                                    <input type="password" id="inputPassword" placeholder="Password" />
+                                    <input type="password" id="inputPassword1" placeholder="Password" />
                                 </div>
                             </div>
                             <div class="control-group">
