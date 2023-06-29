@@ -6,6 +6,7 @@ function limpiar() {
     document.getElementById("price").value = "";
     document.getElementById("thumbnail").value = "";
     document.getElementById("stock").value = "";
+    document.getElementById("category").value = "";
 }
 
 // Función para agregar un nuevo producto
@@ -19,6 +20,7 @@ async function addProductToInventory(event) {
         let price = document.getElementById("price").value;
         let thumbnail = document.getElementById("thumbnail").value;
         let stock = document.getElementById("stock").value;
+        let category = document.getElementById("category").value;
 
         // Creamos un objeto con los datos del nuevo producto
         let nuevoProducto = {
@@ -27,6 +29,7 @@ async function addProductToInventory(event) {
             price: price,
             thumbnail: thumbnail,
             stock: stock,
+            category: category,
         };
 
         //console.log(nuevoProducto);
