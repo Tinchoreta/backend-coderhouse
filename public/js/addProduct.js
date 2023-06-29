@@ -30,6 +30,7 @@ async function addProductToInventory(event) {
             thumbnail: thumbnail,
             stock: stock,
             category: category,
+            created_at: Date.now()
         };
 
         //console.log(nuevoProducto);
