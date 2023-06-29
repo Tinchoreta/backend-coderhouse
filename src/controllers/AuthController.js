@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
-import DataBaseCustomerAdapter from '../Business/adapters/DataBaseCustomerAdapter.js';
+import DataBaseUserAdapter from '../Business/adapters/DataBaseUserAdapter.js';
 
 class AuthController {
     constructor() {
-        this.customerAdapter = DataBaseCustomerAdapter.getInstance();
+        this.userAdapter = DataBaseUserAdapter.getInstance();
     }
 
     async getCounter(request, response) {
@@ -31,13 +31,13 @@ class AuthController {
             }
 
             // Buscar al usuario por correo electrónico usando el adaptador
-            const customer = await this.customerAdapter.getCustomerByEmail(mail);
-            if (!customer) {
+            const user = await this.userAdapter.getUserByEmail(mail);
+            if (!user) {
                 return response.status(401).json({ success: false, error: "Invalid email or password" });
             }
 
             // Verificar la contraseña
-            const isMatch = await bcrypt.compare(pass, customer.password);
+            const isMatch = await bcrypt.compare(pass, user.password);
             if (!isMatch) {
                 return response.status(401).json({ success: false, error: "Invalid email or password" });
             }

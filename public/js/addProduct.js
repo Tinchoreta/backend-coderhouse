@@ -30,7 +30,7 @@ async function addProductToInventory(event) {
             thumbnail: thumbnail,
             stock: stock,
             category: category,
-            created_at: Date.now()
+            created_at: new Date().toISOString()
         };
 
         //console.log(nuevoProducto);

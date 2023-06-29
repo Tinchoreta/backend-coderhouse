@@ -13,10 +13,6 @@ async function validateProductExistence(req, res, next) {
   if (!productId) {
     return res.status(400).json({ success: false, error: "Invalid product ID" });
   }
-
-  if (!dataBaseProductAdapter.isValidProductId(productId)) {
-    return res.status(400).json({ success: false, error: "Invalid product ID" });
-  }
   
   const product = await dataBaseProductAdapter.getProductById(productId);
   if (!product) {
@@ -38,9 +34,9 @@ Ejemplo de producto
 */
 
 async function validateProductFields(req, res, next) {
-  const { title, description, price, thumbnail, stock } = req.body;
+  const { title, description, price, thumbnail, stock, category, created_at } = req.body;
 
-  if (!title || !price || !description || !thumbnail) {
+  if (!title || !price || !description || !thumbnail || !category) {
     return res.status(400).json({
       success: false,
       error: 'Missing required fields'
@@ -62,14 +58,16 @@ async function validateProductFields(req, res, next) {
     price: parsedPrice,
     description,
     thumbnail,
-    stock: parsedStock
+    stock: parsedStock,
+    category: category,
+    created_at: created_at,
   };
 
   next();
 }
 
 async function checkDuplicateProductFields(req, res, next) {
-  const dataBaseProductAdapter = getDatabaseProductAdapter();
+  const dataBaseProductAdapter = await getDatabaseProductAdapter();
   const { title, description } = req.body;
 
   // Check if title and description already exist in the database

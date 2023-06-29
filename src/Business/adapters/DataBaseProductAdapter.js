@@ -81,9 +81,9 @@ class DataBaseProductAdapter {
         }
     }
 
-    async #isValidProductId(productId) {
+    #isValidProductId(productId) {
         try {
-            let isValid = await mongoose.isValidObjectId(productId);
+            let isValid = mongoose.isValidObjectId(productId);
             return isValid;
         } catch (error) {
             throw new Error(`isValidProductId: ${error.message}`);
@@ -92,7 +92,7 @@ class DataBaseProductAdapter {
 
     async getProductById(idProduct) {
         try {
-            let isValidId = await this.#isValidProductId(idProduct)
+            let isValidId = this.#isValidProductId(idProduct)
             if (!isValidId) return null;
 
             return await this.persistenceManager.getOne({ _id: idProduct });
@@ -146,9 +146,8 @@ class DataBaseProductAdapter {
             // Construir los criterios de búsqueda
             const query = {
                 // Buscar documentos que coincidan exactamente con el título proporcionado (insensible a mayúsculas y minúsculas)
-                title: { $regex: new RegExp(`^${title}$`, 'i') },
-                // Buscar documentos que coincidan exactamente con la descripción proporcionada (insensible a mayúsculas y minúsculas)
-                description: { $regex: new RegExp(`^${description}$`, 'i') },
+                // title: new RegExp(title) 
+                _id: '649d128c814a7cbbae82dfcf'
             };
 
             const products = await this.persistenceManager.getMany(query);

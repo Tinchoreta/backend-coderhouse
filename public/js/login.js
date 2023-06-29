@@ -7,7 +7,7 @@ loginBtnModal.addEventListener('click', (event) => {
     const email = document.getElementById('inputEmail').value;
     const pass = document.getElementById('inputPassword').value;
 
-        // Aquí se hace un request al servidor para iniciar la sesión
+        
         fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
             headers: {
@@ -39,7 +39,7 @@ loginBtn.addEventListener('click', (event) => {
     const email = document.getElementById('inputEmail1').value;
     const pass = document.getElementById('inputPassword1').value;
 
-          // Aquí se hace un request al servidor para iniciar la sesión
+        
         fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
             headers: {
