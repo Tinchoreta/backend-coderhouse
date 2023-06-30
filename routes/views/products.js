@@ -1,10 +1,10 @@
 import { Router } from "express";
 import ProductViewController from "../../src/controllers/ProductViewController.js";
-import cartMiddleware from "../../middlewares/cartMiddleware.js";
+import { cartMiddleware } from "../../src/middlewares/cartMiddleware.js";
 
 const productRouter = Router();
 
-productRouter.get("/",cartMiddleware,async (req, res, next) => {
+productRouter.get("/", cartMiddleware, async (req, res, next) => {
     try {
         const productViewController = new ProductViewController();
         productViewController.renderProductsForm(req, res);

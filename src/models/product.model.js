@@ -6,9 +6,9 @@ let schema = new Schema({
     description: {type: String, required: true},
     price: {type: Number, required: true},
     thumbnail: {type: String, required: true},
-    stock: {type: Number, required: true}
-    // category: {type: String, required: true},
-    // created_at: {type: Date, default: Date.now}
+    stock: {type: Number, required: true},
+    category: {type: String, required: true},
+    created_at: {type: Date, default: Date.now}
 });
 
 let ProductModel = model(collection, schema);

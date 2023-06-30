@@ -1,12 +1,12 @@
 import { Router } from "express";
 import ProductManagerController from "../../src/controllers/ProductManagerController.js";
-import DataBaseProductAdapter from "../../src/Business/DataBaseProductAdapter.js";
+import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
 import {
   validateProductExistence,
   validateProductFields,
-} from "../../middlewares/productMiddleware.js";
-import dotenv from 'dotenv';
-dotenv.config();
+  checkDuplicateProductFields, 
+} from "../../src/middlewares/productMiddleware.js";
+
 
 const router = Router();
 
@@ -18,24 +18,24 @@ const productController = new ProductManagerController(dataBaseProductAdapter);
 
 router.get("/", (req, res) => productController.getProducts(req, res));
 
-router.get(
-  "/:id",
-  (req, res, next) => validateProductExistence(req, res, next),
+router.get("/:id",
+  validateProductExistence,
   (req, res) => productController.getProductById(req, res)
 );
 
-router.post(
-  "/",
-(req, res, next) => validateProductFields(req, res, next),
-(req, res) => productController.addProduct(req, res));
+router.post("/", 
+validateProductFields, 
+checkDuplicateProductFields, 
+
+  (req, res) => productController.addProduct(req, res));
 
 
 router.put("/:id",
-  (req, res, next) => validateProductExistence(req, res, next),
+  validateProductExistence,
   (req, res) => productController.updateProductItem(req, res));
 
 router.delete("/:id",
-  (req, res, next) => validateProductExistence(req, res, next),
+  validateProductExistence,
   (req, res) => productController.removeProductItem(req, res)
 );
 

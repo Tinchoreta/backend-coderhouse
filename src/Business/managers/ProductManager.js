@@ -56,8 +56,8 @@ class ProductManager {
   };
 
   getProductById(idProduct) {
-    const found = this.products.find(
-      (product) => product.id === idProduct
+    const found = this.products?.find(
+      (product) => product._id.toString() === idProduct
     );
     if (!found) {
       return null;

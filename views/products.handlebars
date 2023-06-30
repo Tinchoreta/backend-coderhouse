@@ -2,7 +2,7 @@
     <div id="header">
         <div class="container">
             <div id="welcomeLine" class="row">
-                <div class="span6">Welcome!<strong> User</strong></div>
+                <div class="span6" id="welcomeMessage">Welcome!<strong> User</strong></div>
                 <div class="span6">
                     <div class="pull-right">
                         <a href="/product_summary"><span class="">Fr</span></a>
@@ -66,7 +66,7 @@
                                             </label>
                                         </div>
                                     </form>
-                                    <button type="submit" class="btn btn-success">Sign in</button>
+                                    <button type="submit" class="btn btn-success" id="loginBtnModal">Sign in</button>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>
@@ -177,15 +177,22 @@
                     <hr class="soft" />
                     <form class="form-horizontal span6">
                         <div class="control-group">
-                            <label class="control-label alignL">Sort By </label>
-                            <select>
-                                <option>Product name A - Z</option>
-                                <option>Product name Z - A</option>
-                                <option>Product Stoke</option>
-                                <option>Price Lowest first</option>
+                            <label class="control-label alignL" for="sortSelect">Sort By</label>
+                            <select id="sortSelect" name="sortOption">
+                                <option value="name-asc">Product name A - Z</option>
+                                <option value="name-desc">Product name Z - A</option>
+                                <option value="stock">Product Stock</option>
+                                <option value="price-asc">Price Lowest first</option>
                             </select>
                         </div>
+                        <div class="control-group">
+                            <label class="control-label alignL" for="titleFilter">Filter By Title</label>
+                            <input type="text" id="titleFilter" name="title" placeholder="Enter product title">
+                        </div>
                     </form>
+                    
+                    <p id="filterText"></p>
+                    <button id="clearFilterButton" style="display: none;">Clear Filter</button>
 
                     <div id="myTab" class="pull-right">
                         <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i
@@ -415,102 +422,6 @@
                                     </div>
                                 </li>
                                 {{/each}}
-                                {{!-- <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Lumix &amp; 123</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Lumix &amp; 2344</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Digital &amp; Camera</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Digital &amp; Camera</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Digital &amp; Camera</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Digital &amp; Camera</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li> --}}
                             </ul>
                             <hr class="soft" />
                         </div>
@@ -519,13 +430,11 @@
                     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
                     <div class="pagination">
                         <ul>
-                            <li><a href="#">&lsaquo;</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">...</a></li>
-                            <li><a href="#">&rsaquo;</a></li>
+                            <li><a href="{{prevLink}}">&lsaquo;</a></li>
+                            {{#each pages}}
+                            <li><a href="{{this.link}}">{{this.page}}</a></li>
+                            {{/each}}
+                            <li><a href="{{nextLink}}">&rsaquo;</a></li>
                         </ul>
                     </div>
                     <br class="clr" />

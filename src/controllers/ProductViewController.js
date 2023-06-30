@@ -19,18 +19,54 @@ class ProductViewController {
     }
   }
 
+  // Método para construir la URL con parámetros opcionales
+  #buildProductsUrl(baseURL, queryParams) {
+    const { limit, page, sort, title } = queryParams;
+
+    let url = baseURL;
+
+    if (limit !== undefined) {
+      url += `?limit=${limit}`;
+    }
+    if (page !== undefined) {
+      url += `${limit !== undefined ? '&' : '?'}page=${page}`;
+    }
+    if (sort !== undefined) {
+      url += `${(limit !== undefined || page !== undefined) ? '&' : '?'}sort=${sort}`;
+    }
+    if (title !== undefined) {
+      url += `${(limit !== undefined || page !== undefined || sort !== undefined) ? '&' : '?'}title=${title}`;
+    }
+
+    return url;
+  }
+  
   async renderProductsForm(req, res) {
     try {
-      const response = await axios.get("http://localhost:8080/api/products/");
-      const products = response.data.response;
+      const { limit, page, sort, title } = req.query;
+      const baseURL = 'http://localhost:8080/api/products';
+      const url = this.#buildProductsUrl(baseURL, { limit, page, sort, title });
+
+      const response = await axios.get(url);
+      const products = response.data.payload;
       const cartManager = req.cartManager;
+      const { totalPages, prevLink, nextLink, pages } = response.data;
+
+      const adaptedPages = pages.map((pageData) => ({
+        page: pageData.page.toString(), // Convertir a cadena de texto
+        link: pageData.link,
+      }));
 
       return res.render("products", {
         title: "Products",
         script: "products.js",
         css: "products.css",
         products: products,
-        cartManager: cartManager
+        cartManager: cartManager,
+        totalPages: totalPages,
+        prevLink: prevLink,
+        nextLink: nextLink,
+        pages: adaptedPages
       });
     } catch (error) {
       console.error(error);
@@ -41,11 +77,12 @@ class ProductViewController {
     }
   }
 
+
   async renderProductDetailsForm(req, res, productId) {
     try {
       // console.log(`http://localhost:8080/api/products/${productId}`);
       const response = await axios.get(`http://localhost:8080/api/products/${productId}`);
-      const productDetails = response.data.product;
+      const productDetails = response.data.payload;
       const cartManager = req.cartManager;
 
       return res.render("productDetails", {

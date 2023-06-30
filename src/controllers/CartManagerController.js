@@ -49,7 +49,7 @@ class CartManagerController {
     }
 
     #hasEnoughStock(availableUnits, unitsToAdd) {
-        return availableUnits > unitsToAdd;
+        return availableUnits >= unitsToAdd;
     }
 
     #sendError(res, code, message) {
@@ -66,7 +66,10 @@ class CartManagerController {
                 });
                 return;
             }
-            response.status(201).json(addedCartId);
+            response.status(201).json({
+                success: true,
+                response: addedCartId
+            });
         } catch (error) {
             console.error(error);
             response.status(500).json({
@@ -78,21 +81,14 @@ class CartManagerController {
 
     async getCarts(request, response) {
         try {
-            const carts = await this.cartManagerAdapter.getCarts();
-            const limit = parseInt(request.query.limit);
+            // const carts = await this.cartManagerAdapter.getCarts();
+            const limit = !Number.isNaN(parseInt(request.query.limit)) ? parseInt(request.query.limit) : 5;
 
-            if (isNaN(limit)) {
-                return response.status(200).json({
-                    success: true,
-                    response: carts
-                });
-            } else {
-                const limitedCarts = carts.slice(0, limit);
-                return response.status(200).json({
-                    success: true,
-                    response: limitedCarts
-                });
-            }
+            const populatedCarts = await this.cartManagerAdapter.populateProducts({ limit: limit });
+            return response.status(200).json({
+                success: true,
+                response: populatedCarts
+            });
         } catch (error) {
             console.error(error);
             return response.status(500).json({
@@ -134,8 +130,8 @@ class CartManagerController {
     }
 
     async addProductUnitsToCart(req, res) {
-        const cartId = parseInt(req.params.cid);
-        const productId = parseInt(req.params.pid);
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
         const unitsToAdd = Number(req.params.units);
 
         if (!cartId || !productId || isNaN(unitsToAdd) || unitsToAdd <= 0) {
@@ -190,11 +186,11 @@ class CartManagerController {
 
     async removeProductUnitsFromCart(req, res) {
         try {
-            const cartId = parseInt(req.params.cid);
-            const productId = parseInt(req.params.pid);
+            const cartId = req.params.cid;
+            const productId = req.params.pid;
             let unitsToRemove = Number(req.params.units);
 
-            if (!cartId || isNaN(productId) || isNaN(unitsToRemove) || unitsToRemove <= 0) {
+            if (!cartId || !productId || isNaN(unitsToRemove) || unitsToRemove <= 0) {
                 return this.#sendError(res, 400, 'Invalid parameters');
             }
 
@@ -238,6 +234,51 @@ class CartManagerController {
         } catch (error) {
             console.error(error);
             return this.#sendError(res, 500, 'Internal server error');
+        }
+    }
+
+    async removeProductFromCart(req, res) {
+        try {
+            const cartId = req.params.cid;
+            const productId = req.params.pid;
+
+            if (!cartId || !productId) {
+                return this.#sendError(res, 400, 'Invalid parameters');
+            }
+
+            const cart = await this.#_validateCartExists(res, cartId);
+
+            if (!cart) {
+                return this.#sendError(res, 404, 'Cart not found');
+            }
+
+            const productIndex = cart.products.findIndex((item) => item.productId.toString() === productId);
+
+            if (productIndex === -1) {
+                return this.#sendError(res, 404, 'Product not found in cart');
+            }
+
+            cart.products.splice(productIndex, 1);
+
+            const updatedCart = await this.cartManagerAdapter.updateCart(cart);
+
+            return res.status(200).json(updatedCart);
+        } catch (error) {
+            console.error(error);
+            return this.#sendError(res, 500, 'Internal server error');
+        }
+    }
+
+    async calculateCartTotalPrice(req, res) {
+        try {
+            const cartId = req.params.cid;
+
+            const totalPrice = await this.cartManagerAdapter.calculateCartTotalPrice(cartId);
+
+            res.status(200).json({ totalPrice });
+        } catch (error) {
+            console.error('Failed to calculate cart total price:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 

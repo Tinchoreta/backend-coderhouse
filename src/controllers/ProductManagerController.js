@@ -41,37 +41,70 @@ class ProductManagerController {
 
   async getProducts(request, response) {
     try {
-      const products = await this.productManagerAdapter.getProducts();
-      // console.log(products);
+      const { limit, page, sort, title } = this.#getQueryParams(request);
 
-      const limit = parseInt(request.query.limit) || 0;
+      const query = {};
 
-      if (limit < 0 || limit > products.length) {
-        return response.status(400).json({
-          success: false,
-          error: "Bad Request: Limit must be a positive integer",
-        });
+      if (title) {
+        query.title = { $regex: new RegExp(`^${title}`, "i") };
       }
 
-      if (isNaN(limit) || !limit) {
-        return response.status(200).json({
-          success: true,
-          response: products,
-        });
-      } else {
-        const limitedProducts = products.slice(0, limit);
-        return response.status(200).json({
-          success: true,
-          response: limitedProducts,
-        });
-      }
+      const result = await this.productManagerAdapter.getProducts(limit, page, sort, query);
+
+      const adaptedProducts = result.products;
+
+      const formattedResponse = this.#formatProductsResponse(
+        adaptedProducts,
+        result.totalCount,
+        limit,
+        page,
+        sort
+      );
+
+      return response.status(200).json(formattedResponse);
     } catch (error) {
       console.error(error);
       return response.status(500).json({
-        success: false,
+        status: "error",
         error: "Internal Server Error",
       });
     }
+  }
+
+  #getQueryParams(request) {
+    const { limit, page, sort, title } = request.query;
+    const parsedLimit = limit === "undefined" ? 6 : parseInt(limit, 10) || 6;
+    const parsedPage = page === "undefined" ? 1 : parseInt(page, 10) || 1;
+    return { limit: parsedLimit, page: parsedPage, sort, title };
+  }
+
+
+
+
+  #formatProductsResponse(products, totalCount, limit, page, sort) {
+    const prevLink = page > 1 ? `/products?limit=${limit}&page=${page - 1}&sort=${sort}` : null;
+    const nextLink =
+      page < Math.ceil(totalCount / limit)
+        ? `/products?limit=${limit}&page=${page + 1}&sort=${sort}`
+        : null;
+
+    const pages = [];
+    for (let i = 1; i <= Math.ceil(totalCount / limit); i++) {
+      const link = `/products?limit=${limit}&page=${i}&sort=${sort}`;
+      pages.push({ page: i, link });
+    }
+
+    return {
+      status: "success",
+      payload: products,
+      prevPage: page > 1 ? page - 1 : null,
+      nextPage: page < Math.ceil(totalCount / limit) ? page + 1 : null,
+      pages: pages,
+      hasPrevPage: page > 1,
+      hasNextPage: page < Math.ceil(totalCount / limit),
+      prevLink: prevLink ? prevLink : null,
+      nextLink: nextLink ? nextLink : null,
+    };
   }
 
   async getProductById(request, response) {
