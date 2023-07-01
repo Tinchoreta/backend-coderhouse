@@ -1,51 +1,70 @@
-
 const loginBtnModal = document.getElementById('loginBtnModal');
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 
+function loginUser(emailId, passwordId) {
+    const email = document.getElementById(emailId).value;
+    const pass = document.getElementById(passwordId).value;
 
-// loginBtnModal.addEventListener('click', (event) => {
-//     event.preventDefault();
-//     const email = document.getElementById('inputEmail').value;
-//     const pass = document.getElementById('inputPassword').value;
+    fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            mail: email,
+            pass: pass
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                sessionStorage.setItem('username', email);
+                updateUI();
+                console.log("Login Success");
+            } else {
+                alert("Invalid Credentials");
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
 
-//     if (String(email).trim() === 'tinchoreta@gmail.com' && String(pass).trim() === 'Cocohueso23') {
-//         window.location = 'products';
-//         sessionStorage.setItem('username', email);
-//         console.log("Login Success");
+loginBtnModal.addEventListener('click', (event) => {
+    event.preventDefault();
+    loginUser('inputEmail', 'inputPassword');
+});
 
-//     } else {
-//         alert("Invalid Credentials")
-//     }
-// })
+loginBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    // loginUser('inputEmail', 'inputPassword');
+});
+
+logoutBtn.addEventListener('click', function (event) {
+    event.preventDefault();
+
+    fetch('http://localhost:8080/api/auth/logout', {
+        method: 'POST',
+    })
+        .then(response => {
+            if (response.ok) {
+                sessionStorage.removeItem('username');
+                updateUI();
+            } else {
+                console.error('Failed to logout');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     const sortSelect = document.getElementById('sortSelect');
     const titleFilterInput = document.getElementById('titleFilter');
     const filterText = document.getElementById('filterText');
     const clearFilterButton = document.getElementById('clearFilterButton');
-    const welcomeMessage = document.getElementById('welcomeMessage');
 
-    //Obtener el usuario (email)
-    const username = sessionStorage.getItem('username') || 'User';
-    welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
-    console.log('Username:', username);
-
-
-    // Obtener los parámetros de la URL
-    const queryParams = new URLSearchParams(window.location.search);
-    const selectedOption = queryParams.get('sort');
-    const titleFilterValue = queryParams.get('title');
-
-    // Establecer la opción seleccionada en el elemento sortSelect
-    if (selectedOption) {
-        sortSelect.value = selectedOption;
-    }
-
-    // Establecer el valor del filtro de título
-    if (titleFilterValue) {
-        titleFilterInput.value = titleFilterValue;
-        filterText.textContent = `Filtered by: ${titleFilterValue}`;
-        clearFilterButton.style.display = 'inline-block';
-    }
+    updateUI();
 
     sortSelect.addEventListener('change', () => {
         const selectedOption = sortSelect.value;
@@ -81,4 +100,22 @@ document.addEventListener("DOMContentLoaded", () => {
         titleFilterInput.value = '';
         updateQueryString('title', null);
     }
+
 });
+
+function updateUI() {
+    const username = sessionStorage.getItem('username');
+    const loginLi = document.getElementById('loginLi');
+    const logoutLi = document.getElementById('logoutLi');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+
+    if (username) {
+        welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
+        loginLi.style.display = 'none';
+        logoutLi.style.display = 'block';
+    } else {
+        welcomeMessage.innerHTML = 'Welcome! Please log in.';
+        loginLi.style.display = 'block';
+        logoutLi.style.display = 'none';
+    }
+}

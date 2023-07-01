@@ -83,6 +83,7 @@ app.set('view engine', 'handlebars');
 app.use(errorHandler);
 app.use(notFoundHandler);
 
+export default app;
 
 // async function populateCustomers(){
 //     // Crear e insertar 10 clientes con direcciones
@@ -155,4 +156,3 @@ app.use(notFoundHandler);
 //     await customer.save();
 // } 
 
-export default app;
