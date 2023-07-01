@@ -1,3 +1,47 @@
+document.getElementById('formAddUser').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    let name = document.getElementById('inputName').value;
+    let email = document.getElementById('inputEmail1').value;
+    let age = document.getElementById('inputAge').value;
+    let password = document.getElementById('inputPassword1').value;
+    let role = document.getElementById('inputRole').value;
+    
+    // Almacena mensajes de error
+    let errors = [];
+
+    // Validación
+    if (!name) {
+        errors.push('Name is required.');
+    }
+
+    if (!email || !email.includes('@')) {
+        errors.push('Valid email is required.');
+    }
+
+    if (!age || isNaN(age) || age < 0) {
+        errors.push('Valid age is required.');
+    }
+
+    if (!password) {
+        errors.push('Password is required.');
+    }
+
+    if (!role) {
+        errors.push('Role is required.');
+    }
+    // Mostrar errores o enviar formulario
+    let errorBlock = document.querySelector('.alert-error');
+
+    if (errors.length > 0) {
+        errorBlock.innerHTML = '<button type="button" class="close" data-dismiss="alert">×</button><strong>Errors:</strong><br>' + errors.join('<br>');
+        errorBlock.style.display = 'block';
+    } else {
+        errorBlock.style.display = 'none';
+        console.log('Form is valid, submit data...');
+    }
+});
+
 async function registerUser(userData) {
     try {
         const response = await axios.post('http://localhost:8080/api/users', userData);
@@ -16,7 +60,7 @@ async function handleRegisterFormSubmit(event) {
     const password = document.querySelector('#inputPassword1').value;
     const role = document.querySelector('#inputRole').value;
 
-    if (!name || !email || !password || !age) {
+    if (!name || !email || !password || !age || !role) {
         return Swal.fire({
             icon: "error",
             title: "Error",
