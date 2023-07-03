@@ -19,6 +19,9 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
 import mongoStore from 'connect-mongo';
+import passport from 'passport';
+import inicializePassport from './config/passportLocal.js';
+
 
 // import Address from './models/address.model.js';
 // import Customer from './models/customer.model.js';
@@ -77,6 +80,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', mainRouter);
 app.use('/', express.static(join(__dirname, '../public')));
 
+
+//Passport 
+
+inicializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //template engine
