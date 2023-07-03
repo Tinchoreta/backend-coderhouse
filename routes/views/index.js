@@ -1,8 +1,7 @@
 import { Router } from "express"
 import chatRouter from './chat.js'
-import loginRouter from './login.js'
 import registerCustomerRouter from './registerCustomer.js'
-import registerUserRouter from './registerUser.js'
+import authRouter from "./auth.js";
 import productsRouter from "./products.js";
 import addProductRouter from "./addProduct.js"
 import productDetailsRouter from "./productDetails.js";
@@ -27,7 +26,6 @@ viewRouter.use('/new_product', addProductRouter);
 viewRouter.use("/products", productsRouter);
 viewRouter.use("/product_details", productDetailsRouter);
 viewRouter.use("/product_summary", productSummaryRouter); //Cart
-viewRouter.use('/login', loginRouter);
+viewRouter.use('/auth', authRouter);
 viewRouter.use('/register_customer', registerCustomerRouter);
-viewRouter.use('/register_user', registerUserRouter);
 export default viewRouter;

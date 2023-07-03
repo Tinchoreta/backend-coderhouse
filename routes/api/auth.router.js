@@ -1,20 +1,36 @@
 import { Router } from "express";
 import auth from '../../src/middlewares/auth.js';
 import AuthController from '../../src/controllers/AuthController.js';
-import { createHashForPassword, isPasswordValid } from '../../src/middlewares/userMiddleware.js'
 import UserManagerController from "../../src/controllers/UserManagerController.js";
+import DataBaseUserAdapter from "../../src/Business/adapters/DataBaseUserAdapter.js";
+import {
+    validateUserFields,
+    checkDuplicateUserEmail,
+    validatePasswordLength,
+    createHashForPassword,
+    isPasswordValid,
+} from "../../src/middlewares/userMiddleware.js";
 
-const authRouter = Router();
+const dataBaseUserAdapter = DataBaseUserAdapter.getInstance(
+    process.env.MONGO_DB_URI
+);
+
+const userController = new UserManagerController(dataBaseUserAdapter);
 const authController = new AuthController();
 
-const userController = new UserManagerController();
+const authRouter = Router();
 
 // COUNTER
 authRouter.get('/', (req, res, next) => authController.getCounter(req, res, next));
 
 //REGISTER
 
-authRouter.post('/register', createHashForPassword, (req, res, next) => userController.createUser(req, res, next));
+authRouter.post('/register', 
+    validateUserFields,
+    checkDuplicateUserEmail,
+    validatePasswordLength,
+    createHashForPassword,
+(req, res) => userController.addUser(req, res));
 
 
 // LOGIN
