@@ -4,7 +4,7 @@ import ProductModel from '../../models/product.model.js';
 import mongoose from 'mongoose';
 
 class DataBaseProductAdapter {
-    static instance;
+    static instance = null;
 
     constructor(uri) {
         if (DataBaseProductAdapter.instance) {
@@ -150,7 +150,7 @@ class DataBaseProductAdapter {
                 _id: '649d128c814a7cbbae82dfcf'
             };
 
-            const products = await this.persistenceManager.getMany(query);
+            const products = await this.persistenceManager.getMany({});
 
             return products;
         } catch (error) {

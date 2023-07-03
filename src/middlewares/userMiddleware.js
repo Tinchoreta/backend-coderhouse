@@ -1,4 +1,5 @@
 import DataBaseUserAdapter from "../Business/adapters/DataBaseUserAdapter.js";
+import { hashSync, genSaltSync } from "bcrypt";
 
 // Función que devuelve el adaptador de la base de datos
 async function getDatabaseUserAdapter() {
@@ -69,9 +70,44 @@ async function validatePasswordLength(req, res, next) {
     next();
 }
 
+function createHashForPassword(req, res, next) {
+    const { password } = req.body;
+    const hashPass = hashSync(
+        password,
+        genSaltSync()
+        );
+    req.body.password = hashPass;
+    return next();
+}
+
+async function isPasswordValid(req, res, next) {
+    const dataBaseAdapter = getDatabaseUserAdapter();
+
+    const user = dataBaseAdapter.getUserByEmail(req.body.email);
+
+    if (user) {
+        let verified = compareSync(
+            req.body.password,
+            user.password,
+        )
+        if (verified) {
+            return next();
+        }
+    } else {
+        return res.status(401).json({
+            success: false,
+            error: "Auth error",
+        });
+    }
+
+}
+
+
 export {
     validateUserExistence,
     validateUserFields,
     checkDuplicateUserEmail,
-    validatePasswordLength
+    validatePasswordLength,
+    createHashForPassword, 
+    isPasswordValid
 };

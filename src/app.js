@@ -18,6 +18,7 @@ import dotenv from 'dotenv';
 // import { faker } from '@faker-js/faker';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
+import mongoStore from 'connect-mongo';
 
 // import Address from './models/address.model.js';
 // import Customer from './models/customer.model.js';
@@ -53,7 +54,11 @@ app.use(expressSession(
     {
         secret: process.env.SECRET_SESSION,
         resave: true,
-        saveUninitialized: true
+        saveUninitialized: true,
+        store: mongoStore.create({
+            mongoUrl: process.env.MONGO_DB_URI,
+            ttl: 10000
+        })
     }
 ));
 
