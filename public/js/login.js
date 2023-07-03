@@ -22,7 +22,7 @@ loginBtnModal.addEventListener('click', (event) => {
             .then(data => {
                 if (data.success) {
                     sessionStorage.setItem('username', email);
-                    window.location = 'products';
+                    window.location = '/products';
                     console.log("Login Success");
                 } else {
                     alert("Invalid Credentials");
@@ -54,7 +54,7 @@ loginBtn.addEventListener('click', (event) => {
             .then(data => {
                 if (data.success) {
                     sessionStorage.setItem('username', email);
-                    window.location = 'products';
+                    window.location = '/products';
                     console.log("Login Success");
                 } else {
                     alert("Invalid Credentials");

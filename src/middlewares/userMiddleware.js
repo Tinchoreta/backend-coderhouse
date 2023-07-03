@@ -1,5 +1,5 @@
 import DataBaseUserAdapter from "../Business/adapters/DataBaseUserAdapter.js";
-import { hashSync, genSaltSync } from "bcrypt";
+import { hashSync, genSaltSync, compareSync } from "bcrypt";
 
 // Función que devuelve el adaptador de la base de datos
 async function getDatabaseUserAdapter() {
@@ -14,8 +14,9 @@ async function validateUserExistence(req, res, next) {
     if (!userId) {
         return res.status(400).json({ success: false, error: "Invalid user ID" });
     }
+    const isValidUserId = await dataBaseUserAdapter.isValidUserId(userId);
 
-    if (!dataBaseUserAdapter.isValidUserId(userId)) {
+    if (!isValidUserId) {
         return res.status(400).json({ success: false, error: "Invalid user ID" });
     }
 
@@ -81,13 +82,13 @@ function createHashForPassword(req, res, next) {
 }
 
 async function isPasswordValid(req, res, next) {
-    const dataBaseAdapter = getDatabaseUserAdapter();
+    const dataBaseAdapter = await getDatabaseUserAdapter();
 
-    const user = dataBaseAdapter.getUserByEmail(req.body.email);
+    const user = await dataBaseAdapter.getUserByEmail(req.body.mail);
 
     if (user) {
         let verified = compareSync(
-            req.body.password,
+            req.body.pass,
             user.password,
         )
         if (verified) {
