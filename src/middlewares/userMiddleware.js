@@ -94,13 +94,11 @@ async function isPasswordValid(req, res, next) {
         if (verified) {
             return next();
         }
-    } else {
-        return res.status(401).json({
+    } 
+    return res.status(401).json({
             success: false,
             error: "Auth error",
         });
-    }
-
 }
 
 
