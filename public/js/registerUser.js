@@ -44,7 +44,7 @@ document.getElementById('formAddUser').addEventListener('submit', function (even
 
 async function registerUser(userData) {
     try {
-        const response = await axios.post('http://localhost:8080/api/users', userData);
+        const response = await axios.post('http://localhost:8080/api/auth/register', userData);
         return response.data;
     } catch (error) {
         throw new Error(`Error al registrar el usuario: ${error.response.data.error}`);
