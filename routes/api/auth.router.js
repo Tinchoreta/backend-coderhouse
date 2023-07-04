@@ -3,6 +3,7 @@ import auth from '../../src/middlewares/auth.js';
 import AuthController from '../../src/controllers/AuthController.js';
 import UserManagerController from "../../src/controllers/UserManagerController.js";
 import DataBaseUserAdapter from "../../src/Business/adapters/DataBaseUserAdapter.js";
+import passport from "passport";
 import {
     validateUserFields,
     checkDuplicateUserEmail,
@@ -30,8 +31,25 @@ authRouter.post('/register',
     checkDuplicateUserEmail,
     validatePasswordLength,
     createHashForPassword,
-(req, res) => userController.addUser(req, res));
+    passport.authenticate(
+        'register',{
+            failureRedirect: '/api/auth/fail-register'    
+        }
+    ),
+    (req, res) => res.status(201).json({
+        success: true,
+        message: 'User created!'
+    })
+)
+//(req, res) => userController.addUser(req, res));
 
+//FAIL LOGIN
+
+authRouter.get('fail-register', (req, res)=> res.status(403).json({
+    success: false,
+    message: 'Auth failed'
+})
+);
 
 // LOGIN
 authRouter.post('/login', isPasswordValid, (req, res, next) => authController.login(req, res, next));
