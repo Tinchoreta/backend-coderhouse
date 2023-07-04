@@ -38,7 +38,8 @@ authRouter.post('/register',
     ),
     (req, res) => res.status(201).json({
         success: true,
-        message: 'User created!'
+        message: 'User created!',
+        email: req.user.email,
     })
 )
 //(req, res) => userController.addUser(req, res));

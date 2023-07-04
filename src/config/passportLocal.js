@@ -21,7 +21,7 @@ function inicializePassport() {
                     let existingUser = await User.findOne({ email:username });
                     if (!existingUser) { // && password === req.<PASSWORD>.confirmPassword ){
                         let newUser = await User.create(req.body)
-                        return done(null, user)
+                        return done(null, newUser)
                     }
                     return done(null, false)
                 } catch (err) {
