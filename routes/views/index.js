@@ -26,6 +26,6 @@ viewRouter.use('/new_product', addProductRouter);
 viewRouter.use("/products", productsRouter);
 viewRouter.use("/product_details", productDetailsRouter);
 viewRouter.use("/product_summary", productSummaryRouter); //Cart
-viewRouter.use('/auth', authRouter);
+viewRouter.use('/login', authRouter);
 viewRouter.use('/register_customer', registerCustomerRouter);
 export default viewRouter;

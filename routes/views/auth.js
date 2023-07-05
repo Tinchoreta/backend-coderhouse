@@ -2,7 +2,7 @@ import { Router } from "express"
 const authRouter = Router();
 
 
-authRouter.get('/signin', async (req, res, next) => {
+authRouter.get('/', async (req, res, next) => {
     try {
         return res.render('login', {
             title: 'login',

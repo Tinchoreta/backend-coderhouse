@@ -76,29 +76,27 @@ function createHashForPassword(req, res, next) {
     const hashPass = hashSync(
         password,
         genSaltSync()
-        );
+    );
     req.body.password = hashPass;
     return next();
 }
 
 async function isPasswordValid(req, res, next) {
-    const dataBaseAdapter = await getDatabaseUserAdapter();
+    console.log("Client Password:", req.body.pass);
+    console.log("Database Password:", req.user.password);
 
-    const user = await dataBaseAdapter.getUserByEmail(req.body.mail);
 
-    if (user) {
-        let verified = compareSync(
-            req.body.pass,
-            user.password,
-        )
-        if (verified) {
-            return next();
-        }
-    } 
+    let verified = compareSync(
+        req.body.password,
+        req.user.password,
+    )
+    if (verified) {
+        return next();
+    }
     return res.status(401).json({
-            success: false,
-            error: "Auth error",
-        });
+        success: false,
+        error: "Auth error",
+    });
 }
 
 
@@ -107,6 +105,6 @@ export {
     validateUserFields,
     checkDuplicateUserEmail,
     validatePasswordLength,
-    createHashForPassword, 
+    createHashForPassword,
     isPasswordValid
 };

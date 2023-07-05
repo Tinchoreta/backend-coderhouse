@@ -26,34 +26,62 @@ authRouter.get('/', (req, res, next) => authController.getCounter(req, res, next
 
 //REGISTER
 
-authRouter.post('/register', 
+authRouter.post('/register',
     validateUserFields,
     checkDuplicateUserEmail,
     validatePasswordLength,
     createHashForPassword,
     passport.authenticate(
-        'register',{
-            failureRedirect: '/api/auth/fail-register'    
-        }
+        'register', {
+        failureRedirect: '/api/auth/fail-register'
+    }
     ),
     (req, res) => res.status(201).json({
         success: true,
         message: 'User created!',
-        email: req.user.email,
+        user: req.user,
+        passport: req.session.passport
     })
 )
 //(req, res) => userController.addUser(req, res));
 
-//FAIL LOGIN
-
-authRouter.get('fail-register', (req, res)=> res.status(403).json({
+//FAIL REGISTER
+authRouter.get('/fail-register', (req, res) => res.status(400).json({
     success: false,
-    message: 'Auth failed'
+    message: 'Register failed'
 })
 );
 
 // LOGIN
-authRouter.post('/login', isPasswordValid, (req, res, next) => authController.login(req, res, next));
+authRouter.post('/signin',
+    passport.authenticate(
+        'signin', { failureRedirect: '/api/auth/fail-signin' }),
+    // isPasswordValid, 
+    (req, res, next) => {
+        try {
+            req.session.email = req.user.email
+            req.session.role = req.user.role
+            res.status(201).json({
+                success: true,
+                message: 'User logged!',
+                passport: req.session.passport,
+                user: req.user
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+//FAIL SIGNIN
+authRouter.get('/fail-signin', (req, res) => {
+    const errors = req.flash('error');
+    return res.status(400).json({
+        success: false,
+        message: 'Auth failed',
+        errors: errors
+    });
+});
 
 // PRIVATE
 authRouter.get('/private', auth, (req, res) => authController.getPrivateContent(req, res));

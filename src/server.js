@@ -1,8 +1,12 @@
-import app from "./app.js"
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { Server } from "socket.io"
 import Chat from "./Business/Chat.js"
 import DataBaseProductAdapter from "./Business/adapters/DataBaseProductAdapter.js"
 import { DataBaseSessionAdapter, DataBaseConversationAdapter } from "./Business/adapters/DataBaseChatAdapter.js"
+
+import app from "./app.js"
 
 const PORT = 8080
 const ready = () => console.log(`Server ready on port: ${PORT}`)
@@ -14,6 +18,7 @@ socketServer.on("connection", (socket) => {
     const productAdapter = DataBaseProductAdapter.getInstance(process.env.MONGO_DB_URI);
     const sessionAdapter = DataBaseSessionAdapter.getInstance(process.env.MONGO_DB_URI);
     const conversationAdapter = DataBaseConversationAdapter.getInstance(process.env.MONGO_DB_URI);
+    
     const chat = new Chat(socket, productAdapter, sessionAdapter, conversationAdapter);
 
     socket.on("auth", (userName) => {

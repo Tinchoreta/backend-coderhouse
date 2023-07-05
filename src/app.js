@@ -22,6 +22,7 @@ import mongoStore from 'connect-mongo';
 import passport from 'passport';
 import inicializePassport from './config/passportLocal.js';
 
+import flash from 'connect-flash';
 
 // import Address from './models/address.model.js';
 // import Customer from './models/customer.model.js';
@@ -48,6 +49,8 @@ async function connect() {
 //Conectar la base de datos
 connect();
 
+
+
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);
 
@@ -60,10 +63,12 @@ app.use(expressSession(
         saveUninitialized: true,
         store: mongoStore.create({
             mongoUrl: process.env.MONGO_DB_URI,
-            ttl: 10000
+            ttl: 1000000
         })
     }
 ));
+
+app.use(flash());
 
 // // Middleware de prueba
 // app.use((req, res, next) => {

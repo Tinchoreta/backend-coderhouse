@@ -81,7 +81,7 @@ async function handleRegisterFormSubmit(event) {
         Swal.fire({
             icon: "success",
             title: "Éxito",
-            text: "¡Registro exitoso! ID de usuario: " + registeredUser.email,
+            text: "¡Registro exitoso! ID de usuario: " + registeredUser.user.email,
             customClass: {
                 container: "my-swal-container",
                 icon: "my-swal-icon",
