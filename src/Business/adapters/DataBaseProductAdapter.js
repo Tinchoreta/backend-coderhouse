@@ -1,7 +1,6 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import ProductModel from '../../models/product.model.js';
-import mongoose from 'mongoose';
 
 class DataBaseProductAdapter {
     static instance = null;
@@ -22,13 +21,20 @@ class DataBaseProductAdapter {
         return DataBaseProductAdapter.instance;
     }
 
-    async getProducts(limit = 6, page = 1, sort = "", query = {}) {
+    async getProducts(limit = 6, page = 1, sort = "", title = "") {
         try {
             const options = {
                 limit: !Number.isNaN(parseInt(limit)) ? parseInt(limit) : 6,
                 page: !Number.isNaN(parseInt(page)) ? parseInt(page) : 1,
-                sort: {}
+                sort: {},
             };
+
+            const query = {};
+
+            // Verificar si se proporcionó un título
+            if (title) {
+                query.title = { $regex: new RegExp(`^${title}`, "i") };
+            }
 
             // Verificar si se proporcionó una ordenación
             if (sort === "name-asc") {
@@ -47,54 +53,16 @@ class DataBaseProductAdapter {
                 options.sort = { price: -1 };
             }
 
-            //Gestionar todos los aggregation stages
-            const aggregationStages = [
-                {
-                    $match: query,
-                },
-                ...(Object.keys(options.sort).length !== 0 ? [{ $sort: options.sort }] : []),
-                {
-                    $facet: {
-                        paginatedResults: [
-                            { $skip: (options.page - 1) * options.limit },
-                            { $limit: options.limit },
-                        ],
-                        totalCount: [
-                            {
-                                $count: "count",
-                            },
-                        ],
-                    },
-                },
-            ];
+            const result = await this.model.paginate(query, options);
 
-            // Realizar la consulta utilizando aggregates y paginate de Mongoose
-            const result = await this.model.aggregate(aggregationStages).collation({ locale: "en" });
-
-            // Extraer los resultados paginados y el total de elementos
-            const products = result[0]?.paginatedResults;
-            const totalCount = result[0]?.totalCount[0]?.count;
-
-            return { products, totalCount };
+            return result;
         } catch (error) {
             throw new Error(`getProducts: ${error.message}`);
         }
     }
 
-    #isValidProductId(productId) {
-        try {
-            let isValid = mongoose.isValidObjectId(productId);
-            return isValid;
-        } catch (error) {
-            throw new Error(`isValidProductId: ${error.message}`);
-        }
-    }
-
     async getProductById(idProduct) {
         try {
-            let isValidId = this.#isValidProductId(idProduct)
-            if (!isValidId) return null;
-
             return await this.persistenceManager.getOne({ _id: idProduct });
         } catch (error) {
             throw new Error(`getProductById: ${error.message}`);
@@ -133,14 +101,12 @@ class DataBaseProductAdapter {
 
             const isDeleted = await this.persistenceManager.deleteOne({ _id: id });
 
-            // console.log(result + ' deleted adapter');
-
             return isDeleted;
-
         } catch (error) {
             throw new Error(`deleteProduct: ${error.message}`);
         }
     }
+
     async getProductByTitleAndDescription(title, description) {
         try {
             // Construir los criterios de búsqueda
@@ -154,21 +120,9 @@ class DataBaseProductAdapter {
 
             return products;
         } catch (error) {
-
             throw new Error(`getProductByTitleAndDescription: ${error.message}`);
         }
     }
-
-    // async populateCartsWithProducts(carts) {
-    //     try {
-    //         const populatedCarts = await this.persistenceManager.populateMany(carts, { path: 'products' });
-    //         return populatedCarts;
-    //     } catch (error) {
-    //         throw new Error(`populateCartsWithProducts: ${error.message}`);
-    //     }
-    // }
-
-
 }
 
 export default DataBaseProductAdapter;
