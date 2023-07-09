@@ -43,7 +43,7 @@ authRouter.post('/register',
         passport: req.session.passport
     })
 )
-//(req, res) => userController.addUser(req, res));
+//(req, res) => userController.addUser(req, res)); //Esto se realizará en el passportConfig register.
 
 //FAIL REGISTER
 authRouter.get('/fail-register', (req, res) => res.status(400).json({
@@ -56,7 +56,7 @@ authRouter.get('/fail-register', (req, res) => res.status(400).json({
 authRouter.post('/signin',
     passport.authenticate(
         'signin', { failureRedirect: '/api/auth/fail-signin' }),
-    // isPasswordValid, 
+    isPasswordValid, 
     (req, res, next) => {
         try {
             req.session.email = req.user.email
