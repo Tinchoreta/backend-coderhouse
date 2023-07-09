@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
 
 import { Server } from "socket.io"
 import Chat from "./Business/Chat.js"
@@ -8,7 +7,8 @@ import { DataBaseSessionAdapter, DataBaseConversationAdapter } from "./Business/
 
 import app from "./app.js"
 
-const PORT = 8080
+// dotenv.config();
+const PORT = process.env.PORT || 8080
 const ready = () => console.log(`Server ready on port: ${PORT}`)
 
 const httpServer = app.listen(PORT, ready)

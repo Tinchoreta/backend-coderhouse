@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+//Para importar las variables de entorno de .env
+dotenv.config();
+
 import express from 'express';
 import { join } from 'path';
 import logger from 'morgan';
@@ -13,25 +17,37 @@ import { cartMiddleware } from './middlewares/cartMiddleware.js';
 import Handlebars from './helpers/handlebarsHelper.js';
 import __dirname from './utils.js'
 
-import dotenv from 'dotenv';
+
 
 // import { faker } from '@faker-js/faker';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
 import mongoStore from 'connect-mongo';
 import passport from 'passport';
-import inicializePassport from './config/passportLocal.js';
+import inicializePassport from './config/passportConfig.js';
 
 import flash from 'connect-flash';
 
 // import Address from './models/address.model.js';
 // import Customer from './models/customer.model.js';
 
+
+// Obtén los valores de las variables de entorno
+const {
+    GH_APP_ID,
+    GH_CLIENT_ID,
+    GH_CLIENT_SECRET,
+    GH_CALLBACK,
+    // Agrega aquí las demás variables de entorno que necesites
+} = process.env;
+
+// Imprime los valores de las variables de entorno en la consola
+console.log('GH_APP_ID:', GH_APP_ID);
+console.log('GH_CLIENT_ID:', GH_CLIENT_ID);
+console.log('GH_CLIENT_SECRET:', GH_CLIENT_SECRET);
+console.log('GH_CALLBACK:', GH_CALLBACK);
+
 const app = express();
-
-
-//Para importar las variables de entorno de .env
-dotenv.config();
 
 let URI = process.env.MONGO_DB_URI;
 
@@ -68,6 +84,12 @@ app.use(expressSession(
     }
 ));
 
+//Passport 
+
+inicializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(flash());
 
 // // Middleware de prueba
@@ -86,11 +108,7 @@ app.use('/', mainRouter);
 app.use('/', express.static(join(__dirname, '../public')));
 
 
-//Passport 
 
-inicializePassport();
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 //template engine

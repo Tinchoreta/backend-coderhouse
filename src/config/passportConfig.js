@@ -1,8 +1,41 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import User from "../models/user.model.js";
+import GHStrategy from "passport-github2";
+import dotenv from 'dotenv';
+
+dotenv.config();
+const {GH_APP_ID, GH_CLIENT_ID, GH_CLIENT_SECRET, GH_CALLBACK } = process.env;
+
 
 async function inicializePassport() {
+
+    passport.use(
+        'github',
+        new GHStrategy(
+            { clientID: GH_CLIENT_ID, clientSecret: GH_CLIENT_SECRET, callbackURL: GH_CALLBACK },
+            async (accessToken, refreshToken, profile, done) => {
+                try {
+                    //console.log(profile)
+                    let one = await User.findOne({ email: profile._json.login })
+                    if (!one) {
+                        let user = await User.create({
+                            name: profile._json.name,
+                            email: profile._json.login,
+                            age: 18,
+                            photo: profile._json.avatar_url,
+                            password: profile._json.id
+                        })
+                        return done(null, user)
+                    }
+                    return done(null, one)
+                } catch (error) {
+                    return done(error)
+                }
+            }
+        )
+    )
+
     
     passport.use(
         'register',
@@ -29,10 +62,7 @@ async function inicializePassport() {
             async (username, password, done) => {
                 try {
                     let one = await User.findOne({ email: username })
-                    console.log(one);
-                    // if (one) {
-                    //     return done(null, one)
-                    // }
+                    // console.log(one);
                     return done(null, one)
                 } catch (error) {
                     return done(error)
@@ -50,7 +80,7 @@ passport.serializeUser(
 passport.deserializeUser(
     async (id, done) => {
         const user = await User.findById({ _id: id });
-        console.log(id);
+        // console.log(id);
         done(null, user)
     }
 );

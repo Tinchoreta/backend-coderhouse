@@ -89,5 +89,23 @@ authRouter.get('/private', auth, (req, res) => authController.getPrivateContent(
 // LOGOUT
 authRouter.post('/logout', (req, res, next) => authController.logout(req, res, next));
 
+//GH REGISTER
+authRouter.get('/github',
+    passport.authenticate('github', { scope: ['user:email'] }),
+    (req, res) => res.status(201).json({
+        success: true,
+        message: 'user created!',
+        passport: req.session.passport,
+        user: req.user
+    })
+)
+authRouter.get('/github/callback',
+    passport.authenticate('github', { failureRedirect: '/api/auth/fail-register' }),
+    (req, res) => {
+        req.session.user = req.user
+        return res.redirect('/')
+    }
+)
+
 
 export default authRouter;
