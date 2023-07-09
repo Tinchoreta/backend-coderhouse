@@ -32,20 +32,19 @@ import flash from 'connect-flash';
 // import Customer from './models/customer.model.js';
 
 
-// Obtén los valores de las variables de entorno
-const {
-    GH_APP_ID,
-    GH_CLIENT_ID,
-    GH_CLIENT_SECRET,
-    GH_CALLBACK,
-    // Agrega aquí las demás variables de entorno que necesites
-} = process.env;
+// const {
+//     GH_APP_ID,
+//     GH_CLIENT_ID,
+//     GH_CLIENT_SECRET,
+//     GH_CALLBACK,
+    
+// } = process.env;
 
-// Imprime los valores de las variables de entorno en la consola
-console.log('GH_APP_ID:', GH_APP_ID);
-console.log('GH_CLIENT_ID:', GH_CLIENT_ID);
-console.log('GH_CLIENT_SECRET:', GH_CLIENT_SECRET);
-console.log('GH_CALLBACK:', GH_CALLBACK);
+
+// console.log('GH_APP_ID:', GH_APP_ID);
+// console.log('GH_CLIENT_ID:', GH_CLIENT_ID);
+// console.log('GH_CLIENT_SECRET:', GH_CLIENT_SECRET);
+// console.log('GH_CALLBACK:', GH_CALLBACK);
 
 const app = express();
 

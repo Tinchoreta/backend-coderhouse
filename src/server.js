@@ -1,4 +1,5 @@
-// import dotenv from 'dotenv';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import { Server } from "socket.io"
 import Chat from "./Business/Chat.js"
