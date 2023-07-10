@@ -27,6 +27,7 @@ import passport from 'passport';
 import inicializePassport from './config/passportConfig.js';
 
 import flash from 'connect-flash';
+// import asyncHelper from 'handlebars-async';
 
 // import Address from './models/address.model.js';
 // import Customer from './models/customer.model.js';
@@ -82,6 +83,9 @@ app.use(expressSession(
         })
     }
 ));
+
+//Async handlebars for helpers
+// asyncHelper(Handlebars);
 
 //Passport 
 
