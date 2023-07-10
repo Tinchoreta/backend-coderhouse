@@ -1,4 +1,21 @@
 import Handlebars from 'handlebars';
+import DataBaseCartManagerAdapter from "../../src/Business/adapters/DataBaseCartManagerAdapter.js";
+import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
+import CartManagerController from "../../src/controllers/CartManagerController.js";
+import { cartMiddleware } from '../middlewares/cartMiddleware.js';
+
+const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
+    process.env.MONGO_DB_URI
+);
+
+const dataBaseCartAdapter =
+    DataBaseCartManagerAdapter.getInstance(process.env.MONGO_DB_URI);
+
+const cartController = new CartManagerController(
+    dataBaseCartAdapter,
+    dataBaseProductAdapter
+);
+
 
 // Helper para obtener el número de items en el carrito
 Handlebars.registerHelper('cartItemCount', function (options) {
@@ -15,11 +32,13 @@ Handlebars.registerHelper('cartItemCount', function (options) {
 
 // Helper para obtener el precio total del carrito
 Handlebars.registerHelper('cartTotal', function (options) {
-    const cartManager = options.data.root.cartManager;
+    // const cartManager = options.data.root.cartManager;
 
     // console.log('cartTotal helper:', cartManager); // Agregar este console.log
 
-    let result = cartManager?.calculateTotalPrice('64765d546145585e447a0436');
+    // let result = cartManager?.calculateTotalPrice('64765d546145585e447a0436');
+
+    let result = cartController.calculateCartTotalPrice() 64765d546145585e447a0436
 
     // console.log(result);
 

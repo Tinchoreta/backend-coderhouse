@@ -125,23 +125,24 @@ class ProductManagerController {
       );
       if (productFound) {
         return response.status(200).json({
-          success: true,
-          product: productFound,
+          status: 'success',
+          payload: productFound,
         });
       } else {
         return response.status(404).json({
-          success: false,
+          status: 'error',
           error: 'Product not found',
         });
       }
     } catch (error) {
       console.error(error);
       return response.status(500).json({
-        success: false,
+        status: 'error',
         error: 'Internal Server Error',
       });
     }
   }
+
 
   async updateProductItem(request, response) {
     const productId = request.params.id;
