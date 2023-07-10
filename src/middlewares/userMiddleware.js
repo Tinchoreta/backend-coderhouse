@@ -82,7 +82,7 @@ function createHashForPassword(req, res, next) {
 }
 
 async function isPasswordValid(req, res, next) {
-    console.log("Client Password:", req.body.pass);
+    console.log("Client Password:", req.body.password);
     console.log("Database Password:", req.user.password);
 
 

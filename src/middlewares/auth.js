@@ -34,7 +34,8 @@ function generateToken (req, res, next) {
         { email: req.body.email },
         process.env.SECRET,
         { expiresIn: 60 * 60 * 24 }
-    )
+    );
+    res.setHeader("Authorization", `Bearer ${req.token}`);
     return next()
 }
 

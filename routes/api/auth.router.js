@@ -70,7 +70,8 @@ authRouter.post('/signin',
                 success: true,
                 message: 'User logged!',
                 passport: req.session.passport,
-                user: req.user
+                user: req.user,
+                token: req.token
             })
         } catch (error) {
             next(error);
