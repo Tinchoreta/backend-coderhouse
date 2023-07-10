@@ -7,6 +7,7 @@ import {
   checkDuplicateProductFields,
 } from "../../src/middlewares/productMiddleware.js";
 
+import { auth, checkUserRole } from "../../src/middlewares/auth.js";
 
 const router = Router();
 
@@ -24,6 +25,8 @@ router.get("/:id",
 );
 
 router.post("/",
+  auth,
+  checkUserRole,
   (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next) ,
   validateProductFields, 
 

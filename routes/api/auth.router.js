@@ -1,5 +1,9 @@
 import { Router } from "express";
-import auth from '../../src/middlewares/auth.js';
+import {
+    auth,
+    generateToken,
+    checkUserRole
+} from '../../src/middlewares/auth.js';
 import AuthController from '../../src/controllers/AuthController.js';
 import UserManagerController from "../../src/controllers/UserManagerController.js";
 import DataBaseUserAdapter from "../../src/Business/adapters/DataBaseUserAdapter.js";
@@ -57,6 +61,7 @@ authRouter.post('/signin',
     passport.authenticate(
         'signin', { failureRedirect: '/api/auth/fail-signin' }),
     isPasswordValid, 
+    generateToken,
     (req, res, next) => {
         try {
             req.session.email = req.user.email
