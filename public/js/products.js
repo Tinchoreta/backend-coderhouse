@@ -2,60 +2,78 @@ const loginBtnModal = document.getElementById('loginBtnModal');
 const loginBtn = document.getElementById('loginBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
-function loginUser(emailId, passwordId) {
+async function loginUser(emailId, passwordId) {
     const email = document.getElementById(emailId).value;
-    const pass = document.getElementById(passwordId).value;
+    const password = document.getElementById(passwordId).value;
 
-    fetch('http://localhost:8080/api/auth/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            mail: email,
-            pass: pass
-        }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                sessionStorage.setItem('username', email);
-                updateUI();
-                console.log("Login Success");
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/api/auth/signin', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                if (data.success) {
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('username', email);
+                    window.location = '/products';
+                    console.log("Login Success");
+                } else {
+                    alert("Invalid Credentials");
+                }
             } else {
-                alert("Invalid Credentials");
+                console.error('Error:', xhr.statusText);
             }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        const body = JSON.stringify({ email, password });
+        xhr.send(body);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
-loginBtnModal.addEventListener('click', (event) => {
+loginBtnModal.addEventListener('click', async (event) => {
     event.preventDefault();
-    loginUser('inputEmail', 'inputPassword');
+    await loginUser('inputEmail', 'inputPassword');
 });
 
-loginBtn.addEventListener('click', (event) => {
+loginBtn.addEventListener('click', async (event) => {
     event.preventDefault();
-    // loginUser('inputEmail', 'inputPassword');
+    await loginUser('inputEmail', 'inputPassword');
 });
 
-logoutBtn.addEventListener('click', function (event) {
+logoutBtn.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    fetch('http://localhost:8080/api/auth/logout', {
-        method: 'POST',
-    })
-        .then(response => {
-            if (response.ok) {
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/api/auth/logout', true);
+        xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
                 sessionStorage.removeItem('username');
                 updateUI();
             } else {
                 console.error('Failed to logout');
             }
-        })
-        .catch(error => console.error('Error:', error));
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        xhr.send();
+    } catch (error) {
+        console.error('Error:', error);
+    }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -63,6 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const titleFilterInput = document.getElementById('titleFilter');
     const filterText = document.getElementById('filterText');
     const clearFilterButton = document.getElementById('clearFilterButton');
+
+    const addProductLink = document.getElementById("addProductLink");
+    addProductLink.addEventListener("click", handleAddProductClick);
 
     updateUI();
 
@@ -117,5 +138,36 @@ function updateUI() {
         welcomeMessage.innerHTML = 'Welcome! Please log in.';
         loginLi.style.display = 'block';
         logoutLi.style.display = 'none';
+    }
+}
+
+async function handleAddProductClick(event) {
+    event.preventDefault();
+    const token = sessionStorage.getItem("token");
+
+    if (token) {
+        const url = "/new_product";
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const html = xhr.responseText;
+                document.documentElement.innerHTML = html;
+            } else if (xhr.status === 401) {
+                alert("No estás autorizado. Debes iniciar sesión primero.");
+            } else {
+                console.error('Error:', xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        xhr.send();
+    } else {
+        alert("No estás autorizado. Debes iniciar sesión primero.");
     }
 }

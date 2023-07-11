@@ -50,3 +50,12 @@ async function authenticateUser(email, password) {
         console.error('Error:', error);
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+        fetch.setDefaultHeaders({
+            'Authorization': `Bearer ${token}`,
+        });
+    }
+});

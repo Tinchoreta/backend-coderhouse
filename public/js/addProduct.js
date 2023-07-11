@@ -83,3 +83,21 @@ async function addProductToInventory(event) {
 document
     .getElementById("productForm")
     .addEventListener("submit", addProductToInventory);
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    
+    updateUI();
+
+});
+
+function updateUI() {
+    const username = sessionStorage.getItem('username');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+
+    if (username) {
+        welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
+    } else {
+        welcomeMessage.innerHTML = 'Welcome! Please log in.';
+    }
+}

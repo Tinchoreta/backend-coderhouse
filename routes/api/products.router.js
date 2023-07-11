@@ -25,8 +25,8 @@ router.get("/:id",
 );
 
 router.post("/",
-  auth,
-  checkUserRole,
+  // auth,
+  // checkUserRole,
   (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next) ,
   validateProductFields, 
 
