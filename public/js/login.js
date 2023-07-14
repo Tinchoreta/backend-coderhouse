@@ -1,66 +1,61 @@
-
 const loginBtnModal = document.getElementById('loginBtnModal');
 const loginBtn = document.getElementById('loginBtn');
+const inputEmailModal = document.getElementById('inputEmail');
+const inputPasswordModal = document.getElementById('inputPassword');
+const inputEmail = document.getElementById('inputEmail1');
+const inputPassword = document.getElementById('inputPassword1');
 
-loginBtnModal.addEventListener('click', (event) => {
+function handleModalLogin(event) {
     event.preventDefault();
-    const email = document.getElementById('inputEmail').value;
-    const pass = document.getElementById('inputPassword').value;
+    const email = inputEmailModal.value;
+    const password = inputPasswordModal.value;
+    authenticateUser(email, password);
+}
 
-        
-        fetch('http://localhost:8080/api/auth/login', {
+function handleLogin(event) {
+    event.preventDefault();
+    const email = inputEmail.value;
+    const password = inputPassword.value;
+    authenticateUser(email, password);
+}
+
+loginBtnModal.addEventListener('click', handleModalLogin);
+loginBtn.addEventListener('click', handleLogin);
+
+async function authenticateUser(email, password) {
+    try {
+        const response = await fetch('http://localhost:8080/api/auth/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                mail:email, 
-                pass: pass 
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    sessionStorage.setItem('username', email);
-                    window.location = 'products';
-                    console.log("Login Success");
-                } else {
-                    alert("Invalid Credentials");
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-
-})
-
-loginBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    const email = document.getElementById('inputEmail1').value;
-    const pass = document.getElementById('inputPassword1').value;
-
-        
-        fetch('http://localhost:8080/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             },
             body: JSON.stringify({
-                mail: email,
-                pass: pass
+                email: email,
+                password: password,
             }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    sessionStorage.setItem('username', email);
-                    window.location = 'products';
-                    console.log("Login Success");
-                } else {
-                    alert("Invalid Credentials");
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-})
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('username', email);
+            window.location = '/products';
+            console.log("Login Success");
+        } else {
+            alert("Invalid Credentials");
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+        fetch.setDefaultHeaders({
+            'Authorization': `Bearer ${token}`,
+        });
+    }
+});

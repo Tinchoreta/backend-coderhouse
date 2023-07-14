@@ -1,22 +1,24 @@
+/**
+ * Controlador para gestionar el carrito de compras.
+ */
 class CartManagerController {
-
-    /*
-        LISTA DE CÓDIGOS DE ESTADO HTTP
-        200 “OK” – La respuesta para una solicitud HTTP exitosa. El resultado dependerá del tipo de solicitud.
-        201 “Created” – La solicitud se cumplió y el servidor creó un nuevo recurso.
-        204 “No Content” – El servidor cumplió con la solicitud pero no devolverá ningún contenido.
-        400 “Bad Request” – El servidor no puede devolver una respuesta válida debido a un error del lado del cliente. Las causas comunes son URL solicitadas con formato incorrecto, enrutamiento de solicitud engañoso, tamaño de archivo grande, etc.
-        404 “Not found” – Este es el error más frecuente que ven los usuarios en línea. Significa que el servidor no puede encontrar el recurso solicitado. Por lo general, la causa es que la URL a la que intentas acceder no existe.
-        500 “Internal Server Error” – Es un error genérico que indica que el servidor encontró una condición inesperada y no puede cumplir con la solicitud. El servidor te dice que hay algo mal, pero no está seguro de cuál es el problema.
-    */
-
+    /**
+     * Crea una nueva instancia del controlador del carrito de compras.
+     * @param {Object} cartManagerAdapter - Adaptador para gestionar el carrito.
+     * @param {Object} productManagerAdapter - Adaptador para gestionar los productos.
+     */
     constructor(cartManagerAdapter, productManagerAdapter) {
         this.cartManagerAdapter = cartManagerAdapter;
-        this.productAdapter = productManagerAdapter;
+        this.productManagerAdapter = productManagerAdapter;
     }
 
-    //Método privado, utilizado solo internamente y no puede accederse a él desde fuera de la clase
-
+    /**
+     * Método privado para validar si el carrito existe.
+     * @private
+     * @param {Object} res - Objeto de respuesta HTTP.
+     * @param {string} cid - ID del carrito.
+     * @returns {boolean|Object} - El carrito si existe, de lo contrario, false.
+     */
     #_validateCartExists = async (res, cid) => {
         try {
             const cart = await this.cartManagerAdapter.getCartById(cid);
@@ -32,10 +34,16 @@ class CartManagerController {
         }
     }
 
+    /**
+     * Método privado para validar si el producto existe.
+     * @private
+     * @param {Object} res - Objeto de respuesta HTTP.
+     * @param {string} pid - ID del producto.
+     * @returns {boolean|Object} - El producto si existe, de lo contrario, false.
+     */
     #_validateProductExists = async (res, pid) => {
         try {
-            const product = await this.productAdapter.getProductById(pid);
-
+            const product = await this.productManagerAdapter.getProductById(pid);
             if (!product) {
                 res.status(404).send('Product not found');
                 return false;
@@ -48,14 +56,33 @@ class CartManagerController {
         }
     }
 
+    /**
+     * Verifica si hay suficiente stock disponible para agregar al carrito.
+     * @private
+     * @param {number} availableUnits - Unidades disponibles.
+     * @param {number} unitsToAdd - Unidades a agregar.
+     * @returns {boolean} - `true` si hay suficiente stock, de lo contrario, `false`.
+     */
     #hasEnoughStock(availableUnits, unitsToAdd) {
         return availableUnits >= unitsToAdd;
     }
 
+    /**
+     * Envía una respuesta de error al cliente.
+     * @private
+     * @param {Object} res - Objeto de respuesta HTTP.
+     * @param {number} code - Código de estado HTTP del error.
+     * @param {string} message - Mensaje de error.
+     */
     #sendError(res, code, message) {
         res.status(code).json({ error: message });
     }
 
+    /**
+     * Crea un nuevo carrito.
+     * @param {Object} request - Objeto de solicitud HTTP.
+     * @param {Object} response - Objeto de respuesta HTTP.
+     */
     async createCart(request, response) {
         try {
             const addedCartId = await this.cartManagerAdapter.createCart();
@@ -73,12 +100,18 @@ class CartManagerController {
         } catch (error) {
             console.error(error);
             response.status(500).json({
-                sucess: false,
+                success: false,
                 error: "Error creating cart."
             });
         }
     }
 
+    /**
+     * Obtiene todos los carritos.
+     * @param {Object} request - Objeto de solicitud HTTP.
+     * @param {Object} response - Objeto de respuesta HTTP.
+     * @returns {Object} - La lista de carritos.
+     */
     async getCarts(request, response) {
         try {
             // const carts = await this.cartManagerAdapter.getCarts();
@@ -98,6 +131,12 @@ class CartManagerController {
         }
     }
 
+    /**
+     * Obtiene un carrito por su ID.
+     * @param {Object} request - Objeto de solicitud HTTP.
+     * @param {Object} response - Objeto de respuesta HTTP.
+     * @returns {Object} - El carrito encontrado.
+     */
     async getCartById(request, response) {
         try {
             const cartId = request.params.id;
@@ -122,6 +161,11 @@ class CartManagerController {
         }
     }
 
+    /**
+     * Actualiza un producto en el carrito.
+     * @param {Object} request - Objeto de solicitud HTTP.
+     * @param {Object} response - Objeto de respuesta HTTP.
+     */
     async updateCartItem(request, response) {
         const cartId = request.params.id;
         const updatedProduct = request.body;
@@ -129,6 +173,11 @@ class CartManagerController {
         response.status(200).json(updatedItem);
     }
 
+    /**
+     * Agrega unidades de un producto al carrito.
+     * @param {Object} req - Objeto de solicitud HTTP.
+     * @param {Object} res - Objeto de respuesta HTTP.
+     */
     async addProductUnitsToCart(req, res) {
         const cartId = req.params.cid;
         const productId = req.params.pid;
@@ -154,28 +203,16 @@ class CartManagerController {
         const currentUnits = productInCart ? productInCart.quantity : 0;
         const availableUnits = product.stock - currentUnits;
 
-        // console.log(availableUnits + ' units available');
-        // console.log(unitsToAdd + ' units to add');
-        // console.log(currentUnits + ' current units');
-
         if (!this.#hasEnoughStock(availableUnits, unitsToAdd)) {
             return this.#sendError(res, 400, 'Not enough stock');
         }
 
-        //Si hay más unidades para agregar que stock del producto, se agregan solo las unidades disponibles
-
         const unitsToAddRestrained = unitsToAdd > availableUnits ? availableUnits : unitsToAdd;
-
-        //Si existe el producto en el carrito, actualiza las unidades a comprar
 
         if (productInCart) {
             productInCart.quantity += unitsToAddRestrained;
-
-            //si no existe en el carrito, lo agrega al producto con las unidades requeridas
         } else {
-            // console.log(unitsToAddRestrained)
             cart.products.push({ productId, quantity: unitsToAddRestrained });
-            console.log(cart.products)
         }
 
         const updatedCart = await this.cartManagerAdapter.updateCart(cart);
@@ -183,7 +220,11 @@ class CartManagerController {
         res.send(updatedCart);
     }
 
-
+    /**
+     * Elimina unidades de un producto del carrito.
+     * @param {Object} req - Objeto de solicitud HTTP.
+     * @param {Object} res - Objeto de respuesta HTTP.
+     */
     async removeProductUnitsFromCart(req, res) {
         try {
             const cartId = req.params.cid;
@@ -195,14 +236,14 @@ class CartManagerController {
             }
 
             const cart = await this.#_validateCartExists(res, cartId);
-            // console.log(cart)
-            if (!cart || typeof (cart) === 'undefined') {
+
+            if (!cart || typeof cart === 'undefined') {
                 return this.#sendError(res, 404, 'Cart not found');
             }
 
             const product = await this.#_validateProductExists(res, productId);
-            // console.log(product)
-            if (!product || typeof (product) === 'undefined') {
+
+            if (!product || typeof product === 'undefined') {
                 return this.#sendError(res, 404, 'Product not found');
             }
 
@@ -211,23 +252,19 @@ class CartManagerController {
             if (itemInCart) {
                 if (unitsToRemove >= itemInCart.quantity) {
                     unitsToRemove = itemInCart.quantity;
-                    // console.log(unitsToRemove + " units to remove")
                 }
             }
 
-            // console.log(product)
             // Se actualiza la cantidad del producto en el carrito
             const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
             if (cartItemIndex !== -1) {
                 cart.products[cartItemIndex].quantity -= unitsToRemove;
-                // console.log(cart.products[cartItemIndex].quantity)
                 if (cart.products[cartItemIndex].quantity === 0) {
-                    //Se borra directamente el producto del carrito
+                    // Se borra directamente el producto del carrito
                     cart.products.splice(cartItemIndex, 1);
-                    // console.log(cart)
                 }
             }
-            // console.log(cart)
+
             const updatedCart = await this.cartManagerAdapter.updateCart(cart);
 
             return res.status(200).json(updatedCart);
@@ -237,6 +274,11 @@ class CartManagerController {
         }
     }
 
+    /**
+     * Elimina un producto del carrito.
+     * @param {Object} req - Objeto de solicitud HTTP.
+     * @param {Object} res - Objeto de respuesta HTTP.
+     */
     async removeProductFromCart(req, res) {
         try {
             const cartId = req.params.cid;
@@ -269,6 +311,11 @@ class CartManagerController {
         }
     }
 
+    /**
+     * Calcula el precio total del carrito.
+     * @param {Object} req - Objeto de solicitud HTTP.
+     * @param {Object} res - Objeto de respuesta HTTP.
+     */
     async calculateCartTotalPrice(req, res) {
         try {
             const cartId = req.params.cid;
@@ -282,6 +329,11 @@ class CartManagerController {
         }
     }
 
+    /**
+     * Elimina un carrito.
+     * @param {Object} request - Objeto de solicitud HTTP.
+     * @param {Object} response - Objeto de respuesta HTTP.
+     */
     async deleteCart(request, response) {
         const cartId = request.params.id;
         await this.cartManagerAdapter.deleteCart(cartId);

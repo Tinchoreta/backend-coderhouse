@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+//Para importar las variables de entorno de .env
+dotenv.config();
+
 import express from 'express';
 import { join } from 'path';
 import logger from 'morgan';
@@ -13,20 +17,37 @@ import { cartMiddleware } from './middlewares/cartMiddleware.js';
 import Handlebars from './helpers/handlebarsHelper.js';
 import __dirname from './utils.js'
 
-import dotenv from 'dotenv';
+
 
 // import { faker } from '@faker-js/faker';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
+import mongoStore from 'connect-mongo';
+import passport from 'passport';
+import inicializePassport from './config/passportConfig.js';
+
+import flash from 'connect-flash';
+// import asyncHelper from 'handlebars-async';
 
 // import Address from './models/address.model.js';
 // import Customer from './models/customer.model.js';
 
+
+// const {
+//     GH_APP_ID,
+//     GH_CLIENT_ID,
+//     GH_CLIENT_SECRET,
+//     GH_CALLBACK,
+    
+// } = process.env;
+
+
+// console.log('GH_APP_ID:', GH_APP_ID);
+// console.log('GH_CLIENT_ID:', GH_CLIENT_ID);
+// console.log('GH_CLIENT_SECRET:', GH_CLIENT_SECRET);
+// console.log('GH_CALLBACK:', GH_CALLBACK);
+
 const app = express();
-
-
-//Para importar las variables de entorno de .env
-dotenv.config();
 
 let URI = process.env.MONGO_DB_URI;
 
@@ -44,6 +65,8 @@ async function connect() {
 //Conectar la base de datos
 connect();
 
+
+
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);
 
@@ -53,9 +76,24 @@ app.use(expressSession(
     {
         secret: process.env.SECRET_SESSION,
         resave: true,
-        saveUninitialized: true
+        saveUninitialized: true,
+        store: mongoStore.create({
+            mongoUrl: process.env.MONGO_DB_URI,
+            ttl: 1000000
+        })
     }
 ));
+
+//Async handlebars for helpers
+// asyncHelper(Handlebars);
+
+//Passport 
+
+inicializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(flash());
 
 // // Middleware de prueba
 // app.use((req, res, next) => {
@@ -74,6 +112,8 @@ app.use('/', express.static(join(__dirname, '../public')));
 
 
 
+
+
 //template engine
 app.engine('handlebars', engine({ handlebars: Handlebars }));
 
@@ -83,6 +123,7 @@ app.set('view engine', 'handlebars');
 app.use(errorHandler);
 app.use(notFoundHandler);
 
+export default app;
 
 // async function populateCustomers(){
 //     // Crear e insertar 10 clientes con direcciones
@@ -155,4 +196,3 @@ app.use(notFoundHandler);
 //     await customer.save();
 // } 
 
-export default app;

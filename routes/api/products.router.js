@@ -4,9 +4,10 @@ import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductA
 import {
   validateProductExistence,
   validateProductFields,
-  checkDuplicateProductFields, 
+  checkDuplicateProductFields,
 } from "../../src/middlewares/productMiddleware.js";
 
+import { auth, checkUserRole } from "../../src/middlewares/auth.js";
 
 const router = Router();
 
@@ -23,9 +24,11 @@ router.get("/:id",
   (req, res) => productController.getProductById(req, res)
 );
 
-router.post("/", 
-validateProductFields, 
-checkDuplicateProductFields, 
+router.post("/",
+  // auth,
+  // checkUserRole,
+  (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next) ,
+  validateProductFields, 
 
   (req, res) => productController.addProduct(req, res));
 

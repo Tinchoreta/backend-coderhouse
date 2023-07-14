@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 import DataBaseUserAdapter from '../Business/adapters/DataBaseUserAdapter.js';
 
 class AuthController {
@@ -36,17 +36,18 @@ class AuthController {
                 return response.status(401).json({ success: false, error: "Invalid email or password" });
             }
 
-            // Verificar la contraseña
-            const isMatch = await bcrypt.compare(pass, user.password);
-            if (!isMatch) {
-                return response.status(401).json({ success: false, error: "Invalid email or password" });
-            }
+            // // Verificar la contraseña
+            // const isMatch = await bcrypt.compare(pass, user.password);
+            // if (!isMatch) {
+            //     return response.status(401).json({ success: false, error: "Invalid email or password" });
+            // }
 
-            request.session.mail = mail;
+            request.session.email = mail;
+            request.session.role = user.role;
 
             return response.status(200).json({
                 success: true,
-                message: `${request.session.mail} ha iniciado sesión`
+                message: `${request.session.email} ha iniciado sesión`
             });
         } catch (error) {
             console.error("Error logging in:", error);

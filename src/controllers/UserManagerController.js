@@ -4,7 +4,7 @@ class UserManagerController {
         this.userManagerAdapter = userManagerAdapter;
     }
 
-    async addUser(request, response, next) {
+    async addUser(request, response) {
         try {
             const userData = request.body;
             if (!userData || Object.keys(userData).length === 0) {
@@ -13,7 +13,6 @@ class UserManagerController {
                     error: "Bad Request: No user data provided",
                 });
             }
-
             const addedUser = await this.createUser(userData);
             response.status(201).json(addedUser);
         } catch (error) {

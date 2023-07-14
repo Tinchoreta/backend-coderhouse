@@ -1,51 +1,91 @@
-
 const loginBtnModal = document.getElementById('loginBtnModal');
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 
+async function loginUser(emailId, passwordId) {
+    const email = document.getElementById(emailId).value;
+    const password = document.getElementById(passwordId).value;
 
-// loginBtnModal.addEventListener('click', (event) => {
-//     event.preventDefault();
-//     const email = document.getElementById('inputEmail').value;
-//     const pass = document.getElementById('inputPassword').value;
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/api/auth/signin', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
 
-//     if (String(email).trim() === 'tinchoreta@gmail.com' && String(pass).trim() === 'Cocohueso23') {
-//         window.location = 'products';
-//         sessionStorage.setItem('username', email);
-//         console.log("Login Success");
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                if (data.success) {
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('username', email);
+                    window.location = '/products';
+                    console.log("Login Success");
+                } else {
+                    alert("Invalid Credentials");
+                }
+            } else {
+                console.error('Error:', xhr.statusText);
+            }
+        };
 
-//     } else {
-//         alert("Invalid Credentials")
-//     }
-// })
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        const body = JSON.stringify({ email, password });
+        xhr.send(body);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+loginBtnModal.addEventListener('click', async (event) => {
+    event.preventDefault();
+    await loginUser('inputEmail', 'inputPassword');
+});
+
+loginBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+    await loginUser('inputEmail', 'inputPassword');
+});
+
+logoutBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/api/auth/logout', true);
+        xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                sessionStorage.removeItem('username');
+                updateUI();
+            } else {
+                console.error('Failed to logout');
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        xhr.send();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     const sortSelect = document.getElementById('sortSelect');
     const titleFilterInput = document.getElementById('titleFilter');
     const filterText = document.getElementById('filterText');
     const clearFilterButton = document.getElementById('clearFilterButton');
-    const welcomeMessage = document.getElementById('welcomeMessage');
 
-    //Obtener el usuario (email)
-    const username = sessionStorage.getItem('username') || 'User';
-    welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
-    console.log('Username:', username);
+    const addProductLink = document.getElementById("addProductLink");
+    addProductLink.addEventListener("click", handleAddProductClick);
 
-
-    // Obtener los parámetros de la URL
-    const queryParams = new URLSearchParams(window.location.search);
-    const selectedOption = queryParams.get('sort');
-    const titleFilterValue = queryParams.get('title');
-
-    // Establecer la opción seleccionada en el elemento sortSelect
-    if (selectedOption) {
-        sortSelect.value = selectedOption;
-    }
-
-    // Establecer el valor del filtro de título
-    if (titleFilterValue) {
-        titleFilterInput.value = titleFilterValue;
-        filterText.textContent = `Filtered by: ${titleFilterValue}`;
-        clearFilterButton.style.display = 'inline-block';
-    }
+    updateUI();
 
     sortSelect.addEventListener('change', () => {
         const selectedOption = sortSelect.value;
@@ -81,4 +121,53 @@ document.addEventListener("DOMContentLoaded", () => {
         titleFilterInput.value = '';
         updateQueryString('title', null);
     }
+
 });
+
+function updateUI() {
+    const username = sessionStorage.getItem('username');
+    const loginLi = document.getElementById('loginLi');
+    const logoutLi = document.getElementById('logoutLi');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+
+    if (username) {
+        welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
+        loginLi.style.display = 'none';
+        logoutLi.style.display = 'block';
+    } else {
+        welcomeMessage.innerHTML = 'Welcome! Please log in.';
+        loginLi.style.display = 'block';
+        logoutLi.style.display = 'none';
+    }
+}
+
+async function handleAddProductClick(event) {
+    event.preventDefault();
+    const token = sessionStorage.getItem("token");
+
+    if (token) {
+        const url = "/new_product";
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const html = xhr.responseText;
+                document.documentElement.innerHTML = html;
+            } else if (xhr.status === 401) {
+                alert("No estás autorizado. Debes iniciar sesión primero.");
+            } else {
+                console.error('Error:', xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        xhr.send();
+    } else {
+        alert("No estás autorizado. Debes iniciar sesión primero.");
+    }
+}

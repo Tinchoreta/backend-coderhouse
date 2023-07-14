@@ -5,7 +5,8 @@ import {
     validateUserExistence,
     validateUserFields,
     checkDuplicateUserEmail,
-    validatePasswordLength
+    validatePasswordLength,
+    createHashForPassword
 } from "../../src/middlewares/userMiddleware.js";
 
 const router = Router();
@@ -20,7 +21,11 @@ router.get("/", (req, res) => userController.getUsers(req, res));
 
 router.get("/:id", validateUserExistence, (req, res) => userController.getUserById(req, res));
 
-router.post("/", validateUserFields, checkDuplicateUserEmail, validatePasswordLength, (req, res) => userController.addUser(req, res));
+router.post("/", 
+validateUserFields, 
+checkDuplicateUserEmail, 
+validatePasswordLength,
+createHashForPassword, (req, res) => userController.addUser(req, res));
 
 router.put("/:id", validateUserExistence, (req, res) => userController.updateUser(req, res));
 

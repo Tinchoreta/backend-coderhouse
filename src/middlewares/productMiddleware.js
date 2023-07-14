@@ -66,8 +66,8 @@ async function validateProductFields(req, res, next) {
   next();
 }
 
-async function checkDuplicateProductFields(req, res, next) {
-  const dataBaseProductAdapter = await getDatabaseProductAdapter();
+async function checkDuplicateProductFields(dataBaseProductAdapter, req, res, next) {
+  // const dataBaseProductAdapter = await getDatabaseProductAdapter();
   const { title, description } = req.body;
 
   // Check if title and description already exist in the database
