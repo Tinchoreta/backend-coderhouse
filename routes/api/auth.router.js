@@ -1,11 +1,9 @@
 import { Router } from "express";
 import {
     auth,
-    generateToken,
-    checkUserRole
+    generateToken
 } from '../../src/middlewares/auth.js';
 import AuthController from '../../src/controllers/AuthController.js';
-import UserManagerController from "../../src/controllers/UserManagerController.js";
 import DataBaseUserAdapter from "../../src/Business/adapters/DataBaseUserAdapter.js";
 import passport from "passport";
 import {
@@ -16,11 +14,14 @@ import {
     isPasswordValid,
 } from "../../src/middlewares/userMiddleware.js";
 
+
+
+
 const dataBaseUserAdapter = DataBaseUserAdapter.getInstance(
     process.env.MONGO_DB_URI
 );
 
-const userController = new UserManagerController(dataBaseUserAdapter);
+
 const authController = new AuthController();
 
 const authRouter = Router();
@@ -66,9 +67,9 @@ authRouter.post('/signin',
         try {
             req.session.email = req.user.email
             req.session.role = req.user.role
-            res.status(201).json({
+            res.status(200).cookie('token', req.token,{maxAge: 60*60*1000}).json({
                 success: true,
-                message: 'User logged!',
+                message: 'User logged in ok!',
                 passport: req.session.passport,
                 user: req.user,
                 token: req.token

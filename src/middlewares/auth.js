@@ -41,7 +41,7 @@ function generateToken (req, res, next) {
 
 
 function checkUserRole(req, res, next) {
-    if (req.user && req.user.role === 1) {
+    if (req.user && req.user.role === 'admin') {
         // Si el usuario tiene el rol de administrador (role=1), pasa al siguiente middleware
         next();
     } else {

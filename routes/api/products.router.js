@@ -7,7 +7,10 @@ import {
   checkDuplicateProductFields,
 } from "../../src/middlewares/productMiddleware.js";
 
+import passportCall from "../../src/middlewares/passportCall.js";
+
 import { auth, checkUserRole } from "../../src/middlewares/auth.js";
+import passport from "passport";
 
 const router = Router();
 
@@ -27,6 +30,8 @@ router.get("/:id",
 router.post("/",
   // auth,
   // checkUserRole,
+  // passport.authenticate('jwt',{session: false}),
+  passportCall('jwt'),
   (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next) ,
   validateProductFields, 
 
