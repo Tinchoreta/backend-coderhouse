@@ -1,6 +1,19 @@
 import User from "../models/user.model.js"
 import jwt from "jsonwebtoken"
 
+/*
+{ expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
+'60s': El token expira en 60 segundos.
+'2m': El token expira en 2 minutos.
+'30m': El token expira en 30 minutos.
+'1h': El token expira en 1 hora.
+'2h': El token expira en 2 horas.
+'12h': El token expira en 12 horas.
+'1d': El token expira en 1 día.
+'7d': El token expira en 7 días.
+'30d': El token expira en 30 días.
+'365d': El token expira en 365 días.
+*/
 
 function auth(req, res, next) {
     const auth = req.headers.authorization
@@ -33,7 +46,7 @@ function generateToken (req, res, next) {
     req.token = jwt.sign(
         { email: req.body.email },
         process.env.SECRET,
-        { expiresIn: 60 * 60 * 24 }
+        { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
     );
     res.setHeader("Authorization", `Bearer ${req.token}`);
     return next()

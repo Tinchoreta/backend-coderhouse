@@ -72,17 +72,19 @@ app.use(cartMiddleware);
 
 //Sesion y cookies
 app.use(cookieParser(process.env.SECRET_COOKIE));
-app.use(expressSession(
-    {
-        secret: process.env.SECRET_SESSION,
-        resave: true,
-        saveUninitialized: true,
-        store: mongoStore.create({
-            mongoUrl: process.env.MONGO_DB_URI,
-            ttl: 1000000
-        })
-    }
-));
+
+//Ya no se usa porque usamos JWT
+// app.use(expressSession(
+//     {
+//         secret: process.env.SECRET_SESSION,
+//         resave: true,
+//         saveUninitialized: true,
+//         store: mongoStore.create({
+//             mongoUrl: process.env.MONGO_DB_URI,
+//             ttl: 1000000
+//         })
+//     }
+// ));
 
 //Async handlebars for helpers
 // asyncHelper(Handlebars);

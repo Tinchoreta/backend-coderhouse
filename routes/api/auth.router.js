@@ -4,7 +4,7 @@ import {
     generateToken
 } from '../../src/middlewares/auth.js';
 import AuthController from '../../src/controllers/AuthController.js';
-import DataBaseUserAdapter from "../../src/Business/adapters/DataBaseUserAdapter.js";
+// import DataBaseUserAdapter from "../../src/Business/adapters/DataBaseUserAdapter.js";
 import passport from "passport";
 import {
     validateUserFields,
@@ -13,13 +13,13 @@ import {
     createHashForPassword,
     isPasswordValid,
 } from "../../src/middlewares/userMiddleware.js";
+import jwtPassportCall from "../../src/middlewares/passportCall.js";
 
 
 
-
-const dataBaseUserAdapter = DataBaseUserAdapter.getInstance(
-    process.env.MONGO_DB_URI
-);
+// const dataBaseUserAdapter = DataBaseUserAdapter.getInstance(
+//     process.env.MONGO_DB_URI
+// );
 
 
 const authController = new AuthController();
@@ -90,11 +90,11 @@ authRouter.get('/fail-signin', (req, res) => {
     });
 });
 
-// PRIVATE
-authRouter.get('/private', auth, (req, res) => authController.getPrivateContent(req, res));
+// CURRENT
+authRouter.get('/current', auth, (req, res) => authController.getPrivateContent(req, res));
 
 // LOGOUT
-authRouter.post('/logout', (req, res, next) => authController.logout(req, res, next));
+authRouter.post('/logout', passport.authenticate('jwt', { session: false }), (req, res, next) => authController.logout(req, res, next));
 
 //GH REGISTER
 authRouter.get('/github',

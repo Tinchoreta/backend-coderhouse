@@ -70,7 +70,7 @@ class AuthController {
     async logout(request, response, next) {
         try {
             request.session.destroy();
-            return response.status(200).json({
+            return response.status(200).clearCookie('token').json({
                 success: true,
                 message: `ha cerrado sesión`
             });
