@@ -69,10 +69,10 @@ class AuthController {
 
     async logout(request, response, next) {
         try {
-            request.session.destroy();
+            // request.session.destroy();
             return response.status(200).clearCookie('token').json({
                 success: true,
-                message: `ha cerrado sesión`
+                message: `You have logged out!`
             });
         } catch (error) {
             console.error("Error logging out:", error);

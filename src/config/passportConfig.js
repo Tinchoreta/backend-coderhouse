@@ -10,7 +10,7 @@ const ExtractJwt = jwt.ExtractJwt;
 
 
 dotenv.config();
-const {GH_APP_ID, GH_CLIENT_ID, GH_CLIENT_SECRET, GH_CALLBACK } = process.env;
+const { GH_APP_ID, GH_CLIENT_ID, GH_CLIENT_SECRET, GH_CALLBACK } = process.env;
 
 
 async function inicializePassport() {
@@ -41,7 +41,7 @@ async function inicializePassport() {
         )
     )
 
-    
+
     passport.use(
         'register',
         new LocalStrategy({ passReqToCallback: true, usernameField: 'email' },

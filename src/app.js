@@ -21,12 +21,12 @@ import __dirname from './utils.js'
 
 // import { faker } from '@faker-js/faker';
 import cookieParser from 'cookie-parser';
-import expressSession from 'express-session';
-import mongoStore from 'connect-mongo';
+// import expressSession from 'express-session';
+// import mongoStore from 'connect-mongo';
 import passport from 'passport';
 import inicializePassport from './config/passportConfig.js';
 
-import flash from 'connect-flash';
+// import flash from 'connect-flash';
 // import asyncHelper from 'handlebars-async';
 
 // import Address from './models/address.model.js';
@@ -93,9 +93,9 @@ app.use(cookieParser(process.env.SECRET_COOKIE));
 
 inicializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
-app.use(flash());
+// app.use(flash());
 
 // // Middleware de prueba
 // app.use((req, res, next) => {

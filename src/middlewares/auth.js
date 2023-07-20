@@ -35,8 +35,10 @@ function auth(req, res, next) {
                     message: 'error de autorización!'
                 })
             }
-            let user = await User.findOne({ email: credentials.email })
-            req.user = user
+            req.user = { 
+                email: credentials.email,
+                role: credentials.role
+            };
             return next()
         }
     )
