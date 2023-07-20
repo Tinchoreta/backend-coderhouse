@@ -35,7 +35,7 @@ function auth(req, res, next) {
                     message: 'error de autorización!'
                 })
             }
-            req.user = { 
+            req.user = {
                 email: credentials.email,
                 role: credentials.role
             };
@@ -44,9 +44,12 @@ function auth(req, res, next) {
     )
 }
 
-function generateToken (req, res, next) {
+function generateToken(req, res, next) {
     req.token = jwt.sign(
-        { email: req.body.email },
+        {
+            email: req.body.email,
+            role: req.user.role,
+        },
         process.env.SECRET,
         { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
     );
@@ -68,4 +71,4 @@ function checkUserRole(req, res, next) {
 }
 
 
-export {auth, generateToken, checkUserRole};
+export { auth, generateToken, checkUserRole };
