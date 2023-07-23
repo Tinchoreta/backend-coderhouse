@@ -1,6 +1,6 @@
 import User from "../models/user.model.js"
 import jwt from "jsonwebtoken"
-
+import { config } from "../config/config.js"
 /*
 { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
 '60s': El token expira en 60 segundos.
@@ -27,7 +27,7 @@ function auth(req, res, next) {
     const token = auth.split(' ')[1]
     jwt.verify(
         token,
-        process.env.SECRET,
+        config.privateKeyJwt,
         async (error, credentials) => {
             if (error) {
                 return res.status(401).json({
@@ -50,7 +50,7 @@ function generateToken(req, res, next) {
             email: req.body.email,
             role: req.user.role,
         },
-        process.env.SECRET,
+        config.privateKeyJwt,
         { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
     );
     res.setHeader("Authorization", `Bearer ${req.token}`);

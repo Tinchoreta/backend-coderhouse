@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-//Para importar las variables de entorno de .env
-dotenv.config();
+// //Para importar las variables de entorno de .env
+// dotenv.config();
 
 import express from 'express';
 import { join } from 'path';
@@ -19,37 +19,24 @@ import __dirname from './utils.js'
 
 
 
-// import { faker } from '@faker-js/faker';
 import cookieParser from 'cookie-parser';
-// import expressSession from 'express-session';
-// import mongoStore from 'connect-mongo';
 import passport from 'passport';
 import inicializePassport from './config/passportConfig.js';
 
+import { config } from './config/config.js';
+
+// import { faker } from '@faker-js/faker';
 // import flash from 'connect-flash';
 // import asyncHelper from 'handlebars-async';
 
 // import Address from './models/address.model.js';
 // import Customer from './models/customer.model.js';
 
-
-// const {
-//     GH_APP_ID,
-//     GH_CLIENT_ID,
-//     GH_CLIENT_SECRET,
-//     GH_CALLBACK,
-    
-// } = process.env;
-
-
-// console.log('GH_APP_ID:', GH_APP_ID);
-// console.log('GH_CLIENT_ID:', GH_CLIENT_ID);
-// console.log('GH_CLIENT_SECRET:', GH_CLIENT_SECRET);
-// console.log('GH_CALLBACK:', GH_CALLBACK);
-
 const app = express();
 
-let URI = process.env.MONGO_DB_URI;
+// console.log(config);
+
+let URI = config.MONGO_DB_URI;
 
 let dataBaseStrategy = new DataBaseStrategy(URI);
 

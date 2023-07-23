@@ -9,7 +9,7 @@ const JWTstrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt;
 
 
-dotenv.config();
+// dotenv.config();
 const { GH_APP_ID, GH_CLIENT_ID, GH_CLIENT_SECRET, GH_CALLBACK } = process.env;
 
 
@@ -80,7 +80,7 @@ async function inicializePassport() {
         'jwt',
         new JWTstrategy({
             jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies['token']]),
-            secretOrKey: process.env.SECRET
+            secretOrKey: process.env.SECRET_KEY_JWT
         },
             async (jwtPayload, done) => {
                 try {
