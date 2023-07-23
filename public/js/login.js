@@ -39,8 +39,8 @@ async function authenticateUser(email, password) {
         const data = await response.json();
 
         if (data.success) {
-            // sessionStorage.setItem('token', data.token);
-            // sessionStorage.setItem('username', email);
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('username', email);
             window.location = '/products';
             console.log("Login Success");
         } else {
