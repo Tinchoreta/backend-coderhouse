@@ -1,13 +1,13 @@
 import { Router } from "express";
-import UserManagerController from "../../src/controllers/UserManagerController.js";
-import DataBaseUserAdapter from "../../src/Business/adapters/DataBaseUserAdapter.js";
+import UserManagerController from "../../controllers/UserManagerController.js";
+import DataBaseUserAdapter from "../../Business/adapters/DataBaseUserAdapter.js";
 import {
     validateUserExistence,
     validateUserFields,
     checkDuplicateUserEmail,
     validatePasswordLength,
     createHashForPassword
-} from "../../src/middlewares/userMiddleware.js";
+} from "../../middlewares/userMiddleware.js";
 
 const router = Router();
 

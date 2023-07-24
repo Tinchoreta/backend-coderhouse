@@ -3,7 +3,7 @@ import { join } from 'path';
 import logger from 'morgan';
 import { engine } from 'express-handlebars';
 
-import mainRouter from '../routes/index.js'
+import mainRouter from './routes/index.js'
 import DataBaseStrategy from './persistence/DataBaseStrategy.js';
 
 import errorHandler from './middlewares/errorHandler.js';
@@ -63,7 +63,7 @@ app.use('/', express.static(join(__dirname, '../public')));
 //template engine
 app.engine('handlebars', engine({ handlebars: Handlebars }));
 
-app.set('views', __dirname + '../../views');
+app.set('views', __dirname + './views');
 app.set('view engine', 'handlebars');
 
 app.use(errorHandler);

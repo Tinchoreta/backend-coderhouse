@@ -2,8 +2,8 @@ import { Router } from "express";
 import {
     auth,
     generateToken
-} from '../../src/middlewares/auth.js';
-import AuthController from '../../src/controllers/AuthController.js';
+} from '../../middlewares/auth.js';
+import AuthController from '../../controllers/AuthController.js';
 import passport from "passport";
 import {
     validateUserFields,
@@ -11,7 +11,7 @@ import {
     validatePasswordLength,
     createHashForPassword,
     isPasswordValid,
-} from "../../src/middlewares/userMiddleware.js";
+} from "../../middlewares/userMiddleware.js";
 
 
 const authController = new AuthController();

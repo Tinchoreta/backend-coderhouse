@@ -1,11 +1,11 @@
 import { Router } from "express";
-import CustomerManagerController from "../../src/controllers/CustomerManagerController.js";
-import DataBaseCustomerAdapter from "../../src/Business/adapters/DataBaseCustomerAdapter.js";
+import CustomerManagerController from "../../controllers/CustomerManagerController.js";
+import DataBaseCustomerAdapter from "../../Business/adapters/DataBaseCustomerAdapter.js";
 import {
     validateCustomerExistence,
     validateCustomerFields,
     checkDuplicateCustomerEmail,
-} from "../../src/middlewares/customerMiddleware.js";
+} from "../../middlewares/customerMiddleware.js";
 
 const router = Router();
 
