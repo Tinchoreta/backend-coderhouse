@@ -6,11 +6,11 @@ import __dirname from '../utils.js';
 console.log(commander.opts())
 const { mode } = commander.opts();
 
-// Obtén la ruta absoluta del directorio de la carpeta 'config'
+// Se obtiene la ruta absoluta del directorio de la carpeta 'config
 const configDir = path.resolve(__dirname);
 console.log(configDir);
 
-// Configura las rutas a los archivos .env.development y .env.production
+// Se configuran las rutas a los archivos .env.development y .env.production
 const envDevelopmentPath = path.join(configDir, '../.env.development');
 const envProductionPath = path.join(configDir, '../.env.production');
 
