@@ -2,14 +2,12 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import User from "../models/user.model.js";
 import GHStrategy from "passport-github2";
-import dotenv from 'dotenv';
 import jwt from 'passport-jwt';
 
 const JWTstrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt;
 
 
-// dotenv.config();
 const { GH_APP_ID, GH_CLIENT_ID, GH_CLIENT_SECRET, GH_CALLBACK } = process.env;
 
 
@@ -40,7 +38,6 @@ async function inicializePassport() {
             }
         )
     )
-
 
     passport.use(
         'register',

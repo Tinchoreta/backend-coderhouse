@@ -119,4 +119,4 @@ class DataBaseConversationAdapter {
     }
 }
 
-export { DataBaseSessionAdapter, DataBaseConversationAdapter };
+export { DataBaseSessionAdapter as DataBaseChatSessionAdapter, DataBaseConversationAdapter };

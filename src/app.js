@@ -13,7 +13,6 @@ import { cartMiddleware } from './middlewares/cartMiddleware.js';
 import Handlebars from './helpers/handlebarsHelper.js';
 import __dirname from './utils.js'
 
-import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import inicializePassport from './config/passportConfig.js';
 
@@ -41,10 +40,6 @@ connect();
 
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);
-
-//Sesion y cookies
-app.use(cookieParser(process.env.SECRET_COOKIE));
-
 
 //Passport 
 

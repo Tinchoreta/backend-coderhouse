@@ -6,7 +6,7 @@
 import { Server } from "socket.io"
 import Chat from "./Business/Chat.js"
 import DataBaseProductAdapter from "./Business/adapters/DataBaseProductAdapter.js"
-import { DataBaseSessionAdapter, DataBaseConversationAdapter } from "./Business/adapters/DataBaseChatAdapter.js"
+import { DataBaseChatSessionAdapter, DataBaseConversationAdapter } from "./Business/adapters/DataBaseChatAdapter.js"
 
 import app from "./app.js"
 
@@ -23,9 +23,9 @@ const socketServer = new Server(httpServer);
 
 socketServer.on("connection", (socket) => {
     const productAdapter = DataBaseProductAdapter.getInstance(config.MONGO_DB_URI);
-    const sessionAdapter = DataBaseSessionAdapter.getInstance(config.MONGO_DB_URI);
+    const sessionAdapter = DataBaseChatSessionAdapter.getInstance(config.MONGO_DB_URI);
     const conversationAdapter = DataBaseConversationAdapter.getInstance(config.MONGO_DB_URI);
-    
+
     const chat = new Chat(socket, productAdapter, sessionAdapter, conversationAdapter);
 
     socket.on("auth", (userName) => {

@@ -11,6 +11,7 @@ import {
     validatePasswordLength,
     createHashForPassword,
     isPasswordValid,
+    trimUserData,
 } from "../../middlewares/userMiddleware.js";
 
 
@@ -28,6 +29,7 @@ authRouter.post('/register',
     checkDuplicateUserEmail,
     validatePasswordLength,
     createHashForPassword,
+    trimUserData,
     passport.authenticate(
         'register', {
         failureRedirect: '/api/auth/fail-register'
@@ -94,7 +96,7 @@ authRouter.get('/github',
     })
 )
 authRouter.get('/github/callback',
-    passport.authenticate('github', {session:false, failureRedirect: '/api/auth/fail-register' }),
+    passport.authenticate('github', { session:false, failureRedirect: '/api/auth/fail-register' }),
     (req, res) => {
         
         return res.redirect('/')
