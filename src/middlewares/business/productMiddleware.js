@@ -1,4 +1,4 @@
-import DataBaseProductAdapter from "../Business/adapters/DataBaseProductAdapter.js";
+import DataBaseProductAdapter from "../../Business/adapters/DataBaseProductAdapter.js";
 
 // Función que devuelve el adaptador de la base de datos
 async function getDatabaseProductAdapter() {
@@ -13,7 +13,7 @@ async function validateProductExistence(req, res, next) {
   if (!productId) {
     return res.status(400).json({ success: false, error: "Invalid product ID" });
   }
-  
+
   const product = await dataBaseProductAdapter.getProductById(productId);
   if (!product) {
     return res.status(404).json({ success: false, error: "Product not found" });
@@ -79,4 +79,4 @@ async function checkDuplicateProductFields(dataBaseProductAdapter, req, res, nex
   next();
 }
 
-export { validateProductExistence, validateProductFields, checkDuplicateProductFields};
+export { validateProductExistence, validateProductFields, checkDuplicateProductFields };

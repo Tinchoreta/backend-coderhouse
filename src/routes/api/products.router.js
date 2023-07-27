@@ -5,11 +5,11 @@ import {
   validateProductExistence,
   validateProductFields,
   checkDuplicateProductFields,
-} from "../../middlewares/productMiddleware.js";
+} from "../../middlewares/business/productMiddleware.js";
 
-import passportCall from "../../middlewares/passportCall.js";
+import passportCall from "../../middlewares/auth/passportCall.js";
 
-import { auth, checkUserRole } from "../../middlewares/auth.js";
+import { auth, checkUserRole } from "../../middlewares/auth/auth.js";
 import passport from "passport";
 
 const router = Router();
@@ -32,8 +32,8 @@ router.post("/",
   // checkUserRole,
   // passport.authenticate('jwt',{session: false}),
   passportCall('jwt'),
-  (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next) ,
-  validateProductFields, 
+  (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next),
+  validateProductFields,
 
   (req, res) => productController.addProduct(req, res));
 

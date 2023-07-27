@@ -6,9 +6,9 @@ import { engine } from 'express-handlebars';
 import mainRouter from './routes/index.js'
 import DataBaseStrategy from './persistence/DataBaseStrategy.js';
 
-import errorHandler from './middlewares/errorHandler.js';
-import notFoundHandler from './middlewares/notFound.js';
-import { cartMiddleware } from './middlewares/cartMiddleware.js';
+import errorHandler from './middlewares/utils/errorHandler.js';
+import notFoundHandler from './middlewares/utils/notFound.js';
+import { cartMiddleware } from './middlewares/business/cartMiddleware.js';
 
 import Handlebars from './helpers/handlebarsHelper.js';
 import __dirname from './utils.js'

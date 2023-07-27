@@ -7,7 +7,7 @@ import userRouter from './users.router.js'
 
 const router = Router()
 
-router.use('/auth', authRouter)
+router.use('/auth', authRouter.getRouter())
 router.use('/carts', cartsRouter)
 router.use('/products', productsRouter)
 router.use('/sessions', sessionsRouter)

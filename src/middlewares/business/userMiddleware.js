@@ -1,4 +1,4 @@
-import DataBaseUserAdapter from "../Business/adapters/DataBaseUserAdapter.js";
+import DataBaseUserAdapter from "../../Business/adapters/DataBaseUserAdapter.js";
 import { hashSync, genSaltSync, compareSync } from "bcrypt";
 
 // Función que devuelve el adaptador de la base de datos
@@ -126,6 +126,6 @@ export {
     checkDuplicateUserEmail,
     validatePasswordLength,
     createHashForPassword,
-    isPasswordValid, 
+    isPasswordValid,
     trimUserData,
 };

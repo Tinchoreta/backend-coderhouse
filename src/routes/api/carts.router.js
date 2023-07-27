@@ -4,7 +4,7 @@ import { Router } from "express";
 import DataBaseCartManagerAdapter from "../../Business/adapters/DataBaseCartManagerAdapter.js";
 import DataBaseProductAdapter from "../../Business/adapters/DataBaseProductAdapter.js";
 import CartManagerController from "../../controllers/CartManagerController.js";
-import { checkProductExistenceInCart } from "../../middlewares/cartMiddleware.js";
+import { checkProductExistenceInCart } from "../../middlewares/business/cartMiddleware.js";
 
 
 const router = Router();

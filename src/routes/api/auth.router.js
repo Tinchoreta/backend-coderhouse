@@ -1,8 +1,9 @@
 import { Router } from "express";
+import CustomRouter from "../../middlewares/routes/CustomRouter.js";
 import {
     auth,
     generateToken
-} from '../../middlewares/auth.js';
+} from '../../middlewares/auth/auth.js';
 import AuthController from '../../controllers/AuthController.js';
 import passport from "passport";
 import {
@@ -12,15 +13,18 @@ import {
     createHashForPassword,
     isPasswordValid,
     trimUserData,
-} from "../../middlewares/userMiddleware.js";
+} from "../../middlewares/business/userMiddleware.js";
 
+import ROLES from "../../utils/roles.js";
 
 const authController = new AuthController();
 
-const authRouter = Router();
+const authRouter = new CustomRouter();
 
 // COUNTER
-authRouter.get('/', (req, res, next) => authController.getCounter(req, res, next));
+authRouter.get('/', 
+    [ROLES.PUBLIC],
+    (req, res, next) => authController.getCounter(req, res, next));
 
 //REGISTER
 
@@ -30,6 +34,7 @@ authRouter.post('/register',
     validatePasswordLength,
     createHashForPassword,
     trimUserData,
+    [ROLES.PUBLIC],
     passport.authenticate(
         'register', {
         failureRedirect: '/api/auth/fail-register'
@@ -44,7 +49,9 @@ authRouter.post('/register',
 //(req, res) => userController.addUser(req, res)); //Esto se realizará en el passportConfig register.
 
 //FAIL REGISTER
-authRouter.get('/fail-register', (req, res) => res.status(400).json({
+authRouter.get('/fail-register', 
+    [ROLES.PUBLIC], 
+    (req, res) => res.status(400).json({
     success: false,
     message: 'Register failed'
 })
@@ -52,14 +59,15 @@ authRouter.get('/fail-register', (req, res) => res.status(400).json({
 
 // LOGIN
 authRouter.post('/signin',
+    [ROLES.PUBLIC],
     passport.authenticate(
         'signin', { session: false, failureRedirect: '/api/auth/fail-signin' }),
-    isPasswordValid, 
+    isPasswordValid,
     generateToken,
     (req, res, next) => {
         try {
 
-            res.status(200).cookie('token', req.token,{maxAge: 60*60*1000}).json({
+            res.status(200).cookie('token', req.token, { maxAge: 60 * 60 * 1000 }).json({
                 success: true,
                 message: 'User logged in ok!',
                 user: req.user,
@@ -72,7 +80,9 @@ authRouter.post('/signin',
 );
 
 //FAIL SIGNIN
-authRouter.get('/fail-signin', (req, res) => {
+authRouter.get('/fail-signin', 
+    [ROLES.PUBLIC],
+    (req, res) => {
 
     return res.status(400).json({
         success: false,
@@ -81,13 +91,18 @@ authRouter.get('/fail-signin', (req, res) => {
 });
 
 // CURRENT
-authRouter.get('/current', auth, (req, res) => authController.getPrivateContent(req, res));
+authRouter.get('/current', 
+    [ROLES.ADMIN], 
+    (req, res) => authController.getPrivateContent(req, res));
 
 // LOGOUT
-authRouter.post('/logout', passport.authenticate('jwt', { session: false }), (req, res, next) => authController.logout(req, res, next));
+authRouter.post('/logout', 
+    [ROLES.PUBLIC], 
+    passport.authenticate('jwt', { session: false }), (req, res, next) => authController.logout(req, res, next));
 
 //GH REGISTER
 authRouter.get('/github',
+    [ROLES.PUBLIC],
     passport.authenticate('github', { session: false, scope: ['user:email'] }),
     (req, res) => res.status(201).json({
         success: true,
@@ -96,9 +111,10 @@ authRouter.get('/github',
     })
 )
 authRouter.get('/github/callback',
-    passport.authenticate('github', { session:false, failureRedirect: '/api/auth/fail-register' }),
+    [ROLES.PUBLIC],
+    passport.authenticate('github', { session: false, failureRedirect: '/api/auth/fail-register' }),
     (req, res) => {
-        
+
         return res.redirect('/')
     }
 )

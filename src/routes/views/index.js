@@ -6,7 +6,7 @@ import addProductRouter from "./addProduct.js"
 import productDetailsRouter from "./productDetails.js";
 import productSummaryRouter from "./cart.js";
 import CartViewController from "../../controllers/CartViewController.js";
-import { cartMiddleware } from "../../middlewares/cartMiddleware.js";
+import { cartMiddleware } from "../../middlewares/business/cartMiddleware.js";
 
 const viewRouter = Router();
 

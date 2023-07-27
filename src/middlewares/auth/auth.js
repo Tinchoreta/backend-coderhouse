@@ -1,6 +1,6 @@
-import User from "../models/user.model.js"
+import User from "../../models/user.model.js"
 import jwt from "jsonwebtoken"
-import { config } from "../config/config.js"
+import { config } from "../../config/config.js"
 /*
 { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
 '60s': El token expira en 60 segundos.
