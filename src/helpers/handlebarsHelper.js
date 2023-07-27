@@ -41,7 +41,7 @@ Handlebars.registerHelper('cartTotal', function (options) {
     let result = cartManager?.calculateTotalPrice('64765d546145585e447a0436');
     // let result = cartManager?.calculateTotalPrice('64765d546145585e447a0436');
 
-    console.log(result);
+    // console.log(result);
 
     return result;
 });

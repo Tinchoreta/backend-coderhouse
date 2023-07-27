@@ -156,7 +156,7 @@ async function handleAddProductClick(event) {
                 const html = xhr.responseText;
                 document.documentElement.innerHTML = html;
             } else if (xhr.status === 401) {
-                alert("No estás autorizado. Debes iniciar sesión primero.");
+                alert("No estás autorizado a ingresar a esta opción.");
             } else {
                 console.error('Error:', xhr.statusText);
             }
@@ -168,6 +168,6 @@ async function handleAddProductClick(event) {
 
         xhr.send();
     } else {
-        alert("No estás autorizado. Debes iniciar sesión primero.");
+        alert("No estás autorizado. Debes iniciar sesión como admin.");
     }
 }

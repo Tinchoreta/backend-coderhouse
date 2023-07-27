@@ -1,14 +1,13 @@
-import {model, Schema} from 'mongoose';
+import { model, Schema } from 'mongoose';
 
-const userSchema = new Schema({   
-    name: {
-        type: String,
-        required: true
-    },
-    photo: {
+const userSchema = new Schema({
+    firstName: {
         type: String,
         required: true,
-        default: "generic-user.jpg"
+    },
+    lastName: {
+        type: String,
+        required: true,
     },
     email: {
         type: String,
@@ -16,20 +15,27 @@ const userSchema = new Schema({
         unique: true,
         index: true,
     },
-    role: {
+    age: {
         type: Number,
         required: true,
-        default: 0
     },
     password: {
         type: String,
-        required: true
-    }    
+        required: true,
+    },
+    cart: {
+        type: Schema.Types.ObjectId,
+        ref: 'Cart',
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin', 'premium'],
+        default: 'user',
+    },
 });
 
 const User = model('User', userSchema);
 
 export default User;
-
 
 

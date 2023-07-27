@@ -3,9 +3,14 @@ import { Strategy as LocalStrategy } from "passport-local";
 import User from "../models/user.model.js";
 import GHStrategy from "passport-github2";
 import dotenv from 'dotenv';
+import jwt from 'passport-jwt';
+
+const JWTstrategy = jwt.Strategy;
+const ExtractJwt = jwt.ExtractJwt;
+
 
 dotenv.config();
-const {GH_APP_ID, GH_CLIENT_ID, GH_CLIENT_SECRET, GH_CALLBACK } = process.env;
+const { GH_APP_ID, GH_CLIENT_ID, GH_CLIENT_SECRET, GH_CALLBACK } = process.env;
 
 
 async function inicializePassport() {
@@ -36,7 +41,7 @@ async function inicializePassport() {
         )
     )
 
-    
+
     passport.use(
         'register',
         new LocalStrategy({ passReqToCallback: true, usernameField: 'email' },
@@ -69,6 +74,27 @@ async function inicializePassport() {
                 }
             }
         )
+    )
+
+    passport.use(
+        'jwt',
+        new JWTstrategy({
+            jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies['token']]),
+            secretOrKey: process.env.SECRET
+        },
+            async (jwtPayload, done) => {
+                try {
+                    let user = await User.findOne({ email: jwtPayload.email })
+                    delete user.password
+                    if (user) {
+                        return done(null, user)
+                    } else {
+                        return done(null, false, { message: 'not auth' })
+                    }
+                } catch (error) {
+                    return done(error, false)
+                }
+            })
     )
 
 }

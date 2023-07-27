@@ -21,12 +21,12 @@ import __dirname from './utils.js'
 
 // import { faker } from '@faker-js/faker';
 import cookieParser from 'cookie-parser';
-import expressSession from 'express-session';
-import mongoStore from 'connect-mongo';
+// import expressSession from 'express-session';
+// import mongoStore from 'connect-mongo';
 import passport from 'passport';
 import inicializePassport from './config/passportConfig.js';
 
-import flash from 'connect-flash';
+// import flash from 'connect-flash';
 // import asyncHelper from 'handlebars-async';
 
 // import Address from './models/address.model.js';
@@ -72,17 +72,19 @@ app.use(cartMiddleware);
 
 //Sesion y cookies
 app.use(cookieParser(process.env.SECRET_COOKIE));
-app.use(expressSession(
-    {
-        secret: process.env.SECRET_SESSION,
-        resave: true,
-        saveUninitialized: true,
-        store: mongoStore.create({
-            mongoUrl: process.env.MONGO_DB_URI,
-            ttl: 1000000
-        })
-    }
-));
+
+//Ya no se usa porque usamos JWT
+// app.use(expressSession(
+//     {
+//         secret: process.env.SECRET_SESSION,
+//         resave: true,
+//         saveUninitialized: true,
+//         store: mongoStore.create({
+//             mongoUrl: process.env.MONGO_DB_URI,
+//             ttl: 1000000
+//         })
+//     }
+// ));
 
 //Async handlebars for helpers
 // asyncHelper(Handlebars);
@@ -91,9 +93,9 @@ app.use(expressSession(
 
 inicializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
-app.use(flash());
+// app.use(flash());
 
 // // Middleware de prueba
 // app.use((req, res, next) => {
