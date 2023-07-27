@@ -31,6 +31,8 @@ export const config = {
     GH_CLIENT_ID: process.env.GH_CLIENT_ID || '',
     GH_CLIENT_SECRET: process.env.GH_CLIENT_SECRET || '',
     GH_CALLBACK: process.env.GH_CALLBACK || '',
+    GMAIL_USER_APP: process.env.GMAIL_USER_APP ||'',
+    GMAIL_PASS_APP: process.env.GMAIL_PASS_APP || '',
 
 };
 
