@@ -5,6 +5,7 @@ import productsRouter from "./products.router.js"
 import sessionsRouter from "./sessions.router.js"
 import userRouter from './users.router.js'
 import mailRouter from "./mail.router.js"
+import smsRouter from "./sms.router.js"
 
 const router = Router()
 
@@ -14,5 +15,6 @@ router.use('/products', productsRouter)
 router.use('/sessions', sessionsRouter)
 router.use('/users', userRouter)
 router.use('/mail', mailRouter.getRouter())
+router.use('/message', smsRouter.getRouter())
 
 export default router;
