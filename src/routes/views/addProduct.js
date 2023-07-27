@@ -1,6 +1,6 @@
 import { Router } from "express";
-import ProductViewController from "../../src/controllers/ProductViewController.js";
-import { auth, checkUserRole } from "../../src/middlewares/auth.js";
+import ProductViewController from "../../controllers/ProductViewController.js";
+import { auth, checkUserRole } from "../../middlewares/auth/auth.js";
 
 const addProductRouter = Router();
 

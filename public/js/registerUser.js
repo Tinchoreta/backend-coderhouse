@@ -2,6 +2,7 @@ document.getElementById('formAddUser').addEventListener('submit', function (even
     event.preventDefault();
 
     let name = document.getElementById('inputName').value;
+    let surname = document.getElementById('inputSurname').value;
     let email = document.getElementById('inputEmail1').value;
     let age = document.getElementById('inputAge').value;
     let password = document.getElementById('inputPassword1').value;
@@ -13,6 +14,10 @@ document.getElementById('formAddUser').addEventListener('submit', function (even
     // Validación
     if (!name) {
         errors.push('Name is required.');
+    }
+
+    if (!surname) {
+        errors.push('Surname is required.');
     }
 
     if (!email || !email.includes('@')) {
@@ -55,12 +60,13 @@ async function handleRegisterFormSubmit(event) {
     event.preventDefault();
 
     const name = document.querySelector('#inputName').value;
+    const surname = document.querySelector('#inputSurname').value;
     const email = document.querySelector('#inputEmail1').value;
     const age = document.querySelector('#inputAge').value;
     const password = document.querySelector('#inputPassword1').value;
     const role = document.querySelector('#inputRole').value;
 
-    if (!name || !email || !password || !age || !role) {
+    if (!name || !email || !password || !age || !role || !surname) {
         return Swal.fire({
             icon: "error",
             title: "Error",
@@ -69,11 +75,12 @@ async function handleRegisterFormSubmit(event) {
     }
 
     const userData = {
-        name,
-        email,
-        age,
-        password,
-        role,
+        firstName: name,
+        lastName: surname,
+        email: email,
+        age: age,
+        password: password,
+        role: role,
     };
 
     try {

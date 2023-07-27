@@ -1,4 +1,4 @@
-import DataBaseUserAdapter from "../Business/adapters/DataBaseUserAdapter.js";
+import DataBaseUserAdapter from "../../Business/adapters/DataBaseUserAdapter.js";
 import { hashSync, genSaltSync, compareSync } from "bcrypt";
 
 // Función que devuelve el adaptador de la base de datos
@@ -29,9 +29,9 @@ async function validateUserExistence(req, res, next) {
 }
 
 async function validateUserFields(req, res, next) {
-    const { name, email, password } = req.body;
+    const { firstName, lastName, email, password, role, age } = req.body;
 
-    if (!name || !email || !password) {
+    if (!firstName || !lastName || !role || !email || !password || !age) {
         return res.status(400).json({
             success: false,
             error: "Missing required fields",
@@ -99,6 +99,26 @@ async function isPasswordValid(req, res, next) {
     });
 }
 
+function trimUserData(req, res, next) {
+    if (req.body.firstName) {
+        req.body.firstName = req.body.firstName.trim();
+    }
+    if (req.body.lastName) {
+        req.body.lastName = req.body.lastName.trim();
+    }
+    if (req.body.email) {
+        req.body.email = req.body.email.trim();
+    }
+    if (req.body.password) {
+        req.body.password = req.body.password.trim();
+    }
+    if (req.body.role) {
+        req.body.role = req.body.role.trim();
+    }
+    next();
+}
+
+
 
 export {
     validateUserExistence,
@@ -106,5 +126,6 @@ export {
     checkDuplicateUserEmail,
     validatePasswordLength,
     createHashForPassword,
-    isPasswordValid
+    isPasswordValid,
+    trimUserData,
 };

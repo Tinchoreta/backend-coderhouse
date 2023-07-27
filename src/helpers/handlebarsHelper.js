@@ -2,7 +2,7 @@ import Handlebars from 'handlebars';
 import DataBaseCartManagerAdapter from "../../src/Business/adapters/DataBaseCartManagerAdapter.js";
 import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
 import CartManagerController from "../../src/controllers/CartManagerController.js";
-import { cartMiddleware } from '../middlewares/cartMiddleware.js';
+import { cartMiddleware } from '../middlewares/business/cartMiddleware.js';
 // import asyncHelper from 'handlebars-async';
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(

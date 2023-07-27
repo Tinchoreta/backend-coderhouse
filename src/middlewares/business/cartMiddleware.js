@@ -1,9 +1,9 @@
 
-import CartManager from '../Business/managers/CartManager.js';
-import ProductManager from '../Business/managers/ProductManager.js';
+import CartManager from '../../Business/managers/CartManager.js';
+import ProductManager from '../../Business/managers/ProductManager.js';
 
-import DataBaseCartManagerAdapter from '../Business/adapters/DataBaseCartManagerAdapter.js';
-import DataBaseProductAdapter from '../Business/adapters/DataBaseProductAdapter.js';
+import DataBaseCartManagerAdapter from '../../Business/adapters/DataBaseCartManagerAdapter.js';
+import DataBaseProductAdapter from '../../Business/adapters/DataBaseProductAdapter.js';
 
 async function getDatabaseCartAdapter() {
     const mongoDBURI = process.env.MONGO_DB_URI;
@@ -24,7 +24,7 @@ const cartMiddleware = async (req, res, next) => {
         //TODO: Change this hard-coded cartID
 
         const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0436');
-        const productsList = await dataBaseProductAdapter.getProducts(100000,1,"asc");
+        const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
 
         const cartManager = CartManager.getInstance([cartToRender], productManager);

@@ -1,10 +1,10 @@
 import { Router } from "express";
 // import dotenv from 'dotenv';
 
-import DataBaseCartManagerAdapter from "../../src/Business/adapters/DataBaseCartManagerAdapter.js";
-import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
-import CartManagerController from "../../src/controllers/CartManagerController.js";
-import { checkProductExistenceInCart } from "../../src/middlewares/cartMiddleware.js";
+import DataBaseCartManagerAdapter from "../../Business/adapters/DataBaseCartManagerAdapter.js";
+import DataBaseProductAdapter from "../../Business/adapters/DataBaseProductAdapter.js";
+import CartManagerController from "../../controllers/CartManagerController.js";
+import { checkProductExistenceInCart } from "../../middlewares/business/cartMiddleware.js";
 
 
 const router = Router();

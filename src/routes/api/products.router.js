@@ -1,15 +1,15 @@
 import { Router } from "express";
-import ProductManagerController from "../../src/controllers/ProductManagerController.js";
-import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
+import ProductManagerController from "../../controllers/ProductManagerController.js";
+import DataBaseProductAdapter from "../../Business/adapters/DataBaseProductAdapter.js";
 import {
   validateProductExistence,
   validateProductFields,
   checkDuplicateProductFields,
-} from "../../src/middlewares/productMiddleware.js";
+} from "../../middlewares/business/productMiddleware.js";
 
-import passportCall from "../../src/middlewares/passportCall.js";
+import passportCall from "../../middlewares/auth/passportCall.js";
 
-import { auth, checkUserRole } from "../../src/middlewares/auth.js";
+import { auth, checkUserRole } from "../../middlewares/auth/auth.js";
 import passport from "passport";
 
 const router = Router();
@@ -32,8 +32,8 @@ router.post("/",
   // checkUserRole,
   // passport.authenticate('jwt',{session: false}),
   passportCall('jwt'),
-  (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next) ,
-  validateProductFields, 
+  (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next),
+  validateProductFields,
 
   (req, res) => productController.addProduct(req, res));
 
