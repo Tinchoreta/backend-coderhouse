@@ -9,8 +9,8 @@ const sendSms = async (nombre, apellido) => {
 
         const message = await cliente.messages.create({
             body: mensaje,
-            from: config.TWILIO_PHONE_NUMBER, // Reemplaza esto con tu número de teléfono Twilio
-            to: config.MY_PHONE,  // Reemplaza esto con el número de teléfono del destinatario
+            from: config.TWILIO_PHONE_NUMBER, 
+            to: config.MY_PHONE_SMS,  
         });
 
         console.log('Mensaje de texto enviado:', message.sid);
@@ -25,8 +25,8 @@ const sendWhatsAppMessage = async (nombre, apellido) => {
 
         const message = await cliente.messages.create({
             body: mensaje,
-            from: `whatsapp:${config.TWILIO_WHATSAPP}`, // Reemplaza esto con el número de teléfono Twilio para WhatsApp
-            to: `whatsapp:${config.MY_PHONE}`, // Reemplaza esto con el número de teléfono del destinatario de WhatsApp
+            from: `whatsapp:${config.TWILIO_WHATSAPP}`, 
+            to: `whatsapp:${config.MY_PHONE_WHATSAPP}`, 
         });
 
         console.log('Mensaje de WhatsApp enviado:', message.sid);

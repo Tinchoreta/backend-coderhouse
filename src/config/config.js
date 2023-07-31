@@ -37,8 +37,8 @@ export const config = {
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN || '',
     TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER || '',
     TWILIO_WHATSAPP: process.env.TWILIO_WHATSAPP || '',
-    MY_PHONE: process.env.MY_PHONE || '',
-
+    MY_PHONE_SMS: process.env.MY_PHONE_SMS || '',
+    MY_PHONE_WHATSAPP: process.env.MY_PHONE_WHATSAPP || '',
 };
 
 /* PORT = 

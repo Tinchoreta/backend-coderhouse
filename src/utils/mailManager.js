@@ -23,8 +23,9 @@ export const sendMail = async () => {
             html: '<p>Contenido del correo electrónico en formato HTML.</p>',
             attachments: [
                 {
-                    filename: '1.jpg', // Cambia el nombre de la imagen si lo deseas
-                    path: path.join(__dirname, '/themes/images/products/1.jpg') // Reemplaza con la ruta correcta a tu imagen adjunta
+                    filename: '1.jpg', 
+                    path: path.join(__dirname, '../public/themes/images/products/1.jpg'),
+                    cid: '1.jpg'
                 }
             ]
         };
