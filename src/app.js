@@ -18,6 +18,7 @@ import inicializePassport from './config/passportConfig.js';
 
 import { config } from './config/config.js';
 
+import winstonLogger from './config/logger.js';
 
 const app = express();
 
@@ -37,6 +38,9 @@ async function connect() {
 //Conectar la base de datos
 connect();
 
+//Uso de logging de Winston
+
+app.use(winstonLogger);
 
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);

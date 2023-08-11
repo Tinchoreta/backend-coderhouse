@@ -28,9 +28,9 @@ router.get("/:id",
 );
 
 router.post("/",
-  // auth,
-  // checkUserRole,
-  // passport.authenticate('jwt',{session: false}),
+  auth,
+  checkUserRole,
+  passport.authenticate('jwt',{session: false}),
   passportCall('jwt'),
   (req, res, next) => checkDuplicateProductFields(dataBaseProductAdapter, req, res, next),
   validateProductFields,
