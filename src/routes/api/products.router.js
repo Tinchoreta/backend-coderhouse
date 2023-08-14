@@ -25,7 +25,7 @@ const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
 const productController = new ProductManagerController(dataBaseProductAdapter);
 
 router.get("/mockingProducts", (req, res) => {
-  const products = generateFiftyProducts();
+  const products = generateOneHundredProducts();
   res.json({ success: true, payload: products });
 });
 

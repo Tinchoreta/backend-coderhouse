@@ -5,7 +5,7 @@ const generateProduct = () => {
         title: faker.commerce.productName(),
         price: faker.commerce.price(),
         category: faker.commerce.department(),
-        stock: faker.number.int({ min: 1 }),
+        stock: faker.number.int({ min: 1, max: 1000 }),
         description: faker.commerce.productDescription(),
         created_at: faker.date.past(),
         thumbnail: faker.image.url(),
