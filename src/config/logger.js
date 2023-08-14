@@ -2,28 +2,26 @@ import winston from "winston";
 
 const customLevelOptions = {
     levels: {
-        error: 0,
-        warn: 1,
+        debug: 0,
+        http: 1,
         info: 2,
-        http: 3,
-        verbose: 4,
-        debug: 5,
-        silly: 6
+        warning: 3,
+        error: 4,
+        fatal: 5
     },
     colors: {
-        error: 'red',
-        warn: 'yellow',
-        info: 'green',
+        debug: 'gray',
         http: 'blue',
-        verbose: 'cyan',
-        debug: 'magenta',
-        silly: 'gray'
+        info: 'green',
+        warning: 'yellow',
+        error: 'red',
+        fatal: 'magenta'
     },
 };
 
 
 const logger = winston.createLogger({
-    level: "info",
+    level: process.env.LOG_LEVEL || "info", // Nivel mínimo de log para el logger de desarrollo
     levels: customLevelOptions.levels,
     format: winston.format.combine(
         winston.format.timestamp(),
@@ -33,13 +31,13 @@ const logger = winston.createLogger({
     ),
     transports: [
         new winston.transports.Console({
-            level: "http", // Nivel mínimo de log que se mostrará en la consola
+            level: process.env.LOG_LEVEL || "info", // Nivel mínimo de log que se mostrará en la consola
             format: winston.format.combine(
                 winston.format.colorize({ all: true }),
                 winston.format.simple()
             ),
         }),
-        new winston.transports.File({ filename: "error.log", level: "warn" }),
+        new winston.transports.File({ filename: "error.log", level: "error" }),
         new winston.transports.File({ filename: "combined.log" }),
     ],
 });
