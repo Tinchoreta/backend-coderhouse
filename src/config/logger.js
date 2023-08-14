@@ -2,23 +2,24 @@ import winston from "winston";
 
 const customLevelOptions = {
     levels: {
-        debug: 0,
-        http: 1,
-        info: 2,
-        warning: 3,
-        error: 4,
-        fatal: 5
+        fatal: 0,
+        error: 1,
+        warning: 2,
+        info: 3,
+        http: 4,
+        debug: 5
     },
     colors: {
-        debug: 'gray',
-        http: 'blue',
-        info: 'green',
-        warning: 'yellow',
+        fatal: 'magenta',
         error: 'red',
-        fatal: 'magenta'
+        warning: 'yellow',
+        info: 'green',
+        http: 'blue',
+        debug: 'gray'
     },
 };
 
+winston.addColors(customLevelOptions.colors);
 
 const logger = winston.createLogger({
     level: process.env.LOG_LEVEL || "info", // Nivel mínimo de log para el logger de desarrollo
@@ -43,7 +44,7 @@ const logger = winston.createLogger({
 });
 
 export default function (req, res, next) {
-
+    req.logger = logger;
     logger.info(`${req.method} ${req.url}`);
 
     next();
