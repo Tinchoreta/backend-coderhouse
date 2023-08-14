@@ -477,3 +477,10 @@
 2023-08-14T04:57:13.456Z error: Este es un mensaje de error
 2023-08-14T04:57:13.457Z fatal: Este es un mensaje de fatal
 2023-08-14T04:57:13.662Z info: GET /favicon.ico
+2023-08-14T05:05:33.361Z info: GET /api/loggerTest
+2023-08-14T05:05:33.506Z info: Este es un mensaje de info
+2023-08-14T05:05:33.508Z warning: Este es un mensaje de advertencia
+2023-08-14T05:05:33.509Z error: Este es un mensaje de error
+2023-08-14T05:05:33.510Z fatal: Este es un mensaje de fatal
+2023-08-14T05:05:33.812Z info: GET /favicon.ico
+2023-08-14T05:06:18.432Z info: GET /new_product
