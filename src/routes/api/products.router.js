@@ -12,7 +12,7 @@ import passportCall from "../../middlewares/auth/passportCall.js";
 import { auth, checkUserRole } from "../../middlewares/auth/auth.js";
 import passport from "passport";
 
-import { generateFiftyProducts } from "../../tests/productMocking.js";
+import { generateOneHundredProducts } from "../../tests/productMocking.js";
 
 import runTests from "../../tests/productService.test.js";
 
@@ -31,7 +31,7 @@ router.get("/mockingProducts", (req, res) => {
 
 router.get('/mockingProducts/test', (req, res) => {
   try {
-    const products = generateFiftyProducts();
+    const products = generateOneHundredProducts();
     // Ejecutar las pruebas
     runTests();
     res.json({ success: true, message: 'Tests completed successfully' });
