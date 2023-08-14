@@ -1,12 +1,16 @@
 import assert from 'assert';
 import { ProductService } from './productService.js';
 
-function runTests() {
-    testThrowErrorForMissingFields();
-    testCreateProductWithValidData();
+async function runTests() {
+    console.log('Running tests...');
+
+    await testThrowErrorForMissingFields();
+    await testCreateProductWithValidData();
+
+    console.log('All tests completed.');
 }
 
-function testThrowErrorForMissingFields() {
+async function testThrowErrorForMissingFields() {
     const invalidProductData = {
         // Missing 'title' and 'price'
         description: 'Some description',
@@ -16,13 +20,15 @@ function testThrowErrorForMissingFields() {
     };
 
     try {
-        ProductService.createProduct(invalidProductData);
+        await ProductService.createProduct(invalidProductData);
     } catch (error) {
         assert.strictEqual(error.name, 'ValidationError');
-        assert.strictEqual(error.message, 'Product validation failed');
+        assert.strictEqual(error.message, 'products validation failed: price: Path `price` is required., title: Path `title` is required.');
         assert.strictEqual(Object.keys(error.errors).length, 2);
         assert.strictEqual(error.errors['title'].kind, 'required');
         assert.strictEqual(error.errors['price'].kind, 'required');
+
+        console.log('Test "testThrowErrorForMissingFields" passed');
     }
 }
 
@@ -41,6 +47,8 @@ async function testCreateProductWithValidData() {
     assert.ok(createdProduct._id);
     assert.strictEqual(createdProduct.title, validProductData.title);
     assert.strictEqual(createdProduct.price, validProductData.price);
+
+    console.log('Test "testCreateProductWithValidData" passed');
 }
 
-runTests();
+export default runTests;
