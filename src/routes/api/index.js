@@ -16,5 +16,6 @@ router.use('/sessions', sessionsRouter)
 router.use('/users', userRouter)
 router.use('/mail', mailRouter.getRouter())
 router.use('/message', smsRouter.getRouter())
+router.use('/loggerTest', loggerRouter)
 
 export default router;

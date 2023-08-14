@@ -1,5 +1,5 @@
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
-import { sendMail } from '../../utils/mailManager.js'; // Reemplaza '../path/to/your/mailSender.js' con la ruta correcta a tu archivo de envío de correos electrónicos
+import { sendMail } from '../../utils/mailManager.js'; 
 import ROLES from "../../utils/roles.js";
 
 const mailRouter = new CustomRouter();
