@@ -12,6 +12,8 @@ import passportCall from "../../middlewares/auth/passportCall.js";
 import { auth, checkUserRole } from "../../middlewares/auth/auth.js";
 import passport from "passport";
 
+import { generateFiftyProducts } from "../../tests/productMocking.js";
+
 const router = Router();
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
@@ -19,6 +21,11 @@ const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
 );
 
 const productController = new ProductManagerController(dataBaseProductAdapter);
+
+router.get("/mockingProducts", (req, res) => {
+  const products = generateFiftyProducts();
+  res.json({ success: true, payload: products });
+});
 
 router.get("/", (req, res) => productController.getProducts(req, res));
 
@@ -46,6 +53,8 @@ router.delete("/:id",
   validateProductExistence,
   (req, res) => productController.removeProductItem(req, res)
 );
+
+
 
 export default router;
 
