@@ -471,3 +471,9 @@
 2023-08-14T04:55:24.728Z http: Este es un mensaje de http
 2023-08-14T04:55:24.729Z info: Este es un mensaje de info
 2023-08-14T04:55:25.022Z info: GET /favicon.ico
+2023-08-14T04:57:13.314Z info: GET /api/loggerTest
+2023-08-14T04:57:13.454Z info: Este es un mensaje de info
+2023-08-14T04:57:13.455Z warning: Este es un mensaje de advertencia
+2023-08-14T04:57:13.456Z error: Este es un mensaje de error
+2023-08-14T04:57:13.457Z fatal: Este es un mensaje de fatal
+2023-08-14T04:57:13.662Z info: GET /favicon.ico
