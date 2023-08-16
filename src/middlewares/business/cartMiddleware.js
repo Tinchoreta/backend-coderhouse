@@ -5,6 +5,9 @@ import ProductManager from '../../Business/managers/ProductManager.js';
 import DataBaseCartManagerAdapter from '../../Business/adapters/DataBaseCartManagerAdapter.js';
 import DataBaseProductAdapter from '../../Business/adapters/DataBaseProductAdapter.js';
 
+import CustomError from "../../services/errors/CustomError.js";
+import EnumeratedErrors from "../../services/errors/EnumeratedErrors.js";
+
 async function getDatabaseCartAdapter() {
     const mongoDBURI = process.env.MONGO_DB_URI;
     return DataBaseCartManagerAdapter.getInstance(mongoDBURI);
@@ -16,31 +19,29 @@ async function getDatabaseProductAdapter() {
 }
 
 const cartMiddleware = async (req, res, next) => {
-
     try {
         const dataBaseProductAdapter = await getDatabaseProductAdapter();
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
 
-        //TODO: Change this hard-coded cartID
-
+        // TODO: Change this hardcoded cartID
         const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0436');
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
 
         const cartManager = CartManager.getInstance([cartToRender], productManager);
 
-
-        // Agrega el carrito de compras al objeto req para que esté disponible en todas las rutas
         req.cartManager = cartManager;
 
         next();
-
     } catch (error) {
         console.error(error);
-        next(error);
-
+        next(new CustomError({
+            name: EnumeratedErrors.DATABASE_ERROR,
+            cause: error.message
+        }));
     }
 }
+
 
 async function checkProductExistenceInCart(req, res, next) {
     const cartId = req.params.cid;
@@ -48,17 +49,23 @@ async function checkProductExistenceInCart(req, res, next) {
 
     try {
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
-        // Verificar si el producto existe en el carrito
         const productIds = await dataBaseCartAdapter.getProductsIds(cartId);
 
         if (!productIds.includes(productId)) {
-            return res.status(400).json({ success: false, error: "Product does not exist in cart" });
+            throw new CustomError({
+                name: EnumeratedErrors.VALIDATION_ERROR,
+                message: "Product does not exist in cart"
+            });
         }
 
         next();
     } catch (error) {
-        return res.status(500).json({ success: false, error: error.message });
+        next(new CustomError({
+            name: EnumeratedErrors.DATABASE_ERROR,
+            cause: error.message
+        }));
     }
 }
+
 
 export { cartMiddleware, checkProductExistenceInCart };

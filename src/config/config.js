@@ -31,17 +31,30 @@ export const config = {
     GH_CLIENT_ID: process.env.GH_CLIENT_ID || '',
     GH_CLIENT_SECRET: process.env.GH_CLIENT_SECRET || '',
     GH_CALLBACK: process.env.GH_CALLBACK || '',
-
+    GMAIL_USER_APP: process.env.GMAIL_USER_APP || '',
+    GMAIL_PASS_APP: process.env.GMAIL_PASS_APP || '',
+    TWILIO_SID: process.env.TWILIO_SID || '',
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN || '',
+    TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER || '',
+    TWILIO_WHATSAPP: process.env.TWILIO_WHATSAPP || '',
+    MY_PHONE_SMS: process.env.MY_PHONE_SMS || '',
+    MY_PHONE_WHATSAPP: process.env.MY_PHONE_WHATSAPP || '',
 };
 
-/* PORT = 8080
-MONGO_DB_USER = tinchoreta
-MONGO_DB_PASSWORD = Cocohueso23
-MONGO_DB_URI = mongodb + srv://tinchoreta:Cocohueso23@cluster0.xgzbctr.mongodb.net/coder-ecommerce
-SECRET_COOKIE = CocoCookie83
-SECRET_SESSION = CocoSession83
-GH_APP_ID = 353399
-GH_CLIENT_ID = Iv1.dc73dc3d536762cc
-GH_CLIENT_SECRET = 896ce1a37448dfc2a96407c32d4e1fe7081c778a
+/* PORT = 
+MONGO_DB_USER = 
+MONGO_DB_PASSWORD = 
+MONGO_DB_URI = 
+SECRET_COOKIE = 
+SECRET_SESSION = 
+GH_APP_ID = 
+GH_CLIENT_ID = 
+GH_CLIENT_SECRET = 
 GH_CALLBACK = http://localhost:8080/api/auth/github/callback
-SECRET_KEY_JWT = N1n0S3cr3t */
+SECRET_KEY_JWT = 
+TWILIO_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=+
+MY_PHONE=+
+
+*/

@@ -1,8 +1,3 @@
-// import dotenv from 'dotenv';
-// dotenv.config({
-//     path: mode === 'development' ? '.env.development' : '.env.production'
-// });
-
 import { Server } from "socket.io"
 import Chat from "./Business/Chat.js"
 import DataBaseProductAdapter from "./Business/adapters/DataBaseProductAdapter.js"
@@ -11,9 +6,6 @@ import { DataBaseChatSessionAdapter, DataBaseConversationAdapter } from "./Busin
 import app from "./app.js"
 
 import { config } from './config/config.js';
-
-// dotenv.config();
-console.log(config);
 
 const PORT = config.PORT;
 const ready = () => console.log(`Server ready on port: ${PORT}`)

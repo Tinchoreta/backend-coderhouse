@@ -1,4 +1,6 @@
 import DataBaseProductAdapter from "../../Business/adapters/DataBaseProductAdapter.js";
+import CustomError from "../../services/errors/CustomError.js";
+import EnumeratedErrors from "../../services/errors/EnumeratedErrors.js";
 
 // Función que devuelve el adaptador de la base de datos
 async function getDatabaseProductAdapter() {
@@ -11,15 +13,22 @@ async function validateProductExistence(req, res, next) {
   const productId = req.params.id;
 
   if (!productId) {
-    return res.status(400).json({ success: false, error: "Invalid product ID" });
+    throw new CustomError({
+      name: EnumeratedErrors.INVALID_TYPE_ERROR,
+      message: "Invalid product ID"
+    });
   }
 
   const product = await dataBaseProductAdapter.getProductById(productId);
   if (!product) {
-    return res.status(404).json({ success: false, error: "Product not found" });
+    throw new CustomError({
+      name: EnumeratedErrors.PRODUCT_NOT_FOUND,
+      message: "Product not found"
+    });
   }
   next();
 }
+
 
 /*
 Ejemplo de producto
@@ -37,9 +46,9 @@ async function validateProductFields(req, res, next) {
   const { title, description, price, thumbnail, stock, category, created_at } = req.body;
 
   if (!title || !price || !description || !thumbnail || !category) {
-    return res.status(400).json({
-      success: false,
-      error: 'Missing required fields'
+    throw new CustomError({
+      name: EnumeratedErrors.VALIDATION_ERROR,
+      message: "Missing required fields"
     });
   }
 
@@ -47,9 +56,9 @@ async function validateProductFields(req, res, next) {
   const parsedStock = stock !== undefined ? parseFloat(stock) : 0;
 
   if (isNaN(parsedPrice) || isNaN(parsedStock)) {
-    return res.status(400).json({
-      success: false,
-      error: 'Invalid product fields'
+    throw new CustomError({
+      name: EnumeratedErrors.VALIDATION_ERROR,
+      message: "Invalid product fields"
     });
   }
 
@@ -67,13 +76,14 @@ async function validateProductFields(req, res, next) {
 }
 
 async function checkDuplicateProductFields(dataBaseProductAdapter, req, res, next) {
-  // const dataBaseProductAdapter = await getDatabaseProductAdapter();
   const { title, description } = req.body;
 
-  // Check if title and description already exist in the database
   const existingProduct = await dataBaseProductAdapter.getProductByTitleAndDescription(title, description);
   if (existingProduct?.length > 0) {
-    return res.status(400).json({ success: false, error: "Duplicate product fields" });
+    throw new CustomError({
+      name: EnumeratedErrors.VALIDATION_ERROR,
+      message: "Duplicate product fields"
+    });
   }
 
   next();

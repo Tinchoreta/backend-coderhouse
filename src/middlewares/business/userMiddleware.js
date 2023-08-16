@@ -1,6 +1,9 @@
 import DataBaseUserAdapter from "../../Business/adapters/DataBaseUserAdapter.js";
 import { hashSync, genSaltSync, compareSync } from "bcrypt";
 
+import CustomError from "../../services/errors/CustomError.js";
+import EnumeratedErrors from "../../services/errors/EnumeratedErrors.js";
+
 // Función que devuelve el adaptador de la base de datos
 async function getDatabaseUserAdapter() {
     const mongoDBURI = process.env.MONGO_DB_URI;
@@ -12,17 +15,27 @@ async function validateUserExistence(req, res, next) {
     const userId = req.params.id;
 
     if (!userId) {
-        return res.status(400).json({ success: false, error: "Invalid user ID" });
+        throw new CustomError({
+            name: EnumeratedErrors.INVALID_TYPE_ERROR,
+            message: "Invalid user ID"
+        });
     }
+
     const isValidUserId = await dataBaseUserAdapter.isValidUserId(userId);
 
     if (!isValidUserId) {
-        return res.status(400).json({ success: false, error: "Invalid user ID" });
+        throw new CustomError({
+            name: EnumeratedErrors.INVALID_TYPE_ERROR,
+            message: "Invalid user ID"
+        });
     }
 
     const user = await dataBaseUserAdapter.getUserById(userId);
     if (!user) {
-        return res.status(404).json({ success: false, error: "User not found" });
+        throw new CustomError({
+            name: EnumeratedErrors.USER_NOT_FOUND,
+            message: "User not found"
+        });
     }
 
     next();
@@ -32,9 +45,9 @@ async function validateUserFields(req, res, next) {
     const { firstName, lastName, email, password, role, age } = req.body;
 
     if (!firstName || !lastName || !role || !email || !password || !age) {
-        return res.status(400).json({
-            success: false,
-            error: "Missing required fields",
+        throw new CustomError({
+            name: EnumeratedErrors.VALIDATION_ERROR,
+            message: "Missing required fields"
         });
     }
 
@@ -49,9 +62,9 @@ async function checkDuplicateUserEmail(req, res, next) {
 
     const existingUser = await dataBaseUserAdapter.getUserByEmail(email);
     if (existingUser) {
-        return res.status(400).json({
-            success: false,
-            error: "User with the same email already exists",
+        throw new CustomError({
+            name: EnumeratedErrors.VALIDATION_ERROR,
+            message: "User with the same email already exists"
         });
     }
 
@@ -62,9 +75,9 @@ async function validatePasswordLength(req, res, next) {
     const { password } = req.body;
 
     if (password && password.length < 8) {
-        return res.status(400).json({
-            success: false,
-            error: "Password must be at least 8 characters",
+        throw new CustomError({
+            name: EnumeratedErrors.VALIDATION_ERROR,
+            message: "Password must be at least 8 characters"
         });
     }
 
@@ -73,30 +86,25 @@ async function validatePasswordLength(req, res, next) {
 
 function createHashForPassword(req, res, next) {
     const { password } = req.body;
-    const hashPass = hashSync(
-        password,
-        genSaltSync()
-    );
+    const hashPass = hashSync(password, genSaltSync());
     req.body.password = hashPass;
-    return next();
+    next();
 }
 
 async function isPasswordValid(req, res, next) {
-    console.log("Client Password:", req.body.password);
-    console.log("Database Password:", req.user.password);
+    const { password } = req.body;
+    const databasePassword = req.user.password;
 
+    const verified = compareSync(password, databasePassword);
 
-    let verified = compareSync(
-        req.body.password,
-        req.user.password,
-    )
     if (verified) {
-        return next();
+        next();
+    } else {
+        throw new CustomError({
+            name: EnumeratedErrors.AUTHENTICATION_ERROR,
+            message: "Authentication error"
+        });
     }
-    return res.status(401).json({
-        success: false,
-        error: "Auth error",
-    });
 }
 
 function trimUserData(req, res, next) {
