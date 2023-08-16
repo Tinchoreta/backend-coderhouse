@@ -19,6 +19,7 @@ import inicializePassport from './config/passportConfig.js';
 import { config } from './config/config.js';
 
 import winstonLogger from './config/logger.js';
+import cors from 'cors';
 
 const app = express();
 
@@ -35,8 +36,11 @@ async function connect() {
     }
 }
 
+// app.use(cors);
+
 //Conectar la base de datos
 connect();
+
 
 //Uso de logging de Winston
 
