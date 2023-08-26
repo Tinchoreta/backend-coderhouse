@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 
-let collection = 'carts';
 let schema = new Schema({
     products: [{
         _id: false,
@@ -11,6 +10,6 @@ let schema = new Schema({
     { strict: false }
 );
 
-let CartModel = model(collection, schema);
+let CartModel = model('Carts', schema);
 
 export default CartModel;

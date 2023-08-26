@@ -25,20 +25,23 @@ const cartController = new CartManagerController(
 
 router.get("/", (req, res) => cartController.getCarts(req, res));
 
-router.get("/:id", (req, res) => cartController.getCartById(req, res));
+router.post("/", (req, res) => cartController.createCart(req, res));
 
 router.get("/bills/:cid", (req, res) => cartController.calculateCartTotalPrice(req, res));
 
-router.post("/", (req, res) => cartController.createCart(req, res));
+router.get("/:id", (req, res) => cartController.getCartById(req, res));
 
-router.put("/:cid/product/:pid/:units",
-    (req, res) => cartController.addProductUnitsToCart(req, res)
-);
+router.get("/:id/purchase", (req, res) => cartController.processPurchase(req, res));
 
 router.delete("/:cid/product/:pid",
     checkProductExistenceInCart,
     (req, res) => cartController.removeProductFromCart(req, res)
 );
+
+router.put("/:cid/product/:pid/:units",
+    (req, res) => cartController.addProductUnitsToCart(req, res)
+);
+
 
 
 router.delete("/:cid/product/:pid/:units",

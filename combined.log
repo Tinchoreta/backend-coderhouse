@@ -817,3 +817,11 @@
 2023-08-14T06:01:04.569Z info: GET /themes/switch/images/styleTgl.png
 2023-08-14T06:02:08.903Z info: POST /api/auth/signin
 2023-08-14T06:02:27.601Z info: POST /api/products/
+2023-08-16T04:09:16.207Z info: GET /api/loggerTest
+2023-08-16T04:09:16.371Z debug: Este es un mensaje de debug
+2023-08-16T04:09:16.372Z http: Este es un mensaje de http
+2023-08-16T04:09:16.373Z info: Este es un mensaje de info
+2023-08-16T04:09:16.374Z warning: Este es un mensaje de advertencia
+2023-08-16T04:09:16.375Z error: Este es un mensaje de error
+2023-08-16T04:09:16.376Z fatal: Este es un mensaje de fatal
+2023-08-16T04:09:17.051Z info: GET /favicon.ico
