@@ -1,6 +1,8 @@
 /**
  * Controlador para gestionar el carrito de compras.
  */
+
+import Ticket from "../models/ticket.model.js";
 class CartManagerController {
     /**
      * Crea una nueva instancia del controlador del carrito de compras.
@@ -338,6 +340,83 @@ class CartManagerController {
         const cartId = request.params.id;
         await this.cartManagerAdapter.deleteCart(cartId);
         response.status(204).send();
+    }
+
+    async processPurchase(req, res) {
+        try {
+            const userId = req.user._id;
+            const productsNotPurchased = []; // Almacenar productos que no se pudieron comprar
+
+            // Función para verificar el stock de un producto
+            const checkProductStock = async (item) => {
+                const product = await this.dataBaseProductAdapter.getProductById(item.productId);
+                if (!product) {
+                    throw new CustomError({
+                        name: EnumeratedErrors.PRODUCT_NOT_FOUND,
+                        code: EnumeratedErrors.PRODUCT_NOT_FOUND.code,
+                        cause: `Producto con ID ${item.productId} no encontrado.`,
+                    });
+                }
+                if (product.stock < item.quantity) {
+                    // Registra los productos que no se pueden comprar
+                    productsNotPurchased.push(item.productId);
+                }
+                return product;
+            };
+
+            // Verificar el stock de todos los productos
+            await Promise.all(req.cart.products.map(checkProductStock));
+
+            // Actualizar el stock y registrar la compra para los productos comprables
+            const productsPurchased = await Promise.all(req.cart.products.map(async (item) => {
+                if (!productsNotPurchased.includes(item.productId)) {
+                    const product = await this.dataBaseProductAdapter.getProductById(item.productId);
+                    if (product) {
+                        product.stock -= item.quantity;
+                        await this.dataBaseProductAdapter.updateProduct(product);
+                        return item;
+                    }
+                }
+                return null;
+            }));
+
+            // Filtrar los productos que se compraron con éxito
+            const purchasedProducts = productsPurchased.filter(item => item !== null);
+
+            // Actualizar el carrito con los productos no comprados
+            req.cart.products = purchasedProducts;
+            req.cart.totalAmount = purchasedProducts.reduce((total, item) => total + item.price * item.quantity, 0);
+            await req.cart.save();
+
+            if (purchasedProducts.length > 0) {
+                // Crear un nuevo ticket (pedido) solo si se compraron productos
+                const newTicket = new Ticket({
+                    code: generateUniqueCode(),
+                    amount: req.cart.totalAmount,
+                    purchaser: userId,
+                });
+
+                // Guardar el ticket en la base de datos
+                const ticket = await newTicket.save();
+
+                // Responder con los productos que no se pudieron comprar
+                return res.status(200).json({ message: 'Compra exitosa', ticket, productsNotPurchased });
+            } else {
+                // Responder con un mensaje indicando que todos los productos estaban fuera de stock
+                throw new CustomError({
+                    name: EnumeratedErrors.CART_EMPTY_ERROR,
+                    code: EnumeratedErrors.CART_EMPTY_ERROR.code,
+                    cause: 'Ningún producto se pudo comprar debido a la falta de stock',
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            if (error instanceof CustomError) {
+                return res.status(400).json({ message: error.message, code: error.code });
+            } else {
+                    return res.status(500).json({ message: 'Error en la compra' });
+            }
+        }
     }
 }
 
