@@ -29,9 +29,9 @@ router.post("/", (req, res) => cartController.createCart(req, res));
 
 router.get("/bills/:cid", (req, res) => cartController.calculateCartTotalPrice(req, res));
 
-router.get("/:id", (req, res) => cartController.getCartById(req, res));
+router.get("/:cid", (req, res) => cartController.getCartById(req, res));
 
-router.get("/:id/purchase", (req, res) => cartController.processPurchase(req, res));
+router.get("/:cid/purchase", (req, res) => cartController.processPurchase(req, res));
 
 router.delete("/:cid/product/:pid",
     checkProductExistenceInCart,

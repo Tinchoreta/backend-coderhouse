@@ -6,7 +6,7 @@ import { engine } from 'express-handlebars';
 import mainRouter from './routes/index.js'
 import DataBaseStrategy from './persistence/DataBaseStrategy.js';
 
-import errorHandler from './middlewares/utils/errorHandler.js';
+import {errorHandlerMiddleware} from './services/errors/errorHandler.js';
 import notFoundHandler from './middlewares/utils/notFound.js';
 import { cartMiddleware } from './middlewares/business/cartMiddleware.js';
 
@@ -69,7 +69,7 @@ app.engine('handlebars', engine({ handlebars: Handlebars }));
 app.set('views', __dirname + '../../views');
 app.set('view engine', 'handlebars');
 
-app.use(errorHandler);
+app.use(errorHandlerMiddleware);
 app.use(notFoundHandler);
 
 export default app;

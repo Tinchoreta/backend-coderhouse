@@ -68,4 +68,32 @@ async function checkProductExistenceInCart(req, res, next) {
 }
 
 
+const loadCart = async (req, res, next) => {
+    try {
+        const cartId = req.params.cid; // Supongo que el carritoId se pasa como un parámetro en la URL
+        const cart = await dataBaseCartAdapter.getCartById(cartId);
+
+        if (!cart) {
+            // Manejar el caso en que el carrito no se encuentre
+            throw new CustomError({
+                name: EnumeratedErrors.CART_NOT_FOUND,
+                code: EnumeratedErrors.CART_NOT_FOUND.code,
+                cause: `Carrito con ID ${cartId} no encontrado.`,
+            });
+        }
+
+        // Colocar el carrito en req para que esté disponible en el controlador
+        req.cart = cart;
+        next(); // Continuar con la solicitud
+    } catch (error) {
+        // Manejar errores y enviar una respuesta de error personalizada si es necesario
+        console.error(error);
+        if (error instanceof CustomError) {
+            return res.status(400).json({ message: error.message, code: error.code });
+        } else {
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+};
+
 export { cartMiddleware, checkProductExistenceInCart };
