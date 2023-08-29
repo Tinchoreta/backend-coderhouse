@@ -1576,3 +1576,6 @@
 2023-08-28T00:47:37.293Z info: GET /themes/css/font-awesome.css
 2023-08-28T00:47:37.979Z info: GET /themes/js/google-code-prettify/prettify.css
 2023-08-28T00:47:38.051Z info: GET /themes/switch/themeswitch.css
+2023-08-29T04:07:25.362Z info: GET /login.html
+2023-08-29T04:10:57.646Z info: GET /api/carts/64765d546145585e447a0436/purchase
+2023-08-29T04:14:00.840Z info: GET /api/carts/64765d546145585e447a0436/purchase

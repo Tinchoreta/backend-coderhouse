@@ -1,7 +1,7 @@
 /**
  * Controlador para gestionar el carrito de compras.
  */
-
+import CustomError from "../services/errors/CustomError.js";
 import Ticket from "../models/ticket.model.js";
 class CartManagerController {
     /**
@@ -344,12 +344,13 @@ class CartManagerController {
 
     async processPurchase(req, res) {
         try {
-            const userId = req.user._id;
+            //TODO: Quitar harcoded userID
+            const userId = '649bced97e3bea7f53f0bd3e';
             const productsNotPurchased = []; // Almacenar productos que no se pudieron comprar
 
             // Función para verificar el stock de un producto
             const checkProductStock = async (item) => {
-                const product = await this.dataBaseProductAdapter.getProductById(item.productId);
+                const product = await this.productManagerAdapter.getProductById(item.productId);
                 if (!product) {
                     throw new CustomError({
                         name: EnumeratedErrors.PRODUCT_NOT_FOUND,
@@ -370,10 +371,10 @@ class CartManagerController {
             // Actualizar el stock y registrar la compra para los productos comprables
             const productsPurchased = await Promise.all(req.cart.products.map(async (item) => {
                 if (!productsNotPurchased.includes(item.productId)) {
-                    const product = await this.dataBaseProductAdapter.getProductById(item.productId);
+                    const product = await this.productManagerAdapter.getProductById(item.productId);
                     if (product) {
                         product.stock -= item.quantity;
-                        await this.dataBaseProductAdapter.updateProduct(product);
+                        await this.productManagerAdapter.updateProduct(product);
                         return item;
                     }
                 }
