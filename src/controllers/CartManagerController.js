@@ -344,66 +344,28 @@ class CartManagerController {
 
     async processPurchase(req, res) {
         try {
-            //TODO: Quitar harcoded userID
-            const userId = '649bced97e3bea7f53f0bd3e';
-            const productsNotPurchased = []; // Almacenar productos que no se pudieron comprar
+            const userId = '649bced97e3bea7f53f0bd3e'; // ID del usuario harcodeado
+            const cartId = '64765d546145585e447a0436'; // Cambia esto al ID del carrito que deseas procesar
 
-            // Función para verificar el stock de un producto
-            const checkProductStock = async (item) => {
-                const product = await this.productManagerAdapter.getProductById(item.productId);
-                if (!product) {
-                    throw new CustomError({
-                        name: EnumeratedErrors.PRODUCT_NOT_FOUND,
-                        code: EnumeratedErrors.PRODUCT_NOT_FOUND.code,
-                        cause: `Producto con ID ${item.productId} no encontrado.`,
-                    });
-                }
-                if (product.stock < item.quantity) {
-                    // Registra los productos que no se pueden comprar
-                    productsNotPurchased.push(item.productId);
-                }
-                return product;
-            };
+            const cart = await this.getCartById(cartId);
 
-            // Verificar el stock de todos los productos
-            await Promise.all(req.cart.products.map(checkProductStock));
+            const productsNotPurchased = await this.checkStockForProducts(cart.products);
 
-            // Actualizar el stock y registrar la compra para los productos comprables
-            const productsPurchased = await Promise.all(req.cart.products.map(async (item) => {
-                if (!productsNotPurchased.includes(item.productId)) {
-                    const product = await this.productManagerAdapter.getProductById(item.productId);
-                    if (product) {
-                        product.stock -= item.quantity;
-                        await this.productManagerAdapter.updateProduct(product);
-                        return item;
-                    }
-                }
-                return null;
-            }));
+            const purchasedProducts = await this.processPurchasableProducts(cart.products, productsNotPurchased);
 
-            // Filtrar los productos que se compraron con éxito
-            const purchasedProducts = productsPurchased.filter(item => item !== null);
+            const totalAmount = await this.cartManagerAdapter.calculateTotalAmount(purchasedProducts);
 
-            // Actualizar el carrito con los productos no comprados
-            req.cart.products = purchasedProducts;
-            req.cart.totalAmount = purchasedProducts.reduce((total, item) => total + item.price * item.quantity, 0);
-            await req.cart.save();
+            await this.updateCartAndProducts(cart, purchasedProducts);
 
             if (purchasedProducts.length > 0) {
-                // Crear un nuevo ticket (pedido) solo si se compraron productos
-                const newTicket = new Ticket({
-                    code: generateUniqueCode(),
-                    amount: req.cart.totalAmount,
-                    purchaser: userId,
-                });
+                const ticket = await this.createTicket(totalAmount, userId);
 
-                // Guardar el ticket en la base de datos
-                const ticket = await newTicket.save();
-
-                // Responder con los productos que no se pudieron comprar
-                return res.status(200).json({ message: 'Compra exitosa', ticket, productsNotPurchased });
+                return res.status(200).json({ 
+                    message: 'Compra exitosa', 
+                    ticket, 
+                    productsNotPurchased });
+                    
             } else {
-                // Responder con un mensaje indicando que todos los productos estaban fuera de stock
                 throw new CustomError({
                     name: EnumeratedErrors.CART_EMPTY_ERROR,
                     code: EnumeratedErrors.CART_EMPTY_ERROR.code,
@@ -415,10 +377,73 @@ class CartManagerController {
             if (error instanceof CustomError) {
                 return res.status(400).json({ message: error.message, code: error.code });
             } else {
-                    return res.status(500).json({ message: 'Error en la compra' });
+                return res.status(500).json({ message: 'Error en la compra' });
             }
         }
     }
+
+    async getCartById(cartId) {
+        const cart = await this.cartManagerAdapter.getCartById(cartId);
+        if (!cart) {
+            throw new CustomError({
+                name: EnumeratedErrors.CART_NOT_FOUND,
+                code: EnumeratedErrors.CART_NOT_FOUND.code,
+                cause: `Carrito con ID ${cartId} no encontrado.`,
+            });
+        }
+        return cart;
+    }
+
+    async checkStockForProducts(products) {
+        const productsNotPurchased = [];
+        const checkProductStockPromises = products.map(async (item) => {
+            const product = await this.cartManagerAdapter.getProductById(item.productId);
+            if (!product) {
+                throw new CustomError({
+                    name: EnumeratedErrors.PRODUCT_NOT_FOUND,
+                    code: EnumeratedErrors.PRODUCT_NOT_FOUND.code,
+                    cause: `Producto con ID ${item.productId} no encontrado.`,
+                });
+            }
+            if (product.stock < item.quantity) {
+                productsNotPurchased.push(item.productId);
+            }
+        });
+        await Promise.all(checkProductStockPromises);
+        return productsNotPurchased;
+    }
+
+    async processPurchasableProducts(products, productsNotPurchased) {
+        const processPurchasableProductPromises = products.map(async (item) => {
+            if (!productsNotPurchased.includes(item.productId)) {
+                const product = await this.cartManagerAdapter.getProductById(item.productId);
+                if (product) {
+                    product.stock -= item.quantity;
+                    await this.cartManagerAdapter.updateProduct(product);
+                    return item;
+                }
+            }
+            return null;
+        });
+        const purchasedProducts = await Promise.all(processPurchasableProductPromises);
+        return purchasedProducts.filter(item => item !== null);
+    }
+
+    async updateCartAndProducts(cart, purchasedProducts) {
+        cart.products = purchasedProducts;
+        await this.cartManagerAdapter.updateCart(cart);
+    }
+
+    async createTicket(totalAmount, userId) {
+        const newTicket = new Ticket({
+            code: generateUniqueCode(),
+            amount: totalAmount,
+            purchaser: userId,
+        });
+        return await newTicket.save();
+    }
+
+
 }
 
 export default CartManagerController;
