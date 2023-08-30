@@ -269,7 +269,7 @@ class CartManagerController {
     async processPurchase(req, res) {
         try {
             const userId = '649bced97e3bea7f53f0bd3e';
-            const cartId = '64765d546145585e447a0436';
+            const cartId = '64765d546145585e447a0437';
 
             const cart = await this.getCartById(cartId);
 

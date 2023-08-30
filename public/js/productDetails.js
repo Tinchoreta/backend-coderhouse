@@ -3,9 +3,9 @@ document.getElementById("qtyFrm").addEventListener("submit", function (event) {
 
     const productId = document.getElementById("productId").value;
     const quantity = parseInt(document.getElementById("quantity").value);
-    
+
     // TODO: Change the hardcoded cartID
-    addProductToCart('64765d546145585e447a0436', productId, quantity);
+    addProductToCart('64765d546145585e447a0437', productId, quantity);
 });
 
 async function addProductToCart(cartId, productId, quantity) {
@@ -15,7 +15,7 @@ async function addProductToCart(cartId, productId, quantity) {
 
     try {
         const response = await axios.put(url);
-        if (response.status === 200){
+        if (response.status === 200) {
             Swal.fire({
                 title: "Product added",
                 text: `Product added successfully`,

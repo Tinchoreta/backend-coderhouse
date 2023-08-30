@@ -24,7 +24,7 @@ const cartMiddleware = async (req, res, next) => {
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
 
         // TODO: Change this hardcoded cartID
-        const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0436');
+        const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0437');
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
 
@@ -44,8 +44,8 @@ const cartMiddleware = async (req, res, next) => {
 
 
 async function checkProductExistenceInCart(req, res, next) {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
+    const cartId = req.params.cartId;
+    const productId = req.params.productId;
 
     try {
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
@@ -70,7 +70,8 @@ async function checkProductExistenceInCart(req, res, next) {
 
 const loadCart = async (req, res, next) => {
     try {
-        const cartId = req.params.cid; // Supongo que el carritoId se pasa como un parámetro en la URL
+        const cartId = req.params.cartId; 
+        const dataBaseCartAdapter = await getDatabaseCartAdapter();
         const cart = await dataBaseCartAdapter.getCartById(cartId);
 
         if (!cart) {
