@@ -353,7 +353,7 @@ class CartManagerController {
 
             const purchasedProducts = await this.processPurchasableProducts(cart.products, productsNotPurchased);
 
-            const totalAmount = await this.cartManagerAdapter.calculateTotalAmount(purchasedProducts);
+            const totalAmount = await this.cartManagerAdapter.calculateCartTotalPrice(cartId);
 
             await this.updateCartAndProducts(cart, purchasedProducts);
 
@@ -364,7 +364,7 @@ class CartManagerController {
                     message: 'Compra exitosa', 
                     ticket, 
                     productsNotPurchased });
-                    
+
             } else {
                 throw new CustomError({
                     name: EnumeratedErrors.CART_EMPTY_ERROR,
@@ -397,7 +397,7 @@ class CartManagerController {
     async checkStockForProducts(products) {
         const productsNotPurchased = [];
         const checkProductStockPromises = products.map(async (item) => {
-            const product = await this.cartManagerAdapter.getProductById(item.productId);
+            const product = await this.productManagerAdapter.getProductById(item.productId);
             if (!product) {
                 throw new CustomError({
                     name: EnumeratedErrors.PRODUCT_NOT_FOUND,
@@ -416,7 +416,7 @@ class CartManagerController {
     async processPurchasableProducts(products, productsNotPurchased) {
         const processPurchasableProductPromises = products.map(async (item) => {
             if (!productsNotPurchased.includes(item.productId)) {
-                const product = await this.cartManagerAdapter.getProductById(item.productId);
+                const product = await this.productManagerAdapter.getProductById(item.productId);
                 if (product) {
                     product.stock -= item.quantity;
                     await this.cartManagerAdapter.updateProduct(product);
