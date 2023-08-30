@@ -3,6 +3,7 @@
  */
 import CustomError from "../services/errors/CustomError.js";
 import Ticket from "../models/ticket.model.js";
+import EnumeratedErrors from "../services/errors/EnumeratedErrors.js";
 class CartManagerController {
     /**
      * Crea una nueva instancia del controlador del carrito de compras.
