@@ -26,7 +26,10 @@ const productController = new ProductManagerController(dataBaseProductAdapter);
 
 router.get("/mockingProducts", (req, res) => {
   const products = generateOneHundredProducts();
-  res.json({ success: true, payload: products });
+  res.json({ 
+    success: true, 
+    payload: products 
+  });
 });
 
 router.get('/mockingProducts/test', (req, res) => {
@@ -34,7 +37,10 @@ router.get('/mockingProducts/test', (req, res) => {
     const products = generateOneHundredProducts();
     // Ejecutar las pruebas
     runTests();
-    res.json({ success: true, message: 'Tests completed successfully' });
+    res.json({ 
+      success: true, 
+      message: 'Tests completed successfully' 
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Tests failed', error: error.message });
   }

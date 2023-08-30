@@ -35,6 +35,10 @@ class DataBaseCartManagerAdapter {
 
     async getProductsIds(cartId) {
         try {
+            if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                throw new Error('getProductsIds: Invalid cartId');
+            }
+
             const cart = await this.persistenceManager.getOne({ _id: cartId });
             return cart ? cart.products.map((product) => product.productId) : [];
         } catch (error) {
@@ -44,12 +48,16 @@ class DataBaseCartManagerAdapter {
 
     async getCartById(cartId) {
         try {
+            if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                throw new Error('getCartById: Invalid cartId');
+            }
+
             const cart = await this.persistenceManager.getOne({ _id: cartId });
             return cart || null;
         } catch (error) {
             throw new Error(`getCartById: ${error.message}`);
         }
-    };
+    }
 
     async createCart() {
         try {
