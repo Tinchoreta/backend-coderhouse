@@ -1,6 +1,6 @@
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
-import { sendMail } from '../../utils/mailManager.js'; 
-import ROLES from "../../utils/roles.js";
+import { sendMail } from '../../utils/mailManager.js';
+import ROLES from "../../utils/userRoles.js";
 
 const mailRouter = new CustomRouter();
 

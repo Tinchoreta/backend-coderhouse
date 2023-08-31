@@ -1,6 +1,5 @@
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
-import ROLES from "../../utils/roles.js";
-import logger from "../../config/logger.js";
+import ROLES from "../../utils/userRoles.js";
 
 const loggerRouter = new CustomRouter();
 

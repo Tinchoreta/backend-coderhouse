@@ -1,6 +1,6 @@
 import { auth } from '../auth/auth.js';
 import HTTP_STATUS_CODES from '../../utils/httpStatusCodes.js';
-import ROLES from '../../utils/roles.js';
+import ROLES from '../../utils/userRoles.js';
 
 const {
     HTTP_UNAUTHORIZED,
@@ -13,7 +13,7 @@ const {
 
 const HTTP_ERRORS = {
     [HTTP_UNAUTHORIZED]: { status: 'error', error: 'Unauthorized' },
-    [HTTP_FORBIDDEN]: { status: 'error', error: 'No authorization' }, 
+    [HTTP_FORBIDDEN]: { status: 'error', error: 'No authorization' },
     [HTTP_BAD_REQUEST]: { status: 'error', error: 'Bad request' },
     [HTTP_NOT_FOUND]: { status: 'error', error: 'Not found' },
     [HTTP_INTERNAL_SERVER_ERROR]: { status: 'error', error: 'Internal server error' },
@@ -29,7 +29,7 @@ class AuthorizationHandler {
                 if (error) {
                     if (error.status === HTTP_STATUS_CODES.HTTP_UNAUTHORIZED) {
                         return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json(HTTP_ERRORS[HTTP_UNAUTHORIZED]);
-                    } 
+                    }
                     if (error.status === HTTP_STATUS_CODES.HTTP_FORBIDDEN) {
                         return res.status(HTTP_STATUS_CODES.HTTP_FORBIDDEN).json(HTTP_ERRORS[HTTP_FORBIDDEN]);
                     }

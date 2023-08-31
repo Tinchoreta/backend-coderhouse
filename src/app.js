@@ -23,6 +23,10 @@ import cors from 'cors';
 
 const app = express();
 
+//Uso de logging de Winston
+
+app.use(winstonLogger);
+
 let URI = config.MONGO_DB_URI;
 
 let dataBaseStrategy = new DataBaseStrategy(URI);
@@ -40,11 +44,6 @@ async function connect() {
 
 //Conectar la base de datos
 connect();
-
-
-//Uso de logging de Winston
-
-app.use(winstonLogger);
 
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);

@@ -15,14 +15,14 @@ import {
     trimUserData,
 } from "../../middlewares/business/userMiddleware.js";
 
-import ROLES from "../../utils/roles.js";
+import ROLES from "../../utils/userRoles.js";
 
 const authController = new AuthController();
 
 const authRouter = new CustomRouter();
 
 // COUNTER
-authRouter.get('/', 
+authRouter.get('/',
     [ROLES.PUBLIC],
     (req, res, next) => authController.getCounter(req, res, next));
 
@@ -49,12 +49,12 @@ authRouter.post('/register',
 //(req, res) => userController.addUser(req, res)); //Esto se realizará en el passportConfig register.
 
 //FAIL REGISTER
-authRouter.get('/fail-register', 
-    [ROLES.PUBLIC], 
+authRouter.get('/fail-register',
+    [ROLES.PUBLIC],
     (req, res) => res.status(400).json({
-    success: false,
-    message: 'Register failed'
-})
+        success: false,
+        message: 'Register failed'
+    })
 );
 
 // LOGIN
@@ -80,24 +80,24 @@ authRouter.post('/signin',
 );
 
 //FAIL SIGNIN
-authRouter.get('/fail-signin', 
+authRouter.get('/fail-signin',
     [ROLES.PUBLIC],
     (req, res) => {
 
-    return res.status(400).json({
-        success: false,
-        message: 'Auth failed',
+        return res.status(400).json({
+            success: false,
+            message: 'Auth failed',
+        });
     });
-});
 
 // CURRENT
-authRouter.get('/current', 
-    [ROLES.ADMIN], 
+authRouter.get('/current',
+    [ROLES.ADMIN],
     (req, res) => authController.getPrivateContent(req, res));
 
 // LOGOUT
-authRouter.post('/logout', 
-    [ROLES.PUBLIC], 
+authRouter.post('/logout',
+    [ROLES.PUBLIC],
     passport.authenticate('jwt', { session: false }), (req, res, next) => authController.logout(req, res, next));
 
 //GH REGISTER

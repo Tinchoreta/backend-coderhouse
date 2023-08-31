@@ -93,6 +93,8 @@ class CartManagerController {
             const cartId = request.params.cartId;
 
             if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                req.logger.info('Este es un registro informativo desde getCartById' + " - CartID: " + cartId);
+
                 return response.status(HTTP_STATUS_CODES.HTTP_BAD_REQUEST).json({
                     success: false,
                     error: 'Invalid cartId'
@@ -271,7 +273,7 @@ class CartManagerController {
             const userId = '649bced97e3bea7f53f0bd3e';
             const cartId = '64765d546145585e447a0437';
 
-            const cart = await this.getCartById(cartId);
+            const cart = await this.cartManagerAdapter.getCartById(cartId);
 
             const productsNotPurchased = await this.checkStockForProducts(cart.products);
 
@@ -305,18 +307,6 @@ class CartManagerController {
                 return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({ message: 'Error en la compra' });
             }
         }
-    }
-
-    async getCartById(cartId) {
-        const cart = await this.cartManagerAdapter.getCartById(cartId);
-        if (!cart) {
-            throw new CustomError({
-                name: EnumeratedErrors.CART_NOT_FOUND,
-                code: EnumeratedErrors.CART_NOT_FOUND.code,
-                cause: `Carrito con ID ${cartId} no encontrado.`,
-            });
-        }
-        return cart;
     }
 
     async checkStockForProducts(products) {

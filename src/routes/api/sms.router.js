@@ -1,6 +1,6 @@
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
 import { sendSms, sendWhatsAppMessage } from "../../utils/SMSManager.js";
-import ROLES from "../../utils/roles.js";
+import ROLES from "../../utils/userRoles.js";
 
 const smsRouter = new CustomRouter();
 
