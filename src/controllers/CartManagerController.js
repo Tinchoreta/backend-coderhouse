@@ -92,20 +92,13 @@ class CartManagerController {
         try {
             const cartId = request.params.cartId;
 
-            if (!mongoose.Types.ObjectId.isValid(cartId)) {
-                req.logger.info('Este es un registro informativo desde getCartById' + " - CartID: " + cartId);
-
-                return response.status(HTTP_STATUS_CODES.HTTP_BAD_REQUEST).json({
-                    success: false,
-                    error: 'Invalid cartId'
-                });
-            }
-
             const cartFounded = await this.cartManagerAdapter.getCartById(cartId);
+
             if (cartFounded) {
+                const populatedCart = await this.cartManagerAdapter.populateProductsById(cartId);
                 return response.status(HTTP_STATUS_CODES.HTTP_OK).json({
                     success: true,
-                    cart: cartFounded
+                    cart: populatedCart,
                 });
             } else {
                 return response.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).json({
@@ -334,7 +327,7 @@ class CartManagerController {
                 const product = await this.productManagerAdapter.getProductById(item.productId);
                 if (product) {
                     product.stock -= item.quantity;
-                    await this.cartManagerAdapter.updateProduct(product);
+                    await this.productManagerAdapter.updateProduct(product);
                     return item;
                 }
             }
@@ -357,6 +350,11 @@ class CartManagerController {
         });
         return await newTicket.save();
     }
+}
+
+function generateUniqueCode() {
+    // Genera un código único basado en la fecha y hora actual
+    return `TICKET-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
 }
 
 export default CartManagerController;

@@ -25,7 +25,7 @@ const userSchema = new Schema({
     },
     cart: {
         type: Schema.Types.ObjectId,
-        ref: 'Cart',
+        ref: 'Carts',
     },
     role: {
         type: String,
@@ -34,7 +34,7 @@ const userSchema = new Schema({
     },
 });
 
-const User = model('User', userSchema);
+const User = model('Users', userSchema);
 
 export default User;
 

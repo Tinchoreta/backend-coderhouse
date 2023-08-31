@@ -5,7 +5,6 @@ const ticketSchema = new Schema({
         type: String,
         unique: true,
         required: true,
-        default: generateUniqueCode
     },
     purchase_datetime: {
         type: Date,
@@ -21,11 +20,6 @@ const ticketSchema = new Schema({
     },
 });
 
-function generateUniqueCode() {
-    // Genera un código único basado en la fecha y hora actual
-    return `TICKET-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
-}
-
-const Ticket = model('Ticket', ticketSchema);
+const Ticket = model('Tickets', ticketSchema);
 
 export default Ticket;
