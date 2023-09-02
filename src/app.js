@@ -21,6 +21,10 @@ import { config } from './config/config.js';
 import winstonLogger from './config/logger.js';
 import cors from 'cors';
 
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
+
+
 const app = express();
 
 //Uso de logging de Winston
@@ -44,6 +48,21 @@ async function connect() {
 
 //Conectar la base de datos
 connect();
+
+
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1", // Specification (optional, defaults to OpenAPI 2.0),
+        info:{
+            title:"API REST - Shopping Cart - Bootshop",
+            description:'Shopping Cart API',
+            }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+
+const swaggerDocs = swaggerJSDoc({...swaggerOptions});
+app.use('/apidocs', swaggerUiExpress.serve,swaggerUiExpress.setup(swaggerDocs))
 
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);

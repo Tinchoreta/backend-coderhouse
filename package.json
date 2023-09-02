@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha ./src/test/Users.test.js",
+    "test": "mocha ./test/Users.test.js",
     "start": "node ./src/server.js --mode production",
     "dev": "nodemon --inspect ./src/server.js --mode development"
   },
@@ -52,6 +52,8 @@
     "passport-local": "^1.0.0",
     "session-file-store": "^1.5.0",
     "socket.io": "^4.6.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "twilio": "^4.14.1",
     "winston": "^3.10.0"
   },

@@ -1,6 +1,6 @@
 import chai from 'chai';
-import DataBaseUserAdapter from '../Business/adapters/DataBaseUserAdapter.js';
-import User from '../models/user.model.js'; 
+import DataBaseUserAdapter from '../src/Business/adapters/DataBaseUserAdapter.js';
+import User from '../src/models/user.model.js'; 
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
@@ -43,7 +43,7 @@ describe('User Adapter CRUD Tests', () => {
         expect(createdUser.firstName).to.equal(userData.firstName);
         expect(createdUser.lastName).to.equal(userData.lastName);
         expect(createdUser.email).to.equal(userData.email);
-        // Agrega más aserciones según los campos que esperas.
+        
     });
 
     it('should get a user by ID', async () => {
@@ -61,7 +61,7 @@ describe('User Adapter CRUD Tests', () => {
         expect(retrievedUser.firstName).to.equal(userData.firstName);
         expect(retrievedUser.lastName).to.equal(userData.lastName);
         expect(retrievedUser.email).to.equal(userData.email);
-        // Agrega más aserciones según los campos que esperas.
+        
     });
 
     it('should update a user by ID', async () => {
@@ -81,7 +81,7 @@ describe('User Adapter CRUD Tests', () => {
         const updatedUser = await adapter.updateUser(createdUser._id.toString(), updatedUserData);
         expect(updatedUser).to.be.an('object');
         expect(updatedUser.firstName).to.equal(updatedUserData.firstName);
-        // Agrega más aserciones según los campos que esperas.
+        
     });
 
     it('should delete a user by ID', async () => {
