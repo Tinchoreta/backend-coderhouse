@@ -51,7 +51,7 @@ connect();
 
 const swaggerOptions = {
     definition: {
-        openapi: "3.0.1", // Specification (optional, defaults to OpenAPI 2.0),
+        openapi: "3.0.1",
         info: {
             title: "API REST - Shopping Cart - Bootshop",
             description: 'Shopping Cart API',
@@ -62,8 +62,8 @@ const swaggerOptions = {
 
 console.log(`${__dirname}/docs/**/*.yaml`);
 
-const swaggerDocs = swaggerJSDoc({ ...swaggerOptions });
-app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocs))
+const swaggerSpecs = swaggerJSDoc({ ...swaggerOptions });
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpecs))
 
 
 //Para hacer una especie de contexto de React para el carrito de compras
