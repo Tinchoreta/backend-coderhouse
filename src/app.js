@@ -49,20 +49,22 @@ async function connect() {
 //Conectar la base de datos
 connect();
 
-
 const swaggerOptions = {
     definition: {
         openapi: "3.0.1", // Specification (optional, defaults to OpenAPI 2.0),
-        info:{
-            title:"API REST - Shopping Cart - Bootshop",
-            description:'Shopping Cart API',
-            }
+        info: {
+            title: "API REST - Shopping Cart - Bootshop",
+            description: 'Shopping Cart API',
+        }
     },
     apis: [`${__dirname}/docs/**/*.yaml`]
 }
 
-const swaggerDocs = swaggerJSDoc({...swaggerOptions});
-app.use('/apidocs', swaggerUiExpress.serve,swaggerUiExpress.setup(swaggerDocs))
+console.log(`${__dirname}/docs/**/*.yaml`);
+
+const swaggerDocs = swaggerJSDoc({ ...swaggerOptions });
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocs))
+
 
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);

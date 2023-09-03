@@ -131,7 +131,7 @@ class DataBaseCartManagerAdapter {
 
     async populateProducts(options) {
         try {
-            const populatedCart = await this.persistenceManager.populateMany('Products', 'productId', options);
+            const populatedCart = await this.persistenceManager.populateMany('products', 'productId', options);
             return populatedCart;
         } catch (error) {
             throw new Error(`populateProducts: ${error.message}`);

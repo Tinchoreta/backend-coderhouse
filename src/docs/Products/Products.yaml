@@ -1,0 +1,113 @@
+swagger: "3.0.1"
+info:
+  title: Product API
+  version: "1.0.0"
+  description: API for managing products
+tags:
+  - name: Products
+paths:
+  /api/products:
+    get:
+      summary: Get a list of products
+      tags:
+        - Products
+      responses:
+        200:
+          description: A list of products
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Product"
+    post:
+      summary: Create a new product
+      tags:
+        - Products
+      requestBody:
+        description: New product data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/Product"
+      responses:
+        201:
+          description: Created product object
+          schema:
+            $ref: "#/definitions/Product"
+        400:
+          description: Invalid product data
+  /api/products/{id}:
+    get:
+      summary: Get a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: ID of the product to retrieve
+      responses:
+        200:
+          description: A product object
+          schema:
+            $ref: "#/definitions/Product"
+        404:
+          description: Product not found
+    put:
+      summary: Update a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: ID of the product to update
+      requestBody:
+        description: Updated product data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/Product"
+      responses:
+        200:
+          description: Updated product object
+          schema:
+            $ref: "#/definitions/Product"
+        404:
+          description: Product not found
+        400:
+          description: Invalid product data
+    delete:
+      summary: Delete a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: ID of the product to delete
+      responses:
+        204:
+          description: Product deleted
+        404:
+          description: Product not found
+definitions:
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+        description: The product's unique identifier
+      name:
+        type: string
+        description: The name of the product
+      description:
+        type: string
+        description: A description of the product
+      price:
+        type: number
+        description: The price of the product

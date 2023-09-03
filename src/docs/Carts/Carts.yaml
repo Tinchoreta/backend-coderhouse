@@ -1,0 +1,203 @@
+swagger: "3.0.1"
+info:
+  title: Cart API
+  version: "1.0.0"
+  description: API for managing shopping carts
+tags:
+  - name: Carts
+paths:
+  /api/carts:
+    get:
+      summary: Get a list of shopping carts
+      tags:
+        - Carts
+      responses:
+        200:
+          description: A list of shopping carts
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Cart"
+    post:
+      summary: Create a new shopping cart
+      tags:
+        - Carts
+      requestBody:
+        description: New cart data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/Cart"
+      responses:
+        201:
+          description: Created shopping cart object
+          schema:
+            $ref: "#/definitions/Cart"
+        400:
+          description: Invalid cart data
+  /api/carts/{cartId}:
+    get:
+      summary: Get a shopping cart by ID
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          type: string
+          description: ID of the shopping cart to retrieve
+      responses:
+        200:
+          description: A shopping cart object
+          schema:
+            $ref: "#/definitions/Cart"
+        404:
+          description: Shopping cart not found
+    delete:
+      summary: Remove a shopping cart by ID
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          type: string
+          description: ID of the shopping cart to remove
+      responses:
+        204:
+          description: Shopping cart deleted
+        404:
+          description: Shopping cart not found
+  /api/carts/{cartId}/bills:
+    get:
+      summary: Calculate total price of a shopping cart
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          type: string
+          description: ID of the shopping cart to calculate
+      responses:
+        200:
+          description: Total price of the shopping cart
+          schema:
+            type: number
+        404:
+          description: Shopping cart not found
+  /api/carts/{cartId}/purchase:
+    get:
+      summary: Process purchase of a shopping cart
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          type: string
+          description: ID of the shopping cart to process
+      responses:
+        200:
+          description: Purchase successful
+        404:
+          description: Shopping cart not found
+  /api/carts/{cartId}/product/{productId}:
+    delete:
+      summary: Remove all units of a product from a shopping cart
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          type: string
+          description: ID of the shopping cart
+        - name: productId
+          in: path
+          required: true
+          type: string
+          description: ID of the product to remove
+      responses:
+        204:
+          description: All units of the product removed from the shopping cart
+        404:
+          description: Shopping cart or product not found
+    put:
+      summary: Add units of a product to a shopping cart
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          type: string
+          description: ID of the shopping cart
+        - name: productId
+          in: path
+          required: true
+          type: string
+          description: ID of the product to add
+        - name: units
+          in: path
+          required: true
+          type: integer
+          description: Number of units to add
+      responses:
+        200:
+          description: Product units added to the shopping cart
+        404:
+          description: Shopping cart or product not found
+  /api/carts/{cartId}/product/{productId}/add/{units}:
+    put:
+      summary: Add units of a product to a shopping cart
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          type: string
+          description: ID of the shopping cart
+        - name: productId
+          in: path
+          required: true
+          type: string
+          description: ID of the product to add
+        - name: units
+          in: path
+          required: true
+          type: integer
+          description: Number of units to add
+      responses:
+        200:
+          description: Product units added to the shopping cart
+        404:
+          description: Shopping cart or product not found
+  /api/carts/{cartId}/product/{productId}/remove/{units}:
+    delete:
+      summary: Remove units of a product from a shopping cart
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          type: string
+          description: ID of the shopping cart
+        - name: productId
+          in: path
+          required: true
+          type: string
+          description: ID of the product to remove units from
+        - name: units
+          in: path
+          required: true
+          type: integer
+          description: Number of units to remove
+      responses:
+        200:
+          description: Product units removed from the shopping cart
+        404:
+          description: Shopping cart or product not found
