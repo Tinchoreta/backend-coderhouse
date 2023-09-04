@@ -11,7 +11,7 @@ import loggerRouter from "./logger.router.js"
 const router = Router()
 
 router.use('/auth', authRouter.getRouter())
-router.use('/carts', cartsRouter)
+router.use('/carts', cartsRouter.getRouter())
 router.use('/products', productsRouter)
 router.use('/sessions', sessionsRouter)
 router.use('/users', userRouter)

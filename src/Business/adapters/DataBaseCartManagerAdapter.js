@@ -65,7 +65,7 @@ class DataBaseCartManagerAdapter {
     async createCart() {
         try {
             const cart = { products: [] };
-            const createdCart = await this.persistenceManager.addOne(cart);
+            const createdCart = await this.persistenceManager.addOne(cart, 'Carts');
             return createdCart._id;
         } catch (error) {
             throw new Error(`createCart: ${error.message}`);

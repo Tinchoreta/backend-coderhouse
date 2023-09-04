@@ -49,6 +49,7 @@ class CartManagerController {
 
     async createCart(request, response) {
         try {
+            console.log(request.body);
             const addedCartId = await this.cartManagerAdapter.createCart();
             if (!addedCartId) {
                 response.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
