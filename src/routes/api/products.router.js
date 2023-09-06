@@ -49,7 +49,7 @@ router.get('/mockingProducts/test', [ROLES.ADMIN], (req, res) => {
   }
 });
 
-router.get("/", [ROLES.ADMIN], (req, res) => productController.getProducts(req, res));
+router.get("/", [ROLES.PUBLIC], (req, res) => productController.getProducts(req, res));
 
 router.get("/:id", [ROLES.PUBLIC],
   validateProductExistence,
