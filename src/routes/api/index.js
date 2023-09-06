@@ -12,7 +12,7 @@ const router = Router()
 
 router.use('/auth', authRouter.getRouter())
 router.use('/carts', cartsRouter.getRouter())
-router.use('/products', productsRouter)
+router.use('/products', productsRouter.getRouter())
 router.use('/sessions', sessionsRouter)
 router.use('/users', userRouter)
 router.use('/mail', mailRouter.getRouter())

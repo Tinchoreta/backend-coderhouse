@@ -1,6 +1,6 @@
 import chai from 'chai';
-import DataBaseUserAdapter from '../src/Business/adapters/DataBaseUserAdapter.js';
-import User from '../src/models/user.model.js'; 
+import DataBaseUserAdapter from '../Business/adapters/DataBaseUserAdapter.js';
+import User from '../models/user.model.js'; 
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 

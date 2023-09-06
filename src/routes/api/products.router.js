@@ -16,7 +16,10 @@ import { generateOneHundredProducts } from "../../tests/productMocking.js";
 
 import runTests from "../../tests/productService.test.js";
 
-const router = Router();
+import CustomRouter from "../../middlewares/routes/CustomRouter.js";
+import ROLES from "../../utils/userRoles.js";
+
+const router = new CustomRouter();
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
   process.env.MONGO_DB_URI
@@ -24,7 +27,7 @@ const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
 
 const productController = new ProductManagerController(dataBaseProductAdapter);
 
-router.get("/mockingProducts", (req, res) => {
+router.get("/mockingProducts", [ROLES.ADMIN], (req, res) => {
   const products = generateOneHundredProducts();
   res.json({ 
     success: true, 
@@ -32,7 +35,7 @@ router.get("/mockingProducts", (req, res) => {
   });
 });
 
-router.get('/mockingProducts/test', (req, res) => {
+router.get('/mockingProducts/test', [ROLES.ADMIN], (req, res) => {
   try {
     const products = generateOneHundredProducts();
     // Ejecutar las pruebas
@@ -46,14 +49,14 @@ router.get('/mockingProducts/test', (req, res) => {
   }
 });
 
-router.get("/", (req, res) => productController.getProducts(req, res));
+router.get("/", [ROLES.ADMIN], (req, res) => productController.getProducts(req, res));
 
-router.get("/:id",
+router.get("/:id", [ROLES.PUBLIC],
   validateProductExistence,
   (req, res) => productController.getProductById(req, res)
 );
 
-router.post("/",
+router.post("/", [ROLES.ADMIN],
   auth,
   checkUserRole,
   passport.authenticate('jwt',{session: false}),
@@ -64,11 +67,11 @@ router.post("/",
   (req, res) => productController.addProduct(req, res));
 
 
-router.put("/:id",
+router.put("/:id", [ROLES.ADMIN],
   validateProductExistence,
   (req, res) => productController.updateProductItem(req, res));
 
-router.delete("/:id",
+router.delete("/:id", [ROLES.ADMIN],
   validateProductExistence,
   (req, res) => productController.removeProductItem(req, res)
 );
