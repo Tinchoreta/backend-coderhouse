@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha ./tests/Users.test.js",
+    "test": "mocha './src/tests/specs/*.test.js'",
     "start": "node ./src/server.js --mode production",
     "dev": "nodemon --inspect ./src/server.js --mode development"
   },
@@ -61,6 +61,7 @@
     "chai": "^4.3.8",
     "mocha": "^10.2.0",
     "mongodb-memory-server": "^8.15.1",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   }
 }

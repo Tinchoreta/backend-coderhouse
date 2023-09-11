@@ -14,7 +14,7 @@ import passport from "passport";
 
 import { generateOneHundredProducts } from "../../tests/productMocking.js";
 
-import runTests from "../../tests/productService.test.js";
+import runTests from "../../tests/specs/productService.test.js";
 
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
 import ROLES from "../../utils/userRoles.js";
