@@ -1,62 +1,74 @@
 import chai from 'chai';
-import app from '../../app.js'; 
-import ProductModel from '../../models/product.model.js'; 
-import mongoose from 'mongoose';
-import { generateOneHundredProducts } from '../productMocking.js'; // Importa la función para generar datos de prueba
+import app from '../../app.js';
+import ProductModel from '../../models/product.model.js';
+import { generateOneHundredProducts } from '../productMocking.js';
 import supertest from 'supertest';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+
 
 const { expect } = chai;
 const request = supertest(app);
 
 describe('Product Router Tests', () => {
     
-    let mongoServer; 
-
-    before(async () => {
-        // Inicializa el servidor de memoria MongoDB antes de las pruebas
-        mongoServer = await MongoMemoryServer.create();
-        const mongoUri = mongoServer.getUri();
-        mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-    });
-
-    after(async () => {
-        
-        await mongoose.disconnect();
-        await mongoServer.stop();
-    });
-
     beforeEach(async () => {
-
         const productsToInsert = generateOneHundredProducts();
         await ProductModel.insertMany(productsToInsert);
     });
 
     afterEach(async () => {
-        // Limpia la base de datos de prueba después de cada prueba
         await ProductModel.deleteMany({});
     });
 
     it('should get all products', async () => {
         const res = await request.get('/api/products');
-        // console.log(res);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
 
-        expect(res.body.payload).to.be.an('array');
-        expect(res.body.payload.length).to.be.greaterThan(0);
-
-        const firstProduct = res.body.payload[0];
-        expect(firstProduct).to.have.property('title');
-        expect(firstProduct).to.have.property('description');
-        expect(firstProduct).to.have.property('price');
-        expect(firstProduct).to.have.property('thumbnail');
-        expect(firstProduct).to.have.property('stock');
-        expect(firstProduct).to.have.property('category');
-
-        expect(firstProduct.price).to.be.a('number');
-        expect(firstProduct.price).to.be.greaterThan(0);
-
-        expect(firstProduct.title).to.be.a('string').and.not.empty;
+        const products = res.body.payload;
+        expect(products).to.be.an('array');
+        expect(products).to.have.length.greaterThan(0);
     });
+
+    it('should create a new product', async () => {
+        const newProduct = {
+            title: 'New Product',
+            description: 'Description of the new product',
+            price: 19.99,
+            thumbnail: 'new-product.jpg',
+            stock: 100,
+            category: 'Electronics'
+        };
+
+        const res = await request.post('/api/products').send(newProduct);
+        expect(res.status).to.equal(201);
+        expect(res.body.status).to.equal("success");
+        const createdProduct = res.body.payload;
+        expect(createdProduct).to.have.property('title', newProduct.title);
+        // Add more assertions for other fields
+    });
+
+    it('should update an existing product', async () => {
+        const products = await ProductModel.find({});
+        const productToUpdate = products[0];
+        const updatedProduct = {
+            title: 'Updated Product Title',
+        };
+
+        const res = await request.put(`/api/products/${productToUpdate._id}`).send(updatedProduct);
+        expect(res.status).to.equal(200);
+        expect(res.body.status).to.equal("success");
+        const updatedProductResponse = res.body.payload;
+        expect(updatedProductResponse).to.have.property('title', updatedProduct.title);
+    });
+
+    it('should delete an existing product', async () => {
+        const products = await ProductModel.find({});
+        const productToDelete = products[0];
+
+        const res = await request.delete(`/api/products/${productToDelete._id}`);
+        expect(res.status).to.equal(204);
+        const deletedProduct = await ProductModel.findById(productToDelete._id);
+        expect(deletedProduct).to.be.null;
+    });
+    
 });

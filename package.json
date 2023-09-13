@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha './src/tests/specs/*.test.js'",
+    "test": "mocha './src/tests/specs/testSetup.js' './src/tests/specs/*.test.js'",
     "start": "node ./src/server.js --mode production",
     "dev": "nodemon --inspect ./src/server.js --mode development"
   },

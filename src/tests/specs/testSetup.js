@@ -7,9 +7,9 @@ const { expect } = chai;
 let mongoServer;
 
 before(async () => {
-    mongoServer = new MongoMemoryServer();
-    const mongoUri = await mongoServer.getUri();
-    await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+    mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
+    await mongoose.createConnection(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 });
 
 after(async () => {
