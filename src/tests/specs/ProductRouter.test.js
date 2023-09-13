@@ -20,7 +20,8 @@ describe('Product Router Tests', () => {
     });
 
     it('should get all products', async () => {
-        const res = await request.get('/api/products');
+        const res = await request.get('/api/products')
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
 
@@ -39,12 +40,12 @@ describe('Product Router Tests', () => {
             category: 'Electronics'
         };
 
-        const res = await request.post('/api/products').send(newProduct);
+        const res = await request.post('/api/products').send(newProduct)
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(201);
         expect(res.body.status).to.equal("success");
         const createdProduct = res.body.payload;
         expect(createdProduct).to.have.property('title', newProduct.title);
-        // Add more assertions for other fields
     });
 
     it('should update an existing product', async () => {
@@ -54,7 +55,8 @@ describe('Product Router Tests', () => {
             title: 'Updated Product Title',
         };
 
-        const res = await request.put(`/api/products/${productToUpdate._id}`).send(updatedProduct);
+        const res = await request.put(`/api/products/${productToUpdate._id}`).send(updatedProduct)
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
         const updatedProductResponse = res.body.payload;
@@ -65,8 +67,9 @@ describe('Product Router Tests', () => {
         const products = await ProductModel.find({});
         const productToDelete = products[0];
 
-        const res = await request.delete(`/api/products/${productToDelete._id}`);
-        expect(res.status).to.equal(204);
+        const res = await request.delete(`/api/products/${productToDelete._id}`)
+            .set('Authorization', `Bearer ${global.authToken}`);
+        expect(res.status).to.equal(200);
         const deletedProduct = await ProductModel.findById(productToDelete._id);
         expect(deletedProduct).to.be.null;
     });

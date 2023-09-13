@@ -13,7 +13,9 @@ describe('Cart Router Tests', () => {
     let testUserId;
 
     it('should get all carts', async () => {
-        const res = await request.get('/api/carts');
+        const res = await request.get('/api/carts')
+        .set('Authorization', `Bearer ${global.authToken}`);
+        console.log(res.body);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
         expect(res.body.payload).to.be.an('array');
@@ -21,7 +23,8 @@ describe('Cart Router Tests', () => {
     });
 
     it('should create a new cart', async () => {
-        const res = await request.post('/api/carts').send({ userId: testUserId });
+        const res = await request.post('/api/carts').send({ userId: testUserId })
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(201);
         expect(res.body.status).to.equal("success");
         expect(res.body.payload).to.be.an('object');
@@ -29,7 +32,8 @@ describe('Cart Router Tests', () => {
     });
 
     it('should get a cart by ID', async () => {
-        const res = await request.get(`/api/carts/${testCartId}`);
+        const res = await request.get(`/api/carts/${testCartId}`)
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
         expect(res.body.payload).to.be.an('object');
@@ -37,14 +41,16 @@ describe('Cart Router Tests', () => {
     });
 
     it('should calculate the total price of a cart', async () => {
-        const res = await request.get(`/api/carts/${testCartId}/bills`);
+        const res = await request.get(`/api/carts/${testCartId}/bills`)
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
         expect(res.body.payload).to.be.a('number');
     });
 
     it('should process a cart purchase', async () => {
-        const res = await request.get(`/api/carts/${testCartId}/purchase`);
+        const res = await request.get(`/api/carts/${testCartId}/purchase`)
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
         expect(res.body.payload.message).to.equal("Purchase processed successfully");
@@ -55,7 +61,8 @@ describe('Cart Router Tests', () => {
         const productToAdd = { productId: 'fakeProductId', quantity: 1 };
         await CartModel.findByIdAndUpdate(testCartId, { $push: { products: productToAdd } });
 
-        const res = await request.delete(`/api/carts/${testCartId}/product/${productToAdd.productId}`);
+        const res = await request.delete(`/api/carts/${testCartId}/product/${productToAdd.productId}`)
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
         expect(res.body.payload.message).to.equal("Product removed from cart");
@@ -66,7 +73,8 @@ describe('Cart Router Tests', () => {
         const productToAdd = { productId: 'fakeProductId', quantity: 1 };
         await CartModel.findByIdAndUpdate(testCartId, { $push: { products: productToAdd } });
 
-        const res = await request.put(`/api/carts/${testCartId}/product/${productToAdd.productId}/add/2`);
+        const res = await request.put(`/api/carts/${testCartId}/product/${productToAdd.productId}/add/2`)
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
         expect(res.body.payload.message).to.equal("Product units added to cart");
@@ -77,7 +85,8 @@ describe('Cart Router Tests', () => {
         const productToAdd = { productId: 'fakeProductId', quantity: 3 };
         await CartModel.findByIdAndUpdate(testCartId, { $push: { products: productToAdd } });
 
-        const res = await request.delete(`/api/carts/${testCartId}/product/${productToAdd.productId}/remove/2`);
+        const res = await request.delete(`/api/carts/${testCartId}/product/${productToAdd.productId}/remove/2`)
+        .set('Authorization', `Bearer ${global.authToken}`);
         expect(res.status).to.equal(200);
         expect(res.body.status).to.equal("success");
         expect(res.body.payload.message).to.equal("Product units removed from cart");

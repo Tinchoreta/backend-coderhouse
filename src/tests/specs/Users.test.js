@@ -5,6 +5,30 @@ const { expect } = chai;
 
 describe('User Adapter CRUD Tests', () => {
 
+    let createdUserId; // Variable para almacenar el ID del usuario creado
+
+    // beforeEach para crear un usuario antes de cada prueba
+    beforeEach(async () => {
+        const adapter = DataBaseUserAdapter.getInstance();
+        const userData = {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john@example.com',
+            age: 30,
+            password: 'password123',
+        };
+        const createdUser = await adapter.addUser(userData);
+        createdUserId = createdUser._id.toString();
+    });
+
+    // afterEach para eliminar el usuario después de cada prueba
+    afterEach(async () => {
+        const adapter = DataBaseUserAdapter.getInstance();
+        if (createdUserId) {
+            await adapter.deleteUser(createdUserId);
+        }
+    });
+    
     describe('Create User', () => {
         it('should create a new user', async () => {
             const adapter = DataBaseUserAdapter.getInstance();
