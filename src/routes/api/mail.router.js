@@ -1,5 +1,5 @@
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
-import { sendMail } from '../../utils/mailManager.js';
+import { sendMail, sendPasswordResetEmail } from '../../utils/mailManager.js';
 import ROLES from "../../utils/userRoles.js";
 
 const mailRouter = new CustomRouter();
@@ -21,6 +21,27 @@ mailRouter.get('/',
             res.status(500).json({
                 success: false,
                 message: 'Hubo un error al enviar el correo electrónico.'
+            });
+        }
+    }
+);
+
+mailRouter.post('/forgot-password',
+    [ROLES.PUBLIC], 
+    async (req, res) => {
+        const { email } = req.body;
+        try {
+            
+            await sendPasswordResetEmail(email);
+            res.status(200).json({
+                success: true,
+                message: 'Correo de restablecimiento de contraseña enviado correctamente.'
+            });
+        } catch (error) {
+            
+            res.status(500).json({
+                success: false,
+                message: 'Hubo un error al enviar el correo de restablecimiento de contraseña.'
             });
         }
     }

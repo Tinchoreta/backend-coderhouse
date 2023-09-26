@@ -32,6 +32,8 @@ const userSchema = new Schema({
         enum: ['user', 'admin', 'premium'],
         default: 'user',
     },
+    resetPasswordToken: { String }, 
+    resetPasswordExpires: { Date },
 });
 
 const User = model('Users', userSchema);
