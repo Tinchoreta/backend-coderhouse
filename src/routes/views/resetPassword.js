@@ -8,6 +8,7 @@ resetPassRouter.get("/",
         try {
             return res.render("forgetPass", {
                 title: "Forget Pass",
+                script: "forgetPass.js",
             });
         } catch (error) {
             console.error(error);
