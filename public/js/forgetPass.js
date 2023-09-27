@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const email = emailInput.value;
 
         try {
-            const response = await fetch("/api/reset-password", {
+            const response = await fetch("/api/mail/forgot-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
