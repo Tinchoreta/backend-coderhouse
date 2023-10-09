@@ -3,33 +3,37 @@ import User from "../../models/user.model.js";
 import ROLES from "../../utils/userRoles.js";
 import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
 import { validatePasswordLength, createHashForPassword } from "../../middlewares/business/userMiddleware.js";
+import verifyResetToken from "../../middlewares/business/resetPasswordMiddleware.js";
 
 const resetPasswordRouter = new CustomRouter();
 
 resetPasswordRouter.post('/',
-    validatePasswordLength, // Middleware para validar la longitud de la contraseña
-    createHashForPassword, // Middleware para encriptar la contraseña
     [ROLES.PUBLIC],
+    validatePasswordLength, // Valida la longitud de la contraseña
+    createHashForPassword, // Encripta la contraseña
+    verifyResetToken, //Verifica que no haya caducado el token (1hr).
+
     async (req, res) => {
-        const userId = req.decodedToken.id;
-        const newPassword = req.body.newPassword;
+        
+        const userEmail = req.body.email;
+        const newPassword = req.body.password;
 
         try {
-            // Busca al usuario por su ID
-            const user = await User.findById(userId);
+            // Busca al usuario por su dirección de correo electrónico
+            const user = await User.findOne({ email: userEmail });
 
             if (!user) {
                 return res.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).json({ message: 'Usuario no encontrado.' });
             }
 
-            // En este punto, ala contraseña ya está encriptada debido al middleware createHashForPassword
+            // En este punto, la contraseña ya está encriptada debido al middleware createHashForPassword
 
             user.password = newPassword; // Actualiza la contraseña
 
             user.resetPasswordToken = null;
             user.resetPasswordExpires = null;
 
-            await user.save();
+            await user.save({ validateModifiedOnly: true });
 
             return res.status(HTTP_STATUS_CODES.HTTP_OK).json({ message: 'Contraseña cambiada con éxito.' });
         } catch (error) {

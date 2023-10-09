@@ -36,6 +36,7 @@ const userSchema = new Schema({
     resetPasswordExpires: { Date },
 });
 
+userSchema.set('strict', false);
 const User = model('Users', userSchema);
 
 export default User;

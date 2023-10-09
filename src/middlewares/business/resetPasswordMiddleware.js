@@ -5,7 +5,7 @@ import EnumeratedErrors from "../../services/errors/EnumeratedErrors.js";
 import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
 
 const verifyResetToken = (req, res, next) => {
-    const token = req.query.token; // Obtén el token de la consulta URL
+    const token = req.body.token; 
 
     try {
         // Verifica el token y obtén los datos decodificados
@@ -22,7 +22,9 @@ const verifyResetToken = (req, res, next) => {
         }
 
         req.decodedToken = decoded;
+
         next();
+
     } catch (error) {
         if (error instanceof CustomError) {
             return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({ message: error.message, code: error.code });
