@@ -1,6 +1,7 @@
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
 import { sendMail, sendPasswordResetEmail } from '../../utils/mailManager.js';
 import ROLES from "../../utils/userRoles.js";
+import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
 
 const mailRouter = new CustomRouter();
 
@@ -12,13 +13,13 @@ mailRouter.get('/',
             await sendMail();
 
             // Si el envío del correo fue exitoso, devuelve una respuesta con éxito
-            res.status(200).json({
+            res.status(HTTP_STATUS_CODES.HTTP_OK).json({
                 success: true,
                 message: 'Correo electrónico enviado correctamente.'
             });
         } catch (error) {
             // Si hubo algún error durante el envío del correo, devuelve un mensaje de error
-            res.status(500).json({
+            res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
                 success: false,
                 message: 'Hubo un error al enviar el correo electrónico.'
             });
@@ -27,19 +28,19 @@ mailRouter.get('/',
 );
 
 mailRouter.post('/forgot-password',
-    [ROLES.PUBLIC], 
+    [ROLES.PUBLIC],
     async (req, res) => {
         const { email } = req.body;
         try {
-            
+
             await sendPasswordResetEmail(email);
-            res.status(200).json({
+            res.status(HTTP_STATUS_CODES.HTTP_OK).json({
                 success: true,
                 message: 'Correo de restablecimiento de contraseña enviado correctamente.'
             });
         } catch (error) {
-            
-            res.status(500).json({
+
+            res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
                 success: false,
                 message: 'Hubo un error al enviar el correo de restablecimiento de contraseña.'
             });

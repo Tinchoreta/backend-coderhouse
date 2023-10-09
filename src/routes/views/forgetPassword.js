@@ -1,14 +1,14 @@
 import { Router } from "express";
 
-const resetPassRouter = Router();
+const forgetPassRouter = Router();
 
-resetPassRouter.get("/",
+forgetPassRouter.get("/",
 
     async (req, res, next) => {
         try {
-            return res.render("resetPassword", {
-                title: "Reset Password",
-                script: "resetPass.js",
+            return res.render("forgetPass", {
+                title: "Forget Pass",
+                script: "forgetPass.js",
             });
         } catch (error) {
             console.error(error);
@@ -20,4 +20,4 @@ resetPassRouter.get("/",
     });
 
 
-export default resetPassRouter;
+export default forgetPassRouter;

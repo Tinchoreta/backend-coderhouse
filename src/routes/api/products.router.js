@@ -18,6 +18,7 @@ import runTests from "../../tests/specs/productService.test.js";
 
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
 import ROLES from "../../utils/userRoles.js";
+import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
 
 const router = new CustomRouter();
 
@@ -45,7 +46,7 @@ router.get('/mockingProducts/test', [ROLES.ADMIN], (req, res) => {
       message: 'Tests completed successfully' 
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Tests failed', error: error.message });
+    res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({ success: false, message: 'Tests failed', error: error.message });
   }
 });
 

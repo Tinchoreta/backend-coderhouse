@@ -16,6 +16,7 @@ import {
 } from "../../middlewares/business/userMiddleware.js";
 
 import ROLES from "../../utils/userRoles.js";
+import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
 
 const authController = new AuthController();
 
@@ -26,8 +27,7 @@ authRouter.get('/',
     [ROLES.PUBLIC],
     (req, res, next) => authController.getCounter(req, res, next));
 
-//REGISTER
-
+// REGISTER
 authRouter.post('/register',
     validateUserFields,
     checkDuplicateUserEmail,
@@ -40,18 +40,17 @@ authRouter.post('/register',
         failureRedirect: '/api/auth/fail-register'
     }
     ),
-    (req, res) => res.status(201).json({
+    (req, res) => res.status(HTTP_STATUS_CODES.HTTP_CREATED).json({
         success: true,
         message: 'User created!',
         user: req.user,
     })
-)
-//(req, res) => userController.addUser(req, res)); //Esto se realizará en el passportConfig register.
+);
 
-//FAIL REGISTER
+// FAIL REGISTER
 authRouter.get('/fail-register',
     [ROLES.PUBLIC],
-    (req, res) => res.status(400).json({
+    (req, res) => res.status(HTTP_STATUS_CODES.HTTP_BAD_REQUEST).json({
         success: false,
         message: 'Register failed'
     })
@@ -66,58 +65,58 @@ authRouter.post('/signin',
     generateToken,
     (req, res, next) => {
         try {
-
-            res.status(200).cookie('token', req.token, { maxAge: 60 * 60 * 1000 }).json({
+            res.status(HTTP_STATUS_CODES.HTTP_OK).cookie('token', req.token, { maxAge: 60 * 60 * 1000 }).json({
                 success: true,
                 message: 'User logged in ok!',
                 user: req.user,
                 token: req.token
-            })
+            });
         } catch (error) {
             next(error);
         }
     }
 );
 
-//FAIL SIGNIN
+// FAIL SIGNIN
 authRouter.get('/fail-signin',
     [ROLES.PUBLIC],
     (req, res) => {
-
-        return res.status(400).json({
+        return res.status(HTTP_STATUS_CODES.HTTP_BAD_REQUEST).json({
             success: false,
             message: 'Auth failed',
         });
-    });
+    }
+);
 
 // CURRENT
 authRouter.get('/current',
     [ROLES.ADMIN],
-    (req, res) => authController.getPrivateContent(req, res));
+    (req, res) => authController.getPrivateContent(req, res)
+);
 
 // LOGOUT
 authRouter.post('/logout',
     [ROLES.PUBLIC],
-    passport.authenticate('jwt', { session: false }), (req, res, next) => authController.logout(req, res, next));
+    passport.authenticate('jwt', { session: false }), (req, res, next) => authController.logout(req, res, next)
+);
 
-//GH REGISTER
+// GH REGISTER
 authRouter.get('/github',
     [ROLES.PUBLIC],
     passport.authenticate('github', { session: false, scope: ['user:email'] }),
-    (req, res) => res.status(201).json({
+    (req, res) => res.status(HTTP_STATUS_CODES.HTTP_CREATED).json({
         success: true,
-        message: 'user created!',
+        message: 'User created!',
         user: req.user
     })
-)
+);
+
 authRouter.get('/github/callback',
     [ROLES.PUBLIC],
     passport.authenticate('github', { session: false, failureRedirect: '/api/auth/fail-register' }),
     (req, res) => {
-
-        return res.redirect('/')
+        return res.redirect('/');
     }
-)
-
+);
 
 export default authRouter;

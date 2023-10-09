@@ -21,7 +21,7 @@ export const sendPasswordResetEmail = async (toEmail) => {
     const resetToken = generateResetToken(toEmail);
 
     // Construye el enlace de restablecimiento con el token JWT
-    const resetLink = `https://localhost:8080/mail/reset-password?token=${resetToken}`;
+    const resetLink = `http://localhost:8080/reset-password?token=${resetToken}`;
 
     const html = `
         <p>Has solicitado restablecer tu contraseña en nuestro sitio web.</p>

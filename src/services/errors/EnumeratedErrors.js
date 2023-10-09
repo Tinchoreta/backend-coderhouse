@@ -92,7 +92,14 @@ const EnumeratedErrors = {
     PAYMENT_AMOUNT_ERROR: {
         code: 20,
         message: "El monto de pago es inválido"
-    }
+    },
+
+    //Errores de autenticación:
+    
+    TOKEN_EXPIRED: {
+        code: 21,
+        message: "El token ha expirado"
+    },
 };
 
 export default EnumeratedErrors;

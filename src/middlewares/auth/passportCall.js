@@ -1,4 +1,5 @@
 import passport from "passport";
+import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
 
 function authenticate(strategy) {
     return function (req, res, next) {
@@ -15,7 +16,7 @@ function authenticate(strategy) {
 function handleErrors(err, user, info, res) {
     console.log({ err, user, info });
     const error = err || (info.messages ? info.messages : info.toString());
-    res.status(401).json({ 
+    res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({ 
         success: false,
         error 
     });

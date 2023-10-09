@@ -6,6 +6,7 @@ import addProductRouter from "./addProduct.js"
 import productDetailsRouter from "./productDetails.js";
 import productSummaryRouter from "./cart.js";
 import cartCheckoutRouter from "./cartCheckout.js";
+import forgetPassRouter from "./forgetPassword.js";
 import resetPassRouter from "./resetPassword.js";
 import CartViewController from "../../controllers/CartViewController.js";
 import { cartMiddleware } from "../../middlewares/business/cartMiddleware.js";
@@ -29,6 +30,7 @@ viewRouter.use("/product_details", productDetailsRouter);
 viewRouter.use("/product_summary", productSummaryRouter); //Cart
 viewRouter.use("/product_summary/checkout", cartCheckoutRouter); //Cart checkout
 viewRouter.use('/login', authRouter);
-viewRouter.use('/forgot-password', resetPassRouter); 
+viewRouter.use('/forgot-password', forgetPassRouter); 
+viewRouter.use('/reset-password', resetPassRouter); 
 
 export default viewRouter;

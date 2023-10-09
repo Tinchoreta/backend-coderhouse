@@ -7,6 +7,7 @@ import userRouter from './users.router.js'
 import mailRouter from "./mail.router.js"
 import smsRouter from "./sms.router.js"
 import loggerRouter from "./logger.router.js"
+import resetPasswordRouter from "./resetPassword.router.js"
 
 const router = Router()
 
@@ -18,5 +19,5 @@ router.use('/users', userRouter)
 router.use('/mail', mailRouter.getRouter())
 router.use('/message', smsRouter.getRouter())
 router.use('/loggerTest', loggerRouter.getRouter())
-
+router.use('/reset-password', resetPasswordRouter.getRouter())
 export default router;

@@ -1,6 +1,7 @@
-import User from "../../models/user.model.js"
-import jwt from "jsonwebtoken"
-import { config } from "../../config/config.js"
+import jwt from "jsonwebtoken";
+import { config } from "../../config/config.js";
+import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
+
 /*
 { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
 '60s': El token expira en 60 segundos.
@@ -16,32 +17,32 @@ import { config } from "../../config/config.js"
 */
 
 function auth(req, res, next) {
-    const auth = req.headers.authorization
-    console.log(auth)
+    const auth = req.headers.authorization;
+    console.log(auth);
     if (!auth) {
-        return res.status(401).json({
+        return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({
             success: false,
-            message: 'error de autorización!'
-        })
+            message: 'Error de autorización!'
+        });
     }
-    const token = auth.split(' ')[1]
+    const token = auth.split(' ')[1];
     jwt.verify(
         token,
         config.privateKeyJwt,
         async (error, credentials) => {
             if (error) {
-                return res.status(401).json({
+                return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({
                     success: false,
-                    message: 'error de autorización!'
-                })
+                    message: 'Error de autorización!'
+                });
             }
             req.user = {
                 email: credentials.email,
                 role: credentials.role
             };
-            return next()
+            return next();
         }
-    )
+    );
 }
 
 function generateToken(req, res, next) {
@@ -54,21 +55,19 @@ function generateToken(req, res, next) {
         { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
     );
     res.setHeader("Authorization", `Bearer ${req.token}`);
-    return next()
+    return next();
 }
-
 
 function checkUserRole(req, res, next) {
     if (req.user && req.user.role === 'admin') {
         // Si el usuario tiene el rol de administrador (role=1), pasa al siguiente middleware
         next();
     } else {
-        return res.status(401).json({
+        return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({
             success: false,
             message: "No tienes autorización para realizar esta acción (CheckUserRole)",
         });
     }
 }
-
 
 export { auth, generateToken, checkUserRole };
