@@ -92,11 +92,20 @@ document.addEventListener("DOMContentLoaded", () => {
         updateQueryString('sort', selectedOption);
     });
 
-    titleFilterInput.addEventListener('input', () => {
-        const titleValue = titleFilterInput.value;
-        updateQueryString('title', titleValue);
-    });
+    // titleFilterInput.addEventListener('input', () => {
+    //     const titleValue = titleFilterInput.value;
+    //     updateQueryString('title', titleValue);
+    // });
 
+    titleFilterInput.addEventListener('keydown', (event) => {
+        // Comprueba si la tecla presionada es 'Enter' (código 13)
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evita el comportamiento predeterminado (como enviar el formulario)
+            const titleValue = titleFilterInput.value;
+            updateQueryString('title', titleValue);
+        }
+    });
+    
     clearFilterButton.addEventListener('click', () => {
         clearFilter();
     });
