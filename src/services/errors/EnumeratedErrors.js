@@ -95,10 +95,15 @@ const EnumeratedErrors = {
     },
 
     //Errores de autenticación:
-    
+
     TOKEN_EXPIRED: {
         code: 21,
         message: "El token ha expirado"
+    },
+    AUTHENTICATION_ERROR: {
+
+        code: 22,
+        message: "Error de autenticación"
     },
 };
 

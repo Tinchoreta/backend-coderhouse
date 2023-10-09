@@ -1,13 +1,15 @@
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
-import ROLES from "../../utils/userRoles.js";
-import verifyResetToken from "../../middlewares/business/resetPasswordMiddleware.js";
 import User from "../../models/user.model.js";
+import ROLES from "../../utils/userRoles.js";
 import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
+import { validatePasswordLength, createHashForPassword } from "../../middlewares/business/userMiddleware.js";
 
 const resetPasswordRouter = new CustomRouter();
 
 resetPasswordRouter.post('/',
-    [ROLES.PUBLIC], verifyResetToken,
+    validatePasswordLength, // Middleware para validar la longitud de la contraseña
+    createHashForPassword, // Middleware para encriptar la contraseña
+    [ROLES.PUBLIC],
     async (req, res) => {
         const userId = req.decodedToken.id;
         const newPassword = req.body.newPassword;
@@ -20,14 +22,13 @@ resetPasswordRouter.post('/',
                 return res.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).json({ message: 'Usuario no encontrado.' });
             }
 
-            // Actualiza la contraseña del usuario
-            user.password = newPassword;
+            // En este punto, ala contraseña ya está encriptada debido al middleware createHashForPassword
 
-            // Limpia los campos de token de restablecimiento de contraseña
+            user.password = newPassword; // Actualiza la contraseña
+
             user.resetPasswordToken = null;
             user.resetPasswordExpires = null;
 
-            // Guarda los cambios en la base de datos
             await user.save();
 
             return res.status(HTTP_STATUS_CODES.HTTP_OK).json({ message: 'Contraseña cambiada con éxito.' });
