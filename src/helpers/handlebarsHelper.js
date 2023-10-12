@@ -23,8 +23,8 @@ Handlebars.registerHelper('cartItemCount', function (options) {
     const cartManager = options.data.root.cartManager;
 
     // console.log('cartItemCount helper:', cartManager); // Agregar este console.log
-    //TODO:  Change the cart id 64765d546145585e447a0436 hardcoded
-    let count = cartManager?.getCartTotalItemsQuantity('64765d546145585e447a0436');
+    //TODO:  Change the cart id 64765d546145585e447a0437 hardcoded
+    let count = cartManager?.getCartTotalItemsQuantity('64765d546145585e447a0437');
 
     // console.log(count);
 
@@ -38,8 +38,8 @@ Handlebars.registerHelper('cartTotal', function (options) {
 
     // console.log('cartTotal helper:', cartManager); // Agregar este console.log
 
-    let result = cartManager?.calculateTotalPrice('64765d546145585e447a0436');
-    // let result = cartManager?.calculateTotalPrice('64765d546145585e447a0436');
+    let result = cartManager?.calculateTotalPrice('64765d546145585e447a0437');
+    // let result = cartManager?.calculateTotalPrice('64765d546145585e447a0437');
 
     // console.log(result);
 
@@ -55,7 +55,7 @@ Handlebars.registerHelper('cartProducts', function (options) {
     const cartManager = options.data.root.cartManager;
 
     // Obtener el array de productos del carrito
-    let products = cartManager.getProducts('64765d546145585e447a0436');
+    let products = cartManager.getProducts('64765d546145585e447a0437');
 
     // Renderizar cada objeto producto en el array
     let renderedProducts = '';
@@ -80,7 +80,7 @@ Handlebars.registerHelper('calculateTotal', function (price, quantity) {
 
 Handlebars.registerHelper('calcTotalWithDiscTax', function (options) {
     const cartManager = options.data.root.cartManager;
-    const total = cartManager.calculateTotalPrice('64765d546145585e447a0436');
+    const total = cartManager.calculateTotalPrice('64765d546145585e447a0437');
     return total - 50 + 31;
 });
 

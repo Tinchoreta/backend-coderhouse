@@ -6,7 +6,7 @@ import { engine } from 'express-handlebars';
 import mainRouter from './routes/index.js'
 import DataBaseStrategy from './persistence/DataBaseStrategy.js';
 
-import errorHandler from './middlewares/utils/errorHandler.js';
+import {errorHandlerMiddleware} from './services/errors/errorHandler.js';
 import notFoundHandler from './middlewares/utils/notFound.js';
 import { cartMiddleware } from './middlewares/business/cartMiddleware.js';
 
@@ -21,7 +21,15 @@ import { config } from './config/config.js';
 import winstonLogger from './config/logger.js';
 import cors from 'cors';
 
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
+
+
 const app = express();
+
+//Uso de logging de Winston
+
+app.use(winstonLogger);
 
 let URI = config.MONGO_DB_URI;
 
@@ -41,10 +49,22 @@ async function connect() {
 //Conectar la base de datos
 connect();
 
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1",
+        info: {
+            title: "API REST - Shopping Cart - Bootshop",
+            description: 'Shopping Cart API',
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
 
-//Uso de logging de Winston
+console.log(`${__dirname}/docs/**/*.yaml`);
 
-app.use(winstonLogger);
+const swaggerSpecs = swaggerJSDoc({ ...swaggerOptions });
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpecs))
+
 
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);
@@ -69,7 +89,7 @@ app.engine('handlebars', engine({ handlebars: Handlebars }));
 app.set('views', __dirname + '../../views');
 app.set('view engine', 'handlebars');
 
-app.use(errorHandler);
+app.use(errorHandlerMiddleware);
 app.use(notFoundHandler);
 
 export default app;

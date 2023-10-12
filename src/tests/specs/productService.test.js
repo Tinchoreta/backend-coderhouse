@@ -1,5 +1,6 @@
+
 import assert from 'assert';
-import { ProductService } from './productService.js';
+import { ProductService } from '../productService.js';
 
 async function runTests() {
     console.log('Running tests...');

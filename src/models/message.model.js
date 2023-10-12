@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 
-let collection = 'messages';
 let schema = new Schema({
     user: { // username con email
         type: String,
@@ -14,6 +13,6 @@ let schema = new Schema({
     
 });
 
-let MessageModel = model(collection, schema);
+let MessageModel = model('Messages', schema);
 
 export default MessageModel;

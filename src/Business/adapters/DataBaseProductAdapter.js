@@ -21,10 +21,10 @@ class DataBaseProductAdapter {
         return DataBaseProductAdapter.instance;
     }
 
-    async getProducts(limit = 6, page = 1, sort = "", title = "") {
+    async getProducts(limit = 20, page = 1, sort = "", title = "") {
         try {
             const options = {
-                limit: !Number.isNaN(parseInt(limit)) ? parseInt(limit) : 6,
+                limit: !Number.isNaN(parseInt(limit)) ? parseInt(limit) : 20,
                 page: !Number.isNaN(parseInt(page)) ? parseInt(page) : 1,
                 sort: {},
             };
@@ -33,7 +33,7 @@ class DataBaseProductAdapter {
 
             // Verificar si se proporcionó un título
             if (title) {
-                query.title = { $regex: new RegExp(`^${title}`, "i") };
+                query.title = { $regex: new RegExp(title, "i") };
             }
 
             // Verificar si se proporcionó una ordenación

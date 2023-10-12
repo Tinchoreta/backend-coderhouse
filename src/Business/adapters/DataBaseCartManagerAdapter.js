@@ -1,7 +1,7 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import CartModel from '../../models/cart.model.js';
-// import ProductModel from '../../models/product.model.js';
+import logger from '../../config/logger.js';
 import mongoose from 'mongoose';
 
 class DataBaseCartManagerAdapter {
@@ -35,6 +35,11 @@ class DataBaseCartManagerAdapter {
 
     async getProductsIds(cartId) {
         try {
+            if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                console.log(cartId);
+                throw new Error('getProductsIds: Invalid cartId');
+            }
+
             const cart = await this.persistenceManager.getOne({ _id: cartId });
             return cart ? cart.products.map((product) => product.productId) : [];
         } catch (error) {
@@ -44,17 +49,23 @@ class DataBaseCartManagerAdapter {
 
     async getCartById(cartId) {
         try {
+            if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                console.log(cartId);
+                throw new Error('getCartById: Invalid cartId');
+
+            }
+
             const cart = await this.persistenceManager.getOne({ _id: cartId });
             return cart || null;
         } catch (error) {
             throw new Error(`getCartById: ${error.message}`);
         }
-    };
+    }
 
     async createCart() {
         try {
             const cart = { products: [] };
-            const createdCart = await this.persistenceManager.addOne(cart);
+            const createdCart = await this.persistenceManager.addOne(cart, 'Carts');
             return createdCart._id;
         } catch (error) {
             throw new Error(`createCart: ${error.message}`);

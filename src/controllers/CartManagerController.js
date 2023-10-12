@@ -1,202 +1,147 @@
-/**
- * Controlador para gestionar el carrito de compras.
- */
+import CustomError from "../services/errors/CustomError.js";
+import Ticket from "../models/ticket.model.js";
+import EnumeratedErrors from "../services/errors/EnumeratedErrors.js";
+import HTTP_STATUS_CODES from "../utils/httpStatusCodes.js";
+
 class CartManagerController {
-    /**
-     * Crea una nueva instancia del controlador del carrito de compras.
-     * @param {Object} cartManagerAdapter - Adaptador para gestionar el carrito.
-     * @param {Object} productManagerAdapter - Adaptador para gestionar los productos.
-     */
     constructor(cartManagerAdapter, productManagerAdapter) {
         this.cartManagerAdapter = cartManagerAdapter;
         this.productManagerAdapter = productManagerAdapter;
     }
 
-    /**
-     * Método privado para validar si el carrito existe.
-     * @private
-     * @param {Object} res - Objeto de respuesta HTTP.
-     * @param {string} cid - ID del carrito.
-     * @returns {boolean|Object} - El carrito si existe, de lo contrario, false.
-     */
-    #_validateCartExists = async (res, cid) => {
+    #_validateCartExists = async (res, cartId) => {
         try {
-            const cart = await this.cartManagerAdapter.getCartById(cid);
+            const cart = await this.cartManagerAdapter.getCartById(cartId);
             if (!cart) {
-                res.status(404).send('Cart not found');
+                res.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).send('Cart not found');
                 return false;
             }
             return cart;
         } catch (error) {
             console.error(error);
-            res.status(500).send('Internal server error');
+            res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).send('Internal server error');
             return false;
         }
     }
 
-    /**
-     * Método privado para validar si el producto existe.
-     * @private
-     * @param {Object} res - Objeto de respuesta HTTP.
-     * @param {string} pid - ID del producto.
-     * @returns {boolean|Object} - El producto si existe, de lo contrario, false.
-     */
-    #_validateProductExists = async (res, pid) => {
+    #_validateProductExists = async (res, productId) => {
         try {
-            const product = await this.productManagerAdapter.getProductById(pid);
+            const product = await this.productManagerAdapter.getProductById(productId);
             if (!product) {
-                res.status(404).send('Product not found');
+                res.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).send('Product not found');
                 return false;
             }
             return product;
         } catch (error) {
             console.error(error);
-            res.status(500).send('Internal server error');
+            res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).send('Internal server error');
             return false;
         }
     }
 
-    /**
-     * Verifica si hay suficiente stock disponible para agregar al carrito.
-     * @private
-     * @param {number} availableUnits - Unidades disponibles.
-     * @param {number} unitsToAdd - Unidades a agregar.
-     * @returns {boolean} - `true` si hay suficiente stock, de lo contrario, `false`.
-     */
     #hasEnoughStock(availableUnits, unitsToAdd) {
         return availableUnits >= unitsToAdd;
     }
 
-    /**
-     * Envía una respuesta de error al cliente.
-     * @private
-     * @param {Object} res - Objeto de respuesta HTTP.
-     * @param {number} code - Código de estado HTTP del error.
-     * @param {string} message - Mensaje de error.
-     */
     #sendError(res, code, message) {
         res.status(code).json({ error: message });
     }
 
-    /**
-     * Crea un nuevo carrito.
-     * @param {Object} request - Objeto de solicitud HTTP.
-     * @param {Object} response - Objeto de respuesta HTTP.
-     */
     async createCart(request, response) {
         try {
+            console.log(request.body);
             const addedCartId = await this.cartManagerAdapter.createCart();
             if (!addedCartId) {
-                response.status(500).json({
+                response.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
                     success: false,
                     error: "Error creating cart."
                 });
                 return;
             }
-            response.status(201).json({
+            response.status(HTTP_STATUS_CODES.HTTP_CREATED).json({
                 success: true,
                 response: addedCartId
             });
         } catch (error) {
             console.error(error);
-            response.status(500).json({
+            response.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
                 success: false,
                 error: "Error creating cart."
             });
         }
     }
 
-    /**
-     * Obtiene todos los carritos.
-     * @param {Object} request - Objeto de solicitud HTTP.
-     * @param {Object} response - Objeto de respuesta HTTP.
-     * @returns {Object} - La lista de carritos.
-     */
     async getCarts(request, response) {
         try {
-            // const carts = await this.cartManagerAdapter.getCarts();
             const limit = !Number.isNaN(parseInt(request.query.limit)) ? parseInt(request.query.limit) : 5;
 
             const populatedCarts = await this.cartManagerAdapter.populateProducts({ limit: limit });
-            return response.status(200).json({
+            return response.status(HTTP_STATUS_CODES.HTTP_OK).json({
                 success: true,
                 response: populatedCarts
             });
         } catch (error) {
             console.error(error);
-            return response.status(500).json({
+            return response.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
                 success: false,
                 error: 'Internal Server Error'
             });
         }
     }
 
-    /**
-     * Obtiene un carrito por su ID.
-     * @param {Object} request - Objeto de solicitud HTTP.
-     * @param {Object} response - Objeto de respuesta HTTP.
-     * @returns {Object} - El carrito encontrado.
-     */
     async getCartById(request, response) {
         try {
-            const cartId = request.params.id;
+            const cartId = request.params.cartId;
+
             const cartFounded = await this.cartManagerAdapter.getCartById(cartId);
+
             if (cartFounded) {
-                return response.status(200).json({
+                const populatedCart = await this.cartManagerAdapter.populateProductsById(cartId);
+                return response.status(HTTP_STATUS_CODES.HTTP_OK).json({
                     success: true,
-                    cart: cartFounded
+                    cart: populatedCart,
                 });
             } else {
-                return response.status(404).json({
+                return response.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).json({
                     success: false,
                     error: 'Cart not found'
                 });
             }
         } catch (error) {
             console.error(error);
-            return response.status(500).json({
+            return response.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
                 success: false,
                 error: 'Internal Server Error'
             });
         }
     }
 
-    /**
-     * Actualiza un producto en el carrito.
-     * @param {Object} request - Objeto de solicitud HTTP.
-     * @param {Object} response - Objeto de respuesta HTTP.
-     */
     async updateCartItem(request, response) {
-        const cartId = request.params.id;
+        const cartId = request.params.cartId;
         const updatedProduct = request.body;
         const updatedItem = await this.cartManagerAdapter.updateCart({ _id: cartId, products: updatedProduct });
-        response.status(200).json(updatedItem);
+        response.status(HTTP_STATUS_CODES.HTTP_OK).json(updatedItem);
     }
 
-    /**
-     * Agrega unidades de un producto al carrito.
-     * @param {Object} req - Objeto de solicitud HTTP.
-     * @param {Object} res - Objeto de respuesta HTTP.
-     */
     async addProductUnitsToCart(req, res) {
-        const cartId = req.params.cid;
-        const productId = req.params.pid;
+        const cartId = req.params.cartId;
+        const productId = req.params.productId;
         const unitsToAdd = Number(req.params.units);
 
         if (!cartId || !productId || isNaN(unitsToAdd) || unitsToAdd <= 0) {
-            return this.#sendError(res, 400, 'Invalid parameters');
+            return this.#sendError(res, HTTP_STATUS_CODES.HTTP_BAD_REQUEST, 'Invalid parameters');
         }
 
         const cart = await this.#_validateCartExists(res, cartId);
 
         if (!cart) {
-            return this.#sendError(res, 404, 'Cart not found');
+            return this.#sendError(res, HTTP_STATUS_CODES.HTTP_NOT_FOUND, 'Cart not found');
         }
 
         const product = await this.#_validateProductExists(res, productId);
 
         if (!product) {
-            return this.#sendError(res, 404, 'Product not found');
+            return this.#sendError(res, HTTP_STATUS_CODES.HTTP_NOT_FOUND, 'Product not found');
         }
 
         const productInCart = cart.products.find(p => p.productId === productId);
@@ -204,7 +149,7 @@ class CartManagerController {
         const availableUnits = product.stock - currentUnits;
 
         if (!this.#hasEnoughStock(availableUnits, unitsToAdd)) {
-            return this.#sendError(res, 400, 'Not enough stock');
+            return this.#sendError(res, HTTP_STATUS_CODES.HTTP_BAD_REQUEST, 'Not enough stock');
         }
 
         const unitsToAddRestrained = unitsToAdd > availableUnits ? availableUnits : unitsToAdd;
@@ -220,34 +165,28 @@ class CartManagerController {
         res.send(updatedCart);
     }
 
-    /**
-     * Elimina unidades de un producto del carrito.
-     * @param {Object} req - Objeto de solicitud HTTP.
-     * @param {Object} res - Objeto de respuesta HTTP.
-     */
     async removeProductUnitsFromCart(req, res) {
         try {
-            const cartId = req.params.cid;
-            const productId = req.params.pid;
+            const cartId = req.params.cartId;
+            const productId = req.params.productId;
             let unitsToRemove = Number(req.params.units);
 
             if (!cartId || !productId || isNaN(unitsToRemove) || unitsToRemove <= 0) {
-                return this.#sendError(res, 400, 'Invalid parameters');
+                return this.#sendError(res, HTTP_STATUS_CODES.HTTP_BAD_REQUEST, 'Invalid parameters');
             }
 
             const cart = await this.#_validateCartExists(res, cartId);
 
             if (!cart || typeof cart === 'undefined') {
-                return this.#sendError(res, 404, 'Cart not found');
+                return this.#sendError(res, HTTP_STATUS_CODES.HTTP_NOT_FOUND, 'Cart not found');
             }
 
             const product = await this.#_validateProductExists(res, productId);
 
             if (!product || typeof product === 'undefined') {
-                return this.#sendError(res, 404, 'Product not found');
+                return this.#sendError(res, HTTP_STATUS_CODES.HTTP_NOT_FOUND, 'Product not found');
             }
 
-            // Validamos que la cantidad de unidades a quitar no sea mayor a la cantidad de unidades en el carrito
             const itemInCart = cart.products.find((item) => item.productId === productId);
             if (itemInCart) {
                 if (unitsToRemove >= itemInCart.quantity) {
@@ -255,90 +194,168 @@ class CartManagerController {
                 }
             }
 
-            // Se actualiza la cantidad del producto en el carrito
             const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
             if (cartItemIndex !== -1) {
                 cart.products[cartItemIndex].quantity -= unitsToRemove;
                 if (cart.products[cartItemIndex].quantity === 0) {
-                    // Se borra directamente el producto del carrito
                     cart.products.splice(cartItemIndex, 1);
                 }
             }
 
             const updatedCart = await this.cartManagerAdapter.updateCart(cart);
 
-            return res.status(200).json(updatedCart);
+            return res.status(HTTP_STATUS_CODES.HTTP_OK).json(updatedCart);
         } catch (error) {
             console.error(error);
-            return this.#sendError(res, 500, 'Internal server error');
+            return this.#sendError(res, HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR, 'Internal server error');
         }
     }
 
-    /**
-     * Elimina un producto del carrito.
-     * @param {Object} req - Objeto de solicitud HTTP.
-     * @param {Object} res - Objeto de respuesta HTTP.
-     */
     async removeProductFromCart(req, res) {
         try {
-            const cartId = req.params.cid;
-            const productId = req.params.pid;
+            const cartId = req.params.cartId;
+            const productId = req.params.productId;
 
             if (!cartId || !productId) {
-                return this.#sendError(res, 400, 'Invalid parameters');
+                return this.#sendError(res, HTTP_STATUS_CODES.HTTP_BAD_REQUEST, 'Invalid parameters');
             }
 
             const cart = await this.#_validateCartExists(res, cartId);
 
             if (!cart) {
-                return this.#sendError(res, 404, 'Cart not found');
+                return this.#sendError(res, HTTP_STATUS_CODES.HTTP_NOT_FOUND, 'Cart not found');
             }
 
             const productIndex = cart.products.findIndex((item) => item.productId.toString() === productId);
 
             if (productIndex === -1) {
-                return this.#sendError(res, 404, 'Product not found in cart');
+                return this.#sendError(res, HTTP_STATUS_CODES.HTTP_NOT_FOUND, 'Product not found in cart');
             }
 
             cart.products.splice(productIndex, 1);
 
             const updatedCart = await this.cartManagerAdapter.updateCart(cart);
 
-            return res.status(200).json(updatedCart);
+            return res.status(HTTP_STATUS_CODES.HTTP_OK).json(updatedCart);
         } catch (error) {
             console.error(error);
-            return this.#sendError(res, 500, 'Internal server error');
+            return this.#sendError(res, HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR, 'Internal server error');
         }
     }
 
-    /**
-     * Calcula el precio total del carrito.
-     * @param {Object} req - Objeto de solicitud HTTP.
-     * @param {Object} res - Objeto de respuesta HTTP.
-     */
     async calculateCartTotalPrice(req, res) {
         try {
-            const cartId = req.params.cid;
+            const cartId = req.params.cartId;
 
             const totalPrice = await this.cartManagerAdapter.calculateCartTotalPrice(cartId);
 
-            res.status(200).json({ totalPrice });
+            res.status(HTTP_STATUS_CODES.HTTP_OK).json({ totalPrice });
         } catch (error) {
             console.error('Failed to calculate cart total price:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
         }
     }
 
-    /**
-     * Elimina un carrito.
-     * @param {Object} request - Objeto de solicitud HTTP.
-     * @param {Object} response - Objeto de respuesta HTTP.
-     */
     async deleteCart(request, response) {
         const cartId = request.params.id;
         await this.cartManagerAdapter.deleteCart(cartId);
-        response.status(204).send();
+        response.status(HTTP_STATUS_CODES.HTTP_NO_CONTENT).send();
     }
+
+    async processPurchase(req, res) {
+        try {
+            const userId = '649bced97e3bea7f53f0bd3e';
+            const cartId = '64765d546145585e447a0437';
+
+            const cart = await this.cartManagerAdapter.getCartById(cartId);
+
+            const productsNotPurchased = await this.checkStockForProducts(cart.products);
+
+            const purchasedProducts = await this.processPurchasableProducts(cart.products, productsNotPurchased);
+
+            const totalAmount = await this.cartManagerAdapter.calculateCartTotalPrice(cartId);
+
+            await this.updateCartAndProducts(cart, purchasedProducts);
+
+            if (purchasedProducts.length > 0) {
+                const ticket = await this.createTicket(totalAmount, userId);
+
+                return res.status(HTTP_STATUS_CODES.HTTP_OK).json({
+                    message: 'Compra exitosa',
+                    ticket,
+                    productsNotPurchased
+                });
+
+            } else {
+                throw new CustomError({
+                    name: EnumeratedErrors.CART_EMPTY_ERROR,
+                    code: EnumeratedErrors.CART_EMPTY_ERROR.code,
+                    cause: 'Ningún producto se pudo comprar debido a la falta de stock',
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            if (error instanceof CustomError) {
+                return res.status(HTTP_STATUS_CODES.HTTP_BAD_REQUEST).json({ message: error.message, code: error.code });
+            } else {
+                return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({ message: 'Error en la compra' });
+            }
+        }
+    }
+
+    async checkStockForProducts(products) {
+        const productsNotPurchased = [];
+        const checkProductStockPromises = products.map(async (item) => {
+            const product = await this.productManagerAdapter.getProductById(item.productId);
+            if (!product) {
+                throw new CustomError({
+                    name: EnumeratedErrors.PRODUCT_NOT_FOUND,
+                    code: EnumeratedErrors.PRODUCT_NOT_FOUND.code,
+                    cause: `Producto con ID ${item.productId} no encontrado.`,
+                });
+            }
+            if (product.stock < item.quantity) {
+                productsNotPurchased.push(item.productId);
+            }
+        });
+        await Promise.all(checkProductStockPromises);
+        return productsNotPurchased;
+    }
+
+    async processPurchasableProducts(products, productsNotPurchased) {
+        const processPurchasableProductPromises = products.map(async (item) => {
+            if (!productsNotPurchased.includes(item.productId)) {
+                const product = await this.productManagerAdapter.getProductById(item.productId);
+                if (product) {
+                    product.stock -= item.quantity;
+                    await this.productManagerAdapter.updateProduct(product);
+                    return item;
+                }
+            }
+            return null;
+        });
+        const purchasedProducts = await Promise.all(processPurchasableProductPromises);
+        return purchasedProducts.filter(item => item !== null);
+    }
+
+    async updateCartAndProducts(cart, purchasedProducts) {
+        cart.products = purchasedProducts;
+        await this.cartManagerAdapter.updateCart(cart);
+    }
+
+    async createTicket(totalAmount, userId) {
+        const newTicket = new Ticket({
+            code: generateUniqueCode(),
+            amount: totalAmount,
+            purchaser: userId,
+        });
+        return await newTicket.save();
+    }
+}
+
+function generateUniqueCode() {
+    // Genera un código único basado en la fecha y hora actual
+    return `TICKET-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
 }
 
 export default CartManagerController;

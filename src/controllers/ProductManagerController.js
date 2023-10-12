@@ -33,15 +33,11 @@ class ProductManagerController {
 
       const query = {};
 
-      if (title) {
-        query.title = { $regex: new RegExp(`^${title}`, "i") };
-      }
-
       const result = await this.productManagerAdapter.getProducts(
         limit,
         page,
         sort,
-        query
+        title
       );
 
       const formattedResponse = this.#formatProductsResponse(
@@ -85,7 +81,7 @@ class ProductManagerController {
 
   #getQueryParams(request) {
     const { limit, page, sort, title } = request.query;
-    const parsedLimit = limit === 'undefined' ? 6 : parseInt(limit, 10) || 6;
+    const parsedLimit = limit === 'undefined' ? 20 : parseInt(limit, 10) || 20;
     const parsedPage = page === 'undefined' ? 1 : parseInt(page, 10) || 1;
     return { limit: parsedLimit, page: parsedPage, sort, title };
   }

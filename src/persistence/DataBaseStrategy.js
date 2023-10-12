@@ -121,9 +121,9 @@ class DataBaseStrategy {
 
     async addOne(data) {
         try {
-            const document = new this.model(data);
-            const result = await document.save();
-            // console.log('Added document to collection: ', this.model.collection.collectionName);
+            
+            const result = await this.model(data).save();
+            
             return result;
         } catch (error) {
             console.error('Failed to add document:', error);

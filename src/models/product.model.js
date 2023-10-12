@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-let collection = 'products';
 let schema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -14,6 +13,6 @@ let schema = new Schema({
 
 schema.plugin(mongoosePaginate);
 
-let ProductModel = model(collection, schema);
+let ProductModel = model('Products', schema);
 
 export default ProductModel;

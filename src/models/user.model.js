@@ -25,16 +25,19 @@ const userSchema = new Schema({
     },
     cart: {
         type: Schema.Types.ObjectId,
-        ref: 'Cart',
+        ref: 'Carts',
     },
     role: {
         type: String,
         enum: ['user', 'admin', 'premium'],
         default: 'user',
     },
+    resetPasswordToken: { String }, 
+    resetPasswordExpires: { Date },
 });
 
-const User = model('User', userSchema);
+userSchema.set('strict', false);
+const User = model('Users', userSchema);
 
 export default User;
 

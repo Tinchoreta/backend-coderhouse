@@ -24,7 +24,7 @@ const cartMiddleware = async (req, res, next) => {
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
 
         // TODO: Change this hardcoded cartID
-        const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0436');
+        const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0437');
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
 
@@ -44,8 +44,8 @@ const cartMiddleware = async (req, res, next) => {
 
 
 async function checkProductExistenceInCart(req, res, next) {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
+    const cartId = req.params.cartId;
+    const productId = req.params.productId;
 
     try {
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
@@ -67,5 +67,34 @@ async function checkProductExistenceInCart(req, res, next) {
     }
 }
 
+
+const loadCart = async (req, res, next) => {
+    try {
+        const cartId = req.params.cartId; 
+        const dataBaseCartAdapter = await getDatabaseCartAdapter();
+        const cart = await dataBaseCartAdapter.getCartById(cartId);
+
+        if (!cart) {
+            // Manejar el caso en que el carrito no se encuentre
+            throw new CustomError({
+                name: EnumeratedErrors.CART_NOT_FOUND,
+                code: EnumeratedErrors.CART_NOT_FOUND.code,
+                cause: `Carrito con ID ${cartId} no encontrado.`,
+            });
+        }
+
+        // Colocar el carrito en req para que esté disponible en el controlador
+        req.cart = cart;
+        next(); // Continuar con la solicitud
+    } catch (error) {
+        // Manejar errores y enviar una respuesta de error personalizada si es necesario
+        console.error(error);
+        if (error instanceof CustomError) {
+            return res.status(400).json({ message: error.message, code: error.code });
+        } else {
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+};
 
 export { cartMiddleware, checkProductExistenceInCart };
