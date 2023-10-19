@@ -97,7 +97,8 @@ authRouter.get('/current',
 // LOGOUT
 authRouter.post('/logout',
     [ROLES.PUBLIC],
-    passport.authenticate('jwt', { session: false }), (req, res, next) => authController.logout(req, res, next)
+    //passport.authenticate('jwt', { session: false }), (req, res, next) => authController.logout(req, res, next)
+    (req, res, next) => authController.logout(req, res, next)
 );
 
 // GH REGISTER
