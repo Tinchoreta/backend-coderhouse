@@ -75,24 +75,33 @@ async function inicializePassport() {
 
     passport.use(
         'jwt',
-        new JWTstrategy({
-            jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies['token']]),
-            secretOrKey: process.env.SECRET_KEY_JWT
-        },
+        new JWTstrategy(
+            {
+                jwtFromRequest: (req) => {
+                    if (req.cookies && req.cookies.token) {
+                        return req.cookies.token; // Devuelve el token si existe
+                    } else {
+                        return null; // Devuelve null si el token no está definido
+                    }
+                },
+                secretOrKey: process.env.SECRET_KEY_JWT,
+            },
             async (jwtPayload, done) => {
                 try {
-                    let user = await User.findOne({ email: jwtPayload.email })
-                    delete user.password
+                    let user = await User.findOne({ email: jwtPayload.email });
                     if (user) {
-                        return done(null, user)
+                        delete user.password;
+                        return done(null, user);
                     } else {
-                        return done(null, false, { message: 'not auth' })
+                        return done(null, false, { message: 'not auth' });
                     }
                 } catch (error) {
-                    return done(error, false)
+                    return done(error, false);
                 }
-            })
-    )
+            }
+        )
+    );
+
 
 }
 

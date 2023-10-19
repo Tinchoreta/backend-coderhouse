@@ -17,7 +17,7 @@ import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
 */
 
 function auth(req, res, next) {
-    const auth = req.headers.authorization;
+    const auth = req.cookies.token;
     console.log(auth);
     if (!auth) {
         return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({
@@ -54,12 +54,13 @@ function generateToken(req, res, next) {
         config.privateKeyJwt,
         { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
     );
+    res.cookie('token', req.token, { maxAge: 60 * 60 * 24 * 1000, httpOnly: true });
     res.setHeader("Authorization", `Bearer ${req.token}`);
     return next();
 }
 
 function checkUserRole(req, res, next) {
-    if (req.user && req.user.role === 'admin') {
+    if (req.user && String(req.user.role).toUpperCase() === 'ADMIN') {
         // Si el usuario tiene el rol de administrador (role=1), pasa al siguiente middleware
         next();
     } else {
