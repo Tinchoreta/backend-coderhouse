@@ -1,16 +1,18 @@
-import {Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2';
 
-let collection = 'products';
 let schema = new Schema({
-    title: {type: String, required: true},
-    description: {type: String, required: true},
-    price: {type: Number, required: true},
-    thumbnail: {type: String, required: true},
-    stock: {type: Number, required: true}
-    // category: {type: String, required: true},
-    // created_at: {type: Date, default: Date.now}
-})
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    thumbnail: { type: String, required: true },
+    stock: { type: Number, required: true },
+    category: { type: String, required: true },
+    created_at: { type: Date, default: Date.now }
+});
 
-let ProductModel = model(collection, schema);
+schema.plugin(mongoosePaginate);
+
+let ProductModel = model('Products', schema);
 
 export default ProductModel;

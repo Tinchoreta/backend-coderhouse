@@ -2,17 +2,18 @@
     <div id="header">
         <div class="container">
             <div id="welcomeLine" class="row">
-                <div class="span6">Welcome!<strong> User</strong></div>
+                <div class="span6" id="welcomeMessage">Welcome!<strong> User</strong></div>
                 <div class="span6">
                     <div class="pull-right">
                         <a href="/product_summary"><span class="">Fr</span></a>
                         <a href="/product_summary"><span class="">Es</span></a>
                         <span class="btn btn-mini">En</span>
                         <a href="/product_summary"><span>&pound;</span></a>
-                        <span class="btn btn-mini">$155.00</span>
+                        <span class="btn btn-mini">${{cartTotal}}</span>
                         <a href="/product_summary"><span class="">$</span></a>
                         <a href="/product_summary"><span class="btn btn-mini btn-primary"><i
-                                    class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                                    class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
+                            </span> </a>
                     </div>
                 </div>
             </div>
@@ -38,11 +39,11 @@
                         <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
                     </form>
                     <ul id="topMenu" class="nav pull-right">
-                        <li class=""><a href="special_offer.html">Specials Offer</a></li>
+                        <li class="addProductLink" id="addProductLink"><a href="#">Agregar productos</a></li>
                         <li class=""><a href="normal.html">Delivery</a></li>
                         <li class=""><a href="contact.html">Contact</a></li>
-                        <li class="">
-                            <a href="#login" role="button" data-toggle="modal" style="padding-right:0"><span
+                        <li class="" id="loginLi">
+                            <a href="#login" id="loginBtn" role="button" data-toggle="modal" style="padding-right:0"><span
                                     class="btn btn-large btn-success">Login</span></a>
                             <div id="login" class="modal hide fade in" tabindex="-1" role="dialog"
                                 aria-labelledby="login" aria-hidden="false">
@@ -65,10 +66,13 @@
                                             </label>
                                         </div>
                                     </form>
-                                    <button type="submit" class="btn btn-success">Sign in</button>
+                                    <button type="submit" class="btn btn-success" id="loginBtnModal">Sign in</button>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>
+                        </li>
+                        <li class="" id="logoutLi" style="display:none;">
+                            <a href="#" id="logoutBtn" role="button" style="padding-right: 0"><span class="btn btn-large btn-danger">Logout</span></a>
                         </li>
                     </ul>
                 </div>
@@ -82,8 +86,8 @@
                 <!-- Sidebar ================================================== -->
                 <div id="sidebar" class="span3">
                     <div class="well well-small"><a id="myCart" href="/product_summary"><img
-                                src="themes/images/ico-cart.png" alt="cart">3 Items in your cart <span
-                                class="badge badge-warning pull-right">$155.00</span></a></div>
+                                src="themes/images/ico-cart.png" alt="cart">{{cartItemCount}} Items in your cart <span
+                                class="badge badge-warning pull-right">${{cartTotal}}</span></a></div>
                     <ul id="sideManu" class="nav nav-tabs nav-stacked">
                         <li class="subMenu open"><a> ELECTRONICS [230]</a>
                             <ul>
@@ -168,22 +172,30 @@
                     <h3> Products Name <small class="pull-right"> 40 products are available </small></h3>
                     <hr class="soft" />
                     <p>
-                        Nowadays the digital cameras industry is one of the most successful business spheres.We always stay in
+                        Nowadays the digital cameras industry is one of the most successful business spheres.We always
+                        stay in
                         touch with the latest fashion tendencies - that is why our goods are so popular and we have a
                         great number of faithful customers all over the country.
                     </p>
                     <hr class="soft" />
                     <form class="form-horizontal span6">
                         <div class="control-group">
-                            <label class="control-label alignL">Sort By </label>
-                            <select>
-                                <option>Product name A - Z</option>
-                                <option>Product name Z - A</option>
-                                <option>Product Stoke</option>
-                                <option>Price Lowest first</option>
+                            <label class="control-label alignL" for="sortSelect">Sort By</label>
+                            <select id="sortSelect" name="sortOption">
+                                <option value="name-asc">Product name A - Z</option>
+                                <option value="name-desc">Product name Z - A</option>
+                                <option value="stock">Product Stock</option>
+                                <option value="price-asc">Price Lowest first</option>
                             </select>
                         </div>
+                        <div class="control-group">
+                            <label class="control-label alignL" for="titleFilter">Filter By Title</label>
+                            <input type="text" id="titleFilter" name="title" placeholder="Enter product title">
+                        </div>
                     </form>
+                    
+                    <p id="filterText"></p>
+                    <button id="clearFilterButton" style="display: none;">Clear Filter</button>
 
                     <div id="myTab" class="pull-right">
                         <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i
@@ -203,7 +215,8 @@
                                     <hr class="soft" />
                                     <h5>Product Name </h5>
                                     <p>
-                                        Nowadays the digital cameras industry is one of the most successful business spheres.We
+                                        Nowadays the digital cameras industry is one of the most successful business
+                                        spheres.We
                                         always stay in touch with the latest fashion tendencies -
                                         that is why our goods are so popular..
                                     </p>
@@ -235,7 +248,8 @@
                                     <hr class="soft" />
                                     <h5>Product Name </h5>
                                     <p>
-                                        Nowadays the digital cameras industry is one of the most successful business spheres.We
+                                        Nowadays the digital cameras industry is one of the most successful business
+                                        spheres.We
                                         always stay in touch with the latest fashion tendencies -
                                         that is why our goods are so popular..
                                     </p>
@@ -267,7 +281,8 @@
                                     <hr class="soft" />
                                     <h5>Product Name </h5>
                                     <p>
-                                        Nowadays the digital cameras industry is one of the most successful business spheres.We
+                                        Nowadays the digital cameras industry is one of the most successful business
+                                        spheres.We
                                         always stay in touch with the latest fashion tendencies -
                                         that is why our goods are so popular..
                                     </p>
@@ -299,7 +314,8 @@
                                     <hr class="soft" />
                                     <h5>Product Name </h5>
                                     <p>
-                                        Nowadays the digital cameras industry is one of the most successful business spheres.We
+                                        Nowadays the digital cameras industry is one of the most successful business
+                                        spheres.We
                                         always stay in touch with the latest fashion tendencies -
                                         that is why our goods are so popular..
                                     </p>
@@ -332,7 +348,8 @@
                                     <hr class="soft" />
                                     <h5>Product Name </h5>
                                     <p>
-                                        Nowadays the digital cameras industry is one of the most successful business spheres.We
+                                        Nowadays the digital cameras industry is one of the most successful business
+                                        spheres.We
                                         always stay in touch with the latest fashion tendencies -
                                         that is why our goods are so popular..
                                     </p>
@@ -362,7 +379,8 @@
                                     <hr class="soft" />
                                     <h5>Product Name </h5>
                                     <p>
-                                        Nowadays the digital cameras industry is one of the most successful business spheres.We
+                                        Nowadays the digital cameras industry is one of the most successful business
+                                        spheres.We
                                         always stay in touch with the latest fashion tendencies -
                                         that is why our goods are so popular..
                                     </p>
@@ -392,117 +410,21 @@
                                 {{#each products}}
                                 <li class="span3">
                                     <div class="thumbnail card-list">
-                                        <a href="product_details/{{id}}"><img src="/themes/images/products/{{thumbnail}}"
-                                                alt="" /></a>
+                                        <a href="product_details/{{_id}}"><img
+                                                src="/themes/images/products/{{thumbnail}}" alt="" /></a>
                                         <div class="caption">
                                             <h5>{{title}}</h5>
                                             <p>
                                                 {{description}}
                                             </p>
-                                            <h4 style="text-align:center"><a class="btn" href="/product_details/{{id}}"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
+                                            <h4 style="text-align:center"><a class="btn" href="/product_details/{{id}}">
+                                                    <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
                                                         class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
                                                     href="#">&euro;{{price}}</a></h4>
                                         </div>
                                     </div>
                                 </li>
                                 {{/each}}
-                                {{!-- <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Lumix &amp; 123</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Lumix &amp; 2344</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Digital &amp; Camera</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Digital &amp; Camera</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Digital &amp; Camera</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <a href="product_details.html"><img src="themes/images/products/3.jpg"
-                                                alt="" /></a>
-                                        <div class="caption">
-                                            <h5>Digital &amp; Camera</h5>
-                                            <p>
-                                                I'm a paragraph. Click here
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
-                                                        class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;222.00</a></h4>
-                                        </div>
-                                    </div>
-                                </li> --}}
                             </ul>
                             <hr class="soft" />
                         </div>
@@ -511,13 +433,11 @@
                     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
                     <div class="pagination">
                         <ul>
-                            <li><a href="#">&lsaquo;</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">...</a></li>
-                            <li><a href="#">&rsaquo;</a></li>
+                            <li><a href="{{prevLink}}">&lsaquo;</a></li>
+                            {{#each pages}}
+                            <li><a href="{{this.link}}">{{this.page}}</a></li>
+                            {{/each}}
+                            <li><a href="{{nextLink}}">&rsaquo;</a></li>
                         </ul>
                     </div>
                     <br class="clr" />

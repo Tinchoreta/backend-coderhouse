@@ -1,0 +1,20 @@
+2023-08-14T04:49:58.391Z info: GET /favicon.ico
+2023-08-14T04:50:13.882Z info: GET /api/loggerTest
+2023-08-14T04:50:14.019Z debug: Este es un mensaje de debug
+2023-08-14T04:50:14.021Z http: Este es un mensaje de http
+2023-08-14T04:50:14.022Z info: Este es un mensaje de info
+2023-08-14T04:50:14.024Z warning: Este es un mensaje de advertencia
+2023-08-14T04:50:14.024Z error: Este es un mensaje de error
+2023-08-14T04:55:24.573Z info: GET /api/loggerTest
+2023-08-14T04:55:24.726Z debug: Este es un mensaje de debug
+2023-08-14T04:55:24.728Z http: Este es un mensaje de http
+2023-08-14T04:55:24.729Z info: Este es un mensaje de info
+2023-08-14T04:55:24.731Z warning: Este es un mensaje de advertencia
+2023-08-14T04:55:24.731Z error: Este es un mensaje de error
+2023-08-14T04:55:25.022Z info: GET /favicon.ico
+2023-08-14T04:57:13.456Z error: Este es un mensaje de error
+2023-08-14T04:57:13.457Z fatal: Este es un mensaje de fatal
+2023-08-14T05:05:33.509Z error: Este es un mensaje de error
+2023-08-14T05:05:33.510Z fatal: Este es un mensaje de fatal
+2023-08-16T04:09:16.375Z error: Este es un mensaje de error
+2023-08-16T04:09:16.376Z fatal: Este es un mensaje de fatal

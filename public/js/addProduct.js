@@ -1,11 +1,12 @@
 // Función para limpiar los campos del formulario
 function limpiar() {
-    document.getElementById("id").value = "";
+    document.getElementById("productID").value = "";
     document.getElementById("title").value = "";
     document.getElementById("description").value = "";
     document.getElementById("price").value = "";
     document.getElementById("thumbnail").value = "";
     document.getElementById("stock").value = "";
+    document.getElementById("category").value = "";
 }
 
 // Función para agregar un nuevo producto
@@ -13,21 +14,23 @@ async function addProductToInventory(event) {
     event.preventDefault();
     try {
         // Obtenemos los valores del formulario
-        let id = document.getElementById("id").value;
+        
         let title = document.getElementById("title").value;
         let description = document.getElementById("description").value;
         let price = document.getElementById("price").value;
         let thumbnail = document.getElementById("thumbnail").value;
         let stock = document.getElementById("stock").value;
+        let category = document.getElementById("category").value;
 
         // Creamos un objeto con los datos del nuevo producto
         let nuevoProducto = {
-            id: id,
             title: title,
             description: description,
             price: price,
             thumbnail: thumbnail,
             stock: stock,
+            category: category,
+            created_at: new Date().toISOString()
         };
 
         //console.log(nuevoProducto);
@@ -46,6 +49,7 @@ async function addProductToInventory(event) {
 
         //si fue creado el producto y agregado a la persistencia
         if (status === 201) {
+            document.getElementById("productID").textContent = data._id;
             Swal.fire({
                 icon: "success",
                 title: "Success",
@@ -79,3 +83,21 @@ async function addProductToInventory(event) {
 document
     .getElementById("productForm")
     .addEventListener("submit", addProductToInventory);
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    
+    updateUI();
+
+});
+
+function updateUI() {
+    const username = sessionStorage.getItem('username');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+
+    if (username) {
+        welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
+    } else {
+        welcomeMessage.innerHTML = 'Welcome! Please log in.';
+    }
+}

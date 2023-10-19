@@ -9,10 +9,11 @@
                         <a href="/product_summary"><span class="">Es</span></a>
                         <span class="btn btn-mini">En</span>
                         <a href="/product_summary"><span>&pound;</span></a>
-                        <span class="btn btn-mini">$155.00</span>
+                        <span class="btn btn-mini">${{#cartTotal}}{{this}}{{/cartTotal}}</span>
                         <a href="/product_summary"><span class="">$</span></a>
                         <a href="/product_summary"><span class="btn btn-mini btn-primary"><i
-                                    class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                                    class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
+                            </span> </a>
                     </div>
                 </div>
             </div>
@@ -24,7 +25,8 @@
                     <span class="icon-bar"></span>
                 </a>
                 <div class="navbar-inner">
-                    <a class="brand" href="http://localhost:8080/"><img src="/themes/images/logo.png" alt="Bootsshop" /></a>
+                    <a class="brand" href="http://localhost:8080/"><img src="/themes/images/logo.png"
+                            alt="Bootsshop" /></a>
                     <form class="form-inline navbar-search" method="post" action="/products">
                         <input id="srchFld" class="srchTxt" type="text" />
                         <select class="srchTxt">
@@ -82,8 +84,8 @@
                 <!-- Sidebar ================================================== -->
                 <div id="sidebar" class="span3">
                     <div class="well well-small"><a id="myCart" href="/product_summary"><img
-                                src="/themes/images/ico-cart.png" alt="cart">3 Items in your cart <span
-                                class="badge badge-warning pull-right">$155.00</span></a></div>
+                                src="/themes/images/ico-cart.png" alt="cart">{{cartItemCount}} Items in your cart <span
+                                class="badge badge-warning pull-right">${{cartTotal}}</span></a></div>
                     <ul id="sideManu" class="nav nav-tabs nav-stacked">
                         <li class="subMenu open"><a> ELECTRONICS [230]</a>
                             <ul>
@@ -171,25 +173,35 @@
                             <a href="/themes/images/products/{{productDetails.thumbnail}}"
                                 title={{productDetails.title}}>
                                 <img src="/themes/images/products/{{productDetails.thumbnail}}" style="width:60%"
-                                    alt={{productDetails.title}}/>
+                                    alt={{productDetails.title}} />
                             </a>
                             {{!-- <div id="differentview" class="moreOptopm carousel slide">
                                 <div class="carousel-inner">
                                     <div class="item active">
-                                        <a href="/themes/images/products/large/{{productDetails.thumbnail}}"> <img style="width:29%"
-                                                src="/themes/images/products/large/{{productDetails.thumbnail}}" alt="" /></a>
-                                        <a href="/themes/images/products/large/{{productDetails.thumbnail}}"> <img style="width:29%"
-                                                src="/themes/images/products/large/{{productDetails.thumbnail}}" alt="" /></a>
-                                        <a href="/themes/images/products/large/{{productDetails.thumbnail}}"> <img style="width:29%"
-                                                src="/themes/images/products/large/{{productDetails.thumbnail}}" alt="" /></a>
+                                        <a href="/themes/images/products/large/{{productDetails.thumbnail}}"> <img
+                                                style="width:29%"
+                                                src="/themes/images/products/large/{{productDetails.thumbnail}}"
+                                                alt="" /></a>
+                                        <a href="/themes/images/products/large/{{productDetails.thumbnail}}"> <img
+                                                style="width:29%"
+                                                src="/themes/images/products/large/{{productDetails.thumbnail}}"
+                                                alt="" /></a>
+                                        <a href="/themes/images/products/large/{{productDetails.thumbnail}}"> <img
+                                                style="width:29%"
+                                                src="/themes/images/products/large/{{productDetails.thumbnail}}"
+                                                alt="" /></a>
                                     </div>
                                     <div class="item">
-                                        <a href="/themes/images/products/{{productDetails.thumbnail}}"> <img style="width:29%"
+                                        <a href="/themes/images/products/{{productDetails.thumbnail}}"> <img
+                                                style="width:29%"
                                                 src="/themes/images/products/{{productDetails.thumbnail}}" alt="" /></a>
-                                        <a href="/themes/images/products/{{productDetails.thumbnail}}"> <img style="width:29%"
+                                        <a href="/themes/images/products/{{productDetails.thumbnail}}"> <img
+                                                style="width:29%"
                                                 src="/themes/images/products/{{productDetails.thumbnail}}" alt="" /></a>
-                                        <a href="/themes/images/products/large/{{productDetails.thumbnail}}"> <img style="width:29%"
-                                                src="/themes/images/products/large/{{productDetails.thumbnail}}" alt="" /></a>
+                                        <a href="/themes/images/products/large/{{productDetails.thumbnail}}"> <img
+                                                style="width:29%"
+                                                src="/themes/images/products/large/{{productDetails.thumbnail}}"
+                                                alt="" /></a>
                                     </div>
                                 </div>
                                 <!--  
@@ -215,10 +227,13 @@
                             <hr class="soft" />
                             <form class="form-horizontal qtyFrm" id="qtyFrm">
                                 <div class="control-group">
-                                    <label class="control-label" style="font-size: 16px;"><span>${{productDetails.price}}</span></label>
+                                    <label class="control-label"
+                                        style="font-size: 16px;"><span>${{productDetails.price}}</span></label>
                                     <div class="controls">
-                                        <input type="number" class="span1" placeholder="Qty." style="width: 55px; height: 30px; font-size: 14px;" min="0" max="{{productDetails.stock}}" id="quantity"/>
-                                        <input type="hidden" id="productId" value={{productDetails.id}}>
+                                        <input type="number" class="span1" placeholder="Qty."
+                                            style="width: 55px; height: 30px; font-size: 14px;" min="0"
+                                            max="{{productDetails.stock}}" id="quantity" />
+                                        <input type="hidden" id="productId" value={{productDetails._id}}>
                                         <button type="submit" class="btn btn-medium btn-primary pull-right"> Add to cart
                                             <i class=" icon-shopping-cart"></i></button>
                                     </div>

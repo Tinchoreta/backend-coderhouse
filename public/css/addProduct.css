@@ -32,10 +32,10 @@ body {
 }
 
 .card {
-    position: absolute;
+    /* position: relative;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
     background-color: #fff;
     padding: 20px;
     width: 400px;
@@ -63,9 +63,14 @@ body {
 
 .form-control {
     margin-bottom: 10px;
-    text-align: right;
-    direction: rtl;
+    text-align: left;
 }
+
+.buttons{
+    padding-top: .7em;
+    margin-top: .7em;
+}
+
 
 .swal2-container {
     background-color: #8C9BA5;
