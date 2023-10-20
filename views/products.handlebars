@@ -43,8 +43,8 @@
                         <li class=""><a href="normal.html">Delivery</a></li>
                         <li class=""><a href="contact.html">Contact</a></li>
                         <li class="" id="loginLi">
-                            <a href="#login" id="loginBtn" role="button" data-toggle="modal" style="padding-right:0"><span
-                                    class="btn btn-large btn-success">Login</span></a>
+                            <a href="#login" id="loginBtn" role="button" data-toggle="modal"
+                                style="padding-right:0"><span class="btn btn-large btn-success">Login</span></a>
                             <div id="login" class="modal hide fade in" tabindex="-1" role="dialog"
                                 aria-labelledby="login" aria-hidden="false">
                                 <div class="modal-header">
@@ -72,7 +72,8 @@
                             </div>
                         </li>
                         <li class="" id="logoutLi" style="display:none;">
-                            <a href="#" id="logoutBtn" role="button" style="padding-right: 0"><span class="btn btn-large btn-danger">Logout</span></a>
+                            <a href="#" id="logoutBtn" role="button" style="padding-right: 0"><span
+                                    class="btn btn-large btn-danger">Logout</span></a>
                         </li>
                     </ul>
                 </div>
@@ -193,7 +194,7 @@
                             <input type="text" id="titleFilter" name="title" placeholder="Enter product title">
                         </div>
                     </form>
-                    
+
                     <p id="filterText"></p>
                     <button id="clearFilterButton" style="display: none;">Clear Filter</button>
 
@@ -410,17 +411,18 @@
                                 {{#each products}}
                                 <li class="span3">
                                     <div class="thumbnail card-list">
-                                        <a href="product_details/{{_id}}"><img
-                                                src="/themes/images/products/{{thumbnail}}" alt="" /></a>
+                                        <a href="product_details/{{_id}}"><img src="/themes/images/products/{{thumbnail}}" alt="" /></a>
                                         <div class="caption">
                                             <h5>{{title}}</h5>
-                                            <p>
-                                                {{description}}
-                                            </p>
-                                            <h4 style="text-align:center"><a class="btn" href="/product_details/{{id}}">
-                                                    <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                    href="#">&euro;{{price}}</a></h4>
+                                            <p>{{description}}</p>
+                                            <h4 style="text-align:center">
+                                                <a class="btn" href="/product_details/{{_id}}">
+                                                    <i class="icon-zoom-in"></i>
+                                                </a>
+                                                <a class="btn add-to-cart" data-product-id="{{_id}}">Agregar al<i
+                                                        class="icon-shopping-cart"></i></a>
+                                                <a class="btn btn-primary" href="">&euro;{{price}}</a>
+                                            </h4>
                                         </div>
                                     </div>
                                 </li>
@@ -428,7 +430,7 @@
                             </ul>
                             <hr class="soft" />
                         </div>
-                    </div>
+                        </div>
 
                     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
                     <div class="pagination">

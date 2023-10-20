@@ -76,62 +76,46 @@ logoutBtn.addEventListener('click', async (event) => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const sortSelect = document.getElementById('sortSelect');
-    const titleFilterInput = document.getElementById('titleFilter');
-    const filterText = document.getElementById('filterText');
-    const clearFilterButton = document.getElementById('clearFilterButton');
-
-    const addProductLink = document.getElementById("addProductLink");
-    addProductLink.addEventListener("click", handleAddProductClick);
-
-    updateUI();
-
-    sortSelect.addEventListener('change', () => {
-        const selectedOption = sortSelect.value;
-        updateQueryString('sort', selectedOption);
-    });
-
-    // titleFilterInput.addEventListener('input', () => {
-    //     const titleValue = titleFilterInput.value;
-    //     updateQueryString('title', titleValue);
-    // });
-
-    titleFilterInput.addEventListener('keydown', (event) => {
-        // Comprueba si la tecla presionada es 'Enter' (código 13)
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Evita el comportamiento predeterminado (como enviar el formulario)
-            const titleValue = titleFilterInput.value;
-            updateQueryString('title', titleValue);
+// Función para enviar una solicitud al servidor para agregar un producto al carrito
+async function addProductToCart(productId, quantity) {
+    try {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            alert('Debes iniciar sesión para agregar productos al carrito.');
+            return;
         }
-    });
-    
-    clearFilterButton.addEventListener('click', () => {
-        clearFilter();
-    });
 
-    function updateQueryString(param, value) {
-        const updatedParams = new URLSearchParams(window.location.search);
-        if (value) {
-            updatedParams.set(param, value);
-            filterText.textContent = `Filtered by: ${value}`;
-            clearFilterButton.style.display = 'inline-block';
-        } else {
-            updatedParams.delete(param);
-            filterText.textContent = '';
-            clearFilterButton.style.display = 'none';
-        }
-        const updatedQueryString = updatedParams.toString();
-        const url = `${window.location.pathname}?${updatedQueryString}`;
-        window.location.href = url;
+        const url = `/api/cart/${cartId}/product/${productId}/add/${quantity}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', url, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert('Producto agregado al carrito correctamente.');
+            } else {
+                alert('Error al agregar el producto al carrito.');
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        xhr.send();
+    } catch (error) {
+        console.error('Error:', error);
     }
+}
 
-    function clearFilter() {
-        titleFilterInput.value = '';
-        updateQueryString('title', null);
-    }
+// Función para manejar el evento de agregar al carrito
+function handleAddToCartClick(event) {
+    event.preventDefault();
+    const productId = event.target.getAttribute('data-product-id');
+    const quantity = 1;
+    addProductToCart(productId, quantity);
+}
 
-});
 
 function updateUI() {
     const username = sessionStorage.getItem('username');
@@ -180,3 +164,70 @@ async function handleAddProductClick(event) {
         alert("No estás autorizado. Debes iniciar sesión como admin.");
     }
 }
+
+
+
+/***********************************
+**
+**
+**     "DOMContentLoaded"
+**
+**
+************************************/
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const sortSelect = document.getElementById('sortSelect');
+    const titleFilterInput = document.getElementById('titleFilter');
+    const filterText = document.getElementById('filterText');
+    const clearFilterButton = document.getElementById('clearFilterButton');
+    
+    // Agregar un controlador de eventos a todos los botones "Add to Cart"
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach((button) => {
+        button.addEventListener('click', handleAddToCartClick);
+    });
+
+    updateUI();
+
+    sortSelect.addEventListener('change', () => {
+        const selectedOption = sortSelect.value;
+        updateQueryString('sort', selectedOption);
+    });
+
+    titleFilterInput.addEventListener('keydown', (event) => {
+        // Comprueba si la tecla presionada es 'Enter' (código 13)
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evita el comportamiento predeterminado (como enviar el formulario)
+            const titleValue = titleFilterInput.value;
+            updateQueryString('title', titleValue);
+        }
+    });
+    
+    clearFilterButton.addEventListener('click', () => {
+        clearFilter();
+    });
+
+    function updateQueryString(param, value) {
+        const updatedParams = new URLSearchParams(window.location.search);
+        if (value) {
+            updatedParams.set(param, value);
+            filterText.textContent = `Filtered by: ${value}`;
+            clearFilterButton.style.display = 'inline-block';
+        } else {
+            updatedParams.delete(param);
+            filterText.textContent = '';
+            clearFilterButton.style.display = 'none';
+        }
+        const updatedQueryString = updatedParams.toString();
+        const url = `${window.location.pathname}?${updatedQueryString}`;
+        window.location.href = url;
+    }
+
+    function clearFilter() {
+        titleFilterInput.value = '';
+        updateQueryString('title', null);
+    }
+
+});
+
