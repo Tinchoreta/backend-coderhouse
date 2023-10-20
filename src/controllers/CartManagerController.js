@@ -71,6 +71,21 @@ class CartManagerController {
         }
     }
 
+    async getCartManager(request, response) {
+        try {
+
+            response.json({ cartManager: request.cartManager });
+
+        } catch (error) {
+            console.error(error);
+            return response.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
+                success: false,
+                error: 'Internal Server Error'
+            });
+        }
+
+    }
+
     async getCarts(request, response) {
         try {
             const limit = !Number.isNaN(parseInt(request.query.limit)) ? parseInt(request.query.limit) : 5;

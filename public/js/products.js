@@ -77,7 +77,7 @@ logoutBtn.addEventListener('click', async (event) => {
 });
 
 // Función para enviar una solicitud al servidor para agregar un producto al carrito
-async function addProductToCart(productId, quantity) {
+async function addProductToCart(cartId, productId, quantity) {
     try {
         const token = sessionStorage.getItem('token');
         if (!token) {
@@ -85,7 +85,7 @@ async function addProductToCart(productId, quantity) {
             return;
         }
 
-        const url = `/api/cart/${cartId}/product/${productId}/add/${quantity}`;
+        const url = `/api/carts/${cartId}/product/${productId}/add/${quantity}`;
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url, true);
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
@@ -109,12 +109,48 @@ async function addProductToCart(productId, quantity) {
 }
 
 // Función para manejar el evento de agregar al carrito
-function handleAddToCartClick(event) {
+async function handleAddToCartClick(event) {
     event.preventDefault();
-    const productId = event.target.getAttribute('data-product-id');
-    const quantity = 1;
-    addProductToCart(productId, quantity);
+
+    function fetchCartManagerData() {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/carts/cartManager', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject('Error al obtener el carrito');
+                    }
+                }
+            };
+            xhr.send();
+        });
+    }
+
+    try {
+        const cartManagerData = await fetchCartManagerData();
+
+        const cartManagerDataParsed = JSON.parse(cartManagerData);
+        
+        console.log(cartManagerDataParsed);
+
+        if (cartManagerDataParsed.cartManager.cartList && cartManagerDataParsed.cartManager.cartList.length > 0) {
+            const cart = cartManagerDataParsed.cartManager.cartList[0];
+            const productId = event.target.getAttribute('data-product-id');
+            const quantity = 1;
+            addProductToCart(cart._id, productId, quantity);
+        } else {
+            console.error('No se encontró ningún carrito en cartList.');
+        }
+    } catch (error) {
+        console.error(error);
+    }
 }
+
+
 
 
 function updateUI() {

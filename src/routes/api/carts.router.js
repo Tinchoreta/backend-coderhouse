@@ -21,6 +21,7 @@ const cartController = new CartManagerController(
 );
 
 router.get("/", [ROLES.ADMIN, ROLES.PUBLIC], (req, res) => cartController.getCarts(req, res));
+router.get("/cartManager", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], (req, res) => cartController.getCartManager(req, res));
 router.post("/", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.PUBLIC], (req, res) => cartController.createCart(req, res));
 router.get("/:cartId", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], (req, res) => cartController.getCartById(req, res));
 router.get("/:cartId/bills", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], (req, res) => cartController.calculateCartTotalPrice(req, res));
