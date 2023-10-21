@@ -6,7 +6,7 @@ import { engine } from 'express-handlebars';
 import mainRouter from './routes/index.js'
 import DataBaseStrategy from './persistence/DataBaseStrategy.js';
 
-import {errorHandlerMiddleware} from './services/errors/errorHandler.js';
+import { errorHandlerMiddleware } from './services/errors/errorHandler.js';
 import notFoundHandler from './middlewares/utils/notFound.js';
 import { cartMiddleware } from './middlewares/business/cartMiddleware.js';
 

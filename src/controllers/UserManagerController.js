@@ -1,3 +1,4 @@
+import fs from 'fs';
 class UserManagerController {
 
     constructor(userManagerAdapter) {
@@ -118,6 +119,56 @@ class UserManagerController {
             response.status(500).send({ message: "Unable to remove the user" });
         }
     }
+
+    async uploadProfileImage(req, res) {
+        try {
+            const userId = req.params.uid; 
+            const fileName = req.file.filename; 
+
+            const user = await this.userManagerAdapter.getUserById(userId);
+
+            if (!user) {
+                return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+            }
+
+            user.profileImage = fileName;
+            await user.save();
+
+            return res.status(200).json({ success: true, message: 'Imagen de perfil subida exitosamente' });
+        } catch (error) {
+            console.error('Error al subir imagen de perfil:', error);
+            return res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    }
+
+    async uploadDocument(req, res) {
+        try {
+            const userId = req.params.uid; 
+            const files = req.files; 
+
+            const user = await this.userManagerAdapter.getUserById(userId);
+
+            if (!user) {
+                return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+            }
+            
+            if (files && files.length > 0) {
+                user.documents = files.map((file) => ({
+                    name: file.originalname,
+                    reference: file.filename,
+                }));
+
+                await user.save();
+            }
+
+            return res.status(200).json({ success: true, message: 'Documentos subidos exitosamente' });
+        } catch (error) {
+            console.error('Error al subir documentos:', error);
+            return res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    }
+
+
 }
 
 export default UserManagerController;

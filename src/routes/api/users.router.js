@@ -10,6 +10,8 @@ import {
 import CustomRouter from "../../middlewares/routes/CustomRouter.js";
 import ROLES from "../../utils/userRoles.js";
 
+import uploader from "../../middlewares/utils/multer.js";
+
 const router = new CustomRouter();
 
 const dataBaseUserAdapter = DataBaseUserAdapter.getInstance(
@@ -31,5 +33,9 @@ router.post("/", [ROLES.ADMIN],
 router.put("/:id", [ROLES.ADMIN], validateUserExistence, (req, res) => userController.updateUser(req, res));
 
 router.delete("/:id", [ROLES.ADMIN], validateUserExistence, (req, res) => userController.removeUser(req, res));
+
+router.post("/:uid/profile-image", [ROLES.USER], uploader.single("profileImage"), (req, res) => {
+    userController.uploadProfileImage(req, res);
+});
 
 export default router;

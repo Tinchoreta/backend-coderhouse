@@ -28,13 +28,12 @@ authRouter.get('/',
     (req, res, next) => authController.getCounter(req, res, next));
 
 // REGISTER
-authRouter.post('/register',
+authRouter.post('/register', [ROLES.PUBLIC],
     validateUserFields,
     checkDuplicateUserEmail,
     validatePasswordLength,
     createHashForPassword,
     trimUserData,
-    [ROLES.PUBLIC],
     passport.authenticate(
         'register', {
         failureRedirect: '/api/auth/fail-register'

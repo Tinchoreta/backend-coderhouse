@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 class ProductManagerController {
   constructor(productManagerAdapter) {
     this.productManagerAdapter = productManagerAdapter;
@@ -231,6 +233,31 @@ class ProductManagerController {
       response.status(500).send({ message: 'Unable to remove the product' });
     }
   }
+
+  async uploadProductImage(req, res) {
+    try {
+      const productId = req.params.id; 
+      const fileName = req.file.filename; 
+
+      const product = await this.productManagerAdapter.getProductById(productId);
+
+      if (!product) {
+        return res.status(404).json({ success: false, message: 'Producto no encontrado' });
+      }
+
+      product.thumbnail = fileName;
+      await product.save();
+
+      return res.status(200).json({ success: true, message: 'Imagen de producto subida exitosamente' });
+    } catch (error) {
+      console.error('Error al subir imagen de producto:', error);
+      return res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+  }
+
+
+
+
 }
 
 export default ProductManagerController;

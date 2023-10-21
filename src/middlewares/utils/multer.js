@@ -1,19 +1,35 @@
-import multer from 'multer'
-import { __dirname } from '../../utils.js'
+import multer from 'multer';
+import fs from 'fs'; // Importa el módulo fs para trabajar con el sistema de archivos
 
-//antes de instanciar el módulo de multer
-//debemos configurar donde se guardarán los archivos
-//a través del método diskStorage
+// Ruta base para las carpetas de destino
+const destinationBase = './public/img/';
 
 const storage = multer.diskStorage({
-    //destination para indicar donde se guardará
-    destination: (req, file, cb) => cb(null, __dirname + '/public/img'),
-    //filename para indicar el nombre con que se guardará
+    destination: (req, file, cb) => {
+        // Determina la carpeta de destino según el tipo de archivo
+        let destinationFolder = '';
 
-    filename: (req, file, cb) => cb(null, file.originalname)
-})
+        if (file.fieldname === 'profileImage') {
+            destinationFolder = 'profiles';
+        } else if (file.fieldname === 'productImage') {
+            destinationFolder = 'products';
+        } else if (file.fieldname === 'documents') {
+            destinationFolder = 'documents';
+        }
 
-//instanciamos
-const uploader = multer({ storage })
+        // Verifica si la carpeta de destino existe, de no ser así, la crea
+        const destinationPath = destinationBase + destinationFolder;
+        if (!fs.existsSync(destinationPath)) {
+            fs.mkdirSync(destinationPath, { recursive: true });
+        }
 
-export default uploader
+        cb(null, destinationPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+const uploader = multer({ storage });
+
+export default uploader;

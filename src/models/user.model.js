@@ -32,8 +32,21 @@ const userSchema = new Schema({
         enum: ['user', 'admin', 'premium'],
         default: 'user',
     },
-    resetPasswordToken: { String }, 
+    resetPasswordToken: { String },
     resetPasswordExpires: { Date },
+    documents: [
+        {
+            name: {
+                type: String,
+                required: true,
+            },
+            reference: {
+                type: String,
+                required: true,
+            },
+        }
+    ],
+    lastConecction: { Date },
 });
 
 userSchema.set('strict', false);

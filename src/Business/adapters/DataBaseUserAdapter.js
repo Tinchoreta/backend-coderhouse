@@ -2,7 +2,7 @@ import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import User from '../../models/user.model.js'; 
 import mongoose from 'mongoose';
-// import bcrypt from 'bcrypt';
+
 
 class DataBaseUserAdapter {
     static instance;
@@ -58,15 +58,6 @@ class DataBaseUserAdapter {
             throw new Error(`getUserById: ${error.message}`);
         }
     }
-
-    // async hashPassword(password) {
-    //     try {
-    //         const salt = await bcrypt.genSalt(10);
-    //         return await bcrypt.hash(password, salt);
-    //     } catch (error) {
-    //         throw new Error(`hashPassword: ${error.message}`);
-    //     }
-    // }
 
     async addUser(userToAdd) {
         try {
@@ -125,5 +116,8 @@ class DataBaseUserAdapter {
         }
     }
 }
+
+
+
 
 export default DataBaseUserAdapter;
