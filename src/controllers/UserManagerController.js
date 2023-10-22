@@ -18,15 +18,6 @@ class UserManagerController {
             // Crea el usuario en la base de datos
             const addedUser = await this.createUser(userData);
 
-            // Verifica si se cargó una imagen de perfil y el ID del usuario se creó con éxito
-            if (addedUser && addedUser._id) {
-                const userId = addedUser._id;
-                if (request.file) {
-                    // Si se cargó una imagen de perfil, sube la imagen y actualiza el campo 'photo'
-                    await this.uploadProfileImage(userId, request.file);
-                }
-            }
-
             response.status(201).json(addedUser);
         } catch (error) {
             console.error("Error adding user:", error);

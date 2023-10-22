@@ -1,9 +1,9 @@
 const loginBtnModal = document.getElementById('loginBtnModal');
-const loginBtn = document.getElementById('loginBtn');
+// const loginBtn = document.getElementById('loginBtn');
 const inputEmailModal = document.getElementById('inputEmail');
 const inputPasswordModal = document.getElementById('inputPassword');
-const inputEmail = document.getElementById('inputEmail1');
-const inputPassword = document.getElementById('inputPassword1');
+// const inputEmail = document.getElementById('inputEmail1');
+// const inputPassword = document.getElementById('inputPassword1');
 
 function handleModalLogin(event) {
     event.preventDefault();
@@ -12,15 +12,15 @@ function handleModalLogin(event) {
     authenticateUser(email, password);
 }
 
-function handleLogin(event) {
-    event.preventDefault();
-    const email = inputEmail.value;
-    const password = inputPassword.value;
-    authenticateUser(email, password);
-}
+// function handleLogin(event) {
+//     event.preventDefault();
+//     const email = inputEmail.value;
+//     const password = inputPassword.value;
+//     authenticateUser(email, password);
+// }
 
 loginBtnModal.addEventListener('click', handleModalLogin);
-loginBtn.addEventListener('click', handleLogin);
+// loginBtn.addEventListener('click', handleLogin);
 
 async function authenticateUser(email, password) {
     try {
@@ -52,12 +52,12 @@ async function authenticateUser(email, password) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-        fetch.setDefaultHeaders({
-            'Authorization': `Bearer ${token}`,
-        });
-    }
+    // const token = sessionStorage.getItem('token');
+    // if (token) {
+    //     fetch.setDefaultHeaders({
+    //         'Authorization': `Bearer ${token}`,
+    //     });
+    // }
     const inputPhoto = document.getElementById('inputPhoto');
     inputPhoto.focus();
 });
@@ -72,7 +72,7 @@ document.getElementById('formAddUser').addEventListener('submit', function (even
     let age = document.getElementById('inputAge').value;
     let password = document.getElementById('inputPassword1').value;
     let role = document.getElementById('inputRole').value;
-    
+
     // Almacena mensajes de error
     let errors = [];
 
@@ -112,20 +112,6 @@ document.getElementById('formAddUser').addEventListener('submit', function (even
     }
 });
 
-async function registerUser(formData) {
-    try {
-        const response = await axios.post('http://localhost:8080/api/auth/register', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data', // Asegúrate de establecer el tipo de contenido correcto
-            },
-        });
-        return response.data;
-    } catch (error) {
-        throw new Error(`Error al registrar el usuario: ${error.response.data.error}`);
-    }
-}
-
-
 async function handleRegisterFormSubmit(event) {
     event.preventDefault();
 
@@ -145,33 +131,59 @@ async function handleRegisterFormSubmit(event) {
         });
     }
 
-    const userData = {
+    const formDataArray = {
         firstName: name,
         lastName: surname,
         email: email,
         age: age,
         password: password,
         role: role,
-        photo: photoFile,
+        photo: photoFile.name,
     };
 
     try {
-        const registeredUser = await registerUser(userData);
-        Swal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "¡Registro exitoso! ID de usuario: " + registeredUser.user.email,
-            customClass: {
-                container: "my-swal-container",
-                icon: "my-swal-icon",
-                title: "my-swal-title",
-                content: "my-swal-content",
-                actions: "my-swal-actions",
-                confirmButton: "my-swal-confirm",
-            },
-        });
+        const registeredUser = await registerUser(formDataArray);
 
-        document.querySelector('#formAddUser').reset();
+        if (registeredUser.success) {
+
+            //sube la foto de perfil 
+            const profileImageResponse = await uploadProfilePicture(photoFile, registeredUser.user._id)
+
+            if (profileImageResponse.success) {
+                console.log("Foto de perfil subida exitosamente.");
+            } else {
+                console.error("Error al subir la foto de perfil: " + profileImageResponse.error);
+            }
+
+            Swal.fire({
+                icon: "success",
+                title: "Éxito",
+                text: "¡Registro exitoso! ID de usuario: " + registeredUser.user.email,
+                customClass: {
+                    container: "my-swal-container",
+                    icon: "my-swal-icon",
+                    title: "my-swal-title",
+                    content: "my-swal-content",
+                    actions: "my-swal-actions",
+                    confirmButton: "my-swal-confirm",
+                }});
+
+            document.querySelector('#formAddUser').reset();
+            window.location = '/products';
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Falló el registro. Error: " + registeredUser.error,
+                customClass: {
+                    container: "my-swal-container",
+                    icon: "my-swal-icon",
+                    title: "my-swal-title",
+                    content: "my-swal-content",
+                    actions: "my-swal-actions",
+                    confirmButton: "my-swal-confirm",
+                }});
+        }
     } catch (error) {
         Swal.fire({
             icon: "error",
@@ -184,10 +196,47 @@ async function handleRegisterFormSubmit(event) {
                 content: "my-swal-content",
                 actions: "my-swal-actions",
                 confirmButton: "my-swal-confirm",
-            },
-        });
+            }});
     }
 }
+
+async function registerUser(formDataArray) {
+    try {
+        const response = await axios.post('http://localhost:8080/api/auth/register', formDataArray, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            },
+        });
+
+        if (response.status === 201) { //201 user created
+            return response.data;
+        } else {
+            throw new Error('Error al registrar el usuario');
+        }
+    } catch (error) {
+        throw new Error(`Error al registrar el usuario: ${error.message}`);
+    }
+}
+
+async function uploadProfilePicture(photoFile, userId) {
+    try {
+        const formData = new FormData();
+        formData.append('photo', photoFile);
+
+        const response = await axios.post(`http://localhost:8080/api/users/${userId}/profile-image`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
 
 document.getElementById('btnAddUser').addEventListener('click', handleRegisterFormSubmit);
 

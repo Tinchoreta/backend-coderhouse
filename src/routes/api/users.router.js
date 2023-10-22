@@ -34,7 +34,7 @@ router.put("/:id", [ROLES.ADMIN], validateUserExistence, (req, res) => userContr
 
 router.delete("/:id", [ROLES.ADMIN], validateUserExistence, (req, res) => userController.removeUser(req, res));
 
-router.post("/:uid/profile-image", [ROLES.USER], uploader.single("profileImage"), (req, res) => {
+router.post("/:uid/profile-image", [ROLES.USER, ROLES.ADMIN, ROLES.USER_PREMIUM], uploader.single("photo"), (req, res) => {
     userController.uploadProfileImage(req, res);
 });
 

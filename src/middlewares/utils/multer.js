@@ -2,14 +2,14 @@ import multer from 'multer';
 import fs from 'fs'; // Importa el módulo fs para trabajar con el sistema de archivos
 
 // Ruta base para las carpetas de destino
-const destinationBase = './public/img/';
+const destinationBase = './public/files/';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         // Determina la carpeta de destino según el tipo de archivo
         let destinationFolder = '';
 
-        if (file.fieldname === 'profileImage') {
+        if (file.fieldname === 'photo') {
             destinationFolder = 'profiles';
         } else if (file.fieldname === 'productImage') {
             destinationFolder = 'products';

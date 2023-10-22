@@ -52,10 +52,10 @@ async function authenticateUser(email, password) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-        fetch.setDefaultHeaders({
-            'Authorization': `Bearer ${token}`,
-        });
-    }
+    // const token = sessionStorage.getItem('token');
+    // if (token) {
+    //     fetch.setDefaultHeaders({
+    //         'Authorization': `Bearer ${token}`,
+    //     });
+    // }
 });

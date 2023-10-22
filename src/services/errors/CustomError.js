@@ -2,8 +2,9 @@ import EnumeratedErrors from "./EnumeratedErrors.js";
 
 class CustomError extends Error {
     constructor({ name, cause, code }) {
+        
+        super();
         const errorInfo = this.getErrorInfo(name);
-        super(errorInfo.message);
         this.name = errorInfo.name;
         this.code = code || errorInfo.code;
         this.cause = cause;
