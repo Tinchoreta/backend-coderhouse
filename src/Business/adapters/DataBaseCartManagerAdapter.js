@@ -1,7 +1,7 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import CartModel from '../../models/cart.model.js';
-import logger from '../../config/logger.js';
+import UserModel from './user.model';
 import mongoose from 'mongoose';
 
 class DataBaseCartManagerAdapter {
@@ -42,7 +42,7 @@ class DataBaseCartManagerAdapter {
 
             const cart = await this.persistenceManager.getOne({ _id: cartId });
             return cart ? cart.products.map((product) => product.productId) : [];
-            
+
         } catch (error) {
             throw new Error(`getProductsIds: ${error.message}`);
         }
@@ -63,13 +63,45 @@ class DataBaseCartManagerAdapter {
         }
     }
 
+    async getCartByUserId(userId) {
+        try {
+            const cart = await this.persistenceManager.getOne({ userId: userId });
+            return cart || null;
+        } catch (error) {
+            console.error(`Error al obtener el carrito por ID de usuario: ${error.message}`);
+            return null;
+        }
+    }
+
+    async getCartByUserEmail(userEmail) {
+        try {
+            // Busca el usuario por correo electrónico
+            const user = await UserModel.findOne({ email: userEmail });
+
+            if (user) {
+                // Si se encuentra el usuario, busca el carrito asociado por userId
+                const cart = await this.persistenceManager.getOne({ userId: user._id });
+                return cart || null;
+            }
+            return null;
+        } catch (error) {
+            console.error(`Error al obtener el carrito por correo electrónico del usuario: ${error.message}`);
+            return null;
+        }
+    }
+
     async createCart() {
         try {
             const cart = { products: [] };
             const createdCart = await this.persistenceManager.addOne(cart, 'Carts');
+            if (!createdCart) {
+                console.error('No se pudo crear el carrito');
+                return null;
+            }
             return createdCart._id;
         } catch (error) {
-            throw new Error(`createCart: ${error.message}`);
+            console.error(`Error al crear un nuevo carrito: ${error.message}`);
+            return null;
         }
     }
 

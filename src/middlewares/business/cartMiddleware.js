@@ -22,9 +22,17 @@ const cartMiddleware = async (req, res, next) => {
     try {
         const dataBaseProductAdapter = await getDatabaseProductAdapter();
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
+        const userId = req.query?.email; 
 
-        // TODO: Change this hardcoded cartID
-        const cartToRender = await dataBaseCartAdapter.getCartById('64765d546145585e447a0437');
+        
+        const cartToRender = await dataBaseCartAdapter.getCartByUserId(userId);
+
+        // Si el carrito no existe, crea uno vacío y asigna un ID.
+        if (!cartToRender) {
+            const addedCartId = await dataBaseCartAdapter.createCart();
+            cartToRender = await dataBaseCartAdapter.getCartById(addedCartId);
+        }
+
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
 
@@ -41,6 +49,7 @@ const cartMiddleware = async (req, res, next) => {
         }));
     }
 }
+
 
 
 async function checkProductExistenceInCart(req, res, next) {
