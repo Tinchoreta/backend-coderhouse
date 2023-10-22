@@ -150,26 +150,41 @@ async function handleRegisterFormSubmit(event) {
             const profileImageResponse = await uploadProfilePicture(photoFile, registeredUser.user._id)
 
             if (profileImageResponse.success) {
-                console.log("Foto de perfil subida exitosamente.");
+                console.log("Foto de perfil subida exitosamente: " + photoFile.name);
+                Swal.fire({
+                    icon: "success",
+                    title: "Éxito",
+                    text: "¡Registro exitoso! ID de usuario: " + registeredUser.user.email,
+                    customClass: {
+                        container: "my-swal-container",
+                        icon: "my-swal-icon",
+                        title: "my-swal-title",
+                        content: "my-swal-content",
+                        actions: "my-swal-actions",
+                        confirmButton: "my-swal-confirm",
+                    }
+                });
+
+                document.querySelector('#formAddUser').reset();
+                window.location = '/products?email=' + registeredUser.user.email;
             } else {
                 console.error("Error al subir la foto de perfil: " + profileImageResponse.error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Falló el registro. Error: " + registeredUser.error,
+                    customClass: {
+                        container: "my-swal-container",
+                        icon: "my-swal-icon",
+                        title: "my-swal-title",
+                        content: "my-swal-content",
+                        actions: "my-swal-actions",
+                        confirmButton: "my-swal-confirm",
+                    }
+                });
             }
 
-            Swal.fire({
-                icon: "success",
-                title: "Éxito",
-                text: "¡Registro exitoso! ID de usuario: " + registeredUser.user.email,
-                customClass: {
-                    container: "my-swal-container",
-                    icon: "my-swal-icon",
-                    title: "my-swal-title",
-                    content: "my-swal-content",
-                    actions: "my-swal-actions",
-                    confirmButton: "my-swal-confirm",
-                }});
 
-            document.querySelector('#formAddUser').reset();
-            window.location = '/products';
         } else {
             Swal.fire({
                 icon: "error",
@@ -182,7 +197,8 @@ async function handleRegisterFormSubmit(event) {
                     content: "my-swal-content",
                     actions: "my-swal-actions",
                     confirmButton: "my-swal-confirm",
-                }});
+                }
+            });
         }
     } catch (error) {
         Swal.fire({
@@ -196,7 +212,8 @@ async function handleRegisterFormSubmit(event) {
                 content: "my-swal-content",
                 actions: "my-swal-actions",
                 confirmButton: "my-swal-confirm",
-            }});
+            }
+        });
     }
 }
 

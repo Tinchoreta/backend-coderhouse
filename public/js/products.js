@@ -151,8 +151,6 @@ async function handleAddToCartClick(event) {
 }
 
 
-
-
 function updateUI() {
     const username = sessionStorage.getItem('username');
     const loginLi = document.getElementById('loginLi');
@@ -223,6 +221,17 @@ document.addEventListener("DOMContentLoaded", () => {
     addToCartButtons.forEach((button) => {
         button.addEventListener('click', handleAddToCartClick);
     });
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const email = queryParams.get('email');
+
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    if (email) {
+        welcomeMessage.innerHTML = `Welcome! <strong>${email}</strong>`;
+        sessionStorage.setItem('username', email);
+    } else {
+        welcomeMessage.innerHTML = 'Welcome! Please log in.';
+    }
 
     updateUI();
 
