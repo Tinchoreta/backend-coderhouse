@@ -76,38 +76,6 @@ logoutBtn.addEventListener('click', async (event) => {
     }
 });
 
-// Función para enviar una solicitud al servidor para agregar un producto al carrito
-async function addProductToCart(cartId, productId, quantity) {
-    try {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-            alert('Debes iniciar sesión para agregar productos al carrito.');
-            return;
-        }
-
-        const url = `/api/carts/${cartId}/product/${productId}/add/${quantity}`;
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', url, true);
-        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                alert('Producto agregado al carrito correctamente.');
-            } else {
-                alert('Error al agregar el producto al carrito.');
-            }
-        };
-
-        xhr.onerror = function () {
-            console.error('Error:', xhr.statusText);
-        };
-
-        xhr.send();
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 // Función para manejar el evento de agregar al carrito
 async function handleAddToCartClick(event) {
     event.preventDefault();
@@ -138,10 +106,13 @@ async function handleAddToCartClick(event) {
         console.log(cartManagerDataParsed);
 
         if (cartManagerDataParsed.cartManager.cartList && cartManagerDataParsed.cartManager.cartList.length > 0) {
+
             const cart = cartManagerDataParsed.cartManager.cartList[0];
             const productId = event.target.getAttribute('data-product-id');
             const quantity = 1;
+
             addProductToCart(cart?._id, productId, quantity);
+
         } else {
             console.error('No se encontró ningún carrito en cartList.');
         }
@@ -150,6 +121,38 @@ async function handleAddToCartClick(event) {
     }
 }
 
+
+// Función para enviar una solicitud al servidor para agregar un producto al carrito
+async function addProductToCart(cartId, productId, quantity) {
+    try {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            showErrorMessage('Debes iniciar sesión para agregar productos al carrito.');
+            return;
+        }
+
+        const url = `/api/carts/${cartId}/product/${productId}/add/${quantity}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', url, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                showSuccessMessage('Producto agregado al carrito correctamente.');
+            } else {
+                showErrorMessage('Error al agregar el producto al carrito.');
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        xhr.send();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 function updateUI() {
     const username = sessionStorage.getItem('username');
@@ -282,3 +285,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+function showSuccessMessage(message) {
+    Swal.fire({
+        title: 'Success',
+        text: message,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        background: '#767e87'
+    });
+}
+
+function showErrorMessage(message) {
+    Swal.fire({
+        title: 'Error',
+        text: message,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        background: '#767e87'
+    });
+}

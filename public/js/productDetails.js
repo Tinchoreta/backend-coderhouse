@@ -1,11 +1,25 @@
 document.getElementById("qtyFrm").addEventListener("submit", function (event) {
-    event.preventDefault(); // Previene el envío del formulario
+    event.preventDefault();
 
-    const productId = document.getElementById("productId").value;
-    const quantity = parseInt(document.getElementById("quantity").value);
+    const productIdInput = document.getElementById("productId");
+    const quantityInput = document.getElementById("quantity");
+    const cartIdInput = document.getElementById("cartId");
 
-    // TODO: Change the hardcoded cartID
-    addProductToCart('64765d546145585e447a0437', productId, quantity);
+    if (!productIdInput || !quantityInput || !cartIdInput) {
+        console.error("One or more inputs are missing.");
+        return;
+    }
+
+    const productId = productIdInput.value;
+    const quantity = parseInt(quantityInput.value);
+    const cartId = cartIdInput.value;
+
+    if (!productId || isNaN(quantity) || !cartId) {
+        console.error("Invalid productId, quantity, or cartId.");
+        return;
+    }
+
+    addProductToCart(cartId, productId, quantity);
 });
 
 async function addProductToCart(cartId, productId, quantity) {
@@ -18,7 +32,7 @@ async function addProductToCart(cartId, productId, quantity) {
         if (response.status === 200) {
             Swal.fire({
                 title: "Product added",
-                text: `Product added successfully`,
+                text: "Product added successfully",
                 icon: "success",
                 confirmButtonText: "OK",
                 background: "#767e87"
@@ -29,7 +43,7 @@ async function addProductToCart(cartId, productId, quantity) {
         console.error(error);
         Swal.fire({
             title: "Product not added",
-            text: `Product could not be added: ${JSON.stringify(error.response.data.error)}`,
+            text: `Product could not be added: ${JSON.stringify(error.response?.data?.error)}`,
             icon: "warning",
             confirmButtonText: "OK",
             background: "#767e87"

@@ -78,11 +78,11 @@ class ProductViewController {
   }
 
 
-  async renderProductDetailsForm(req, res, productId) {
+  async renderProductDetailsForm(req, res,cartId, productId) {
     try {
       // console.log(`http://localhost:8080/api/products/${productId}`);
       const response = await axios.get(`http://localhost:8080/api/products/${productId}`);
-      const productDetails = response.data.payload;
+      const productDetails = response.data?.payload;
       const cartManager = req.cartManager;
 
       return res.render("productDetails", {
@@ -90,7 +90,8 @@ class ProductViewController {
         script: "productDetails.js",
         css: "productDetails.css",
         productDetails: productDetails,
-        cartManager: cartManager
+        cartManager: cartManager,
+        cartId: cartId,
       });
     } catch (error) {
       console.error(error);
