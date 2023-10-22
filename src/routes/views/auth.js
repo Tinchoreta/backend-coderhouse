@@ -16,10 +16,13 @@ authRouter.get('/', async (req, res, next) => {
 
 authRouter.get('/register', async (req, res, next) => {
     try {
+        const email = req.query.email;
+
         return res.render('registerUser', {
             title: 'registerUser',
             script: 'registerUser.js',
-            css: 'registerUser.css'
+            css: 'registerUser.css',
+            email: email,
         });
     } catch (error) {
         next(error);

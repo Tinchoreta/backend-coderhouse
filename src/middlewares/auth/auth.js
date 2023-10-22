@@ -17,7 +17,7 @@ import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
 */
 
 function auth(req, res, next) {
-    const auth = req.cookies.token;
+    const auth = req.cookies?.token;
     console.log(auth);
     if (!auth) {
         return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({

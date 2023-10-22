@@ -32,8 +32,10 @@ const userSchema = new Schema({
         enum: ['user', 'admin', 'premium'],
         default: 'user',
     },
-    resetPasswordToken: { String },
-    resetPasswordExpires: { Date },
+    photo: {
+        type: String,
+        required: true,
+    },
     documents: [
         {
             name: {
@@ -46,7 +48,9 @@ const userSchema = new Schema({
             },
         }
     ],
-    lastConecction: { Date },
+    lastConnection: { Date },
+    resetPasswordToken: { String },
+    resetPasswordExpires: { Date },
 });
 
 userSchema.set('strict', false);

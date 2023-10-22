@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
             'Authorization': `Bearer ${token}`,
         });
     }
+    const inputPhoto = document.getElementById('inputPhoto');
+    inputPhoto.focus();
 });
 
 
@@ -110,14 +112,19 @@ document.getElementById('formAddUser').addEventListener('submit', function (even
     }
 });
 
-async function registerUser(userData) {
+async function registerUser(formData) {
     try {
-        const response = await axios.post('http://localhost:8080/api/auth/register', userData);
+        const response = await axios.post('http://localhost:8080/api/auth/register', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Asegúrate de establecer el tipo de contenido correcto
+            },
+        });
         return response.data;
     } catch (error) {
         throw new Error(`Error al registrar el usuario: ${error.response.data.error}`);
     }
 }
+
 
 async function handleRegisterFormSubmit(event) {
     event.preventDefault();
@@ -128,8 +135,9 @@ async function handleRegisterFormSubmit(event) {
     const age = document.querySelector('#inputAge').value;
     const password = document.querySelector('#inputPassword1').value;
     const role = document.querySelector('#inputRole').value;
+    const photoFile = document.querySelector('#inputPhoto').files[0];
 
-    if (!name || !email || !password || !age || !role || !surname) {
+    if (!name || !email || !password || !age || !role || !surname || !photoFile) {
         return Swal.fire({
             icon: "error",
             title: "Error",
@@ -144,6 +152,7 @@ async function handleRegisterFormSubmit(event) {
         age: age,
         password: password,
         role: role,
+        photo: photoFile,
     };
 
     try {
