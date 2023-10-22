@@ -408,10 +408,14 @@
 
                         <div class="tab-pane  active" id="blockView">
                             <ul class="thumbnails">
+
+                                <input type="hidden" id="cartId" value="{{cartId}}">
+                                
                                 {{#each products}}
                                 <li class="span3">
                                     <div class="thumbnail card-list">
-                                        <a href="product_details/{{_id}}"><img src="/themes/images/products/{{thumbnail}}" alt="" /></a>
+                                        <a href="product_details/{{_id}}"><img
+                                                src="/themes/images/products/{{thumbnail}}" alt="" /></a>
                                         <div class="caption">
                                             <h5>{{title}}</h5>
                                             <p>{{description}}</p>
@@ -430,7 +434,7 @@
                             </ul>
                             <hr class="soft" />
                         </div>
-                        </div>
+                    </div>
 
                     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
                     <div class="pagination">

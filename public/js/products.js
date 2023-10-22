@@ -80,47 +80,20 @@ logoutBtn.addEventListener('click', async (event) => {
 async function handleAddToCartClick(event) {
     event.preventDefault();
 
-    function fetchCartManagerData() {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', '/api/carts/cartManager', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        resolve(xhr.responseText);
-                    } else {
-                        reject('Error al obtener el carrito');
-                    }
-                }
-            };
-            xhr.send();
-        });
-    }
-
     try {
-        const cartManagerData = await fetchCartManagerData();
+        const cartId = document.getElementById("cartId").value;
+        const productId = event.target.getAttribute("data-product-id");
 
-        const cartManagerDataParsed = JSON.parse(cartManagerData);
-
-        console.log(cartManagerDataParsed);
-
-        if (cartManagerDataParsed.cartManager.cartList && cartManagerDataParsed.cartManager.cartList.length > 0) {
-
-            const cart = cartManagerDataParsed.cartManager.cartList[0];
-            const productId = event.target.getAttribute('data-product-id');
+        if (cartId && productId) {
             const quantity = 1;
-
-            addProductToCart(cart?._id, productId, quantity);
-
+            addProductToCart(cartId, productId, quantity);
         } else {
-            console.error('No se encontró ningún carrito en cartList.');
+            console.warn("cartId o productId es nulo o indefinido.");
         }
     } catch (error) {
-        console.error(error);
+        console.error("Error al manejar la acción 'Agregar al carrito':", error);
     }
 }
-
 
 // Función para enviar una solicitud al servidor para agregar un producto al carrito
 async function addProductToCart(cartId, productId, quantity) {

@@ -3,12 +3,13 @@ import axios from 'axios';
 class ProductViewController {
   constructor() { }
 
-  renderAddProductForm(req, res) {
+  renderAddProductForm(req, res, cartId) {
     try {
       return res.render("addProduct", {
         title: "Product add Form",
         script: "addProduct.js",
         css: "addProduct.css",
+        cartId: cartId,
       });
     } catch (error) {
       console.error(error);

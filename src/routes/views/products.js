@@ -6,8 +6,10 @@ const productRouter = Router();
 
 productRouter.get("/", cartMiddleware, async (req, res, next) => {
     try {
+
+        const cartId = req.cartManager?.carts[0]?._id; 
         const productViewController = new ProductViewController();
-        productViewController.renderProductsForm(req, res);
+        productViewController.renderProductsForm(req, res, cartId);
     } catch (error) {
         next(error);
     }
