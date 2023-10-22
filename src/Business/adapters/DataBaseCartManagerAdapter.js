@@ -1,7 +1,7 @@
 import PersistenceManager from '../../persistence/PersistenceManager.js';
 import DataBaseStrategy from '../../persistence/DataBaseStrategy.js';
 import CartModel from '../../models/cart.model.js';
-import UserModel from './user.model';
+import UserModel from '../../models/user.model.js';
 import mongoose from 'mongoose';
 
 class DataBaseCartManagerAdapter {
