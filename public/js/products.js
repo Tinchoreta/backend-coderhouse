@@ -134,7 +134,7 @@ async function handleAddToCartClick(event) {
         const cartManagerData = await fetchCartManagerData();
 
         const cartManagerDataParsed = JSON.parse(cartManagerData);
-        
+
         console.log(cartManagerDataParsed);
 
         if (cartManagerDataParsed.cartManager.cartList && cartManagerDataParsed.cartManager.cartList.length > 0) {
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const titleFilterInput = document.getElementById('titleFilter');
     const filterText = document.getElementById('filterText');
     const clearFilterButton = document.getElementById('clearFilterButton');
-    
+
     // Agregar un controlador de eventos a todos los botones "Add to Cart"
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach((button) => {
@@ -224,13 +224,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const queryParams = new URLSearchParams(window.location.search);
     const email = queryParams.get('email');
+    const username = sessionStorage.getItem('username');
 
     const welcomeMessage = document.getElementById('welcomeMessage');
     if (email) {
         welcomeMessage.innerHTML = `Welcome! <strong>${email}</strong>`;
         sessionStorage.setItem('username', email);
     } else {
-        welcomeMessage.innerHTML = 'Welcome! Please log in.';
+        if (username) {
+            welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
+        } else {
+            welcomeMessage.innerHTML = 'Welcome! Please log in.';
+            sessionStorage.setItem('username', "");
+        }
+
     }
 
     updateUI();
@@ -248,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateQueryString('title', titleValue);
         }
     });
-    
+
     clearFilterButton.addEventListener('click', () => {
         clearFilter();
     });
@@ -275,4 +282,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
-
