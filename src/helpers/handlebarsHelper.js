@@ -23,9 +23,9 @@ Handlebars.registerHelper('cartItemCount', function (options) {
 
     if (cartId) {
         const count = cartManager.getCartTotalItemsQuantity(cartId);
-        return count !== null && count !== undefined ? count : 'N/A';
+        return count !== null && count !== undefined ? count : '0';
     } else {
-        return 'N/A';
+        return '0';
     }
 });
 
@@ -36,9 +36,9 @@ Handlebars.registerHelper('cartTotal', function (options) {
 
     if (cartId) {
         const result = cartManager.calculateTotalPrice(cartId);
-        return result !== null && result !== undefined ? result : 'N/A';
+        return result !== null && result !== undefined ? result : '0';
     } else {
-        return 'N/A';
+        return '0';
     }
 });
 

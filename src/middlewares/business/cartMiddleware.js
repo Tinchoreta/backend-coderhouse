@@ -29,41 +29,37 @@ const cartMiddleware = async (req, res, next) => {
         const dataBaseProductAdapter = await getDatabaseProductAdapter();
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
         const userEmail = req.query?.email;
-
+        let cartToRender;
+        
         // Validar que el correo electrónico no sea undefined, nulo y cumpla con el formato
-        if (!userEmail || !validateEmail(userEmail)) {
-            return next(new CustomError({
-                name: EnumeratedErrors.INVALID_EMAIL,
-                message: 'Correo electrónico no válido o faltante'
-            }));
+        if (userEmail && validateEmail(userEmail)) {
+            cartToRender = await dataBaseCartAdapter.getCartByUserEmail(userEmail);
+
+            // Si el carrito no existe, crea uno vacío y asigna un ID.
+            if (!cartToRender) {
+                const addedCartId = await dataBaseCartAdapter.createCart();
+                cartToRender = await dataBaseCartAdapter.getCartById(addedCartId);
+            }
+
+            const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
+            const productManager = new ProductManager(productsList.docs);
+
+            const cartManager = CartManager.getInstance([cartToRender], productManager);
+
+            req.cartManager = cartManager;
+        } else {
+            // El correo electrónico es nulo o no válido, no realizamos ninguna acción.
         }
-
-        const cartToRender = await dataBaseCartAdapter.getCartByUserEmail(userEmail);
-
-        // Si el carrito no existe, crea uno vacío y asigna un ID.
-        if (!cartToRender) {
-            const addedCartId = await dataBaseCartAdapter.createCart();
-            cartToRender = await dataBaseCartAdapter.getCartById(addedCartId);
-        }
-
-        const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
-        const productManager = new ProductManager(productsList.docs);
-
-        const cartManager = CartManager.getInstance([cartToRender], productManager);
-
-        req.cartManager = cartManager;
 
         next();
     } catch (error) {
         console.error(error);
-        next(new CustomError({
-            name: EnumeratedErrors.DATABASE_ERROR,
-            cause: error.message
-        }));
+        return res.status(500).json({
+            success: false,
+            error: 'Internal Server Error'
+        });
     }
 }
-
-
 
 async function checkProductExistenceInCart(req, res, next) {
     const cartId = req.params.cartId;
