@@ -141,7 +141,7 @@ async function handleAddToCartClick(event) {
             const cart = cartManagerDataParsed.cartManager.cartList[0];
             const productId = event.target.getAttribute('data-product-id');
             const quantity = 1;
-            addProductToCart(cart._id, productId, quantity);
+            addProductToCart(cart?._id, productId, quantity);
         } else {
             console.error('No se encontró ningún carrito en cartList.');
         }

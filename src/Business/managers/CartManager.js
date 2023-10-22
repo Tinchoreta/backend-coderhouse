@@ -36,7 +36,7 @@ class CartManager {
     getCartById(cartIdToGet) {
         const targetCartId = cartIdToGet;
         for (const cart of this.cartList) {
-            const currentCartId = cart.id;
+            const currentCartId = cart?.id;
             // console.log(`Checking cart with id ${currentCartId}`);
             if (currentCartId === targetCartId) {
                 // console.log(`Found cart with id ${currentCartId}`);
