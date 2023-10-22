@@ -2,6 +2,7 @@ import CustomError from "../services/errors/CustomError.js";
 import Ticket from "../models/ticket.model.js";
 import EnumeratedErrors from "../services/errors/EnumeratedErrors.js";
 import HTTP_STATUS_CODES from "../utils/httpStatusCodes.js";
+import mongoose from "mongoose";
 
 class CartManagerController {
     constructor(cartManagerAdapter, productManagerAdapter) {
@@ -202,14 +203,16 @@ class CartManagerController {
                 return this.#sendError(res, HTTP_STATUS_CODES.HTTP_NOT_FOUND, 'Product not found');
             }
 
-            const itemInCart = cart.products.find((item) => item.productId === productId);
+            const productObjectId = new mongoose.Types.ObjectId(productId);
+            const itemInCart = cart.products.find((item) => item.productId.equals(productObjectId));
+
             if (itemInCart) {
                 if (unitsToRemove >= itemInCart.quantity) {
                     unitsToRemove = itemInCart.quantity;
                 }
             }
 
-            const cartItemIndex = cart.products.findIndex((item) => item.productId === productId);
+            const cartItemIndex = cart.products.findIndex((item) => item.productId.equals(productObjectId));
             if (cartItemIndex !== -1) {
                 cart.products[cartItemIndex].quantity -= unitsToRemove;
                 if (cart.products[cartItemIndex].quantity === 0) {

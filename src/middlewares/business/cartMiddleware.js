@@ -51,7 +51,10 @@ async function checkProductExistenceInCart(req, res, next) {
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
         const productIds = await dataBaseCartAdapter.getProductsIds(cartId);
 
-        if (!productIds.includes(productId)) {
+        // Verifica si algún objeto en el array tiene un campo con el mismo valor que productId
+        const exists = productIds.some((product) => product.toLocaleString() === productId);
+
+        if (!exists) {
             throw new CustomError({
                 name: EnumeratedErrors.VALIDATION_ERROR,
                 message: "Product does not exist in cart"
@@ -66,6 +69,7 @@ async function checkProductExistenceInCart(req, res, next) {
         }));
     }
 }
+
 
 
 const loadCart = async (req, res, next) => {
