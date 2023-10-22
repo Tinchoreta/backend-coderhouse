@@ -9,8 +9,6 @@ class CartViewController {
 
     async renderIndex(req, res) {
 
-        //TODO: Change hardcoded values on cart 1 and name to show on index page
-
         try {
             const cartManager = req.cartManager;
             let name = "New User"

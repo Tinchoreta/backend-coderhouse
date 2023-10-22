@@ -6,9 +6,16 @@ const cartCheckoutRouter = Router();
 
 cartCheckoutRouter.get("/", cartMiddleware, async (req, res, next) => {
     try {
-        //TODO: Change this hard-coded cartID 
+        
+        const cartId = req.cartManager?.carts[0]?._id; 
+
         const cartViewController = new CartViewController();
-        cartViewController.renderCartCheckout(req, res, '64765d546145585e447a0437');
+
+        if (!cartId) {
+            return res.status(500).send('Cart ID not found'); 
+        }
+
+        cartViewController.renderCartCheckout(req, res, cartId);
     } catch (error) {
         next(error);
     }

@@ -3,7 +3,6 @@ import DataBaseCartManagerAdapter from "../../src/Business/adapters/DataBaseCart
 import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
 import CartManagerController from "../../src/controllers/CartManagerController.js";
 import { cartMiddleware } from '../middlewares/business/cartMiddleware.js';
-// import asyncHelper from 'handlebars-async';
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
     process.env.MONGO_DB_URI
@@ -17,33 +16,30 @@ const cartController = new CartManagerController(
     dataBaseProductAdapter
 );
 
-
 // Helper para obtener el número de items en el carrito
 Handlebars.registerHelper('cartItemCount', function (options) {
     const cartManager = options.data.root.cartManager;
+    const cartId = cartManager?.carts?.[0]?._id;
 
-    // console.log('cartItemCount helper:', cartManager); // Agregar este console.log
-    //TODO:  Change the cart id 64765d546145585e447a0437 hardcoded
-    let count = cartManager?.getCartTotalItemsQuantity('64765d546145585e447a0437');
-
-    // console.log(count);
-
-    return count;
+    if (cartId) {
+        const count = cartManager.getCartTotalItemsQuantity(cartId);
+        return count !== null && count !== undefined ? count : 'N/A';
+    } else {
+        return 'N/A';
+    }
 });
 
 // Helper para obtener el precio total del carrito
 Handlebars.registerHelper('cartTotal', function (options) {
     const cartManager = options.data.root.cartManager;
-    // const cartManager = options.data.root.cartManager;
+    const cartId = cartManager?.carts?.[0]?._id;
 
-    // console.log('cartTotal helper:', cartManager); // Agregar este console.log
-
-    let result = cartManager?.calculateTotalPrice('64765d546145585e447a0437');
-    // let result = cartManager?.calculateTotalPrice('64765d546145585e447a0437');
-
-    // console.log(result);
-
-    return result;
+    if (cartId) {
+        const result = cartManager.calculateTotalPrice(cartId);
+        return result !== null && result !== undefined ? result : 'N/A';
+    } else {
+        return 'N/A';
+    }
 });
 
 // Helper para formatear un precio en formato moneda
@@ -53,18 +49,21 @@ Handlebars.registerHelper('formatPrice', function (price) {
 
 Handlebars.registerHelper('cartProducts', function (options) {
     const cartManager = options.data.root.cartManager;
+    const cartId = cartManager?.carts?.[0]?._id;
 
-    // Obtener el array de productos del carrito
-    let products = cartManager.getProducts('64765d546145585e447a0437');
+    if (cartId) {
+        let products = cartManager.getProducts(cartId);
 
-    // Renderizar cada objeto producto en el array
-    let renderedProducts = '';
-    for (let i = 0; i < products.length; i++) {
-        // Ejecutar el bloque de código dentro de {{#each}} para cada producto
-        renderedProducts += options.fn(products[i]);
+        // Renderizar cada objeto producto en el array
+        let renderedProducts = '';
+        for (let i = 0; i < products.length; i++) {
+            // Ejecutar el bloque de código dentro de {{#each}} para cada producto
+            renderedProducts += options.fn(products[i]);
+        }
+        return renderedProducts;
+    } else {
+        return 'No hay productos disponibles';
     }
-
-    return renderedProducts;
 });
 
 Handlebars.registerHelper('substring', function (string, start, end) {
@@ -75,13 +74,22 @@ Handlebars.registerHelper('calculateTotal', function (price, quantity) {
     return String(price * quantity);
 });
 
-
 // calcTotalWithDiscTax
 
 Handlebars.registerHelper('calcTotalWithDiscTax', function (options) {
     const cartManager = options.data.root.cartManager;
-    const total = cartManager.calculateTotalPrice('64765d546145585e447a0437');
-    return total - 50 + 31;
+    const cartId = cartManager?.carts?.[0]?._id;
+
+    if (cartId) {
+        const total = cartManager.calculateTotalPrice(cartId);
+        if (total !== null && total !== undefined) {
+            return total - 50 + 31;
+        } else {
+            return 'N/A';
+        }
+    } else {
+        return 'N/A';
+    }
 });
 
 export default Handlebars;

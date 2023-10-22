@@ -18,14 +18,27 @@ async function getDatabaseProductAdapter() {
     return DataBaseProductAdapter.getInstance(mongoDBURI);
 }
 
+const validateEmail = (email) => {
+    // Expresión regular para validar un correo electrónico
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
+};
+
 const cartMiddleware = async (req, res, next) => {
     try {
         const dataBaseProductAdapter = await getDatabaseProductAdapter();
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
-        const userId = req.query?.email; 
+        const userEmail = req.query?.email;
 
-        
-        const cartToRender = await dataBaseCartAdapter.getCartByUserId(userId);
+        // Validar que el correo electrónico no sea undefined, nulo y cumpla con el formato
+        if (!userEmail || !validateEmail(userEmail)) {
+            return next(new CustomError({
+                name: EnumeratedErrors.INVALID_EMAIL,
+                message: 'Correo electrónico no válido o faltante'
+            }));
+        }
+
+        const cartToRender = await dataBaseCartAdapter.getCartByUserEmail(userEmail);
 
         // Si el carrito no existe, crea uno vacío y asigna un ID.
         if (!cartToRender) {

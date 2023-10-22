@@ -51,8 +51,6 @@ async function validateUserFields(req, res, next) {
         });
     }
 
-    // TODO: Perform additional field validations if needed
-
     next();
 }
 
