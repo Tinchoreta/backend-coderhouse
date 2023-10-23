@@ -218,6 +218,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateUI();
 
+    
+
     sortSelect.addEventListener('change', () => {
         const selectedOption = sortSelect.value;
         updateQueryString('sort', selectedOption);

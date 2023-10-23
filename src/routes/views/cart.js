@@ -4,10 +4,10 @@ import CartViewController from "../../controllers/CartViewController.js";
 
 const productSummaryRouter = Router();
 
-productSummaryRouter.get("/", cartMiddleware, async (req, res, next) => {
+productSummaryRouter.get("/", async (req, res, next) => {
   try {
 
-    const cartId = req.cartManager?.cartList[0]?._id;
+    const cartId = req.cartId;
 
     const cartViewController = new CartViewController();
 

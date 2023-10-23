@@ -145,46 +145,47 @@ async function handleRegisterFormSubmit(event) {
         const registeredUser = await registerUser(formDataArray);
 
         if (registeredUser.success) {
+            const isUserAuthenticated = await authenticateUser(email, password);
+            if (isUserAuthenticated) {
+                //sube la foto de perfil 
+                const profileImageResponse = await uploadProfilePicture(photoFile, registeredUser.user._id)
 
-            //sube la foto de perfil 
-            const profileImageResponse = await uploadProfilePicture(photoFile, registeredUser.user._id)
+                if (profileImageResponse.success) {
+                    console.log("Foto de perfil subida exitosamente: " + photoFile.name);
+                    Swal.fire({
+                        icon: "success",
+                        title: "Éxito",
+                        text: "¡Registro exitoso! ID de usuario: " + registeredUser.user.email,
+                        customClass: {
+                            container: "my-swal-container",
+                            icon: "my-swal-icon",
+                            title: "my-swal-title",
+                            content: "my-swal-content",
+                            actions: "my-swal-actions",
+                            confirmButton: "my-swal-confirm",
+                        }
+                    });
 
-            if (profileImageResponse.success) {
-                console.log("Foto de perfil subida exitosamente: " + photoFile.name);
-                Swal.fire({
-                    icon: "success",
-                    title: "Éxito",
-                    text: "¡Registro exitoso! ID de usuario: " + registeredUser.user.email,
-                    customClass: {
-                        container: "my-swal-container",
-                        icon: "my-swal-icon",
-                        title: "my-swal-title",
-                        content: "my-swal-content",
-                        actions: "my-swal-actions",
-                        confirmButton: "my-swal-confirm",
-                    }
-                });
+                    document.querySelector('#formAddUser').reset();
+                    window.location = '/products?email=' + registeredUser.user.email;
+                } else {
+                    console.error("Error al subir la foto de perfil: " + profileImageResponse.error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Falló el registro. Error: " + registeredUser.error,
+                        customClass: {
+                            container: "my-swal-container",
+                            icon: "my-swal-icon",
+                            title: "my-swal-title",
+                            content: "my-swal-content",
+                            actions: "my-swal-actions",
+                            confirmButton: "my-swal-confirm",
+                        }
+                    });
+                }
 
-                document.querySelector('#formAddUser').reset();
-                window.location = '/products?email=' + registeredUser.user.email;
-            } else {
-                console.error("Error al subir la foto de perfil: " + profileImageResponse.error);
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Falló el registro. Error: " + registeredUser.error,
-                    customClass: {
-                        container: "my-swal-container",
-                        icon: "my-swal-icon",
-                        title: "my-swal-title",
-                        content: "my-swal-content",
-                        actions: "my-swal-actions",
-                        confirmButton: "my-swal-confirm",
-                    }
-                });
             }
-
-
         } else {
             Swal.fire({
                 icon: "error",
@@ -264,4 +265,35 @@ function previewImage(event) {
         output.src = reader.result;
     };
     reader.readAsDataURL(event.target.files[0]);
+}
+
+async function authenticateUser(email, password) {
+    try {
+        const response = await fetch('http://localhost:8080/api/auth/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            console.log("Login Success"); 
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('username', email);
+            return true;
+        } else {
+            alert("Invalid Credentials");
+            return false;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return false;
+    }
 }

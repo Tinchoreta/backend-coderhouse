@@ -24,6 +24,7 @@ import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -65,9 +66,11 @@ console.log(`${__dirname}/docs/**/*.yaml`);
 const swaggerSpecs = swaggerJSDoc({ ...swaggerOptions });
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpecs))
 
-
 //Para hacer una especie de contexto de React para el carrito de compras
 app.use(cartMiddleware);
+
+
+app.use(cookieParser());
 
 //Passport 
 
@@ -91,6 +94,7 @@ app.set('view engine', 'handlebars');
 
 app.use(errorHandlerMiddleware);
 app.use(notFoundHandler);
+
 
 export default app;
 

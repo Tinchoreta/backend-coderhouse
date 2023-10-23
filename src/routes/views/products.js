@@ -4,13 +4,13 @@ import { cartMiddleware } from "../../middlewares/business/cartMiddleware.js";
 
 const productRouter = Router();
 
-productRouter.get("/", cartMiddleware, async (req, res, next) => {
+productRouter.get("/", async (req, res, next) => {
     try {
 
-        const cartId = req.cartManager?.cartList[0]?._id;
+        const cartId = req.cartId;
         const cartIdString = cartId ? cartId.toString() : null;
 
-        console.log(cartIdString); 
+        console.log(cartIdString);
         const productViewController = new ProductViewController();
         productViewController.renderProductsForm(req, res, cartIdString);
     } catch (error) {

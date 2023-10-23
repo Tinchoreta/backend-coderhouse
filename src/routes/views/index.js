@@ -13,7 +13,7 @@ import { cartMiddleware } from "../../middlewares/business/cartMiddleware.js";
 
 const viewRouter = Router();
 
-viewRouter.get('/', cartMiddleware, async (req, res, next) => {
+viewRouter.get('/', async (req, res, next) => {
     try {
         const cartViewController = new CartViewController();
         cartViewController.renderIndex(req, res,);
@@ -23,13 +23,13 @@ viewRouter.get('/', cartMiddleware, async (req, res, next) => {
     }
 })
 
+viewRouter.use('/login', authRouter);
 viewRouter.use('/chat', chatRouter);
 viewRouter.use('/new_product', addProductRouter);
 viewRouter.use("/products", productsRouter);
 viewRouter.use("/product_details", productDetailsRouter);
 viewRouter.use("/product_summary", productSummaryRouter); //Cart
 viewRouter.use("/product_summary/checkout", cartCheckoutRouter); //Cart checkout
-viewRouter.use('/login', authRouter);
 viewRouter.use('/forgot-password', forgetPassRouter); 
 viewRouter.use('/reset-password', resetPassRouter); 
 

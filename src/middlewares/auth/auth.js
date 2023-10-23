@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { config } from "../../config/config.js";
 import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
-
+import ROLES from "../../utils/userRoles.js";
 /*
 { expiresIn: '1d' } //'1d' es equivalente a: 60 * 60 * 24
 '60s': El token expira en 60 segundos.
@@ -60,8 +60,10 @@ function generateToken(req, res, next) {
 }
 
 function checkUserRole(req, res, next) {
-    if (req.user && String(req.user.role).toUpperCase() === 'ADMIN') {
-        // Si el usuario tiene el rol de administrador (role=1), pasa al siguiente middleware
+    const allowedRoles = [ROLES.ADMIN, ROLES.USER, ROLES.USER_PREMIUM];
+
+    if (req.user && allowedRoles.includes(String(req.user.role).toUpperCase())) {
+        // Si el usuario tiene uno de los roles permitidos, pasa al siguiente middleware
         next();
     } else {
         return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({
