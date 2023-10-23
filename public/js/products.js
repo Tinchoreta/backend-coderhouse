@@ -217,7 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateUI();
-
     
 
     sortSelect.addEventListener('change', () => {

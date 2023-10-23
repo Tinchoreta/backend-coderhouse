@@ -39,16 +39,16 @@ const cartMiddleware = async (req, res, next) => {
             cartToRender = req.cartManager.cartList[0];
         }
         
-        const cartCreatedCookie = req.cookies?.cartCreated || 'false';
+        // const cartCreatedCookie = req.cookies?.cartCreated || 'false';
 
-        if (cartCreatedCookie === 'false') {
-            // Si el carrito no existe, crea uno vacío y asigna un ID.
-            if (!cartToRender) {
-                const addedCartId = await dataBaseCartAdapter.createCart();
-                cartToRender = await dataBaseCartAdapter.getCartById(addedCartId);
-                res.cookie('cartCreated', 'true', { maxAge: 3600000 });
-            }
-        }
+        // if (cartCreatedCookie === 'false') {
+        //     // Si el carrito no existe, crea uno vacío y asigna un ID.
+        //     if (!cartToRender) {
+        //         const addedCartId = await dataBaseCartAdapter.createCart();
+        //         cartToRender = await dataBaseCartAdapter.getCartById(addedCartId);
+        //         res.cookie('cartCreated', 'true', { maxAge: 3600000 });
+        //     }
+        // }
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
         const cartManager = CartManager.getInstance([cartToRender], productManager);
@@ -63,7 +63,6 @@ const cartMiddleware = async (req, res, next) => {
         });
     }
 }
-
 
 async function checkProductExistenceInCart(req, res, next) {
     const cartId = req.params.cartId;

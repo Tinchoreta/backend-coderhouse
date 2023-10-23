@@ -50,8 +50,10 @@ class CartManagerController {
 
     async createCart(request, response) {
         try {
-            console.log(request.body);
-            const addedCartId = await this.cartManagerAdapter.createCart();
+            
+            const userEmail = request.user.email;
+
+            const addedCartId = await this.cartManagerAdapter.createCart(userEmail);
             if (!addedCartId) {
                 response.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
                     success: false,
@@ -71,6 +73,90 @@ class CartManagerController {
             });
         }
     }
+
+    async getCartByUserEmail(request, response) {
+        try {
+            const userEmail = request.user.email; 
+
+            if (!userEmail) {
+                return response.status(HTTP_STATUS_CODES.HTTP_BAD_REQUEST).json({
+                    success: false,
+                    error: "Email is required in the request parameters."
+                });
+            }
+
+            // Busca el usuario por correo electrónico
+            const user = await UserModel.findOne({ email: userEmail });
+
+            if (user) {
+                // Si se encuentra el usuario, busca el carrito asociado por userId
+                const cart = await this.cartManagerAdapter.getCartByUserEmail(userEmail);
+
+                if (cart) {
+                    return response.status(HTTP_STATUS_CODES.HTTP_OK).json({
+                        success: true,
+                        cart: cart
+                    });
+                } else {
+                    return response.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).json({
+                        success: false,
+                        error: "Cart not found for the given email."
+                    });
+                }
+            } else {
+                return response.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).json({
+                    success: false,
+                    error: "User not found for the given email."
+                });
+            }
+        } catch (error) {
+            console.error(`Error al obtener el carrito por correo electrónico del usuario: ${error.message}`);
+            return response.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
+                success: false,
+                error: "Internal Server Error"
+            });
+        }
+    }
+
+    async searchOrCreateCart(req, res) {
+        try {
+     
+            const userEmail = req.user.email; 
+
+            // Buscar el carrito asociado al email del usuario
+            const cart = await this.cartManagerAdapter.getCartByUserEmail(userEmail);
+
+            if (cart) {
+                return res.status(HTTP_STATUS_CODES.HTTP_OK).json({
+                    success: true,
+                    cart: cart
+                });
+            } else {
+                // Si no se encuentra el carrito, crear uno nuevo
+                const addedCartId = await this.cartManagerAdapter.createCart(userEmail);
+
+                if (!addedCartId) {
+                    return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
+                        success: false,
+                        error: "Error creating cart."
+                    });
+                }
+
+                return res.status(HTTP_STATUS_CODES.HTTP_CREATED).json({
+                    success: true,
+                    response: addedCartId
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
+                success: false,
+                error: "Internal Server Error"
+            });
+        }
+    }
+
+
 
     async getCartManager(request, response) {
         try {
@@ -282,8 +368,8 @@ class CartManagerController {
 
     async processPurchase(req, res) {
         try {
-            const userId = '649bced97e3bea7f53f0bd3e';
-            const cartId = '64765d546145585e447a0437';
+            const userId = req.username;
+            const cartId = req.cartId;
 
             const cart = await this.cartManagerAdapter.getCartById(cartId);
 

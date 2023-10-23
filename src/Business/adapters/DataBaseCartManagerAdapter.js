@@ -105,6 +105,36 @@ class DataBaseCartManagerAdapter {
         }
     }
 
+    async createCart(userEmail) {
+        try {
+            // Buscar el usuario por correo electrónico
+            const user = await UserModel.findOne({ email: userEmail });
+
+            if (!user) {
+                throw new Error(`No se encontró ningún usuario con el correo electrónico: ${userEmail}`);
+            }
+
+            // Crear un nuevo carrito y asociarlo al usuario
+            const cart = {
+                userId: user._id,
+                products: []
+            };
+
+            const createdCart = await this.persistenceManager.addOne(cart, 'Carts');
+
+            if (!createdCart) {
+                console.error('No se pudo crear el carrito');
+                return null;
+            }
+
+            return createdCart._id;
+        } catch (error) {
+            console.error(`Error al crear un nuevo carrito: ${error.message}`);
+            return null;
+        }
+    }
+
+
     async updateCart(cartToUpdate) {
         try {
             const { _id, products } = cartToUpdate;

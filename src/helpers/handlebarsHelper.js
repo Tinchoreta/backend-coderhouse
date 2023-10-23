@@ -2,7 +2,6 @@ import Handlebars from 'handlebars';
 import DataBaseCartManagerAdapter from "../../src/Business/adapters/DataBaseCartManagerAdapter.js";
 import DataBaseProductAdapter from "../../src/Business/adapters/DataBaseProductAdapter.js";
 import CartManagerController from "../../src/controllers/CartManagerController.js";
-import { cartMiddleware } from '../middlewares/business/cartMiddleware.js';
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
     process.env.MONGO_DB_URI
