@@ -6,8 +6,8 @@ const productSummaryRouter = Router();
 
 productSummaryRouter.get("/", cartMiddleware, async (req, res, next) => {
   try {
-    
-    const cartId = req.cartManager?.carts[0]?._id; 
+
+    const cartId = req.cartManager?.cartList[0]?._id;
 
     const cartViewController = new CartViewController();
 

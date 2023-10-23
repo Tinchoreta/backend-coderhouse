@@ -41,7 +41,7 @@ async function authenticateUser(email, password) {
         if (data.success) {
             sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('username', email);
-            window.location = '/products';
+            window.location = '/products?email='+ email;
             console.log("Login Success");
         } else {
             alert("Invalid Credentials");

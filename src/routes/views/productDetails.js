@@ -7,7 +7,7 @@ const productDetailsRouter = Router();
 productDetailsRouter.get("/:pid", cartMiddleware, async (req, res, next) => {
   try {
     const productId = req.params.pid;
-    const cartId = req.cartManager?.carts[0]?._id; 
+    const cartId = req.cartManager?.cartList[0]?._id;
 
     const productViewController = new ProductViewController();
     productViewController.renderProductDetailsForm(req, res, cartId, productId);

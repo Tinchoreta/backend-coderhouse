@@ -30,27 +30,26 @@ const cartMiddleware = async (req, res, next) => {
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
         const userEmail = req.query?.email;
         let cartToRender;
-        
-        // Validar que el correo electrónico no sea undefined, nulo y cumpla con el formato
+
         if (userEmail && validateEmail(userEmail)) {
+            // Si el correo es válido, busca el carrito por correo electrónico
             cartToRender = await dataBaseCartAdapter.getCartByUserEmail(userEmail);
-
-            // Si el carrito no existe, crea uno vacío y asigna un ID.
-            if (!cartToRender) {
-                const addedCartId = await dataBaseCartAdapter.createCart();
-                cartToRender = await dataBaseCartAdapter.getCartById(addedCartId);
-            }
-
-            const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
-            const productManager = new ProductManager(productsList.docs);
-
-            const cartManager = CartManager.getInstance([cartToRender], productManager);
-
-            req.cartManager = cartManager;
-        } else {
-            // El correo electrónico es nulo o no válido, no realizamos ninguna acción.
+        } else if (req.cartManager?.cartList[0]) {
+            // Si no hay correo válido, utiliza el carrito existente
+            cartToRender = req.cartManager.cartList[0];
         }
 
+        // Si el carrito no existe, crea uno vacío y asigna un ID.
+        if (!cartToRender) {
+            const addedCartId = await dataBaseCartAdapter.createCart();
+            cartToRender = await dataBaseCartAdapter.getCartById(addedCartId);
+        }
+
+        const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
+        const productManager = new ProductManager(productsList.docs);
+        const cartManager = CartManager.getInstance([cartToRender], productManager);
+
+        req.cartManager = cartManager;
         next();
     } catch (error) {
         console.error(error);
@@ -92,7 +91,7 @@ async function checkProductExistenceInCart(req, res, next) {
 
 const loadCart = async (req, res, next) => {
     try {
-        const cartId = req.params.cartId; 
+        const cartId = req.params.cartId;
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
         const cart = await dataBaseCartAdapter.getCartById(cartId);
 

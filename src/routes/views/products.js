@@ -7,9 +7,12 @@ const productRouter = Router();
 productRouter.get("/", cartMiddleware, async (req, res, next) => {
     try {
 
-        const cartId = req.cartManager?.carts[0]?._id; 
+        const cartId = req.cartManager?.cartList[0]?._id;
+        const cartIdString = cartId ? cartId.toString() : null;
+
+        console.log(cartIdString); 
         const productViewController = new ProductViewController();
-        productViewController.renderProductsForm(req, res, cartId);
+        productViewController.renderProductsForm(req, res, cartIdString);
     } catch (error) {
         next(error);
     }
