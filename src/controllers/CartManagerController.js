@@ -340,7 +340,7 @@ class CartManagerController {
 
             const totalPrice = await this.cartManagerAdapter.calculateCartTotalPrice(cartId);
 
-            res.status(HTTP_STATUS_CODES.HTTP_OK).json({ totalPrice });
+            res.status(HTTP_STATUS_CODES.HTTP_OK).json({ totalPrice: totalPrice });
         } catch (error) {
             console.error('Failed to calculate cart total price:', error);
             res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });

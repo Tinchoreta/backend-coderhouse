@@ -89,12 +89,9 @@ function retrieveCartData(cartIdInput) {
 
 async function updateCartDataView(cartId) {
     try {
-        const cartItemCountElement = document.querySelector('#myCart img + span');
-        const cartTotalElement = document.querySelector('#myCart .badge.badge-warning.pull-right');
-
-
-        const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
-        const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
+        
+        const cartItemCountElement = document.querySelector('a#myCart span');
+        const cartTotalElement = document.querySelector('#myCart span:last-child');
 
 
         const [itemCountResponse, totalResponse] = await Promise.all([
@@ -106,8 +103,9 @@ async function updateCartDataView(cartId) {
         const total = totalResponse?.data?.totalPrice ?? 0;
 
         // Actualiza los elementos HTML con los nuevos valores
-        cartItemCountElement.textContent = `[ ${itemCount} ] Items`;
-        cartTotalElement.textContent = `$${total}`;
+        cartTotalElement.innerText = `$${total}`;
+        cartItemCountElement.innerText = `[ ${itemCount} ] Items`;
+        
     } catch (error) {
         console.error('Error al obtener datos del carrito:', error);
     }
