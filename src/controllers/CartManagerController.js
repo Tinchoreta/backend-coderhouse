@@ -336,7 +336,7 @@ class CartManagerController {
 
     async calculateCartTotalPrice(req, res) {
         try {
-            const cartId = req.params.cartId;
+            const cartId = req.params?.cartId;
 
             const totalPrice = await this.cartManagerAdapter.calculateCartTotalPrice(cartId);
 

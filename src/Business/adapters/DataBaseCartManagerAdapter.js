@@ -262,13 +262,32 @@ class DataBaseCartManagerAdapter {
             const result = await this.persistenceManager.aggregate(pipeline);
 
             if (result.length === 0) {
-                throw new Error('Cart not found');
+                return 0;
             }
 
             return result[0].totalPrice;
 
         } catch (error) {
             console.error('Failed to calculate cart total price:', error);
+            throw error;
+        }
+    }
+
+    async getCartTotalItemsQuantity(cartId) {
+        try {
+            
+            const cart = await this.getCartById(cartId);
+
+            if (cart) {
+                // Usa reduce para sumar la cantidad de productos en el carrito
+                const itemCount = cart.products.reduce((acc, product) => acc + product.quantity, 0);
+                return itemCount;
+            } else {
+                // Si el carrito no se encontró, se asume que no tiene elementos
+                return 0;
+            }
+        } catch (error) {
+            console.error(`Error al obtener la cantidad de elementos del carrito: ${error.message}`);
             throw error;
         }
     }

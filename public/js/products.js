@@ -117,7 +117,8 @@ async function addProductToCart(cartId, productId, quantity) {
                 
                 showSuccessMessage('Producto agregado al carrito correctamente.');
                 
-                
+                updateCartDataView(cartId);
+
                 axios.get(`/products?email=${email}`);
 
                 
@@ -152,39 +153,6 @@ function updateUI() {
         logoutLi.style.display = 'none';
     }
 }
-
-async function handleAddProductClick(event) {
-    event.preventDefault();
-    const token = sessionStorage.getItem("token");
-
-    if (token) {
-        const url = "/new_product";
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                const html = xhr.responseText;
-                document.documentElement.innerHTML = html;
-            } else if (xhr.status === 401) {
-                alert("No estás autorizado a ingresar a esta opción.");
-            } else {
-                console.error('Error:', xhr.statusText);
-            }
-        };
-
-        xhr.onerror = function () {
-            console.error('Error:', xhr.statusText);
-        };
-
-        xhr.send();
-    } else {
-        alert("No estás autorizado. Debes iniciar sesión como admin.");
-    }
-}
-
-
 
 
 /***********************************
@@ -229,7 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     retrieveCartData(cartIdInput);
+    const cartId = cartIdInput.value;
 
+    updateCartDataView(cartId);
 
     updateUI();
     
@@ -324,5 +294,63 @@ function retrieveCartData(cartIdInput) {
         } else {
             console.log("No se pudo obtener el email del usuario.");
         }
+    }
+}
+
+async function updateCartDataView(cartId) {
+    try {
+        const cartTotalElement = document.querySelector('.btn.btn-mini');
+        const cartItemCountElement = document.querySelector('.icon-shopping-cart.icon-white + [data-bind]');
+
+        const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
+        const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
+
+
+        const [itemCountResponse, totalResponse] = await Promise.all([
+            axios.get(cartItemCountURL),
+            axios.get(cartTotalURL)
+        ]);
+
+        const itemCount = itemCountResponse?.data?.count;
+        const total = totalResponse?.data?.total;
+
+        // Actualiza los elementos HTML con los nuevos valores
+        cartItemCountElement.textContent = `[ ${itemCount} ] Items in your cart`;
+        cartTotalElement.textContent = `${total}`;
+    } catch (error) {
+        console.error('Error al obtener datos del carrito:', error);
+    }
+}
+
+
+
+async function handleAddProductClick(event) {
+    event.preventDefault();
+    const token = sessionStorage.getItem("token");
+
+    if (token) {
+        const url = "/new_product";
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const html = xhr.responseText;
+                document.documentElement.innerHTML = html;
+            } else if (xhr.status === 401) {
+                alert("No estás autorizado a ingresar a esta opción.");
+            } else {
+                console.error('Error:', xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        xhr.send();
+    } else {
+        alert("No estás autorizado. Debes iniciar sesión como admin.");
     }
 }
