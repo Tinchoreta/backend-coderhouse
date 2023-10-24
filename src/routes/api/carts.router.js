@@ -37,7 +37,7 @@ router.get('/:cartId/cartItemCount', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMI
 
         const itemCount = await cartController.getCartTotalItemsQuantity(req, res); // 
         res.json({ count: itemCount });
-    } catch (error) {
+} catch (error) {
         res.status(500).json({ error: 'Error al obtener la cantidad de elementos del carrito.' });
     }
 });
