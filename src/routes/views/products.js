@@ -20,26 +20,67 @@ const cartController = new CartManagerController(
 
 const productRouter = Router();
 
+// async function verifyToken(token) {
+//     try {
+//         return await jwt.verify(token, config.privateKeyJwt);
+//     } catch (error) {
+//         throw error;
+//     }
+// }
+
+// productRouter.use(async (req, res, next) => {
+//     const auth = req.headers?.authorization;
+//     if (auth) {
+//         const token = auth.split(' ')[1];
+//         try {
+//             const credentials = await verifyToken(token);
+//             req.user = {
+//                 email: credentials.email,
+//                 role: credentials.role
+//             };
+//         } catch (error) {
+//             req.user = null;
+//         }
+//     } else {
+//         req.user = null;
+//     }
+//     next();
+// });
+
+
 productRouter.get("/", async (req, res, next) => {
     try {
-        const cartId = await cartController.searchOrCreateCart(req, res);
+        const productViewController = new ProductViewController();
+        let userEmail = req.user ? req.user.email : null;
 
-        if (cartId !== null && cartId !== undefined) {
-            req.cartId = cartId;
+        // Si req.query.email está presente, lo usa en lugar de req.user.email
+        if (req.query?.email) {
+            userEmail = req.query.email;
+        }
 
-            const productViewController = new ProductViewController();
-            productViewController.renderProductsForm(req, res, cartId);
+        if (userEmail) {
+            const cart = await cartController.searchOrCreateCart(userEmail);
+
+            if (cart) {
+                const cartId = cart._id.toString();
+                req.cartId = cartId;
+                
+                productViewController.renderProductsForm(req, res, cartId);
+            } else {
+                return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
+                    success: false,
+                    error: "Error creating or retrieving cart."
+                });
+            }
+
         } else {
-            
-            return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
-                success: false,
-                error: "Error creating or retrieving cart."
-            });
+            productViewController.renderProductsForm(req, res, "");
         }
     } catch (error) {
         next(error);
     }
 });
+
 
 
 export default productRouter;

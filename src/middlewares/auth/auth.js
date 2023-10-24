@@ -18,7 +18,7 @@ import ROLES from "../../utils/userRoles.js";
 
 function auth(req, res, next) {
     const auth = req.headers?.authorization;
-    console.log(auth);
+    // console.log(auth);
     if (!auth) {
         return res.status(HTTP_STATUS_CODES.HTTP_UNAUTHORIZED).json({
             success: false,

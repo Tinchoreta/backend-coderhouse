@@ -50,7 +50,7 @@ class CartManagerController {
 
     async createCart(request, response) {
         try {
-            
+
             const userEmail = request.user.email;
 
             const addedCartId = await this.cartManagerAdapter.createCart(userEmail);
@@ -76,7 +76,7 @@ class CartManagerController {
 
     async getCartByUserEmail(request, response) {
         try {
-            const userEmail = request.user.email; 
+            const userEmail = request.user.email;
 
             if (!userEmail) {
                 return response.status(HTTP_STATUS_CODES.HTTP_BAD_REQUEST).json({
@@ -118,44 +118,24 @@ class CartManagerController {
         }
     }
 
-    async searchOrCreateCart(req, res) {
-        try {
-     
-            const userEmail = req.user.email; 
+    async searchOrCreateCart(userEmail) {
+        // Buscar el carrito asociado al email del usuario
+        const cart = await this.cartManagerAdapter.getCartByUserEmail(userEmail);
 
-            // Buscar el carrito asociado al email del usuario
-            const cart = await this.cartManagerAdapter.getCartByUserEmail(userEmail);
+        if (cart) {
+            return cart;
+        } else {
+            // Si no se encuentra el carrito, crear uno nuevo
+            const addedCartId = await this.cartManagerAdapter.createCart(userEmail);
 
-            if (cart) {
-                return res.status(HTTP_STATUS_CODES.HTTP_OK).json({
-                    success: true,
-                    cart: cart
-                });
-            } else {
-                // Si no se encuentra el carrito, crear uno nuevo
-                const addedCartId = await this.cartManagerAdapter.createCart(userEmail);
-
-                if (!addedCartId) {
-                    return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
-                        success: false,
-                        error: "Error creating cart."
-                    });
-                }
-
-                return res.status(HTTP_STATUS_CODES.HTTP_CREATED).json({
-                    success: true,
-                    response: addedCartId
-                });
+            if (!addedCartId) {
+                throw new Error("Error creating cart.");
             }
-        } catch (error) {
-            console.error(error);
-            return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({
-                success: false,
-                error: "Internal Server Error"
-            });
+
+            // Obtener y devolver el carrito recién creado
+            return this.cartManagerAdapter.getCartById(addedCartId);
         }
     }
-
 
 
     async getCartManager(request, response) {

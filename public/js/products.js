@@ -18,7 +18,7 @@ async function loginUser(emailId, passwordId) {
                 if (data.success) {
                     sessionStorage.setItem('token', data.token);
                     sessionStorage.setItem('username', email);
-                    window.location = '/products';
+                    window.location = '/products?email='+email;
                     console.log("Login Success");
                 } else {
                     alert("Invalid Credentials");
@@ -60,6 +60,7 @@ logoutBtn.addEventListener('click', async (event) => {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 sessionStorage.removeItem('username');
+                sessionStorage.removeItem('token');
                 updateUI();
             } else {
                 console.error('Failed to logout');

@@ -29,12 +29,35 @@ async function authenticateUser(email, password) {
         if (data.success) {
             sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('username', email);
-            window.location = '/products';
+            
             console.log("Login Success");
+            
+            window.location = '/products?email=' + email;
         } else {
             alert("Invalid Credentials");
         }
     } catch (error) {
         console.error('Error:', error);
+    }
+}
+
+async function getProductView(email) {
+    const token = sessionStorage.getItem('token');
+    try {
+        // Realiza una solicitud GET a la vista de productos con el token en la cabecera
+        const response = await axios.get('/products?email=' + email, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        // La respuesta contiene la vista de productos o los datos necesarios
+        const productView = await response.data;
+
+        document.body.innerHTML = productView;
+
+    } catch (error) {
+        // Maneja errores
+        console.error('Error al obtener la vista de productos:', error);
     }
 }

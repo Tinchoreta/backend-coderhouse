@@ -98,7 +98,7 @@ class DataBaseCartManagerAdapter {
                 console.error('No se pudo crear el carrito');
                 return null;
             }
-            return createdCart._id;
+            return createdCart;
         } catch (error) {
             console.error(`Error al crear un nuevo carrito: ${error.message}`);
             return null;
@@ -127,7 +127,7 @@ class DataBaseCartManagerAdapter {
                 return null;
             }
 
-            return createdCart._id;
+            return createdCart;
         } catch (error) {
             console.error(`Error al crear un nuevo carrito: ${error.message}`);
             return null;
