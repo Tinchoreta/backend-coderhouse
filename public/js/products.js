@@ -2,43 +2,6 @@ const loginBtnModal = document.getElementById('loginBtnModal');
 const loginBtn = document.getElementById('loginBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
-async function loginUser(emailId, passwordId) {
-    const email = document.getElementById(emailId).value;
-    const password = document.getElementById(passwordId).value;
-
-    try {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:8080/api/auth/signin', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
-
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText);
-                if (data.success) {
-                    sessionStorage.setItem('token', data.token);
-                    sessionStorage.setItem('username', email);
-                    window.location = '/products?email='+email;
-                    console.log("Login Success");
-                } else {
-                    alert("Invalid Credentials");
-                }
-            } else {
-                console.error('Error:', xhr.statusText);
-            }
-        };
-
-        xhr.onerror = function () {
-            console.error('Error:', xhr.statusText);
-        };
-
-        const body = JSON.stringify({ email, password });
-        xhr.send(body);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 loginBtnModal.addEventListener('click', async (event) => {
     event.preventDefault();
     await loginUser('inputEmail', 'inputPassword');
@@ -76,6 +39,44 @@ logoutBtn.addEventListener('click', async (event) => {
         console.error('Error:', error);
     }
 });
+
+
+async function loginUser(emailId, passwordId) {
+    const email = document.getElementById(emailId).value;
+    const password = document.getElementById(passwordId).value;
+
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/api/auth/signin', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                if (data.success) {
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('username', email);
+                    window.location = '/products?email=' + email;
+                    console.log("Login Success");
+                } else {
+                    alert("Invalid Credentials");
+                }
+            } else {
+                console.error('Error:', xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        const body = JSON.stringify({ email, password });
+        xhr.send(body);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 // Función para manejar el evento de agregar al carrito
 async function handleAddToCartClick(event) {
@@ -201,6 +202,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const filterText = document.getElementById('filterText');
     const clearFilterButton = document.getElementById('clearFilterButton');
 
+    const cartIdInput = document.getElementById('cartId');
+    
     // Agregar un controlador de eventos a todos los botones "Add to Cart"
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach((button) => {
@@ -225,7 +228,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+    retrieveCartData(cartIdInput);
+
+
     updateUI();
+    
     
 
     sortSelect.addEventListener('change', () => {
@@ -287,4 +294,35 @@ function showErrorMessage(message) {
         confirmButtonText: 'OK',
         background: '#767e87'
     });
+}
+
+function retrieveCartData(cartIdInput) {
+
+    const cartIdValue = cartIdInput.value;
+
+    if (cartIdValue && cartIdValue.trim().length > 0) {
+        console.log(`El campo cartId tiene el valor: ${cartIdValue}`);
+    } else {
+
+        const email = sessionStorage.getItem('username'); 
+
+        if (email) {
+            axios.get(`api/carts/cartByUserEmail/${email}`)
+                .then((response) => {
+                    const cart = response.data.cart;
+
+                    if (cart) {
+                        console.log(`Carrito asociado encontrado: ${cart._id}`);
+                        cartIdInput.value = cart._id;
+                    } else {
+                        console.log("No se encontró ningún carrito asociado al usuario.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error al obtener el carrito asociado al usuario:", error);
+                });
+        } else {
+            console.log("No se pudo obtener el email del usuario.");
+        }
+    }
 }

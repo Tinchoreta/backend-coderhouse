@@ -3,7 +3,7 @@ import Ticket from "../models/ticket.model.js";
 import EnumeratedErrors from "../services/errors/EnumeratedErrors.js";
 import HTTP_STATUS_CODES from "../utils/httpStatusCodes.js";
 import mongoose from "mongoose";
-
+import User from "../models/user.model.js";
 class CartManagerController {
     constructor(cartManagerAdapter, productManagerAdapter) {
         this.cartManagerAdapter = cartManagerAdapter;
@@ -76,7 +76,14 @@ class CartManagerController {
 
     async getCartByUserEmail(request, response) {
         try {
-            const userEmail = request.user.email;
+            let userEmail;
+
+            if (request.params?.email) {
+                userEmail = request.params.email;
+            } else if (request.user?.email) {
+                userEmail = request.user.email;
+            }
+
 
             if (!userEmail) {
                 return response.status(HTTP_STATUS_CODES.HTTP_BAD_REQUEST).json({
@@ -86,7 +93,7 @@ class CartManagerController {
             }
 
             // Busca el usuario por correo electrónico
-            const user = await UserModel.findOne({ email: userEmail });
+            const user = await User.findOne({ email: userEmail });
 
             if (user) {
                 // Si se encuentra el usuario, busca el carrito asociado por userId

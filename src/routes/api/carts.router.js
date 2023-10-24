@@ -27,10 +27,12 @@ router.post("/", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.PUBLIC], cartMiddleware,
 
 router.get("/cartManager", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], (req, res) => cartController.getCartManager(req, res));
 
+router.get("/cartByUserEmail/:email", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], (req, res) => cartController.getCartByUserEmail(req, res));
+
 
 router.get("/:cartId", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], (req, res) => cartController.getCartById(req, res));
 
-app.get('/:cartId/cartItemCount', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], async (req, res) => {
+router.get('/:cartId/cartItemCount', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], async (req, res) => {
     try {
 
         const itemCount = await cartController.getCartTotalItemsQuantity(req, res); // 
@@ -40,7 +42,7 @@ app.get('/:cartId/cartItemCount', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, 
     }
 });
 
-app.get('/:cartId/cartTotal', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], async (req, res) => {
+router.get('/:cartId/cartTotal', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], async (req, res) => {
     try {
 
         const total = await cartController.calculateTotalPrice(req, res); 
