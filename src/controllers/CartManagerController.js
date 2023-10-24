@@ -340,6 +340,21 @@ class CartManagerController {
         }
     }
 
+    async getCartTotalItemsQuantity(req, res) {
+        try {
+            const cartId = req.params.cartId;
+            const itemCount = await this.cartManagerAdapter.getCartTotalItemsQuantity(cartId); // Asegúrate de tener el cartId
+
+            if (itemCount !== null) {
+                res.status(HTTP_STATUS_CODES.HTTP_OK).json({ count: itemCount });
+            } else {
+                res.status(HTTP_STATUS_CODES.HTTP_NOT_FOUND).json({ error: 'Carrito no encontrado' });
+            }
+        } catch (error) {
+            res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({ error: 'Error al obtener la cantidad de elementos del carrito.' });
+        }
+    }
+
     async deleteCart(request, response) {
         const cartId = request.params.id;
         await this.cartManagerAdapter.deleteCart(cartId);
