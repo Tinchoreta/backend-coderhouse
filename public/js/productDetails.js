@@ -11,11 +11,13 @@ document.getElementById("qtyFrm").addEventListener("submit", function (event) {
     }
 
     retrieveCartData(cartIdInput);
-
-    const productId = productIdInput.value;
-    const quantity = parseInt(quantityInput.value);
     const cartId = cartIdInput.value;
 
+    updateCartDataView(cartId);
+    
+    const productId = productIdInput.value;
+    const quantity = parseInt(quantityInput.value);
+    
 
     if (!productId || isNaN(quantity) || !cartId) {
         console.error("Invalid productId, quantity, or cartId.");
@@ -82,5 +84,32 @@ function retrieveCartData(cartIdInput) {
         } else {
             console.log("No se pudo obtener el email del usuario.");
         }
+    }
+}
+
+async function updateCartDataView(cartId) {
+    try {
+        const cartItemCountElement = document.querySelector('#myCart .badge');
+        const cartTotalElement = document.querySelector('#myCart .badge.badge-warning');
+
+
+        const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
+        const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
+
+
+        const [itemCountResponse, totalResponse] = await Promise.all([
+            axios.get(cartItemCountURL),
+            axios.get(cartTotalURL)
+        ]);
+
+        const itemCount = itemCountResponse?.data?.count ?? 0;
+        const total = totalResponse?.data?.total ?? 0;
+
+
+        // Actualiza los elementos HTML con los nuevos valores
+        cartItemCountElement.textContent = `[ ${itemCount} ] Items in your cart`;
+        cartTotalElement.textContent = `${total}`;
+    } catch (error) {
+        console.error('Error al obtener datos del carrito:', error);
     }
 }

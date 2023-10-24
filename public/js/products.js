@@ -299,8 +299,9 @@ function retrieveCartData(cartIdInput) {
 
 async function updateCartDataView(cartId) {
     try {
-        const cartTotalElement = document.querySelector('.btn.btn-mini');
-        const cartItemCountElement = document.querySelector('.btn.btn-mini.btn-primary > [class="icon-shopping-cart icon-white"]');
+        const cartItemCountElement = document.querySelector('#myCart .badge');
+        const cartTotalElement = document.querySelector('#myCart .badge.badge-warning');
+
 
         const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
         const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
@@ -311,8 +312,8 @@ async function updateCartDataView(cartId) {
             axios.get(cartTotalURL)
         ]);
 
-        const itemCount = itemCountResponse?.data?.count;
-        const total = totalResponse?.data?.total;
+        const itemCount = itemCountResponse?.data?.count ?? 0;
+        const total = totalResponse?.data?.total ?? 0;
 
         // Actualiza los elementos HTML con los nuevos valores
         cartItemCountElement.textContent = `[ ${itemCount} ] Items in your cart`;
