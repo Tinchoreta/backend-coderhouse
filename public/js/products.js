@@ -299,8 +299,8 @@ function retrieveCartData(cartIdInput) {
 
 async function updateCartDataView(cartId) {
     try {
-        const cartItemCountElement = document.querySelector('#myCart .badge');
-        const cartTotalElement = document.querySelector('#myCart .badge.badge-warning');
+        const cartItemCountElement = document.querySelector('#myCart img + span');
+        const cartTotalElement = document.querySelector('#myCart .badge.badge-warning.pull-right');
 
 
         const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
@@ -313,11 +313,11 @@ async function updateCartDataView(cartId) {
         ]);
 
         const itemCount = itemCountResponse?.data?.count ?? 0;
-        const total = totalResponse?.data?.total ?? 0;
+        const total = totalResponse?.data?.totalPrice ?? 0;
 
         // Actualiza los elementos HTML con los nuevos valores
-        cartItemCountElement.textContent = `[ ${itemCount} ] Items in your cart`;
-        cartTotalElement.textContent = `${total}`;
+        cartItemCountElement.textContent = `[ ${itemCount} ] Items`;
+        cartTotalElement.textContent = `$${total}`;
     } catch (error) {
         console.error('Error al obtener datos del carrito:', error);
     }
