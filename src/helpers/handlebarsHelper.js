@@ -17,7 +17,7 @@ const cartController = new CartManagerController(
 
 // Helper para obtener el número de items en el carrito
 Handlebars.registerHelper('cartItemCount', function (options) {
-    
+    const cartManager = options.data.root.cartManager;
     const cartId = options.data.root.cartId;
 
     if (cartId) {
@@ -30,7 +30,7 @@ Handlebars.registerHelper('cartItemCount', function (options) {
 
 // Helper para obtener el precio total del carrito
 Handlebars.registerHelper('cartTotal', function (options) {
-    
+    const cartManager = options.data.root.cartManager;
     const cartId = options.data.root.cartId;
 
     if (cartId) {
@@ -47,7 +47,7 @@ Handlebars.registerHelper('formatPrice', function (price) {
 });
 
 Handlebars.registerHelper('cartProducts', function (options) {
-    
+    const cartManager = options.data.root.cartManager;
     const cartId = options.data.root.cartId;
 
     if (cartId) {

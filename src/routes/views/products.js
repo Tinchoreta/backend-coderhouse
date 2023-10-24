@@ -4,6 +4,7 @@ import CartManagerController from "../../controllers/CartManagerController.js";
 import DataBaseCartManagerAdapter from "../../Business/adapters/DataBaseCartManagerAdapter.js";
 import DataBaseProductAdapter from "../../Business/adapters/DataBaseProductAdapter.js";
 import HTTP_STATUS_CODES from "../../utils/httpStatusCodes.js";
+import { cartMiddleware } from "../../middlewares/business/cartMiddleware.js";
 
 const dataBaseProductAdapter = DataBaseProductAdapter.getInstance(
     process.env.MONGO_DB_URI
@@ -20,35 +21,8 @@ const cartController = new CartManagerController(
 
 const productRouter = Router();
 
-// async function verifyToken(token) {
-//     try {
-//         return await jwt.verify(token, config.privateKeyJwt);
-//     } catch (error) {
-//         throw error;
-//     }
-// }
 
-// productRouter.use(async (req, res, next) => {
-//     const auth = req.headers?.authorization;
-//     if (auth) {
-//         const token = auth.split(' ')[1];
-//         try {
-//             const credentials = await verifyToken(token);
-//             req.user = {
-//                 email: credentials.email,
-//                 role: credentials.role
-//             };
-//         } catch (error) {
-//             req.user = null;
-//         }
-//     } else {
-//         req.user = null;
-//     }
-//     next();
-// });
-
-
-productRouter.get("/", async (req, res, next) => {
+productRouter.get("/",cartMiddleware, async (req, res, next) => {
     try {
         const productViewController = new ProductViewController();
         let userEmail = req.user ? req.user.email : null;

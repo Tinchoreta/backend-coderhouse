@@ -28,9 +28,15 @@ const cartMiddleware = async (req, res, next) => {
     try {
         const dataBaseProductAdapter = await getDatabaseProductAdapter();
         const dataBaseCartAdapter = await getDatabaseCartAdapter();
-        const userEmail = req.query?.email;
         let cartToRender;
 
+        let userEmail = req.user ? req.user.email : null;
+
+        // Si req.query.email está presente, lo usa en lugar de req.user.email
+        if (req.query?.email) {
+            userEmail = req.query.email;
+        }
+        
         if (userEmail && validateEmail(userEmail)) {
             // Si el correo es válido, busca el carrito por correo electrónico
             cartToRender = await dataBaseCartAdapter.getCartByUserEmail(userEmail);
@@ -38,23 +44,14 @@ const cartMiddleware = async (req, res, next) => {
             // Si no hay correo válido, utiliza el carrito existente
             cartToRender = req.cartManager.cartList[0];
         }
-        
-        // const cartCreatedCookie = req.cookies?.cartCreated || 'false';
 
-        // if (cartCreatedCookie === 'false') {
-        //     // Si el carrito no existe, crea uno vacío y asigna un ID.
-        //     if (!cartToRender) {
-        //         const addedCartId = await dataBaseCartAdapter.createCart();
-        //         cartToRender = await dataBaseCartAdapter.getCartById(addedCartId);
-        //         res.cookie('cartCreated', 'true', { maxAge: 3600000 });
-        //     }
-        // }
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
         const cartManager = CartManager.getInstance([cartToRender], productManager);
 
         req.cartManager = cartManager;
         next();
+        
     } catch (error) {
         console.error(error);
         return res.status(500).json({
