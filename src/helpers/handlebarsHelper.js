@@ -17,8 +17,8 @@ const cartController = new CartManagerController(
 
 // Helper para obtener el número de items en el carrito
 Handlebars.registerHelper('cartItemCount', function (options) {
-    const cartManager = options.data.root.cartManager;
-    const cartId = cartManager?.carts?.[0]?._id;
+    
+    const cartId = options.data.root.cartId;
 
     if (cartId) {
         const count = cartManager.getCartTotalItemsQuantity(cartId);
@@ -30,8 +30,8 @@ Handlebars.registerHelper('cartItemCount', function (options) {
 
 // Helper para obtener el precio total del carrito
 Handlebars.registerHelper('cartTotal', function (options) {
-    const cartManager = options.data.root.cartManager;
-    const cartId = cartManager?.carts?.[0]?._id;
+    
+    const cartId = options.data.root.cartId;
 
     if (cartId) {
         const result = cartManager.calculateTotalPrice(cartId);
@@ -47,8 +47,8 @@ Handlebars.registerHelper('formatPrice', function (price) {
 });
 
 Handlebars.registerHelper('cartProducts', function (options) {
-    const cartManager = options.data.root.cartManager;
-    const cartId = cartManager?.carts?.[0]?._id;
+    
+    const cartId = options.data.root.cartId;
 
     if (cartId) {
         let products = cartManager.getProducts(cartId);
@@ -77,7 +77,7 @@ Handlebars.registerHelper('calculateTotal', function (price, quantity) {
 
 Handlebars.registerHelper('calcTotalWithDiscTax', function (options) {
     const cartManager = options.data.root.cartManager;
-    const cartId = cartManager?.carts?.[0]?._id;
+    const cartId = options.data.root.cartId;
 
     if (cartId) {
         const total = cartManager.calculateTotalPrice(cartId);
