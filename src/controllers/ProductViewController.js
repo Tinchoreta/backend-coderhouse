@@ -42,7 +42,7 @@ class ProductViewController {
     return url;
   }
   
-  async renderProductsForm(req, res) {
+  async renderProductsForm(req, res, cartId) {
     try {
       const { limit, page, sort, title } = req.query;
       const baseURL = 'http://localhost:8080/api/products';
@@ -63,6 +63,7 @@ class ProductViewController {
         script: "products.js",
         css: "products.css",
         products: products,
+        cartId: cartId,
         cartManager: cartManager,
         totalPages: totalPages,
         prevLink: prevLink,
