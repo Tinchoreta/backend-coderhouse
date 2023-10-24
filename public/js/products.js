@@ -300,7 +300,7 @@ function retrieveCartData(cartIdInput) {
 async function updateCartDataView(cartId) {
     try {
         const cartTotalElement = document.querySelector('.btn.btn-mini');
-        const cartItemCountElement = document.querySelector('.icon-shopping-cart.icon-white + [data-bind]');
+        const cartItemCountElement = document.querySelector('.btn.btn-mini.btn-primary > [class="icon-shopping-cart icon-white"]');
 
         const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
         const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
