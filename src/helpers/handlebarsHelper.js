@@ -16,30 +16,29 @@ const cartController = new CartManagerController(
 );
 
 // Helper para obtener el número de items en el carrito
-Handlebars.registerHelper('cartItemCount', async function (options) {
+Handlebars.registerHelper('cartItemCount', function (options) {
+    const cartManager = options.data.root.cartManager;
     const cartId = options.data.root.cartId;
 
     if (cartId) {
-        const cart = await dataBaseCartAdapter.getCartById(cartId);
-        if (cart) {
-            const count = cart.products?.length;
-            return count;
-        }
+        const count = cartManager.getCartTotalItemsQuantity(cartId);
+        return count !== null && count !== undefined ? count : '0';
+    } else {
+        return '0';
     }
-
-    return '0';
 });
 
 // Helper para obtener el precio total del carrito
-Handlebars.registerHelper('cartTotal', async function (options) {
+Handlebars.registerHelper('cartTotal', function (options) {
+    const cartManager = options.data.root.cartManager;
     const cartId = options.data.root.cartId;
 
     if (cartId) {
-        const total = await dataBaseCartAdapter.calculateCartTotalPrice(cartId);
-        return total !== null ? total : '0';
+        const result = cartManager.calculateTotalPrice(cartId);
+        return result !== null && result !== undefined ? result : '0';
+    } else {
+        return '0';
     }
-
-    return '0';
 });
 
 // Helper para formatear un precio en formato moneda
@@ -47,21 +46,23 @@ Handlebars.registerHelper('formatPrice', function (price) {
     return `$${price.toFixed(2)}`;
 });
 
-Handlebars.registerHelper('cartProducts', async function (options) {
+Handlebars.registerHelper('cartProducts', function (options) {
+    const cartManager = options.data.root.cartManager;
     const cartId = options.data.root.cartId;
 
     if (cartId) {
-        const products = await dataBaseCartAdapter.getProducts(cartId);
-        if (products.length > 0) {
-            let renderedProducts = '';
-            for (let i = 0; i < products.length; i++) {
-                renderedProducts += options.fn(products[i]);
-            }
-            return renderedProducts;
-        }
-    }
+        let products = cartManager.getProducts(cartId);
 
-    return 'No hay productos disponibles';
+        // Renderizar cada objeto producto en el array
+        let renderedProducts = '';
+        for (let i = 0; i < products.length; i++) {
+            // Ejecutar el bloque de código dentro de {{#each}} para cada producto
+            renderedProducts += options.fn(products[i]);
+        }
+        return renderedProducts;
+    } else {
+        return 'No hay productos disponibles';
+    }
 });
 
 Handlebars.registerHelper('substring', function (string, start, end) {
@@ -72,20 +73,14 @@ Handlebars.registerHelper('calculateTotal', function (price, quantity) {
     return String(price * quantity);
 });
 
-Handlebars.registerHelper('productQuantity', async function (productId, cartId) {
-    if (cartId && productId) {
-        const quantity = await dataBaseCartAdapter.getProductQuantity(cartId, productId);
-        return quantity;
-    }
-    return '0';
-});
+// calcTotalWithDiscTax
 
-
-Handlebars.registerHelper('calcTotalWithDiscTax', async function (options) {
+Handlebars.registerHelper('calcTotalWithDiscTax', function (options) {
+    const cartManager = options.data.root.cartManager;
     const cartId = options.data.root.cartId;
 
     if (cartId) {
-        const total = await dataBaseCartAdapter.calculateCartTotalPrice(cartId);
+        const total = cartManager.calculateTotalPrice(cartId);
         if (total !== null && total !== undefined) {
             return total - 50 + 31;
         } else {
