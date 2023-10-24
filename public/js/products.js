@@ -100,6 +100,7 @@ async function handleAddToCartClick(event) {
 async function addProductToCart(cartId, productId, quantity) {
     try {
         const token = sessionStorage.getItem('token');
+        const email = sessionStorage.getItem('username');
         if (!token) {
             showErrorMessage('Debes iniciar sesión para agregar productos al carrito.');
             return;
@@ -112,7 +113,13 @@ async function addProductToCart(cartId, productId, quantity) {
 
         xhr.onload = function () {
             if (xhr.status === 200) {
+                
                 showSuccessMessage('Producto agregado al carrito correctamente.');
+                
+                
+                axios.get(`/products?email=${email}`);
+
+                
             } else {
                 showErrorMessage('Error al agregar el producto al carrito.');
             }
@@ -175,6 +182,7 @@ async function handleAddProductClick(event) {
         alert("No estás autorizado. Debes iniciar sesión como admin.");
     }
 }
+
 
 
 
