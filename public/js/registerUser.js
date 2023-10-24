@@ -168,7 +168,7 @@ async function handleRegisterFormSubmit(event) {
 
                     document.querySelector('#formAddUser').reset();
                     
-                    window.location = "/products?email=" + registeredUser.user.email;
+                    window.location.href = "/products?email=" + registeredUser.user.email;
 
                 } else {
                     console.error("Error al subir la foto de perfil: " + profileImageResponse.error);

@@ -31,8 +31,8 @@ async function authenticateUser(email, password) {
             sessionStorage.setItem('username', email);
             
             console.log("Login Success");
-            
-            window.location = '/products?email=' + email;
+
+            window.location.href = '/products?email=' + email;
         } else {
             alert("Invalid Credentials");
         }
