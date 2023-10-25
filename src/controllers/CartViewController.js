@@ -30,6 +30,16 @@ class CartViewController {
     }
 
     async renderCart(req, res, cartId) {
+        if (cartId === undefined || cartId === null || cartId === "") {
+            
+            return res.render("cart", {
+                title: "Product Summary",
+                script: "productSummary.js",
+                css: "productSummary.css",
+                cartManager: req.cartManager
+            });
+        }
+        
         try {
             const response = await axios.get(`http://localhost:8080/api/carts/${cartId}`);
             return res.render("cart", {
@@ -48,6 +58,16 @@ class CartViewController {
     }
 
     async renderCartCheckout(req, res, cartId) {
+        if (cartId === undefined || cartId === null || cartId ==="") {
+            
+            return res.render("cart", {
+                title: "Product Summary",
+                script: "productSummary.js",
+                css: "productSummary.css",
+                cartManager: req.cartManager
+            });
+        }
+
         try {
             const response = await axios.get(`http://localhost:8080/api/carts/${cartId}`);
             return res.render("cart", {

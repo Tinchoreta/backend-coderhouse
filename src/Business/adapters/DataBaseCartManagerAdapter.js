@@ -36,8 +36,7 @@ class DataBaseCartManagerAdapter {
     async getProductsIds(cartId) {
         try {
             if (!mongoose.Types.ObjectId.isValid(cartId)) {
-                console.log(cartId);
-                throw new Error('getProductsIds: Invalid cartId');
+                return [];
             }
 
             const cart = await this.persistenceManager.getOne({ _id: cartId });
@@ -51,9 +50,8 @@ class DataBaseCartManagerAdapter {
     async getCartById(cartId) {
         try {
             if (!mongoose.Types.ObjectId.isValid(cartId)) {
-                console.log(cartId);
-                throw new Error('getCartById: Invalid cartId');
-
+                // console.log(cartId);
+                return null;
             }
 
             const cart = await this.persistenceManager.getOne({ _id: cartId });

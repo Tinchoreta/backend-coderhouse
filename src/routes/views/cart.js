@@ -12,7 +12,7 @@ productSummaryRouter.get("/", async (req, res, next) => {
     const cartViewController = new CartViewController();
 
     if (!cartId) {
-      return res.status(500).send('Cart ID not found'); // Maneja la falta de un cartId
+      cartViewController.renderCart(req, res, "");
     }
 
     cartViewController.renderCart(req, res, cartId);
