@@ -40,21 +40,21 @@ class CartViewController {
             });
         }
         
-        try {
-            const response = await axios.get(`http://localhost:8080/api/carts/${cartId}`);
-            return res.render("cart", {
-                title: "Product Summary",
-                script: "productSummary.js",
-                css: "productSummary.css",
-                cartManager: req.cartManager
-            });
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({
-                success: false,
-                error: "Internal Server Error",
-            });
-        }
+        // try {
+        //     const response = await axios.get(`http://localhost:8080/api/carts/${cartId}`);
+        //     return res.render("cart", {
+        //         title: "Product Summary",
+        //         script: "productSummary.js",
+        //         css: "productSummary.css",
+        //         cartManager: req.cartManager
+        //     });
+        // } catch (error) {
+        //     console.error(error);
+        //     return res.status(500).json({
+        //         success: false,
+        //         error: "Internal Server Error",
+        //     });
+        // }
     }
 
     async renderCartCheckout(req, res, cartId) {
@@ -68,21 +68,21 @@ class CartViewController {
             });
         }
 
-        try {
-            const response = await axios.get(`http://localhost:8080/api/carts/${cartId}`);
-            return res.render("cart", {
-                title: "Product Summary",
-                script: "productSummary.js",
-                css: "productSummary.css",
-                cartManager: req.cartManager
-            });
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({
-                success: false,
-                error: "Internal Server Error",
-            });
-        }
+        // try {
+        //     const response = await axios.get(`http://localhost:8080/api/carts/${cartId}`);
+        //     return res.render("cart", {
+        //         title: "Product Summary",
+        //         script: "productSummary.js",
+        //         css: "productSummary.css",
+        //         cartManager: req.cartManager
+        //     });
+        // } catch (error) {
+        //     console.error(error);
+        //     return res.status(500).json({
+        //         success: false,
+        //         error: "Internal Server Error",
+        //     });
+        // }
     }
 
 }

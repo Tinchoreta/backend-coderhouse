@@ -281,7 +281,7 @@ function retrieveCartData(cartIdInput) {
         const email = sessionStorage.getItem('username'); 
 
         if (email) {
-            axios.get(`api/carts/cartByUserEmail/${email}`)
+            axios.get(`http://localhost:8080/api/carts/cartByUserEmail/${email}`)
                 .then((response) => {
                     const cart = response.data.cart;
 
