@@ -10,9 +10,10 @@
                         <span class="btn btn-mini">En</span>
                         <a href="/product_summary"><span>&pound;</span></a>
                         <span class="btn btn-mini">${{cartTotal}}</span>
-                        <a href="/product_summary"><span class="">$</span></a>
-                        <a href="/product_summary"><span class="btn btn-mini btn-primary"><i
-                                    class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
+                        <a href="/product_summary" data-cart-item-count="{{cartItemCount}}" data-cart-total="{{cartTotal}}><span class="">$</span></a>
+                        <a href="/product_summary" data-cart-item-count="{{cartItemCount}}">
+                            <span class="btn btn-mini btn-primary">
+                                <i class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
                             </span> </a>
                     </div>
                 </div>
@@ -86,10 +87,13 @@
             <div class="row">
                 <!-- Sidebar ================================================== -->
                 <div id="sidebar" class="span3">
-                    <div class="well well-small"><a id="myCart" href="/product_summary">
-                    <img src="themes/images/ico-cart.png" alt="cart">
-                                <span>{{cartItemCount}} Items</span>
-                                <span class="badge badge-warning pull-right">${{cartTotal}}</span></a></div>
+                    <div class="well well-small">
+                        <a id="myCart" href="/product_summary">
+                            <img src="themes/images/ico-cart.png" alt="cart">
+                            <span>{{cartItemCount}} Items</span>
+                            <span class="badge badge-warning pull-right">${{cartTotal}}</span>
+                        </a>
+                    </div>
                     <ul id="sideManu" class="nav nav-tabs nav-stacked">
                         <li class="subMenu open"><a> ELECTRONICS [230]</a>
                             <ul>
@@ -411,7 +415,7 @@
                             <ul class="thumbnails">
 
                                 <input type="hidden" id="cartId" value="{{cartId}}">
-                                
+
                                 {{#each products}}
                                 <li class="span3">
                                     <div class="thumbnail card-list">
