@@ -156,6 +156,12 @@ function updateUI() {
         loginLi.style.display = 'block';
         logoutLi.style.display = 'none';
     }
+    const myCartLink = document.querySelector("#myCartHead");
+    const cartItemCount = myCartLink.getAttribute("data-cart-item-count");
+    const cartTotal = myCartLink.getAttribute("data-cart-total");
+
+    console.log("Cart Item Count: " + cartItemCount);
+    console.log("Cart Total: " + cartTotal);
 }
 
 

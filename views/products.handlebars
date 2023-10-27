@@ -5,13 +5,13 @@
                 <div class="span6" id="welcomeMessage">Welcome!<strong> User</strong></div>
                 <div class="span6">
                     <div class="pull-right">
-                        <a href="/product_summary"><span class="">Fr</span></a>
-                        <a href="/product_summary"><span class="">Es</span></a>
+                        <a href="/product_summary?cartId={{cartId}}"><span class="">Fr</span></a>
+                        <a href="/product_summary?cartId={{cartId}}"><span class="">Es</span></a>
                         <span class="btn btn-mini">En</span>
-                        <a href="/product_summary"><span>&pound;</span></a>
+                        <a href="/product_summary?cartId={{cartId}}"><span>&pound;</span></a>
                         <span class="btn btn-mini">${{cartTotal}}</span>
-                        <a href="/product_summary" data-cart-item-count="{{cartItemCount}}" data-cart-total="{{cartTotal}}><span class="">$</span></a>
-                        <a href="/product_summary" data-cart-item-count="{{cartItemCount}}">
+                        <a href="/product_summary?cartId={{cartId}}" data-cart-item-count="{{cartItemCount}}" data-cart-total="{{cartTotal}}><span class="">$</span></a>
+                        <a id="myCartHead" href="/product_summary?cartId={{cartId}}" data-cart-item-count="{{cartItemCount}}">
                             <span class="btn btn-mini btn-primary">
                                 <i class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
                             </span> </a>
@@ -88,7 +88,7 @@
                 <!-- Sidebar ================================================== -->
                 <div id="sidebar" class="span3">
                     <div class="well well-small">
-                        <a id="myCart" href="/product_summary">
+                        <a id="myCart" href="/product_summary?cartId={{cartId}}">
                             <img src="themes/images/ico-cart.png" alt="cart">
                             <span>{{cartItemCount}} Items</span>
                             <span class="badge badge-warning pull-right">${{cartTotal}}</span>
