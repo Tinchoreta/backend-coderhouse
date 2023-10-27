@@ -93,6 +93,9 @@ async function updateCartDataView(cartId) {
         const cartItemCountElement = document.querySelector('a#myCart span');
         const cartTotalElement = document.querySelector('#myCart span:last-child');
 
+        const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
+        const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
+
 
         const [itemCountResponse, totalResponse] = await Promise.all([
             axios.get(cartItemCountURL),
