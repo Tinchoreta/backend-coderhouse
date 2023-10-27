@@ -81,7 +81,7 @@ function handlePlusButtonClick(event) {
   }
 }
 
-// Función para manejar el clic en el botón de eliminar producto
+
 function handleRemoveButtonClick(event) {
   var productId = event.target.getAttribute('data-product-id');
   // Eliminar el producto del carrito
@@ -90,7 +90,7 @@ function handleRemoveButtonClick(event) {
   updateCartView();
 }
 
-// Función para actualizar la vista de un producto
+
 function updateProductView(product, productElement) {
   // Actualizar la cantidad en la interfaz de usuario
   var quantityElement = productElement.querySelector('.product-quantity');
@@ -100,10 +100,10 @@ function updateProductView(product, productElement) {
   var priceElement = productElement.querySelector('.product-total-price');
   priceElement.textContent = calculateProductTotalPrice(product);
 
-  // Aquí puedes agregar más lógica de actualización de la vista según tu HTML
+  
 }
 
-// Ejemplo de función para calcular el precio total de un producto
+
 function calculateProductTotalPrice(product) {
   return product.quantity * product.price;
 }
@@ -190,7 +190,7 @@ async function updateCartDataView(cartId) {
 
     const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
     const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
-    
+
     const [itemCountResponse, totalResponse] = await Promise.all([
       axios.get(cartItemCountURL),
       axios.get(cartTotalURL)

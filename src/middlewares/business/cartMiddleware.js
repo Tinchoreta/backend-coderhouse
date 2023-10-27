@@ -43,7 +43,13 @@ const cartMiddleware = async (req, res, next) => {
         } else if (req.cartManager?.cartList[0]) {
             // Si no hay correo válido, utiliza el carrito existente
             cartToRender = req.cartManager.cartList[0];
-        }
+        } else if (req.params?.cartId) {
+            
+            cartToRender = await dataBaseCartAdapter.getCartById(req.params.cartId);
+        } else if (req.query?.cartId) {
+
+            cartToRender = await dataBaseCartAdapter.getCartById(req.query.cartId);
+        } 
 
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
