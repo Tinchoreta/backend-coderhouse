@@ -11,8 +11,9 @@
                         <a href="/product_summary?cartId={{cartId}}"><span>&pound;</span></a>
                         <span class="btn btn-mini">${{cartTotal}}</span>
                         <a href="/product_summary?cartId={{cartId}}"><span class="">$</span></a>
-                        <a href="/product_summary?cartId={{cartId}}" data-cart-item-count="{{cartItemCount}}" data-cart-total="{{cartTotal}}><span class="btn btn-mini btn-primary"><i
-                                    class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
+                        <a href="/product_summary?cartId={{cartId}}" data-cart-item-count="{{cartItemCount}}"
+                            data-cart-total="{{cartTotal}}><span class=" btn btn-mini btn-primary"><i
+                                class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
                             </span> </a>
                     </div>
                 </div>
@@ -82,7 +83,8 @@
             <div class="row">
                 <!-- Sidebar ================================================== -->
                 <div id="sidebar" class="span3">
-                    <div class="well well-small"><a id="myCart" href="/product_summary?cartId={{cartId}}" data-cart-item-count="{{cartItemCount}}" data-cart-total="{{cartTotal}}"><img
+                    <div class="well well-small"><a id="myCart" href="/product_summary?cartId={{cartId}}"
+                            data-cart-item-count="{{cartItemCount}}" data-cart-total="{{cartTotal}}"><img
                                 src="/themes/images/ico-cart.png" alt="cart">{{cartItemCount}} Items in your cart <span
                                 class="badge badge-warning pull-right">${{cartTotal}}</span></a></div>
                     <ul id="sideManu" class="nav nav-tabs nav-stacked">
@@ -212,8 +214,6 @@
                                 <th>Description</th>
                                 <th>Quantity/Update</th>
                                 <th>Price</th>
-                                <th>Discount</th>
-                                <th>Tax</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -221,8 +221,13 @@
                             <input type="hidden" id="cartId" name="cartId" value="{{cartId}}">
                             {{#cartProducts}}
                             <tr>
-                                <td> <img width="60" src="/themes/images/products/{{thumbnail}}" alt="" /></td>
-                                <td>{{substring title 0 20}}<br />Desc: {{substring description 0 25}}</td>
+                                <td>
+                                    <img width="60" src="/themes/images/products/{{thumbnail}}" alt="">
+                                </td>
+                                <td>
+                                    {{substring title 0 20}}<br>
+                                    Desc: {{substring description 0 25}}
+                                </td>
                                 <td>
                                     <div class="input-append">
                                         <input class="span1" style="max-width:34px" placeholder="{{quantity}}"
@@ -236,34 +241,22 @@
                                     </div>
                                 </td>
                                 <td>${{price}}</td>
-                                <td>$25.00</td>
-                                <td>$15.00</td>
                                 <td>${{calculateTotal price quantity}}</td>
                             </tr>
                             {{/cartProducts}}
-
                             <tr>
-                                <td colspan="6" style="text-align:right">Total Price: </td>
-                                <td> ${{cartTotal}}</td>
+                                <td colspan="4" style="text-align:right">Total Price:</td>
+                                <td>${{cartTotal}}</td>
                             </tr>
+                            <!-- Eliminadas las filas de Total Discount y Total Tax -->
                             <tr>
-                                <td colspan="6" style="text-align:right">Total Discount: </td>
-                                <td> $50.00</td>
-                            </tr>
-                            <tr>
-                                <td colspan="6" style="text-align:right">Total Tax: </td>
-                                <td> $31.00</td>
-                            </tr>
-                            <tr>
-                                <td colspan="6" style="text-align:right"><strong>TOTAL (${{cartTotal}} - $50 + $31)
-                                        =</strong>
-                                </td>
-                                <td class="label label-important" style="display:block"> <strong>
-                                        ${{calcTotalWithDiscTax}} </strong>
+                                <td colspan="4" style="text-align:right"><strong>TOTAL (${{cartTotal}}) =</strong></td>
+                                <td class="label label-important" style="display:block"><strong>${{cartTotal}}</strong>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+
 
                     {{!-- <table class="table table-bordered">
                         <tbody>
@@ -313,7 +306,8 @@
                         </tr>
                     </table> --}}
                     <a href="/products/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
-                    <a href="/product_summary?cartId={{cartId}}/checkout/" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>
+                    <a href="/product_summary?cartId={{cartId}}/checkout/" class="btn btn-large pull-right">Next <i
+                            class="icon-arrow-right"></i></a>
 
                 </div>
             </div>

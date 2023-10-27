@@ -4,7 +4,11 @@ var removeButtons = document.querySelectorAll('.btn-remove');
 const purchaseButton = document.querySelector('.btn-large');
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  const cartIdInput = document.getElementById('cartId');
+
   retrieveCartData(cartIdInput);
+  
   const cartId = cartIdInput.value;
 
   updateCartDataView(cartId);
