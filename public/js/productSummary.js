@@ -3,6 +3,15 @@ var plusButtons = document.querySelectorAll('.btn-plus');
 var removeButtons = document.querySelectorAll('.btn-remove');
 const purchaseButton = document.querySelector('.btn-large');
 
+document.addEventListener('DOMContentLoaded', () => {
+  retrieveCartData(cartIdInput);
+  const cartId = cartIdInput.value;
+
+  updateCartDataView(cartId);
+
+  updateUI();
+});
+
 
 purchaseButton.addEventListener('click', handlePurchaseButtonClick);
 
@@ -113,35 +122,6 @@ function removeProductFromCart(productId) {
 }
 
 
-document.getElementById("qtyFrm").addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  const productIdInput = document.getElementById("productId");
-  const quantityInput = document.getElementById("quantity");
-  const cartIdInput = document.getElementById("cartId");
-
-  if (!productIdInput || !quantityInput || !cartIdInput) {
-    console.error("One or more inputs are missing.");
-    return;
-  }
-
-  retrieveCartData(cartIdInput);
-  const cartId = cartIdInput.value;
-
-  updateCartDataView(cartId);
-
-  const productId = productIdInput.value;
-  const quantity = parseInt(quantityInput.value);
-
-
-  if (!productId || isNaN(quantity) || !cartId) {
-    console.error("Invalid productId, quantity, or cartId.");
-    return;
-  }
-
-  addProductToCart(cartId, productId, quantity);
-});
-
 async function addProductToCart(cartId, productId, quantity) {
   console.log(productId, quantity);
 
@@ -208,7 +188,9 @@ async function updateCartDataView(cartId) {
     const cartItemCountElement = document.querySelector('a#myCart span');
     const cartTotalElement = document.querySelector('#myCart span:last-child');
 
-
+    const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
+    const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
+    
     const [itemCountResponse, totalResponse] = await Promise.all([
       axios.get(cartItemCountURL),
       axios.get(cartTotalURL)

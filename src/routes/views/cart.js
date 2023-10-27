@@ -46,7 +46,7 @@ productSummaryRouter.get("/", cartMiddleware, async (req, res, next) => {
       }
 
     } else {
-      cartViewController.renderCartCheckout(req, res, "");
+      cartViewController.renderCartCheckout(req, res, req.query.cartId);
     }
   } catch (error) {
     next(error);

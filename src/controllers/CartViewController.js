@@ -30,13 +30,14 @@ class CartViewController {
     }
 
     async renderCart(req, res, cartId) {
-        if (cartId === undefined || cartId === null || cartId === "") {
+        if (cartId !== undefined && cartId !== null && cartId !== "") {
             
             return res.render("cart", {
                 title: "Product Summary",
                 script: "productSummary.js",
                 css: "productSummary.css",
-                cartManager: req.cartManager
+                cartManager: req.cartManager,
+                cartId: cartId,
             });
         }
         
@@ -58,13 +59,14 @@ class CartViewController {
     }
 
     async renderCartCheckout(req, res, cartId) {
-        if (cartId === undefined || cartId === null || cartId ==="") {
+        if (cartId !== undefined && cartId !== null && cartId !=="") {
             
             return res.render("cart", {
                 title: "Product Summary",
                 script: "productSummary.js",
                 css: "productSummary.css",
-                cartManager: req.cartManager
+                cartManager: req.cartManager,
+                cartId: cartId,
             });
         }
 
