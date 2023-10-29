@@ -25,6 +25,7 @@ logoutBtn.addEventListener('click', async (event) => {
 
                 sessionStorage.removeItem('username');
                 sessionStorage.removeItem('token');
+                sessionStorage.removeItem('cartId', cart._id);
 
                 updateUI();
                 updateCartDataView("");
@@ -207,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     retrieveCartData(cartIdInput);
-    const cartId = cartIdInput.value;
+    const cartId = cartIdInput?.value.length > 0 ? cartIdInput?.value : sessionStorage.getItem('cartId');
 
     updateCartDataView(cartId);
 
@@ -294,6 +295,7 @@ function retrieveCartData(cartIdInput) {
                     if (cart) {
                         console.log(`Carrito asociado encontrado: ${cart._id}`);
                         cartIdInput.value = cart._id;
+                        sessionStorage.setItem('cartId', cart._id);
                     } else {
                         console.log("No se encontró ningún carrito asociado al usuario.");
                     }
@@ -312,23 +314,23 @@ async function updateCartDataView(cartId) {
         const cartItemCountElement = document.querySelector('a#myCart span');
         const cartTotalElement = document.querySelector('#myCart span:last-child');
 
+        if (cartId && cartId?.length > 0) {
+            const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
+            const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
 
-        const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
-        const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
 
+            const [itemCountResponse, totalResponse] = await Promise.all([
+                axios.get(cartItemCountURL),
+                axios.get(cartTotalURL)
+            ]);
 
-        const [itemCountResponse, totalResponse] = await Promise.all([
-            axios.get(cartItemCountURL),
-            axios.get(cartTotalURL)
-        ]);
+            const itemCount = itemCountResponse?.data?.count ?? 0;
+            const total = totalResponse?.data?.totalPrice ?? 0;
 
-        const itemCount = itemCountResponse?.data?.count ?? 0;
-        const total = totalResponse?.data?.totalPrice ?? 0;
-
-        // Actualiza los elementos HTML con los nuevos valores
-        cartTotalElement.innerText = `$${total}`;
-        cartItemCountElement.innerText = `[ ${itemCount} ] Items`;
-
+            // Actualiza los elementos HTML con los nuevos valores
+            cartTotalElement.innerText = `$${total}`;
+            cartItemCountElement.innerText = `[ ${itemCount} ] Items`;
+        }
     } catch (error) {
         console.error('Error al obtener datos del carrito:', error);
     }

@@ -17,7 +17,7 @@ const viewRouter = Router();
 viewRouter.get('/',cartMiddleware, async (req, res, next) => {
     
         const cartViewController = new CartViewController();
-        const cartId = req.cartId || "";
+        const cartId = req.cartId || req.query?.cartId;
         cartViewController.renderIndex(req, res,cartId);
 })
 

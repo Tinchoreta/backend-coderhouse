@@ -1,3 +1,48 @@
+const logoutBtn = document.getElementById('logoutBtn');
+
+loginBtnModal.addEventListener('click', async (event) => {
+    event.preventDefault();
+    await loginUser('inputEmail', 'inputPassword');
+});
+
+loginBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+    await loginUser('inputEmail', 'inputPassword');
+});
+
+logoutBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/api/auth/logout', true);
+        xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+
+                sessionStorage.removeItem('username');
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('cartId', cart._id);
+
+                updateUI();
+                updateCartDataView("");
+
+            } else {
+                console.error('Failed to logout');
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Error:', xhr.statusText);
+        };
+
+        xhr.send();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+
 document.getElementById("qtyFrm").addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -74,6 +119,7 @@ function retrieveCartData(cartIdInput) {
                     if (cart) {
                         console.log(`Carrito asociado encontrado: ${cart._id}`);
                         cartIdInput.value = cart._id;
+                        sessionStorage.setItem('cartId', cart._id);
                     } else {
                         console.log("No se encontró ningún carrito asociado al usuario.");
                     }
@@ -89,26 +135,26 @@ function retrieveCartData(cartIdInput) {
 
 async function updateCartDataView(cartId) {
     try {
-        
         const cartItemCountElement = document.querySelector('a#myCart span');
         const cartTotalElement = document.querySelector('#myCart span:last-child');
 
-        const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
-        const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
+        if (cartId && cartId?.length > 0) {
+            const cartItemCountURL = `http://localhost:8080/api/carts/${cartId}/cartItemCount`;
+            const cartTotalURL = `http://localhost:8080/api/carts/${cartId}/cartTotal`;
 
 
-        const [itemCountResponse, totalResponse] = await Promise.all([
-            axios.get(cartItemCountURL),
-            axios.get(cartTotalURL)
-        ]);
+            const [itemCountResponse, totalResponse] = await Promise.all([
+                axios.get(cartItemCountURL),
+                axios.get(cartTotalURL)
+            ]);
 
-        const itemCount = itemCountResponse?.data?.count ?? 0;
-        const total = totalResponse?.data?.totalPrice ?? 0;
+            const itemCount = itemCountResponse?.data?.count ?? 0;
+            const total = totalResponse?.data?.totalPrice ?? 0;
 
-        // Actualiza los elementos HTML con los nuevos valores
-        cartTotalElement.innerText = `$${total}`;
-        cartItemCountElement.innerText = `[ ${itemCount} ] Items`;
-        
+            // Actualiza los elementos HTML con los nuevos valores
+            cartTotalElement.innerText = `$${total}`;
+            cartItemCountElement.innerText = `[ ${itemCount} ] Items`;
+        }
     } catch (error) {
         console.error('Error al obtener datos del carrito:', error);
     }

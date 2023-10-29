@@ -4,7 +4,7 @@ import { cartMiddleware } from "../../middlewares/business/cartMiddleware.js";
 
 const productDetailsRouter = Router();
 
-productDetailsRouter.get("/:pid", async (req, res, next) => {
+productDetailsRouter.get("/:pid",cartMiddleware, async (req, res, next) => {
   try {
     const productId = req.params.pid;
     const cartId = req.cartId;

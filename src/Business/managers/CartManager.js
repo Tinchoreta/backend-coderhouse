@@ -35,17 +35,24 @@ class CartManager {
 
     getCartById(cartIdToGet) {
         const targetCartId = cartIdToGet;
-        for (const cart of this.cartList) {
-            const currentCartId = cart?.id;
-            // console.log(`Checking cart with id ${currentCartId}`);
-            if (currentCartId === targetCartId) {
-                // console.log(`Found cart with id ${currentCartId}`);
-                return cart;
-            }
+
+        if (!targetCartId) {
+            throw new Error('El ID del carrito no está definido.');
         }
-        // console.log(`No cart found with id ${targetCartId}`);
-        return null;
+
+        const foundCart = this.cartList.find((cart) => {
+            return cart?._doc?._id?.toString() === targetCartId;
+        });
+
+        // Si se encuentra el carrito, lo retornas; de lo contrario, puedes lanzar una excepción o devolver undefined.
+        if (foundCart) {
+            return foundCart;
+        }
+
+        // throw new Error(`No se encontró ningún carrito con el ID ${targetCartId}.`);
+        return undefined;
     }
+
 
     removeCart(cartId) {
         const index = this.cartList.findIndex((cart) => cart.id === cartId);

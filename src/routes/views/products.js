@@ -48,7 +48,7 @@ productRouter.get("/",cartMiddleware, async (req, res, next) => {
             }
 
         } else {
-            productViewController.renderProductsForm(req, res, "");
+            productViewController.renderProductsForm(req, res, req.cartId);
         }
     } catch (error) {
         next(error);

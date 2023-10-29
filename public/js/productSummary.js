@@ -2,6 +2,51 @@ var minusButtons = document.querySelectorAll('.btn-minus');
 var plusButtons = document.querySelectorAll('.btn-plus');
 var removeButtons = document.querySelectorAll('.btn-remove');
 const purchaseButton = document.querySelector('.btn-large');
+const logoutBtn = document.getElementById('logoutBtn');
+
+loginBtnModal.addEventListener('click', async (event) => {
+  event.preventDefault();
+  await loginUser('inputEmail', 'inputPassword');
+});
+
+loginBtn.addEventListener('click', async (event) => {
+  event.preventDefault();
+  await loginUser('inputEmail', 'inputPassword');
+});
+
+logoutBtn.addEventListener('click', async (event) => {
+  event.preventDefault();
+
+  try {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:8080/api/auth/logout', true);
+    xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('token')}`);
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('cartId', cart._id);
+
+        updateUI();
+        updateCartDataView("");
+
+      } else {
+        console.error('Failed to logout');
+      }
+    };
+
+    xhr.onerror = function () {
+      console.error('Error:', xhr.statusText);
+    };
+
+    xhr.send();
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -23,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   retrieveCartData(cartIdInput);
 
-  const cartId = cartIdInput.value;
+  const cartId = cartIdInput?.value.length > 0 ? cartIdInput?.value : sessionStorage.getItem('cartId');
 
   updateCartDataView(cartId);
 
@@ -197,6 +242,7 @@ function retrieveCartData(cartIdInput) {
           if (cart) {
             console.log(`Carrito asociado encontrado: ${cart._id}`);
             cartIdInput.value = cart._id;
+            sessionStorage.setItem('cartId', cart._id);
           } else {
             console.log("No se encontró ningún carrito asociado al usuario.");
           }
