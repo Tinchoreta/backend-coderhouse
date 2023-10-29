@@ -2,7 +2,7 @@
     <div id="header">
         <div class="container">
             <div id="welcomeLine" class="row">
-                <div class="span6">Welcome!<strong> User</strong></div>
+                <div class="span6" id="welcomeMessage">Welcome!<strong> User</strong></div>
                 <div class="span6">
                     <div class="pull-right">
                         <a href="/product_summary?cartId={{cartId}}"><span class="">Fr</span></a>
@@ -10,10 +10,12 @@
                         <span class="btn btn-mini">En</span>
                         <a href="/product_summary?cartId={{cartId}}"><span>&pound;</span></a>
                         <span class="btn btn-mini">${{cartTotal}}</span>
-                        <a href="/product_summary?cartId={{cartId}}"><span class="">$</span></a>
                         <a href="/product_summary?cartId={{cartId}}" data-cart-item-count="{{cartItemCount}}"
-                            data-cart-total="{{cartTotal}}><span class=" btn btn-mini btn-primary"><i
-                                class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
+                            data-cart-total="{{cartTotal}}><span class="">$</span></a>
+                                    <a id=" myCartHead" href="/product_summary?cartId={{cartId}}"
+                            data-cart-item-count="{{cartItemCount}}">
+                            <span class="btn btn-mini btn-primary">
+                                <i class="icon-shopping-cart icon-white"></i> [ {{cartItemCount}} ] Items in your cart
                             </span> </a>
                     </div>
                 </div>
@@ -43,9 +45,9 @@
                         <li class=""><a href="/new_product">ADD PROD</a></li>
                         <li class=""><a href="/products">PRODUCTOS</a></li>
                         <li class=""><a href="/chat">CHAT</a></li>
-                        <li class="">
-                            <a href="#login" role="button" data-toggle="modal" style="padding-right:0"><span
-                                    class="btn btn-large btn-success">Login</span></a>
+                        <li class="" id="loginLi">
+                            <a href="#login" id="loginBtn" role="button" data-toggle="modal"
+                                style="padding-right:0"><span class="btn btn-large btn-success">Login</span></a>
                             <div id="login" class="modal hide fade in" tabindex="-1" role="dialog"
                                 aria-labelledby="login" aria-hidden="false">
                                 <div class="modal-header">
@@ -67,10 +69,14 @@
                                             </label>
                                         </div>
                                     </form>
-                                    <button type="submit" class="btn btn-success">Sign in</button>
+                                    <button type="submit" class="btn btn-success" id="loginBtnModal">Sign in</button>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>
+                        </li>
+                        <li class="" id="logoutLi" style="display:none;">
+                            <a href="#" id="logoutBtn" role="button" style="padding-right: 0"><span
+                                    class="btn btn-large btn-danger">Logout</span></a>
                         </li>
                     </ul>
                 </div>
@@ -83,10 +89,13 @@
             <div class="row">
                 <!-- Sidebar ================================================== -->
                 <div id="sidebar" class="span3">
-                    <div class="well well-small"><a id="myCart" href="/product_summary?cartId={{cartId}}"
-                            data-cart-item-count="{{cartItemCount}}" data-cart-total="{{cartTotal}}"><img
-                                src="/themes/images/ico-cart.png" alt="cart">{{cartItemCount}} Items in your cart <span
-                                class="badge badge-warning pull-right">${{cartTotal}}</span></a></div>
+                    <div class="well well-small">
+                        <a id="myCart" href="/product_summary?cartId={{cartId}}">
+                            <img src="themes/images/ico-cart.png" alt="cart">
+                            <span>{{cartItemCount}} Items</span>
+                            <span class="badge badge-warning pull-right">${{cartTotal}}</span>
+                        </a>
+                    </div>
                     <ul id="sideManu" class="nav nav-tabs nav-stacked">
                         <li class="subMenu open"><a> ELECTRONICS [230]</a>
                             <ul>
@@ -171,41 +180,6 @@
                     <h3> SHOPPING CART [ <small>3 Item(s) </small>]<a href="/products"
                             class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>
                     <hr class="soft" />
-                    {{!-- <table class="table table-bordered">
-                        <tr>
-                            <th> I AM ALREADY REGISTERED </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <form class="form-horizontal">
-                                    <div class="control-group">
-                                        <label class="control-label" for="inputUsername">Username</label>
-                                        <div class="controls">
-                                            <input type="text" id="inputUsername" placeholder="Username">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" for="inputPassword1">Password</label>
-                                        <div class="controls">
-                                            <input type="password" id="inputPassword1" placeholder="Password">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <button type="submit" class="btn">Sign in</button> OR <a
-                                                href="register.html" class="btn">Register Now!</a>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <a href="forgetpass.html" style="text-decoration:underline">Forgot password
-                                                ?</a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    </table> --}}
 
                     <table class="table table-bordered">
                         <thead>
@@ -238,7 +212,7 @@
                                                 class="icon-plus"></i></button>
                                         <button class="btn btn-add" data-product-id="{{_id}}" type="button"><i
                                                 class="icon-shopping-cart" style="color: green;"></i>
-                                            </button>
+                                        </button>
                                         <button class="btn btn-danger btn-remove" data-product-id="{{_id}}"
                                             type="button"><i class="icon-remove icon-white"></i></button>
                                     </div>
@@ -260,54 +234,7 @@
                         </tbody>
                     </table>
 
-
-                    {{!-- <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <form class="form-horizontal">
-                                        <div class="control-group">
-                                            <label class="control-label"><strong> VOUCHERS CODE: </strong> </label>
-                                            <div class="controls">
-                                                <input type="text" class="input-medium" placeholder="CODE">
-                                                <button type="submit" class="btn"> ADD </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
-
-                        </tbody>
                     </table>
-
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>ESTIMATE YOUR SHIPPING </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <form class="form-horizontal">
-                                    <div class="control-group">
-                                        <label class="control-label" for="inputCountry">Country </label>
-                                        <div class="controls">
-                                            <input type="text" id="inputCountry" placeholder="Country">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" for="inputPost">Post Code/ Zipcode </label>
-                                        <div class="controls">
-                                            <input type="text" id="inputPost" placeholder="Postcode">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <button type="submit" class="btn">ESTIMATE </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    </table> --}}
                     <a href="/products/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
                     <a href="/product_summary?cartId={{cartId}}/checkout/" class="btn btn-large pull-right">Next <i
                             class="icon-arrow-right"></i></a>

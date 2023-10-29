@@ -37,7 +37,6 @@ router.get('/:cartId/cartItemCount', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMI
 });
 
 router.get('/:cartId/cartTotal', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], async (req, res) => {
-
     const total = await cartController.calculateCartTotalPrice(req, res);
 });
 

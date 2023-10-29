@@ -22,7 +22,7 @@ logoutBtn.addEventListener('click', async (event) => {
 
         xhr.onload = function () {
             if (xhr.status === 200) {
-                
+
                 sessionStorage.removeItem('username');
                 sessionStorage.removeItem('token');
 
@@ -118,14 +118,14 @@ async function addProductToCart(cartId, productId, quantity) {
 
         xhr.onload = function () {
             if (xhr.status === 200) {
-                
+
                 showSuccessMessage('Producto agregado al carrito correctamente.');
-                
+
                 updateCartDataView(cartId);
 
                 axios.get(`/products?email=${email}`);
 
-                
+
             } else {
                 showErrorMessage('Error al agregar el producto al carrito.');
             }
@@ -156,12 +156,12 @@ function updateUI() {
         loginLi.style.display = 'block';
         logoutLi.style.display = 'none';
     }
-    const myCartLink = document.querySelector("#myCartHead");
-    const cartItemCount = myCartLink.getAttribute("data-cart-item-count");
-    const cartTotal = myCartLink.getAttribute("data-cart-total");
+    // const myCartLink = document.querySelector("#myCartHead");
+    //     const cartItemCount = myCartLink.getAttribute("data-cart-item-count");
+    //     const cartTotal = myCartLink.getAttribute("data-cart-total");
 
-    console.log("Cart Item Count: " + cartItemCount);
-    console.log("Cart Total: " + cartTotal);
+    //     console.log("Cart Item Count: " + cartItemCount);
+    //     console.log("Cart Total: " + cartTotal);
 }
 
 
@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const clearFilterButton = document.getElementById('clearFilterButton');
 
     const cartIdInput = document.getElementById('cartId');
-    
+
     // Agregar un controlador de eventos a todos los botones "Add to Cart"
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach((button) => {
@@ -212,8 +212,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartDataView(cartId);
 
     updateUI();
-    
-    
+
+
 
     sortSelect.addEventListener('change', () => {
         const selectedOption = sortSelect.value;
@@ -284,7 +284,7 @@ function retrieveCartData(cartIdInput) {
         console.log(`El campo cartId tiene el valor: ${cartIdValue}`);
     } else {
 
-        const email = sessionStorage.getItem('username'); 
+        const email = sessionStorage.getItem('username');
 
         if (email) {
             axios.get(`http://localhost:8080/api/carts/cartByUserEmail/${email}`)
@@ -328,7 +328,7 @@ async function updateCartDataView(cartId) {
         // Actualiza los elementos HTML con los nuevos valores
         cartTotalElement.innerText = `$${total}`;
         cartItemCountElement.innerText = `[ ${itemCount} ] Items`;
-        
+
     } catch (error) {
         console.error('Error al obtener datos del carrito:', error);
     }

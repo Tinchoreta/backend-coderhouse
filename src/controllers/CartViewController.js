@@ -7,7 +7,7 @@ class CartViewController {
         // dotenv.config();
     }
 
-    async renderIndex(req, res) {
+    async renderIndex(req, res, cartId) {
 
         try {
             const cartManager = req.cartManager;
@@ -17,7 +17,8 @@ class CartViewController {
                 title: 'BootShop',
                 user: name,
                 script: 'index.js',
-                cartManager: cartManager
+                cartManager: cartManager,
+                cartId: cartId,
             });
 
         } catch (error) {

@@ -49,13 +49,17 @@ const cartMiddleware = async (req, res, next) => {
         } else if (req.query?.cartId) {
 
             cartToRender = await dataBaseCartAdapter.getCartById(req.query.cartId);
-        } 
+        } else {
+            cartToRender = await dataBaseCartAdapter.getCarts();
+        }
 
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
         const cartManager = CartManager.getInstance([cartToRender], productManager);
 
-        req.cartManager = cartManager;
+        req.cartManager = cartManager || "";
+        req.cartId = cartToRender._id?.toString() || "";
+
         next();
         
     } catch (error) {

@@ -10,17 +10,15 @@ import forgetPassRouter from "./forgetPassword.js";
 import resetPassRouter from "./resetPassword.js";
 import CartViewController from "../../controllers/CartViewController.js";
 import { cartMiddleware } from "../../middlewares/business/cartMiddleware.js";
+import CartManagerController from "../../controllers/CartManagerController.js";
 
 const viewRouter = Router();
 
-viewRouter.get('/', async (req, res, next) => {
-    try {
+viewRouter.get('/',cartMiddleware, async (req, res, next) => {
+    
         const cartViewController = new CartViewController();
-        cartViewController.renderIndex(req, res,);
-
-    } catch (error) {
-        next(error);
-    }
+        const cartId = req.cartId || "";
+        cartViewController.renderIndex(req, res,cartId);
 })
 
 viewRouter.use('/login', authRouter);

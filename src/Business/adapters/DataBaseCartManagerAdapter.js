@@ -27,7 +27,7 @@ class DataBaseCartManagerAdapter {
     async getCarts() {
         try {
             const carts = await this.persistenceManager.load();
-            return carts;
+            return carts || null;
         } catch (error) {
             throw new Error(`getCarts: ${error.message}`);
         }

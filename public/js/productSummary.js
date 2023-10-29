@@ -5,19 +5,33 @@ const purchaseButton = document.querySelector('.btn-large');
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  purchaseButton.addEventListener('click', handlePurchaseButtonClick);
+  // Agrega el controlador de eventos click a cada botón
+  minusButtons.forEach(function (button) {
+    button.addEventListener('click', handleMinusButtonClick);
+  });
+
+  plusButtons.forEach(function (button) {
+    button.addEventListener('click', handlePlusButtonClick);
+  });
+
+  removeButtons.forEach(function (button) {
+    button.addEventListener('click', handleRemoveButtonClick);
+  });
+
   const cartIdInput = document.getElementById('cartId');
 
   retrieveCartData(cartIdInput);
-  
+
   const cartId = cartIdInput.value;
 
   updateCartDataView(cartId);
 
   updateUI();
+
+
 });
 
-
-purchaseButton.addEventListener('click', handlePurchaseButtonClick);
 
 async function handlePurchaseButtonClick(event) {
   event.preventDefault();
@@ -45,19 +59,29 @@ async function handlePurchaseButtonClick(event) {
   }
 }
 
+function updateUI() {
+  const username = sessionStorage.getItem('username');
+  const loginLi = document.getElementById('loginLi');
+  const logoutLi = document.getElementById('logoutLi');
+  const welcomeMessage = document.getElementById('welcomeMessage');
 
-// Agrega el controlador de eventos click a cada botón
-minusButtons.forEach(function (button) {
-    button.addEventListener('click', handleMinusButtonClick);
-});
+  if (username) {
+    welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
+    loginLi.style.display = 'none';
+    logoutLi.style.display = 'block';
+  } else {
+    welcomeMessage.innerHTML = 'Welcome! Please log in.';
+    loginLi.style.display = 'block';
+    logoutLi.style.display = 'none';
+  }
+  const myCartLink = document.querySelector("#myCartHead");
+  // const cartItemCount = myCartLink.getAttribute("data-cart-item-count");
+  // const cartTotal = myCartLink.getAttribute("data-cart-total");
 
-plusButtons.forEach(function (button) {
-    button.addEventListener('click', handlePlusButtonClick);
-});
+  // console.log("Cart Item Count: " + cartItemCount);
+  // console.log("Cart Total: " + cartTotal);
+}
 
-removeButtons.forEach(function (button) {
-    button.addEventListener('click', handleRemoveButtonClick);
-});
 
 // Función para manejar el clic en el botón de disminuir cantidad
 function handleMinusButtonClick(event) {
@@ -206,7 +230,7 @@ async function updateCartDataView(cartId) {
     // Actualiza los elementos HTML con los nuevos valores
     cartTotalElement.innerText = `$${total}`;
     cartItemCountElement.innerText = `[ ${itemCount} ] Items`;
-
+    // cartItemCountElement.innerText = `$${total}`
   } catch (error) {
     console.error('Error al obtener datos del carrito:', error);
   }
