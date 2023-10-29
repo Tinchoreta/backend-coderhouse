@@ -51,7 +51,7 @@ logoutBtn.addEventListener('click', async (event) => {
 document.addEventListener('DOMContentLoaded', () => {
 
   purchaseButton.addEventListener('click', handlePurchaseButtonClick);
-  // Agrega el controlador de eventos click a cada botón
+  
   minusButtons.forEach(function (button) {
     button.addEventListener('click', handleMinusButtonClick);
   });

@@ -89,6 +89,7 @@ async function authenticateUser(email, password) {
 document.addEventListener("DOMContentLoaded", () => {
         
     const cartIdInput = document.getElementById('cartId');
+    const queryParams = new URLSearchParams(window.location.search);
     
     const email = queryParams.get('email');
     const username = sessionStorage.getItem('username');

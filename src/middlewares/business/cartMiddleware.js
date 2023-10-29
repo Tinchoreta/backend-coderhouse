@@ -58,7 +58,7 @@ const cartMiddleware = async (req, res, next) => {
         const cartManager = CartManager.getInstance([cartToRender], productManager);
 
         req.cartManager = cartManager || "";
-        req.cartId = cartToRender._id?.toString() || "";
+        req.cartId = cartToRender?._id?.toString() || "";
 
         next();
         
