@@ -1,6 +1,6 @@
-var minusButtons = document.querySelectorAll('.btn-minus');
-var plusButtons = document.querySelectorAll('.btn-plus');
-var removeButtons = document.querySelectorAll('.btn-remove');
+let minusButtons = document.querySelectorAll('.btn-minus');
+let plusButtons = document.querySelectorAll('.btn-plus');
+let removeButtons = document.querySelectorAll('.btn-remove');
 const purchaseButton = document.querySelector('.btn-large');
 const logoutBtn = document.getElementById('logoutBtn');
 
@@ -53,15 +53,24 @@ document.addEventListener('DOMContentLoaded', () => {
   purchaseButton.addEventListener('click', handlePurchaseButtonClick);
   
   minusButtons.forEach(function (button) {
-    button.addEventListener('click', handleMinusButtonClick);
+    button.addEventListener('click', (event)=>{
+      event.preventDefault();
+      handleMinusButtonClick(button);
+    });
   });
 
   plusButtons.forEach(function (button) {
-    button.addEventListener('click', handlePlusButtonClick);
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      handlePlusButtonClick(button);
+    });
   });
 
   removeButtons.forEach(function (button) {
-    button.addEventListener('click', handleRemoveButtonClick);
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      handleRemoveButtonClick(button);
+    });
   });
 
   const cartIdInput = document.getElementById('cartId');
@@ -129,48 +138,67 @@ function updateUI() {
 
 
 // Función para manejar el clic en el botón de disminuir cantidad
-function handleMinusButtonClick(event) {
-  var productId = event.target.getAttribute('data-product-id');
-  var productElement = document.querySelector(`[data-product-id="${productId}"]`);
-  var product = getProductFromCart(productId);
+function handleMinusButtonClick(button) {
+  const productId = button.getAttribute('data-product-id');
+  const inputElement = document.getElementById(productId);
 
-  if (product && product.quantity > 1) {
-    product.quantity -= 1;
-    // Actualizar la vista del producto
-    updateProductView(product, productElement);
+  if (inputElement) {
+    let currentValue = parseInt(inputElement.value, 10);
+    if (!isNaN(currentValue) && currentValue > 0) {
+      currentValue -= 1;
+      inputElement.value = currentValue;
+    }
   }
+
 }
 
 // Función para manejar el clic en el botón de aumentar cantidad
-function handlePlusButtonClick(event) {
-  var productId = event.target.getAttribute('data-product-id');
-  var productElement = document.querySelector(`[data-product-id="${productId}"]`);
-  var product = getProductFromCart(productId);
+function handlePlusButtonClick(button) {
+  const productId = button.getAttribute('data-product-id');
+  const inputElement = document.getElementById(productId);
 
-  if (product && product.quantity < product.stock) {
-    product.quantity += 1;
-    // Actualizar la vista del producto
-    updateProductView(product, productElement);
+  if (inputElement) {
+    let currentValue = parseInt(inputElement.value, 10);
+    if (!isNaN(currentValue) && currentValue < 5) {
+      currentValue += 1;
+      inputElement.value = currentValue;
+    }
   }
 }
 
 
-function handleRemoveButtonClick(event) {
-  var productId = event.target.getAttribute('data-product-id');
-  // Eliminar el producto del carrito
-  removeProductFromCart(productId);
-  // Actualizar la vista del carrito
-  updateCartView();
+function handleRemoveButtonClick(button) {
+  let productId = button.getAttribute('data-product-id');
+  // let cartId = sessionStorage.getItem('cartId');
+  
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: '¿Quieres quitar este producto del carrito?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, quitarlo',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Si el usuario confirma, elimina el producto del carrito
+      removeProductFromCart(productId);
+      // Actualiza la vista del carrito
+      // updateCartDataView(cartId);
+      location.reload(true);
+    }
+  });
 }
 
 
 function updateProductView(product, productElement) {
   // Actualizar la cantidad en la interfaz de usuario
-  var quantityElement = productElement.querySelector('.product-quantity');
+  let quantityElement = productElement.querySelector('.product-quantity');
   quantityElement.textContent = product.quantity;
 
   // Actualizar el precio total del producto (si es necesario)
-  var priceElement = productElement.querySelector('.product-total-price');
+  let priceElement = productElement.querySelector('.product-total-price');
   priceElement.textContent = calculateProductTotalPrice(product);
 
   
@@ -181,18 +209,37 @@ function calculateProductTotalPrice(product) {
   return product.quantity * product.price;
 }
 
-// Ejemplo de función para recuperar un producto del carrito
+
 function getProductFromCart(productId) {
-  // Debes adaptar esto a la estructura de tu carrito
-  // Puedes asumir que el carrito es un arreglo de productos
+
   return cart.find(product => product.id === productId);
 }
 
-// Ejemplo de función para eliminar un producto del carrito
+
 function removeProductFromCart(productId) {
-  // Filtrar el carrito para excluir el producto con el ID dado
-  cart = cart.filter(product => product.id !== productId);
+  // Obtiene el cartId del almacenamiento de sesión
+  const cartId = sessionStorage.getItem('cartId');
+
+  if (!cartId) {
+    console.error('No se pudo encontrar el cartId en el almacenamiento de sesión.');
+    return;
+  }
+
+  // Realiza la solicitud DELETE a la API
+  axios
+    .delete(`/api/carts/${cartId}/product/${productId}`)
+    .then((response) => {
+      if (response.data.success) {
+        console.log('Producto eliminado del carrito con éxito.');
+      } else {
+        console.error('Error al eliminar el producto del carrito:', response.data.message);
+      }
+    })
+    .catch((error) => {
+      console.error('Error al eliminar el producto del carrito:', error);
+    });
 }
+
 
 
 async function addProductToCart(cartId, productId, quantity) {

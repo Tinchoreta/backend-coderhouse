@@ -41,7 +41,7 @@ class CartManager {
         }
 
         const foundCart = this.cartList.find((cart) => {
-            return cart?._doc?._id?.toString() === targetCartId;
+            return cart?._id?.toString() === targetCartId;
         });
 
         // Si se encuentra el carrito, lo retornas; de lo contrario, puedes lanzar una excepción o devolver undefined.
