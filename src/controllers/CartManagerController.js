@@ -370,7 +370,7 @@ class CartManagerController {
 
     async processPurchase(req, res) {
         try {
-            const userId = req?.username;  // Verifica que req y req.username no sean nulos o indefinidos
+            let userId = req?.username;  // Verifica que req y req.username no sean nulos o indefinidos
             const cartId = req?.cartId || req?.params?.cartId; // Verifica que req y req.cartId no sean nulos o indefinidos
 
             if (this.isNullOrUndefined(cartId)) {
@@ -381,7 +381,7 @@ class CartManagerController {
             }
 
             if (this.isNullOrUndefined(userId)) {
-                this.cartManagerAdapter.getUserIdForCart(cartId);
+                userId = await this.cartManagerAdapter.getUserIdForCart(cartId);
             }
 
             const cart = await this.cartManagerAdapter.getCartById(cartId);
