@@ -389,7 +389,7 @@ class CartManagerController {
                 return res.status(HTTP_STATUS_CODES.HTTP_OK).json({
                     message: 'Compra exitosa',
                     ticket,
-                    productsNotPurchased
+                    purchasedProducts
                 });
 
             } else {
