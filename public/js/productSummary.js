@@ -92,24 +92,61 @@ async function handlePurchaseButtonClick(event) {
   
   const cartId = document.getElementById('cartId').value;
 
-  // Verifica si el carrito contiene productos
   if (cartId) {
     try {
-      // Realiza una solicitud POST para procesar la compra
-      const response = await axios.post(`http://localhost:8080/api/carts/${cartId}/purchase`);
+      const response = await axios.get(`http://localhost:8080/api/carts/${cartId}/purchase`);
 
       if (response.status === 200) {
         // La compra se procesó con éxito, se podría mostrar un mensaje de confirmación.
         console.log('Compra completada con éxito');
 
         // Actualiza la vista del resumen de productos (por ejemplo, limpiar la lista de productos).
-        updateProductSummaryView();
+        updateProductSummaryView(response.data);
       } else {
         console.error('Error al procesar la compra');
       }
     } catch (error) {
       console.error('Error al procesar la compra:', error);
     }
+  }
+}
+
+function updateProductSummaryView(data){
+  try {
+   // const data = JSON.stringify(responseData);
+
+    if (data && data.message === 'Compra exitosa' && data.ticket) {
+      const ticket = data.ticket;
+      const purchasedProducts = data.purchasedProducts;
+
+      let message = `¡Compra exitosa!\n\n`;
+      message += `Código de Ticket: ${ticket.code}\n`;
+      message += `Monto: $${ticket.amount}\n`;
+      message += `Fecha de Compra: ${new Date(ticket.purchase_datetime).toLocaleString()}\n`;
+      message += `Comprador: ${ticket.purchaser}\n\n`;
+
+      if (purchasedProducts && purchasedProducts.length > 0) {
+        message += 'Productos Comprados:\n';
+        for (const product of purchasedProducts) {
+          message += `- Producto ID: ${product.productId}, Cantidad: ${product.quantity}\n`;
+        }
+      }
+
+      Swal.fire({
+        title: 'Detalles de la Compra',
+        html: message,
+        icon: 'success',
+      });
+    } else {
+      throw new Error('La respuesta no contiene datos válidos para mostrar los detalles de la compra.');
+    }
+  } catch (error) {
+    console.log('Error al mostrar el resumen de la compra:', error);
+    Swal.fire({
+      title: 'Error',
+      text: 'No se pudieron mostrar los detalles de la compra.',
+      icon: 'error',
+    });
   }
 }
 

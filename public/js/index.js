@@ -3,15 +3,15 @@ const loginBtnModal = document.getElementById('loginBtnModal');
 const loginBtn = document.getElementById('loginBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
-loginBtnModal.addEventListener('click', async (event) => {
-    event.preventDefault();
-    await loginUser('inputEmail', 'inputPassword');
-});
+// loginBtnModal.addEventListener('click', async (event) => {
+//     event.preventDefault();
+//     await loginUser('inputEmail', 'inputPassword');
+// });
 
-loginBtn.addEventListener('click', async (event) => {
-    event.preventDefault();
-    await loginUser('inputEmail', 'inputPassword');
-});
+// loginBtn.addEventListener('click', async (event) => {
+//     event.preventDefault();
+//     await loginUser('inputEmail', 'inputPassword');
+// });
 
 logoutBtn.addEventListener('click', async (event) => {
     event.preventDefault();
@@ -90,23 +90,23 @@ document.addEventListener("DOMContentLoaded", () => {
         
     const cartIdInput = document.getElementById('cartId');
     const queryParams = new URLSearchParams(window.location.search);
-    
+
     const email = queryParams.get('email');
     const username = sessionStorage.getItem('username');
 
-    const welcomeMessage = document.getElementById('welcomeMessage');
-    if (email) {
-        welcomeMessage.innerHTML = `Welcome! <strong>${email}</strong>`;
-        sessionStorage.setItem('username', email);
-    } else {
-        if (username) {
-            welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
-        } else {
-            welcomeMessage.innerHTML = 'Welcome! Please log in.';
-            sessionStorage.setItem('username', "");
-        }
+    // const welcomeMessage = document.getElementById('welcomeMessage');
+    // if (email) {
+    //     welcomeMessage.innerHTML = `Welcome! <strong>${email}</strong>`;
+    //     sessionStorage.setItem('username', email);
+    // } else {
+    //     if (username) {
+    //         welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
+    //     } else {
+    //         welcomeMessage.innerHTML = 'Welcome! Please log in.';
+    //         sessionStorage.setItem('username', "");
+    //     }
 
-    }
+    // }
 
     retrieveCartData(cartIdInput);
     const cartId = cartIdInput?.value.length > 0 ? cartIdInput?.value : sessionStorage.getItem('cartId');

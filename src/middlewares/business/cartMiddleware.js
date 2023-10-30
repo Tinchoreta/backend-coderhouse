@@ -51,6 +51,7 @@ const cartMiddleware = async (req, res, next) => {
             cartToRender = await dataBaseCartAdapter.getCartById(req.query.cartId);
         } else {
             cartToRender = await dataBaseCartAdapter.getCarts();
+            cartToRender = [...cartToRender];
         }
 
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
