@@ -60,14 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   plusButtons.forEach(function (button) {
-    button.addEventListener('click', (event) => {
+    button.addEventListener('click',  (event) => {
       event.preventDefault();
       handlePlusButtonClick(button);
     });
   });
 
-  removeButtons.forEach(function (button) {
-    button.addEventListener('click', (event) => {
+  removeButtons.forEach(function  (button) {
+    button.addEventListener('click',  (event) => {
       event.preventDefault();
       handleRemoveButtonClick(button);
     });
@@ -180,10 +180,10 @@ function handleRemoveButtonClick(button) {
     cancelButtonColor: '#d33',
     confirmButtonText: 'Sí, quitarlo',
     cancelButtonText: 'Cancelar'
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
       // Si el usuario confirma, elimina el producto del carrito
-      removeProductFromCart(productId);
+      await removeProductFromCart(productId);
       // Actualiza la vista del carrito
       // updateCartDataView(cartId);
       location.reload(true);
@@ -216,7 +216,7 @@ function getProductFromCart(productId) {
 }
 
 
-function removeProductFromCart(productId) {
+async function removeProductFromCart(productId) {
   // Obtiene el cartId del almacenamiento de sesión
   const cartId = sessionStorage.getItem('cartId');
 

@@ -33,25 +33,55 @@ class CartManager {
     //     return this.cartList.find((cart) => parseInt(cart.id) === parseInt(cartIdToGet)) || null;
     // }
 
+    // getCartById(cartIdToGet) {
+    //     const targetCartId = cartIdToGet;
+
+    //     if (!targetCartId) {
+    //         throw new Error('El ID del carrito no está definido.');
+    //     }
+
+    //     const foundCart = this.cartList.find((cart) => {
+    //         if (cart?._id){
+
+    //             return cart?._id?.toString() === targetCartId;
+    //         }
+
+    //         if (cart?._doc?._id){
+    //             return cart?._doc?._id?.toString() === targetCartId;
+    //         }
+
+    //         return undefined;
+
+    //     });
+
+    //     // Si se encuentra el carrito, lo retornas; de lo contrario, puedes lanzar una excepción o devolver undefined.
+    //     if (foundCart) {
+    //         return foundCart;
+    //     }
+
+    //     // throw new Error(`No se encontró ningún carrito con el ID ${targetCartId}.`);
+    //     return undefined;
+    // }
+
     getCartById(cartIdToGet) {
         const targetCartId = cartIdToGet;
 
         if (!targetCartId) {
-            throw new Error('El ID del carrito no está definido.');
+            return undefined; 
         }
 
-        const foundCart = this.cartList.find((cart) => {
-            return cart?._id?.toString() === targetCartId;
-        });
-
-        // Si se encuentra el carrito, lo retornas; de lo contrario, puedes lanzar una excepción o devolver undefined.
-        if (foundCart) {
-            return foundCart;
+        for (let i = 0; i < this.cartList.length; i++) {
+            const cart = this.cartList[i];
+            if (cart?._id && cart?._id.toString() === targetCartId) {
+                return cart;
+            }
+            if (cart?._doc?._id && cart?._doc?._id.toString() === targetCartId) {
+                return cart;
+            }
         }
-
-        // throw new Error(`No se encontró ningún carrito con el ID ${targetCartId}.`);
         return undefined;
     }
+
 
 
     removeCart(cartId) {
@@ -83,21 +113,45 @@ class CartManager {
         const cart = this.getCartById(cartId);
         if (cart) {
             const products = [];
-            for (const item of cart.products) {
-                const productData = this.productManager.getProductById(item.productId);
-                if (productData) {
-                    const { _id, title, description,price, thumbnail, stock } = productData;
-                    const product = {
-                        _id,
-                        title,
-                        price,
-                        description,
-                        thumbnail,
-                        stock,
-                        quantity: item.quantity
-                    };
-                    products.push(product);
+            if (cart.products?.length > 0) {
+
+                for (const item of cart.products) {
+                    const productData = this.productManager.getProductById(item.productId);
+                    if (productData) {
+                        const { _id, title, description, price, thumbnail, stock } = productData;
+                        const product = {
+                            _id,
+                            title,
+                            price,
+                            description,
+                            thumbnail,
+                            stock,
+                            quantity: item.quantity
+                        };
+                        products.push(product);
+                    }
                 }
+                return products;
+            }
+            if (cart._doc?.products?.length > 0) {
+
+                for (const item of cart._doc.products) {
+                    const productData = this.productManager.getProductById(item.productId);
+                    if (productData) {
+                        const { _id, title, description, price, thumbnail, stock } = productData;
+                        const product = {
+                            _id,
+                            title,
+                            price,
+                            description,
+                            thumbnail,
+                            stock,
+                            quantity: item.quantity
+                        };
+                        products.push(product);
+                    }
+                }
+                return products;
             }
             return products;
         }
