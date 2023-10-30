@@ -88,6 +88,26 @@ class DataBaseCartManagerAdapter {
         }
     }
 
+    async getUserIdForCart(cartId) {
+        try {
+            if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                return null;
+            }
+
+            const cart = await this.persistenceManager.getOne({ _id: cartId });
+
+            if (cart && cart.userId) {
+                return cart.userId.toString(); // Convierte el ObjectId a una cadena
+            }
+
+            return null;
+        } catch (error) {
+            console.error(`Error al obtener el userId del carrito: ${error.message}`);
+            return null;
+        }
+    }
+
+
     async createCart() {
         try {
             const cart = { products: [] };

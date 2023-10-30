@@ -370,20 +370,38 @@ class CartManagerController {
 
     async processPurchase(req, res) {
         try {
-            const userId = req.username;
-            const cartId = req.cartId;
+            const userId = req?.username;  // Verifica que req y req.username no sean nulos o indefinidos
+            const cartId = req?.cartId || req?.params?.cartId; // Verifica que req y req.cartId no sean nulos o indefinidos
+
+            if (this.isNullOrUndefined(cartId)) {
+                throw new CustomError({
+                    name: EnumeratedErrors.VALIDATION_ERROR,
+                    message: 'Invalid request data',
+                });
+            }
+
+            if (this.isNullOrUndefined(userId)) {
+                this.cartManagerAdapter.getUserIdForCart(cartId);
+            }
 
             const cart = await this.cartManagerAdapter.getCartById(cartId);
 
-            const productsNotPurchased = await this.checkStockForProducts(cart.products);
+            if (this.isNullOrUndefined(cart)) {
+                throw new CustomError({
+                    name: EnumeratedErrors.CART_NOT_FOUND,
+                    message: 'Cart not found',
+                });
+            }
 
-            const purchasedProducts = await this.processPurchasableProducts(cart.products, productsNotPurchased);
+            const productsNotPurchased = await this.checkStockForProducts(cart?.products); // Verifica que cart y cart.products no sean nulos o indefinidos
+
+            const purchasedProducts = await this.processPurchasableProducts(cart?.products, productsNotPurchased); // Verifica que cart y cart.products no sean nulos o indefinidos
 
             const totalAmount = await this.cartManagerAdapter.calculateCartTotalPrice(cartId);
 
             await this.updateCartAndProducts(cart, purchasedProducts);
 
-            if (purchasedProducts.length > 0) {
+            if (purchasedProducts?.length > 0) { // Verifica que purchasedProducts no sea nulo o indefinido
                 const ticket = await this.createTicket(totalAmount, userId);
 
                 return res.status(HTTP_STATUS_CODES.HTTP_OK).json({
@@ -391,7 +409,6 @@ class CartManagerController {
                     ticket,
                     purchasedProducts
                 });
-
             } else {
                 throw new CustomError({
                     name: EnumeratedErrors.CART_EMPTY_ERROR,
@@ -407,6 +424,10 @@ class CartManagerController {
                 return res.status(HTTP_STATUS_CODES.HTTP_INTERNAL_SERVER_ERROR).json({ message: 'Error en la compra' });
             }
         }
+    }
+    
+    isNullOrUndefined(value) {
+        return value === null || value === undefined;
     }
 
     async checkStockForProducts(products) {

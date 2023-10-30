@@ -1,7 +1,7 @@
 let minusButtons = document.querySelectorAll('.btn-minus');
 let plusButtons = document.querySelectorAll('.btn-plus');
 let removeButtons = document.querySelectorAll('.btn-remove');
-const purchaseButton = document.querySelector('.btn-large');
+const purchaseButton = document.getElementById('btnBuy');
 const logoutBtn = document.getElementById('logoutBtn');
 
 loginBtnModal.addEventListener('click', async (event) => {
