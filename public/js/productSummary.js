@@ -131,24 +131,16 @@ function updateProductSummaryView(data) {
       }
 
       // Llenar el modal con el mensaje
-      const invoiceMessage = document.getElementById('invoiceMessage');
-      invoiceMessage.textContent = message;
+      const invoiceCode = document.getElementById('invoiceCode');
+      const invoiceAmount = document.getElementById('invoiceAmount');
+      const invoiceDate = document.getElementById('invoiceDate');
+      const invoicePurchaser = document.getElementById('invoicePurchaser');
 
-      // Abrir el modal cuando se muestra el mensaje
-      const openInvoiceModalButton = document.querySelector('.btn-success');
-      openInvoiceModalButton.addEventListener('click', () => {
-        const invoiceModal = document.getElementById('invoiceModal');
-        invoiceModal.classList.add('in');
-        invoiceModal.style.display = 'block';
-      });
+      invoiceCode.textContent = `Código de factura: ${ticket.code}`;
+      invoiceAmount.textContent = `Monto: $${ticket.amount}`;
+      invoiceDate.textContent = `Fecha de Compra: ${new Date(ticket.purchase_datetime).toLocaleString()}`;
+      invoicePurchaser.textContent = `Comprador: ${ticket.purchaser}`;
 
-      // Cerrar el modal cuando se hace clic en el botón "Cerrar"
-      const closeInvoiceModalButton = document.getElementById('closeInvoiceModal');
-      closeInvoiceModalButton.addEventListener('click', () => {
-        const invoiceModal = document.getElementById('invoiceModal');
-        invoiceModal.classList.remove('in');
-        invoiceModal.style.display = 'none';
-      });
     } else {
       throw new Error('La respuesta no contiene datos válidos para mostrar los detalles de la compra.');
     }
@@ -161,6 +153,7 @@ function updateProductSummaryView(data) {
     });
   }
 }
+
 
 
 function updateUI() {
