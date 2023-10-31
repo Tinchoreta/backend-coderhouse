@@ -101,7 +101,7 @@ async function handlePurchaseButtonClick(event) {
         console.log('Compra completada con éxito');
 
         // Actualiza la vista del resumen de productos (por ejemplo, limpiar la lista de productos).
-        updateProductSummaryView(response.data);
+        await updateProductSummaryView(response.data);
       } else {
         console.error('Error al procesar la compra');
       }
@@ -111,26 +111,12 @@ async function handlePurchaseButtonClick(event) {
   }
 }
 
-function updateProductSummaryView(data) {
+async function updateProductSummaryView(data) {
   try {
     if (data && data.message === 'Compra exitosa' && data.ticket) {
       const ticket = data.ticket;
       const purchasedProducts = data.purchasedProducts;
 
-      let message = `¡Compra exitosa!\n\n`;
-      message += `Código de Ticket: ${ticket.code}\n`;
-      message += `Monto: $${ticket.amount}\n`;
-      message += `Fecha de Compra: ${new Date(ticket.purchase_datetime).toLocaleString()}\n`;
-      message += `Comprador: ${ticket.purchaser}\n\n`;
-
-      if (purchasedProducts && purchasedProducts.length > 0) {
-        message += 'Productos Comprados:\n';
-        for (const product of purchasedProducts) {
-          message += `- Producto ID: ${product.productId}, Cantidad: ${product.quantity}\n`;
-        }
-      }
-
-      // Llenar el modal con el mensaje
       const invoiceCode = document.getElementById('invoiceCode');
       const invoiceAmount = document.getElementById('invoiceAmount');
       const invoiceDate = document.getElementById('invoiceDate');
@@ -139,7 +125,7 @@ function updateProductSummaryView(data) {
       invoiceCode.textContent = `Código de factura: ${ticket.code}`;
       invoiceAmount.textContent = `Monto: $${ticket.amount}`;
       invoiceDate.textContent = `Fecha de Compra: ${new Date(ticket.purchase_datetime).toLocaleString()}`;
-      invoicePurchaser.textContent = `Comprador: ${ticket.purchaser}`;
+      invoicePurchaser.textContent = `Comprador: ${sessionStorage.getItem('username')}`;
 
     } else {
       throw new Error('La respuesta no contiene datos válidos para mostrar los detalles de la compra.');
