@@ -34,7 +34,7 @@ productSummaryRouter.get("/", cartMiddleware, async (req, res, next) => {
       const cart = await cartController.searchOrCreateCart(userEmail);
 
       if (cart) {
-        const cartId = cart._id.toString();
+        const cartId = cart._id?.toString();
         req.cartId = cartId;
 
         cartViewController.renderCartCheckout(req, res, cartId);

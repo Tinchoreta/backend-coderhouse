@@ -39,16 +39,16 @@ const cartMiddleware = async (req, res, next) => {
         
         if (userEmail && validateEmail(userEmail)) {
             // Si el correo es válido, busca el carrito por correo electrónico
-            cartToRender = await dataBaseCartAdapter.getCartByUserEmail(userEmail);
+            cartToRender = [await dataBaseCartAdapter.getCartByUserEmail(userEmail)];
         } else if (req.cartManager?.cartList[0]) {
             // Si no hay correo válido, utiliza el carrito existente
-            cartToRender = req.cartManager.cartList[0];
+            cartToRender = req.cartManager.cartList;
         } else if (req.params?.cartId) {
             
-            cartToRender = await dataBaseCartAdapter.getCartById(req.params.cartId);
+            cartToRender = [await dataBaseCartAdapter.getCartById(req.params.cartId)];
         } else if (req.query?.cartId) {
 
-            cartToRender = await dataBaseCartAdapter.getCartById(req.query.cartId);
+            cartToRender = [await dataBaseCartAdapter.getCartById(req.query.cartId)];
         } else {
             cartToRender = await dataBaseCartAdapter.getCarts();
             cartToRender = [...cartToRender];
@@ -56,7 +56,8 @@ const cartMiddleware = async (req, res, next) => {
 
         const productsList = await dataBaseProductAdapter.getProducts(100000, 1, "asc");
         const productManager = new ProductManager(productsList.docs);
-        const cartManager = CartManager.getInstance([cartToRender], productManager);
+        
+        const cartManager = CartManager.getInstance(cartToRender, productManager);
 
         req.cartManager = cartManager || "";
         req.cartId = cartToRender?._id?.toString() || "";
