@@ -27,7 +27,7 @@ logoutBtn.addEventListener('click', async (event) => {
 
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('token');
-        sessionStorage.removeItem('cartId', cart._id);
+        sessionStorage.removeItem('cartId');
 
         updateUI();
         updateCartDataView("");
@@ -111,10 +111,8 @@ async function handlePurchaseButtonClick(event) {
   }
 }
 
-function updateProductSummaryView(data){
+function updateProductSummaryView(data) {
   try {
-   // const data = JSON.stringify(responseData);
-
     if (data && data.message === 'Compra exitosa' && data.ticket) {
       const ticket = data.ticket;
       const purchasedProducts = data.purchasedProducts;
@@ -132,10 +130,24 @@ function updateProductSummaryView(data){
         }
       }
 
-      Swal.fire({
-        title: 'Detalles de la Compra',
-        html: message,
-        icon: 'success',
+      // Llenar el modal con el mensaje
+      const invoiceMessage = document.getElementById('invoiceMessage');
+      invoiceMessage.textContent = message;
+
+      // Abrir el modal cuando se muestra el mensaje
+      const openInvoiceModalButton = document.querySelector('.btn-success');
+      openInvoiceModalButton.addEventListener('click', () => {
+        const invoiceModal = document.getElementById('invoiceModal');
+        invoiceModal.classList.add('in');
+        invoiceModal.style.display = 'block';
+      });
+
+      // Cerrar el modal cuando se hace clic en el botón "Cerrar"
+      const closeInvoiceModalButton = document.getElementById('closeInvoiceModal');
+      closeInvoiceModalButton.addEventListener('click', () => {
+        const invoiceModal = document.getElementById('invoiceModal');
+        invoiceModal.classList.remove('in');
+        invoiceModal.style.display = 'none';
       });
     } else {
       throw new Error('La respuesta no contiene datos válidos para mostrar los detalles de la compra.');
@@ -149,6 +161,7 @@ function updateProductSummaryView(data){
     });
   }
 }
+
 
 function updateUI() {
   const username = sessionStorage.getItem('username');

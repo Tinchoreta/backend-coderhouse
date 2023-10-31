@@ -1,7 +1,7 @@
 <div id="header">
     <div class="container">
         <div id="welcomeLine" class="row">
-            <div class="span6">Welcome! <strong>{{user}}</strong></div>
+            <div class="span6" id="welcomeMessage">Welcome! <strong>{{user}}</strong></div>
             <div class="span6">
                 <div class="pull-right">
                     <a href="/product_summary"><span class="">Fr</span></a>
@@ -41,7 +41,7 @@
                     <li class=""><a href="/login">REGISTRATE</a></li>
                     <li class=""><a href="/products">PRODUCTOS</a></li>
                     <li class=""><a href="/chat">CHAT</a></li>
-                    <li class="">
+                    <li class="" id="loginLi">
                         <a href="#login" role="button" data-toggle="modal" style="padding-right:0"><span
                                 class="btn btn-large btn-success">Login</span></a>
                         <div id="login" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login"
@@ -156,6 +156,7 @@
             <!-- Sidebar ================================================== -->
             <div id="sidebar" class="span3">
                 <div class="well well-small">
+                    <input type="hidden" id="cartId" name="cartId" value="{{cartId}}">
                     <a id="myCart" href="/product_summary?cartId={{cartId}}">
                         <img src="themes/images/ico-cart.png" alt="cart">
                         <span>{{cartItemCount}} Items</span>

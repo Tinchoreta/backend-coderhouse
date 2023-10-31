@@ -26,7 +26,7 @@ logoutBtn.addEventListener('click', async (event) => {
 
                 sessionStorage.removeItem('username');
                 sessionStorage.removeItem('token');
-                sessionStorage.removeItem('cartId', cart._id);
+                sessionStorage.removeItem('cartId');
 
                 updateUI();
                 updateCartDataView("");
@@ -94,20 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = queryParams.get('email');
     const username = sessionStorage.getItem('username');
 
-    // const welcomeMessage = document.getElementById('welcomeMessage');
-    // if (email) {
-    //     welcomeMessage.innerHTML = `Welcome! <strong>${email}</strong>`;
-    //     sessionStorage.setItem('username', email);
-    // } else {
-    //     if (username) {
-    //         welcomeMessage.innerHTML = `Welcome! <strong>${username}</strong>`;
-    //     } else {
-    //         welcomeMessage.innerHTML = 'Welcome! Please log in.';
-    //         sessionStorage.setItem('username', "");
-    //     }
-
-    // }
-
     retrieveCartData(cartIdInput);
     const cartId = cartIdInput?.value.length > 0 ? cartIdInput?.value : sessionStorage.getItem('cartId');
 
@@ -118,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function retrieveCartData(cartIdInput) {
 
-    const cartIdValue = cartIdInput.value;
+    const cartIdValue = cartIdInput?.value;
 
     if (cartIdValue && cartIdValue.trim().length > 0) {
         console.log(`El campo cartId tiene el valor: ${cartIdValue}`);
@@ -129,12 +115,13 @@ function retrieveCartData(cartIdInput) {
         if (email) {
             axios.get(`http://localhost:8080/api/carts/cartByUserEmail/${email}`)
                 .then((response) => {
-                    const cart = response.data.cart;
+                    const cart = response.data?.cart;
 
-                    if (cart) {
+                    if (cart && cart?._id?.length > 0) {
                         console.log(`Carrito asociado encontrado: ${cart._id}`);
-                        cartIdInput.value = cart._id;
+                        cartIdInput.value = cart?._id;
                         sessionStorage.setItem('cartId', cart._id);
+                        
                     } else {
                         console.log("No se encontró ningún carrito asociado al usuario.");
                     }

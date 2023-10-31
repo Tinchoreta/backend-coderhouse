@@ -75,8 +75,9 @@
                             </div>
                         </li>
                         <li class="" id="logoutLi" style="display:none;">
-                            <a href="#" id="logoutBtn" role="button" style="padding-right: 0"><span
-                                    class="btn btn-large btn-danger">Logout</span></a>
+                            <a href="#" id="logoutBtn" role="button" style="padding-right: 0">
+                                <span class="btn btn-large btn-danger">Logout</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -231,79 +232,14 @@
                         </tbody>
                     </table>
 
-                    </table>
-                    <a href="/products/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
-                    <a id="btnBuy" href="#" class="btn btn-large pull-right">Buy cart! <i
-                            class="icon-shopping-cart"></i></a>
-
-                    <li class="">
-                        <a href="#invoiceModal" role="button" class="btn btn-large btn-success" data-toggle="modal">Ver Factura</a>
-                    </li>
-                    
-                    <!-- Modal de factura -->
-                    <li class="invoiceModal">
-                        <a href="#invoiceModal" role="button" class="btn btn-large btn-success" data-toggle="modal">Ver Factura</a>
-                    </li>
-                    
-                    <!-- Modal de factura -->
-                    <div id="invoiceModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h3>Factura</h3>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Aquí se insertan los detalles de la factura -->
-                            <p>Detalles de la factura:</p>
-                            <p id="invoiceCode">Código de factura:</p>
-                            <p id="invoiceAmount">Monto:</p>
-                            <p id="invoiceDate">Fecha de Compra:</p>
-                            <p id="invoicePurchaser">Comprador:</p>
-                    
-                            <!-- Productos Comprados -->
-                            <p>Productos Comprados:</p>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Description</th>
-                                        <th>Quantity/Update</th>
-                                        <th>Price</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#cartProducts}}
-                                    <tr>
-                                        <td>
-                                            <img width="60" src="/themes/images/products/{{thumbnail}}" alt="">
-                                        </td>
-                                        <td>
-                                            {{substring title 0 20}}<br>
-                                            Desc: {{substring description 0 25}}
-                                        </td>
-                                        <td>${{price}}</td>
-                                        <td>${{calculateTotal price quantity}}</td>
-                                    </tr>
-                                    {{/cartProducts}}
-                                    <tr>
-                                        <td colspan="4" style="text-align:right">Total Price:</td>
-                                        <td>${{cartTotal}}</td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td colspan="4" style="text-align:right"><strong>TOTAL (${{cartTotal}}) =</strong></td>
-                                        <td class="label label-important" style="display:block"><strong>${{cartTotal}}</strong>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!-- Fin de Productos Comprados -->
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-                        </div>
+                    <div id="invoiceDetails" style="display: none;">
+                        <h3>Detalles de la Compra</h3>
+                        <p><strong>Código de Ticket:</strong> <span id="ticketCode"></span></p>
+                        <p><strong>Monto:</strong> <span id="ticketAmount"></span></p>
+                        <p><strong>Fecha de Compra:</strong> <span id="purchaseDate"></span></p>
+                        <p><strong>Comprador:</strong> <span id="purchaserName"></span></p>
+                        <!-- Puedes agregar más detalles aquí si es necesario -->
                     </div>
-
 
                 </div>
             </div>

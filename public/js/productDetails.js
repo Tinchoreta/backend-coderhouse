@@ -23,7 +23,7 @@ logoutBtn.addEventListener('click', async (event) => {
 
                 sessionStorage.removeItem('username');
                 sessionStorage.removeItem('token');
-                sessionStorage.removeItem('cartId', cart._id);
+                sessionStorage.removeItem('cartId');
 
                 updateUI();
                 updateCartDataView("");
