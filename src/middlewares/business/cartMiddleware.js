@@ -40,9 +40,14 @@ const cartMiddleware = async (req, res, next) => {
         if (userEmail && validateEmail(userEmail)) {
             // Si el correo es válido, busca el carrito por correo electrónico
             cartToRender = [await dataBaseCartAdapter.getCartByUserEmail(userEmail)];
-        } else if (req.cartManager?.cartList[0]) {
+        } else if (req.cartManager?.cartList && req.cartManager.cartList.length > 0) {
             // Si no hay correo válido, utiliza el carrito existente
-            cartToRender = req.cartManager.cartList;
+            if (req.cartManager.cartList.length === 1) {
+                cartToRender = [req.cartManager.cartList];    
+            } else{
+                cartToRender = req.cartManager.cartList;    
+            }
+            
         } else if (req.params?.cartId) {
             
             cartToRender = [await dataBaseCartAdapter.getCartById(req.params.cartId)];
