@@ -40,6 +40,7 @@ router.get('/:cartId/cartTotal', [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, R
     const total = await cartController.calculateCartTotalPrice(req, res);
 });
 
+
 router.get("/:cartId/bills", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.ADMIN, ROLES.PUBLIC], (req, res) => cartController.calculateCartTotalPrice(req, res));
 
 router.get("/:cartId/purchase", [ROLES.USER, ROLES.USER_PREMIUM, ROLES.PUBLIC], (req, res) => cartController.processPurchase(req, res));
